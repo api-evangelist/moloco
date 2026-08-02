@@ -1,0 +1,72 @@
+generated: '2026-07-31'
+method: searched
+source:
+- https://mcm-docs.moloco.com/changelog
+- https://developer.moloco.cloud/page/release-notes
+scheme: >-
+  Two streams. Moloco Commerce Media publishes a dated month-by-month product changelog. Moloco Ads publishes
+  version-scoped release notes (breaking changes only) plus a change log for backward-compatible changes.
+current_version:
+  moloco_ads: v1.10
+  moloco_commerce_media: v1
+channels:
+- name: MCM changelog
+  url: https://mcm-docs.moloco.com/changelog
+  cadence: monthly
+  scope: Moloco Commerce Media product and API updates
+- name: Moloco Ads release notes
+  url: https://developer.moloco.cloud/page/release-notes
+  cadence: roughly every 6 months
+  scope: breaking changes bundled into a new API version
+- name: Moloco Ads change log
+  url: https://developer.moloco.cloud/changelog/jan-18th-2024
+  scope: backward-compatible changes, dated entries
+entries:
+- version: MCM June 2026
+  date: '2026-06'
+  url: https://mcm-docs.moloco.com/changelog/june-2026
+  breaking: false
+  highlights:
+  - Multi-inventory decision requests generalized beyond Sponsored Products to additional ad types.
+  - No-banner ad formats for Sponsored Brands (Product Carousel) and Sponsored Display (Logo Carousel).
+  - Catalog browser for platform admins plus feed ingestion status monitoring and re-triggering.
+  - Catalog location fields raised to roughly 1,000 store locations per item.
+- version: MCM May 2026
+  date: '2026-05'
+  url: https://mcm-docs.moloco.com/changelog/may-2026
+  breaking: false
+  highlights:
+  - Spend Cap exposed through both the Management API and Data Export.
+  - Impression forecasting for Reserved Display custom Key/Value targeting and dayparting.
+  - Reserved Display Data Export brought to parity with Sponsored Products/Brands/Display.
+- version: MCM April 2026
+  date: '2026-04'
+  url: https://mcm-docs.moloco.com/changelog/april-2026
+  breaking: false
+  highlights:
+  - Ad Preview in the MCM Campaign Manager for Sponsored Brands and Sponsored Display.
+  - New personalization_mode field on the Decision API and User Event API, adding METRIC_ONLY and ID_LESS
+    processing modes alongside STANDARD, for GDPR compliance obligations.
+  - Custom Targeting (key-value attributes) for Sponsored Products, Brands and Display, up to 100,000 values
+    per key.
+- version: MCM March 2026
+  date: '2026-03'
+  url: https://mcm-docs.moloco.com/changelog/march-2026
+  breaking: false
+  highlights:
+  - Campaign metadata (ad operation type, alias) can be returned in ad decision responses.
+  - Max Sales ROAS range control (min-max) for MaxSales campaigns.
+  - Smart Selection V2 brand/category/on-sale inclusion filters and SKU-level exclusions, on both the
+    Campaign Manager UI and the Management API.
+- version: Moloco Ads v1.10
+  date: '2026-03-01'
+  url: https://developer.moloco.cloud/page/v110-release-note
+  breaking: true
+  note: >-
+    Breaking-change bundle for the Campaign Management API. Deprecation of v1.8 followed on 2026-04-01;
+    v1.10 itself is scheduled for deprecation on 2027-04-01.
+- version: Moloco Ads v1.9
+  date: '2025-10-15'
+  url: https://developer.moloco.cloud/page/v19-release-note
+  breaking: true
+window: recent (last five published entries across both streams as of 2026-07-31)

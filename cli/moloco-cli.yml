@@ -1,0 +1,62 @@
+generated: '2026-07-31'
+method: searched
+source: https://github.com/moloco-mcm/mcm-cli
+docs: https://github.com/moloco-mcm/mcm-cli#readme
+name: mcm
+title: Moloco Commerce Media (MCM) CLI
+description: >-
+  First-party command-line interface for the Moloco Commerce Media platform (formerly the Retail Media
+  Platform). Wraps the MCM Management, Decision and Event APIs. Written in Python, published to PyPI as
+  mcm-cli under Apache-2.0.
+package: packages/moloco-packages.yml
+license: Apache-2.0
+version: 1.9.0
+install:
+- method: pip
+  command: pip install mcm-cli
+- method: pip-upgrade
+  command: pip install --upgrade mcm-cli
+- method: source
+  command: git clone https://github.com/moloco-mcm/mcm-cli.git && pip install mcm-cli
+configuration:
+  bootstrap: mcm config init
+  file: ~/.mcm/config.toml
+commands:
+- group: account
+  summary: Ad account management
+  source: mcmcli/command/account.py
+- group: admin
+  summary: Platform administration
+  source: mcmcli/command/admin.py
+- group: auth
+  summary: Authentication management
+  source: mcmcli/command/auth.py
+- group: campaign
+  summary: Campaign management
+  source: mcmcli/command/campaign.py
+- group: config
+  summary: Configuration management
+  source: mcmcli/command/config.py
+- group: decision
+  summary: Decision API commands
+  source: mcmcli/command/decision.py
+- group: report
+  summary: Reporting commands
+  source: mcmcli/command/report.py
+- group: userevent
+  summary: User event commands
+  source: mcmcli/command/userevent.py
+- group: wallet
+  summary: Wallet management
+  source: mcmcli/command/wallet.py
+- group: version
+  summary: Show the tool version
+note: >-
+  The README's `mcm --help` excerpt lists account, auth, config, decision, version and wallet; the repository
+  tree also carries admin, campaign, report and userevent command modules. Both are recorded above, with the
+  source file naming the evidence for each.
+related_tools:
+- name: customer-tools
+  url: https://github.com/moloco-mcm/customer-tools
+  language: python
+  description: Assorted customer-facing Python utilities published by the MCM team.

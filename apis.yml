@@ -1,23 +1,248 @@
 aid: moloco
 name: MOLOCO
-description: 'MOLOCO is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Moloco is a machine-learning advertising company that operates three developer-facing platforms: Moloco Ads
+  (a performance demand-side platform for app marketers), Moloco Commerce Media / MCM (a retail-media platform
+  that lets marketplaces and retailers run sponsored product, brand, display and reserved-display ads on their
+  own inventory), and Moloco Streaming Monetization. Its public API surface spans a Campaign Management API and
+  a Cloud Auth API on api.moloco.cloud for the DSP side, plus MCM Management, Decision, Event and Webhook APIs
+  on mcm-api.moloco.com for the commerce-media side, covering ad accounts, products, campaigns, ad groups,
+  creatives, audience targets, catalog items, wallets, spending limits, reporting, log export, real-time ad
+  decisioning and first-party user-event ingestion.
+image: https://cdn.prod.website-files.com/6237fca0466ffd9274a1dbdd/6a4b55676ce1b724bd4b3bb2_Open%20Graph%20image.jpg
 url: https://raw.githubusercontent.com/api-evangelist/moloco/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.21'
 created: '2026-07-31'
 modified: '2026-07-31'
 tags:
-- Company
-apis: []
+- advertising
+- adtech
+- demand-side-platform
+- retail-media
+- commerce-media
+- programmatic-advertising
+- campaign-management
+- ad-serving
+- machine-learning
+- mobile-marketing
+- reporting
+- user-events
+apis:
+- name: Moloco Ads Campaign Management API
+  description: >-
+    REST API for creating and managing Moloco Ads (Cloud DSP) campaigns — ad accounts, products, tracking links,
+    campaigns, ad groups, creatives, creative groups, audience targets and customer sets — plus analytics,
+    cohort summaries, reports, report exports and impression/click/conversion log generation. Versioned via the
+    Moloco-Cloud-Api-Version header; bearer token issued from an API key.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - advertising
+  - demand-side-platform
+  - campaign-management
+  - reporting
+  - ad-serving
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-ads-campaign-management-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Overlay
+    url: overlays/moloco-ads-campaign-management-overlay.yaml
+- name: Moloco Cloud Auth API
+  description: >-
+    Authentication and authorization API for Moloco Cloud — issues bearer access tokens from an API key and
+    manages workplaces, userspaces, users, passwords, role grants, permissions and ad-account registrations.
+    Access tokens are valid for 16 hours.
+  humanURL: https://developer.moloco.cloud/docs/auth
+  baseURL: https://api.moloco.cloud
+  tags:
+  - authentication
+  - authorization
+  - user-management
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-cloud-auth-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Overlay
+    url: overlays/moloco-cloud-auth-overlay.yaml
+- name: Moloco Commerce Media Management API
+  description: >-
+    REST API for retail-media platform operators to manage ad manager accounts, ad accounts, campaigns,
+    sponsored product/brand/display and reserved-display line items, image and video assets, custom targeting
+    keys and values, campaign reviews, spend caps, spending limits, credits, wallets, change history, item kill
+    switch, data-export key rotation and user data deletion requests, plus reporting and forecasting.
+  humanURL: https://mcm-docs.moloco.com/docs/campaign-management
+  baseURL: https://sandbox-mgmt.mcm-api.moloco.com
+  tags:
+  - retail-media
+  - commerce-media
+  - campaign-management
+  - reporting
+  - billing
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-commerce-media-management-openapi.yml
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Overlay
+    url: overlays/moloco-commerce-media-management-overlay.yaml
+- name: Moloco Commerce Media Decision API
+  description: >-
+    Real-time ad decisioning API for retail media — request sponsored product, display, brand and reserved
+    display ads for a given page/placement and user context, returning the ads to render together with
+    impression and click tracker URLs. Latency-sensitive serving path, authenticated with a platform API key.
+  humanURL: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  baseURL: https://sandbox-dcsn.mcm-api.moloco.com
+  tags:
+  - retail-media
+  - ad-serving
+  - real-time-bidding
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-commerce-media-decision-openapi.yml
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Overlay
+    url: overlays/moloco-commerce-media-decision-overlay.yaml
+- name: Moloco Commerce Media Event API
+  description: >-
+    First-party user-event ingestion API — posts real-time shopper events (home, page view, item view, search,
+    add to cart, purchase and more) from a retailer's site or app into Moloco Commerce Media so the models can
+    source and score ads. One operation, PostUserEvent, authenticated with a platform API key.
+  humanURL: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  baseURL: https://sandbox-evt.mcm-api.moloco.com
+  tags:
+  - retail-media
+  - user-events
+  - data-ingestion
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-commerce-media-event-openapi.yml
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Overlay
+    url: overlays/moloco-commerce-media-event-overlay.yaml
+- name: Moloco Commerce Media Webhooks
+  description: >-
+    Outbound webhook surface for Moloco Commerce Media, published as an OpenAPI 3.1 webhooks document. Moloco
+    POSTs signed JSON deliveries to a platform-configured HTTPS endpoint for churned-ad-account re-engagement
+    recommendations and high-budget-utilization upsell recommendations; the x-moloco-webhook-id header is the
+    idempotency key.
+  humanURL: https://mcm-docs.moloco.com/docs/campaign-management
+  baseURL: https://sandbox-mgmt.mcm-api.moloco.com
+  tags:
+  - retail-media
+  - webhooks
+  - events
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-commerce-media-webhooks-openapi.yml
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+common:
+- type: AgenticAccess
+  url: agentic-access/moloco-agentic-access.yml
+- type: TrustCenter
+  url: security/moloco-trust-center.yml
+- type: DomainSecurity
+  url: security/moloco-domain-security.yml
+- type: Authentication
+  url: authentication/moloco-authentication.yml
+- type: Website
+  url: https://www.moloco.com/
+- type: DeveloperPortal
+  url: https://developer.moloco.cloud/
+- type: Documentation
+  url: https://developer.moloco.cloud/docs/getting-started
+- type: APIReference
+  url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+- type: GettingStarted
+  url: https://developer.moloco.cloud/docs/getting-started
+- type: Support
+  url: https://help.moloco.com/hc/en-us
+- type: Blog
+  url: https://www.moloco.com/blogs
+- type: GitHubOrganization
+  url: https://github.com/moloco-mcm
+- type: SignUp
+  url: https://portal.moloco.cloud/signin
+- type: Login
+  url: https://portal.moloco.cloud/signin
+- type: TermsOfService
+  url: https://www.moloco.com/terms-and-policies/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.moloco.com/terms-and-policies/privacy-policy
+- type: Security
+  url: https://www.moloco.com/terms-and-policies/security
+- type: Compliance
+  url: https://trust.moloco.com/
+- type: Postman
+  url: https://github.com/moloco-mcm/mcm-postman-templates
+- type: ChangeLog
+  url: changelog/moloco-changelog.yml
+- type: Deprecation
+  url: https://developer.moloco.cloud/page/release-notes
+- type: RateLimits
+  url: rate-limits/moloco-rate-limits.yml
+- type: LLMsTxt
+  url: llms/moloco-llms.txt
+- type: Packages
+  url: packages/moloco-packages.yml
+- type: SDKs
+  url: packages/moloco-packages.yml
+- type: CLI
+  url: cli/moloco-cli.yml
+- type: MCPServer
+  url: mcp/moloco-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/moloco-tool-crosswalk.yml
+- type: WellKnown
+  url: well-known/moloco-well-known.yml
+- type: OAuthScopes
+  url: scopes/moloco-scopes.yml
+- type: Conventions
+  url: conventions/moloco-conventions.yml
+- type: Idempotency
+  url: conventions/moloco-conventions.yml
+- type: ErrorCatalog
+  url: errors/moloco-problem-types.yml
+- type: ErrorCodes
+  url: errors/moloco-error-codes.yml
+- type: Lifecycle
+  url: lifecycle/moloco-lifecycle.yml
+- type: Conformance
+  url: conformance/moloco-conformance.yml
+- type: Sandbox
+  url: sandbox/moloco-sandbox.yml
+- type: Components
+  url: components/moloco-components.yml
+- type: DataModel
+  url: data-model/moloco-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Webhooks
+  url: asyncapi/moloco-commerce-media-webhooks.yml
+- type: LLMsTxt
+  url: llms/moloco-commerce-media-llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://forgeglobal.com/moloco_stock/
+x-enrichment:
+  date: '2026-07-31'
+  status: enriched
+  artifacts_added: 44
+  pass: local-v1

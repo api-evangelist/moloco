@@ -1,0 +1,103 @@
+generated: '2026-07-31'
+method: generated
+note: >-
+  One skill in this set is published by Moloco itself and saved verbatim; the rest are generated from the
+  harvested OpenAPI documents and the captured conventions/errors/rate-limit artifacts. Every operationId
+  referenced was verified against the spec it names.
+provider_published:
+  marketplace: https://github.com/moloco-mcm/agent-skills
+  install: '/plugin marketplace add moloco-mcm/agent-skills'
+  license: Apache-2.0
+skills:
+- file: moloco-ad-preview-template.md
+  name: ad-preview-template
+  description: >-
+    Generate valid HTML ad preview templates for MCM Sponsored Display and Sponsored Brands, using the
+    mustache-style macro and conditional-section contract.
+  method: searched
+  source: https://github.com/moloco-mcm/agent-skills/blob/main/plugins/ad-preview-template/skills/ad-preview-template/SKILL.md
+  verbatim: true
+  api: null
+  operations: []
+- file: moloco-launch-ads-campaign.md
+  name: moloco-launch-ads-campaign
+  description: Launch a Moloco Ads (Cloud DSP) campaign end to end, from token to ad group.
+  method: generated
+  api: openapi/moloco-ads-campaign-management-openapi.yml
+  operations:
+  - DspApi_CreateToken
+  - DspApi_CreateAdAccount
+  - DspApi_CreateProduct
+  - DspApi_CreateTrackingLink
+  - DspApi_ValidateTrackingLink
+  - DspApi_CreateAssetUploadSession
+  - DspApi_CreateCreative
+  - DspApi_CreateCreativeGroup
+  - DspApi_CreateCampaign
+  - DspApi_CreateAdGroup
+  - DspApi_ReadCampaign
+  - DspApi_ReadEntityCount
+- file: moloco-ads-reporting.md
+  name: moloco-ads-reporting
+  description: Pull Moloco Ads performance data via the synchronous analytics or asynchronous Report API.
+  method: generated
+  api: openapi/moloco-ads-campaign-management-openapi.yml
+  operations:
+  - DspApi_QueryAnalyticsOverview
+  - DspApi_QueryAnalyticsDetail
+  - DspApi_QueryAnalyticsSKAdNetwork
+  - DspApi_ListReportFilters
+  - DspApi_ListReportActionEvents
+  - DspApi_CreateReport
+  - DspApi_ReadReportStatus
+  - DspApi_ReadReport
+  - DspApi_ListReports
+  - DspApi_CreateReportExport
+  - DspApi_CreateLog
+  - DspApi_ReadLogStatus
+  - DspApi_ReadCohortSummary
+- file: moloco-serve-retail-media-ad.md
+  name: moloco-serve-retail-media-ad
+  description: Request a retail-media ad decision, fire trackers, and post the shopper events back.
+  method: generated
+  api: openapi/moloco-commerce-media-decision-openapi.yml
+  operations:
+  - RmpDecisionApi_DecideAdProducts
+  - RmpDecisionApi_DecideAdDisplay
+  - RmpDecisionApi_DecideAdBrands
+  - RmpDecisionApi_DecideAdReservedDisplay
+  - RmpEventApi_PostUserEvent
+  - RmpManagementApi_UpdateItemStatusBulk
+- file: moloco-manage-mcm-budget.md
+  name: moloco-manage-mcm-budget
+  description: >-
+    Fund and govern an MCM ad account — wallets, spending limits, credits and spend caps, using the
+    request_id idempotency key on every money-moving write.
+  method: generated
+  api: openapi/moloco-commerce-media-management-openapi.yml
+  operations:
+  - RmpManagementApi_ListWallets
+  - RmpManagementApi_TopUpWallet
+  - RmpManagementApi_WithdrawWallet
+  - RmpManagementApi_QueryWalletTransactionHistory
+  - RmpManagementApi_QueryWalletAccountHistory
+  - RmpManagementApi_ListSpendingLimits
+  - RmpManagementApi_ReadSpendingLimit
+  - RmpManagementApi_UpdateSpendingLimit
+  - RmpManagementApi_ListCredits
+  - RmpManagementApi_TopUpCredit
+  - RmpManagementApi_WithdrawCredit
+  - RmpManagementApi_QuerySpendingLimitCreditHistory
+  - RmpManagementApi_ListSpendCaps
+  - RmpManagementApi_CreateSpendCap
+  - RmpManagementApi_UpdateSpendCap
+  - RmpManagementApi_QueryWallets
+  - RmpManagementApi_QuerySpendingLimits
+- file: moloco-consume-mcm-webhooks.md
+  name: moloco-consume-mcm-webhooks
+  description: Verify, dedupe and acknowledge MCM webhook deliveries safely.
+  method: generated
+  api: openapi/moloco-commerce-media-webhooks-openapi.yml
+  operations:
+  - receiveAdAccountReEngageChurned
+  - receiveCampaignBudgetHighUpsell

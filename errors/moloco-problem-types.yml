@@ -1,0 +1,88 @@
+generated: '2026-07-31'
+method: derived
+source:
+- openapi/moloco-ads-campaign-management-openapi.yml
+- openapi/moloco-cloud-auth-openapi.yml
+- openapi/moloco-commerce-media-management-openapi.yml
+- openapi/moloco-commerce-media-decision-openapi.yml
+- openapi/moloco-commerce-media-event-openapi.yml
+docs:
+- https://mcm-docs.moloco.com/docs/management-api-error-categories
+- https://mcm-docs.moloco.com/docs/user-event-api-error-categories
+- https://mcm-docs.moloco.com/docs/decisionuserevent-api-error-categories
+format: grpc-status
+rfc9457: false
+envelope:
+  media_type: application/json
+  schema: google.rpc.Status (rpcStatus)
+  fields:
+    code: numeric gRPC status code (informational; use the HTTP status)
+    message: human-readable error message
+    details: array of google.protobuf.Any typed details
+  moloco_ads_detail_type: type.googleapis.com/api.adcloud.common.APIErrorInfo
+  moloco_ads_detail_fields: [error_log_id]
+  note: >-
+    All five Moloco OpenAPI documents are gRPC-gateway generated, so no operation returns
+    application/problem+json. The Moloco Ads Campaign Management API declares only a `default` error response
+    per operation; the MCM and Cloud Auth APIs enumerate explicit 4xx/5xx statuses.
+problems:
+- status: 400
+  title: Bad request
+  description: The request was malformed or failed validation. The detailed cause is in the response message.
+  apis: [moloco-commerce-media-management, moloco-commerce-media-decision, moloco-commerce-media-event, moloco-cloud-auth]
+  operations: 105
+  error_categories: [INPUT_VALIDATION, TIMESTAMP_MISMATCH]
+- status: 401
+  title: Unauthorized
+  description: >-
+    The request does not carry valid authentication credentials. On Moloco Ads this most often means a missing,
+    wrong or expired bearer token (tokens are valid for 16 hours); on MCM it means a missing or invalid
+    x-api-key.
+  apis: [moloco-commerce-media-management, moloco-commerce-media-decision, moloco-commerce-media-event, moloco-cloud-auth]
+  operations: 82
+- status: 403
+  title: Permission denied
+  description: >-
+    The caller is authenticated but the bound role does not permit the operation. Moloco Ads returns
+    `permission denied [id:<error_log_id>]` with an APIErrorInfo detail carrying the log id for support.
+  apis: [moloco-commerce-media-management, moloco-commerce-media-decision, moloco-commerce-media-event, moloco-cloud-auth]
+  operations: 107
+  error_categories: [FEATURE_NOT_ALLOWED, REINVITE_NOT_ALLOWED, LAST_OWNER_REVOKE_NOT_ALLOWED, LAST_OWNER_DELETE_NOT_ALLOWED]
+- status: 404
+  title: Not found
+  description: One or more resources required to perform the request do not exist.
+  apis: [moloco-commerce-media-management, moloco-commerce-media-decision, moloco-commerce-media-event, moloco-cloud-auth]
+  operations: 91
+- status: 409
+  title: Conflict
+  description: >-
+    The entity already exists — an already-registered user, an existing platform, or an existing role grant.
+    Only the Cloud Auth API declares 409.
+  apis: [moloco-cloud-auth]
+  operations: 6
+- status: 429
+  title: Too many requests
+  description: >-
+    Rate limit exceeded, by platform or by user. Declared on the MCM Decision and Event APIs; Moloco Ads
+    throttling is documented but not declared as a 429 response in the spec.
+  apis: [moloco-commerce-media-decision, moloco-commerce-media-event]
+  operations: 5
+  see: rate-limits/moloco-rate-limits.yml
+- status: 500
+  title: Internal server error
+  description: An unexpected server-side failure. The detailed cause is in the response message.
+  apis: [moloco-commerce-media-management, moloco-commerce-media-decision, moloco-commerce-media-event, moloco-cloud-auth]
+  operations: 107
+- status: default
+  title: Unexpected error
+  description: >-
+    The Moloco Ads Campaign Management API models errors as a single `default` response per operation
+    ("Error. Detailed cause can be found in the `details` field." on 75 operations, "An unexpected error
+    response." on 21). Callers must switch on the HTTP status at runtime rather than on declared responses.
+  apis: [moloco-ads-campaign-management]
+  operations: 96
+gaps:
+- The Moloco Ads Campaign Management API declares no explicit 4xx/5xx responses — only `default`.
+- No error `type` URIs are published, so errors cannot be dereferenced RFC 9457-style.
+- No error catalog is published for the Moloco Ads (DSP) API; the categorized registries are MCM-only.
+see_also: errors/moloco-error-codes.yml

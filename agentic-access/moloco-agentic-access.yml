@@ -1,0 +1,2848 @@
+generated: '2026-07-31'
+method: generated
+source: openapi/moloco-ads-campaign-management-openapi.yml, openapi/moloco-cloud-auth-openapi.yml,
+  openapi/moloco-commerce-media-decision-openapi.yml, openapi/moloco-commerce-media-event-openapi.yml,
+  openapi/moloco-commerce-media-management-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 203
+  by_action_class:
+    connected: 72
+    acting: 131
+  by_consequence:
+    read: 72
+    write: 123
+    safety-critical: 2
+    physical: 6
+  human_in_the_loop_required: 2
+operations:
+- path: /cm/v1/ad-accounts
+  method: get
+  operationId: DspApi_ListAdAccounts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/ad-accounts
+  method: post
+  operationId: DspApi_CreateAdAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/ad-accounts/{ad_account_id}
+  method: get
+  operationId: DspApi_ReadAdAccount
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/ad-accounts/{ad_account_id}
+  method: delete
+  operationId: DspApi_DeleteAdAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/ad-accounts/{ad_account_id}
+  method: put
+  operationId: DspApi_UpdateAdAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/ad-groups
+  method: get
+  operationId: DspApi_ListAdGroups
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/ad-groups
+  method: post
+  operationId: DspApi_CreateAdGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/ad-groups/{ad_group_id}
+  method: get
+  operationId: DspApi_ReadAdGroup
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/ad-groups/{ad_group_id}
+  method: delete
+  operationId: DspApi_DeleteAdGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/ad-groups/{ad_group_id}
+  method: put
+  operationId: DspApi_UpdateAdGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/analytics-detail
+  method: post
+  operationId: DspApi_QueryAnalyticsDetail
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/analytics-overview
+  method: post
+  operationId: DspApi_QueryAnalyticsOverview
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/analytics-skadnetwork
+  method: post
+  operationId: DspApi_QueryAnalyticsSKAdNetwork
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/audience-targets
+  method: get
+  operationId: DspApi_ListAudienceTargets
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/audience-targets
+  method: post
+  operationId: DspApi_CreateAudienceTarget
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/audience-targets/{audience_target_id}
+  method: get
+  operationId: DspApi_ReadAudienceTarget
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/audience-targets/{audience_target_id}
+  method: delete
+  operationId: DspApi_DeleteAudienceTarget
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/audience-targets/{audience_target_id}
+  method: put
+  operationId: DspApi_UpdateAudienceTarget
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/ad-account/{ad_account_id}/users
+  method: get
+  operationId: DspApi_ListAdAccountUsers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/auth/password
+  method: post
+  operationId: DspApi_UpdatePassword
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/roles/grant
+  method: post
+  operationId: DspApi_GrantRole
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/roles/revoke
+  method: post
+  operationId: DspApi_RevokeRole
+  x-agentic-access:
+    action-class: acting
+    consequence: safety-critical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 120
+      exchange: true
+      purpose-required: true
+      proof-of-possession: true
+    escalation:
+      human-in-the-loop: required
+    audit: required
+- path: /cm/v1/auth/tokens
+  method: post
+  operationId: DspApi_CreateToken
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/users
+  method: get
+  operationId: DspApi_ListWorkplaceUsers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/auth/users/complete-signup
+  method: post
+  operationId: DspApi_CompleteSignup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/users/expel
+  method: post
+  operationId: DspApi_ExpelUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/users/forgot-password
+  method: post
+  operationId: DspApi_ForgotPassword
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/users/invite
+  method: post
+  operationId: DspApi_InviteUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/users/reset-password
+  method: post
+  operationId: DspApi_ResetPassword
+  x-agentic-access:
+    action-class: acting
+    consequence: safety-critical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 120
+      exchange: true
+      purpose-required: true
+      proof-of-possession: true
+    escalation:
+      human-in-the-loop: required
+    audit: required
+- path: /cm/v1/auth/users/withdrawal
+  method: post
+  operationId: DspApi_DeleteUser
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/users/{user_id}
+  method: get
+  operationId: DspApi_ReadUser
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/auth/users/{user_id}
+  method: put
+  operationId: DspApi_UpdateUser
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/auth/workplaces
+  method: get
+  operationId: DspApi_ListWorkplaces
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/auth/workplaces-by-domain
+  method: get
+  operationId: DspApi_ListWorkplacesByDomain
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/auth/workplaces/{workplace_id}
+  method: get
+  operationId: DspApi_ReadWorkplace
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/campaign-overviews
+  method: get
+  operationId: DspApi_QueryCampaignOverviews
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/campaigns
+  method: get
+  operationId: DspApi_ListCampaigns
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/campaigns
+  method: post
+  operationId: DspApi_CreateCampaign
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/campaigns/{campaign_id}
+  method: get
+  operationId: DspApi_ReadCampaign
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/campaigns/{campaign_id}
+  method: delete
+  operationId: DspApi_DeleteCampaign
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/campaigns/{campaign_id}
+  method: put
+  operationId: DspApi_UpdateCampaign
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/cohort-summary
+  method: get
+  operationId: DspApi_ReadCohortSummary
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/creative-assets
+  method: post
+  operationId: DspApi_CreateAssetUploadSession
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creative-groups
+  method: get
+  operationId: DspApi_ListCreativeGroups
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/creative-groups
+  method: delete
+  operationId: DspApi_DeleteCreativeGroupsBulk
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creative-groups
+  method: post
+  operationId: DspApi_CreateCreativeGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creative-groups/sync-clones
+  method: post
+  operationId: DspApi_CopyCreativeGroupsSync
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creative-groups/{creative_group_id}
+  method: get
+  operationId: DspApi_ReadCreativeGroup
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/creative-groups/{creative_group_id}
+  method: delete
+  operationId: DspApi_DeleteCreativeGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creative-groups/{creative_group_id}
+  method: put
+  operationId: DspApi_UpdateCreativeGroup
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creative-reviews
+  method: get
+  operationId: DspApi_ListCreativeReviews
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/creatives
+  method: get
+  operationId: DspApi_ListCreatives
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/creatives
+  method: delete
+  operationId: DspApi_DeleteCreativesBulk
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creatives
+  method: post
+  operationId: DspApi_CreateCreative
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creatives/sync-clones
+  method: post
+  operationId: DspApi_CopyCreativesSync
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creatives/{creative_id}
+  method: get
+  operationId: DspApi_ReadCreative
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/creatives/{creative_id}
+  method: delete
+  operationId: DspApi_DeleteCreative
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/creatives/{creative_id}
+  method: put
+  operationId: DspApi_UpdateCreative
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/customer-sets
+  method: get
+  operationId: DspApi_ListCustomerSets
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/customer-sets
+  method: post
+  operationId: DspApi_CreateCustomerSet
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/customer-sets/{customer_set_id}
+  method: get
+  operationId: DspApi_ReadCustomerSet
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/customer-sets/{customer_set_id}
+  method: delete
+  operationId: DspApi_DeleteCustomerSet
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/customer-sets/{customer_set_id}
+  method: put
+  operationId: DspApi_UpdateCustomerSet
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/entity-counts
+  method: get
+  operationId: DspApi_ReadEntityCount
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/logs
+  method: get
+  operationId: DspApi_ListLogs
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/logs
+  method: post
+  operationId: DspApi_CreateLog
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/logs/{log_id}
+  method: get
+  operationId: DspApi_ReadLog
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/logs/{log_id}
+  method: delete
+  operationId: DspApi_DeleteLog
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/logs/{log_id}/status
+  method: get
+  operationId: DspApi_ReadLogStatus
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/products
+  method: get
+  operationId: DspApi_ListProducts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/products
+  method: post
+  operationId: DspApi_CreateProduct
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/products/{product_id}
+  method: get
+  operationId: DspApi_ReadProduct
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/products/{product_id}
+  method: delete
+  operationId: DspApi_DeleteProduct
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/products/{product_id}
+  method: put
+  operationId: DspApi_UpdateProduct
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/products/{product_id}/app-event-summary
+  method: get
+  operationId: DspApi_ReadProductAppEventSummary
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/products/{product_id}/mmp-skan-conversion-config
+  method: get
+  operationId: DspApi_ReadProductSKANConversionConfigFromMmp
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/products/{product_id}/skan-conversion-config
+  method: get
+  operationId: DspApi_ReadProductSKANConversionConfig
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/products/{product_id}/skan-conversion-config
+  method: put
+  operationId: DspApi_UpdateProductSKANConversionConfig
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/report-action-events
+  method: get
+  operationId: DspApi_ListReportActionEvents
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/report-exports
+  method: get
+  operationId: DspApi_ListReportExports
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/report-exports
+  method: post
+  operationId: DspApi_CreateReportExport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/report-exports/{report_export_id}
+  method: get
+  operationId: DspApi_ReadReportExport
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/report-exports/{report_export_id}
+  method: delete
+  operationId: DspApi_DeleteReportExport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/report-filters
+  method: get
+  operationId: DspApi_ListReportFilters
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/reports
+  method: get
+  operationId: DspApi_ListReports
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/reports
+  method: post
+  operationId: DspApi_CreateReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/reports/{report_id}
+  method: get
+  operationId: DspApi_ReadReport
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/reports/{report_id}
+  method: delete
+  operationId: DspApi_DeleteReport
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/reports/{report_id}/status
+  method: get
+  operationId: DspApi_ReadReportStatus
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/tracking-links
+  method: get
+  operationId: DspApi_ListTrackingLinks
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/tracking-links
+  method: post
+  operationId: DspApi_CreateTrackingLink
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/tracking-links/validate
+  method: post
+  operationId: DspApi_ValidateTrackingLink
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/tracking-links/{tracking_link_id}
+  method: get
+  operationId: DspApi_ReadTrackingLink
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /cm/v1/tracking-links/{tracking_link_id}
+  method: delete
+  operationId: DspApi_DeleteTrackingLink
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/tracking-links/{tracking_link_id}
+  method: put
+  operationId: DspApi_UpdateTrackingLink
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /cm/v1/workplace-summary
+  method: get
+  operationId: DspApi_ReadWorkplaceSummary
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ready
+  method: get
+  operationId: v1_health_check
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/ad-accounts/{ad_account_id}/users
+  method: get
+  operationId: v1_list_ad_account_registrations
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/ad-accounts/{ad_account_id}/users
+  method: post
+  operationId: v1_create_ad_account_registration
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/ad-accounts/{ad_account_id}/users/{user_id}
+  method: delete
+  operationId: v1_delete_ad_account_registration
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/platforms
+  method: post
+  operationId: v1_create_platform
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/platforms/{platform_id}
+  method: get
+  operationId: v1_read_platform
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/platforms/{platform_id}
+  method: put
+  operationId: v1_update_platform
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/platforms/{platform_id}
+  method: delete
+  operationId: v1_delete_platform
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/platforms/{platform_id}/logo
+  method: post
+  operationId: v1_upload_platform_logo
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/rmp-ad-accounts/{ad_account_id}/users
+  method: get
+  operationId: v1_list_rmp_ad_account_registrations
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/rmp-ad-accounts/{ad_account_id}/users
+  method: post
+  operationId: v1_create_rmp_ad_account_registration
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/rmp-ad-accounts/{ad_account_id}/users/{user_id}
+  method: delete
+  operationId: v1_delete_rmp_ad_account_registration
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/tokens
+  method: put
+  operationId: v1_refresh_token
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/tokens
+  method: post
+  operationId: v1_create_token
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users
+  method: get
+  operationId: v1_list_users
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/users
+  method: post
+  operationId: v1_create_user
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{email}/password
+  method: put
+  operationId: v1_update_user_password
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{email}/password
+  method: delete
+  operationId: v1_delete_user_password
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{user_id}
+  method: get
+  operationId: v1_read_user
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/users/{user_id}
+  method: put
+  operationId: v1_update_user
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{user_id}
+  method: delete
+  operationId: v1_delete_user
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{user_id}/permissions
+  method: get
+  operationId: v1_list_permissions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/users/{user_id}/platforms/{platform_id}
+  method: post
+  operationId: v1_register_user_to_platform
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{user_id}/platforms/{platform_id}
+  method: delete
+  operationId: v1_delete_user_from_platform
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{user_id}/rolegrants
+  method: get
+  operationId: v1_list_role_grants
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /v1/users/{user_id}/rolegrants
+  method: post
+  operationId: v1_create_role_grants
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/users/{user_id}/rolegrants
+  method: delete
+  operationId: v1_delete_role_grants
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /v1/userspaces/{userspace_id}/platforms
+  method: post
+  operationId: v1_list_userspace_platforms
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/decision/v1/platforms/{platform_id}/brand-auction
+  method: post
+  operationId: RmpDecisionApi_DecideAdBrands
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/decision/v1/platforms/{platform_id}/display-auction
+  method: post
+  operationId: RmpDecisionApi_DecideAdDisplay
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/decision/v1/platforms/{platform_id}/product-auction
+  method: post
+  operationId: RmpDecisionApi_DecideAdProducts
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/decision/v1/platforms/{platform_id}/reserved-display-ads
+  method: post
+  operationId: RmpDecisionApi_DecideAdReservedDisplay
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/event/v1/platforms/{platform}/userevents
+  method: post
+  operationId: RmpEventApi_PostUserEvent
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts
+  method: get
+  operationId: RmpManagementApi_ListAdAccounts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts
+  method: post
+  operationId: RmpManagementApi_CreateAdAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}
+  method: get
+  operationId: RmpManagementApi_ReadAdAccount
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}
+  method: put
+  operationId: RmpManagementApi_UpdateAdAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/audience-report
+  method: post
+  operationId: RmpManagementApi_QueryAudienceSummary
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-forecast
+  method: post
+  operationId: RmpManagementApi_ReadCampaignForecast
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-guidances
+  method: get
+  operationId: RmpManagementApi_ReadCampaignGuidance
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-reviews
+  method: get
+  operationId: RmpManagementApi_ListCampaignReviews
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-reviews
+  method: post
+  operationId: RmpManagementApi_CreateCampaignReview
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-reviews-bulk
+  method: put
+  operationId: RmpManagementApi_UpdateCampaignReviewsBulk
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-reviews/{brand_entity_id}
+  method: put
+  operationId: RmpManagementApi_UpdateCampaignReview
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns
+  method: get
+  operationId: RmpManagementApi_ListCampaigns
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns
+  method: post
+  operationId: RmpManagementApi_CreateCampaign
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns/{campaign_id}
+  method: get
+  operationId: RmpManagementApi_ReadCampaign
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns/{campaign_id}
+  method: put
+  operationId: RmpManagementApi_UpdateCampaign
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns/{campaign_id}/change-log-items
+  method: post
+  operationId: RmpManagementApi_QueryCampaignChangeLogItems
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns/{campaign_id}/change-logs
+  method: post
+  operationId: RmpManagementApi_QueryCampaignChangeLogs
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns/{campaign_id}/items
+  method: post
+  operationId: RmpManagementApi_QueryItemsCampaign
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits
+  method: get
+  operationId: RmpManagementApi_ListCredits
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/account-history
+  method: post
+  operationId: RmpManagementApi_QueryCreditHistory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/top-up/{request_id}
+  method: put
+  operationId: RmpManagementApi_TopUpCredit
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/transaction-history
+  method: post
+  operationId: RmpManagementApi_QuerySpendingLimitCreditHistory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/withdraw/{request_id}
+  method: put
+  operationId: RmpManagementApi_WithdrawCredit
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/custom-target-keys-bulk
+  method: post
+  operationId: RmpManagementApi_ReadCustomTargetKeysBulk
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/custom-target-keys/{custom_target_key_id}/custom-target-values-bulk
+  method: post
+  operationId: RmpManagementApi_ReadCustomTargetValuesBulk
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets
+  method: get
+  operationId: RmpManagementApi_ListImageAssets
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets
+  method: post
+  operationId: RmpManagementApi_CreateImageAsset
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets/upload-session
+  method: post
+  operationId: RmpManagementApi_CreateBulkImageUploadSession
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets/{image_asset_id}
+  method: get
+  operationId: RmpManagementApi_ReadImageAsset
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/item-based-campaign-guidances
+  method: post
+  operationId: RmpManagementApi_ReadItemBasedCampaignGuidance
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/keyword-report
+  method: post
+  operationId: RmpManagementApi_QueryKeywordSummary
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders-with-line-items
+  method: post
+  operationId: RmpManagementApi_UpsertOrderWithLineItems
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}
+  method: get
+  operationId: RmpManagementApi_ReadOrder
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}/line-items/{line_item_id}/custom-daily-report
+  method: get
+  operationId: RmpManagementApi_QueryCustomTargetDailySummary2
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}/line-items/{line_item_id}/custom-daily-report
+  method: post
+  operationId: RmpManagementApi_QueryCustomTargetDailySummary
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}/line-items/{line_item_id}/custom-target-keys-with-custom-report-bulk
+  method: get
+  operationId: RmpManagementApi_ReadCustomTargetKeysWithCustomReportBulk
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}/line-items/{line_item_id}/daily-report
+  method: post
+  operationId: RmpManagementApi_QueryLineItemDailySummary
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/placement-report
+  method: post
+  operationId: RmpManagementApi_QueryPlacementSummary
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/report
+  method: post
+  operationId: RmpManagementApi_QueryAdAccountSummary
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spend-caps
+  method: get
+  operationId: RmpManagementApi_ListSpendCaps
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spend-caps
+  method: post
+  operationId: RmpManagementApi_CreateSpendCap
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spend-caps/{spend_cap_id}
+  method: get
+  operationId: RmpManagementApi_ReadSpendCap
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spend-caps/{spend_cap_id}
+  method: put
+  operationId: RmpManagementApi_UpdateSpendCap
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spending-limits
+  method: get
+  operationId: RmpManagementApi_ListSpendingLimits
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spending-limits/{spending_limit_id}
+  method: get
+  operationId: RmpManagementApi_ReadSpendingLimit
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spending-limits/{spending_limit_id}
+  method: put
+  operationId: RmpManagementApi_UpdateSpendingLimit
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/state-info
+  method: put
+  operationId: RmpManagementApi_UpdateAdAccountStateInfo
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/suggested-items
+  method: post
+  operationId: RmpManagementApi_QuerySuggestedItems
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets
+  method: get
+  operationId: RmpManagementApi_ListVideoAssets
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets
+  method: post
+  operationId: RmpManagementApi_CreateVideoAsset
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets/upload-session
+  method: post
+  operationId: RmpManagementApi_CreateBulkVideoUploadSession
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets/{video_asset_id}
+  method: get
+  operationId: RmpManagementApi_ReadVideoAsset
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets
+  method: get
+  operationId: RmpManagementApi_ListWallets
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/account-history
+  method: post
+  operationId: RmpManagementApi_QueryWalletAccountHistory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/top-up/{request_id}
+  method: put
+  operationId: RmpManagementApi_TopUpWallet
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/transaction-history
+  method: post
+  operationId: RmpManagementApi_QueryWalletTransactionHistory
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/withdraw/{request_id}
+  method: put
+  operationId: RmpManagementApi_WithdrawWallet
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts
+  method: get
+  operationId: RmpManagementApi_ListAdManagerAccounts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts
+  method: post
+  operationId: RmpManagementApi_CreateAdManagerAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts/{ad_manager_account_id}
+  method: get
+  operationId: RmpManagementApi_ReadAdManagerAccount
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts/{ad_manager_account_id}
+  method: put
+  operationId: RmpManagementApi_UpdateAdManagerAccount
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts/{ad_manager_account_id}/change-logs
+  method: post
+  operationId: RmpManagementApi_QueryAdManagerAccountChangeLogs
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts/{ad_manager_account_id}/report
+  method: post
+  operationId: RmpManagementApi_QueryAdManagerAccountSummary
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/credits-bulk/read
+  method: post
+  operationId: RmpManagementApi_QueryCredits
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/custom-target-keys
+  method: post
+  operationId: RmpManagementApi_QueryCustomTargetKeys
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/custom-target-keys/{custom_target_key_id}/custom-target-values
+  method: post
+  operationId: RmpManagementApi_QueryCustomTargetValues
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/data-deletion-requests/user-events
+  method: post
+  operationId: RmpManagementApi_CreateUserDataDeletionRequest
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/data-export/key
+  method: post
+  operationId: RmpManagementApi_RotateDataExportKey
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/item-status-bulk
+  method: post
+  operationId: RmpManagementApi_UpdateItemStatusBulk
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/report
+  method: post
+  operationId: RmpManagementApi_QueryPlatformSummary
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/reserved-display-inventories
+  method: get
+  operationId: RmpManagementApi_ListReservedDisplayInventories
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /rmp/mgmt/v1/platforms/{platform_id}/reserved-display-inventories/{inventory_id}/forecast
+  method: post
+  operationId: RmpManagementApi_QueryReservedInventoryForecast
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/spending-limits-bulk/read
+  method: post
+  operationId: RmpManagementApi_QuerySpendingLimits
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /rmp/mgmt/v1/platforms/{platform_id}/wallets-bulk/read
+  method: post
+  operationId: RmpManagementApi_QueryWallets
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required

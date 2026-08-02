@@ -1,0 +1,64 @@
+generated: '2026-07-31'
+method: searched
+source: https://mcm-docs.moloco.com/reference/ (ReadMe api-registry mcm-webhooks.openapi.yaml)
+spec_type: OpenAPI-webhooks
+asyncapi: null
+note: >-
+  Moloco publishes no AsyncAPI document. Its event surface is described as an OpenAPI 3.1.0 `webhooks`
+  document (MCM Webhooks 0.1.0), harvested verbatim to
+  openapi/moloco-commerce-media-webhooks-openapi.yml. This file is the webhook catalogue derived from it.
+  Moloco Ads (DSP) has no webhook surface — its asynchronous surfaces are the Report and Log export jobs,
+  which are polled via readReportStatus / readLogStatus rather than pushed.
+spec:
+  title: MCM Webhooks
+  version: 0.1.0
+  openapi: 3.1.0
+  file: openapi/moloco-commerce-media-webhooks-openapi.yml
+delivery:
+  transport: HTTPS POST
+  destination: an HTTPS endpoint configured per platform
+  content_type: application/json
+  user_agent: Moloco-Webhook/1
+  acknowledgement: any 2xx acknowledges the delivery
+  retry: a non-2xx response is treated as a failed attempt and may be retried
+security:
+  signature_header: x-moloco-webhook-signature
+  format: 't=<unix>,v1=<hex signature>'
+  algorithm: 'HMAC-SHA256(signing_secret, "{t}.{raw_request_body}")'
+  comparison: lowercase hexadecimal digest compared against a v1 value
+  rotation: more than one v1 value may be present during signing-key rotation
+  guidance: verify against the raw body; do not parse or re-serialize before verification
+idempotency:
+  header: x-moloco-webhook-id
+  required: true
+  equals_body_field: id
+  guidance: store processed ids and ignore duplicate deliveries
+envelope:
+  fields:
+    id: webhook delivery id (also the idempotency key)
+    event: event type constant
+    test: whether the delivery was initiated as a test
+    event_at: RFC 3339 time at which MCM created the event
+    platform_id: MCM platform that owns the webhook endpoint
+    data: event-specific payload
+events:
+- name: ad_account.re_engage.churned
+  operation_id: receiveAdAccountReEngageChurned
+  summary: Campaign recommendations for re-engaging churned ad accounts.
+  batching: at most 20 ad accounts and at most 20 recommended campaigns per delivery
+  payload_schema: AdAccountReEngageChurnedWebhook
+- name: campaign.budget.high_upsell
+  operation_id: receiveCampaignBudgetHighUpsell
+  summary: Budget-increase recommendations for campaigns with high budget utilization.
+  batching: campaigns from up to 20 ad accounts per delivery
+  payload_schema: CampaignBudgetHighUpsellWebhook
+coverage:
+  events: 2
+  schemas: 26
+polling_surfaces:
+- api: Moloco Ads Campaign Management API
+  pattern: async job + status polling
+  operations: [DspApi_CreateReport, DspApi_ReadReportStatus, DspApi_CreateLog, DspApi_ReadLogStatus]
+  note: >-
+    Report and log generation are asynchronous jobs whose output URLs are published on a status resource;
+    there is no push notification for completion.

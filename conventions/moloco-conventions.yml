@@ -1,0 +1,139 @@
+generated: '2026-07-31'
+method: searched
+source:
+- https://developer.moloco.cloud/docs/getting-started
+- https://developer.moloco.cloud/docs/auth
+- https://developer.moloco.cloud/docs/versioning
+- https://developer.moloco.cloud/docs/rate-limits
+- https://mcm-docs.moloco.com/docs/api-and-sso-credential-management
+- openapi/moloco-ads-campaign-management-openapi.yml
+- openapi/moloco-commerce-media-management-openapi.yml
+- openapi/moloco-commerce-media-webhooks-openapi.yml
+summary: >-
+  Two API families with different conventions. Moloco Ads (api.moloco.cloud) exchanges a workplace API key for
+  a 16-hour bearer access token and pins the contract with a Moloco-Cloud-Api-Version request header. Moloco
+  Commerce Media (mcm-api.moloco.com) authenticates every request with a platform-scoped x-api-key header and
+  carries the platform ID in the URL path. Both are gRPC-gateway generated REST surfaces, so errors share the
+  google.rpc.Status envelope ({code, message, details[]}) rather than RFC 9457 problem+json.
+authentication:
+  moloco_ads:
+    style: bearer token exchanged from an API key
+    token_endpoint: POST https://api.moloco.cloud/cm/v1/auth/tokens
+    request_body: '{"api_key": "$API_KEY"}'
+    header: 'Authorization: Bearer $TOKEN'
+    token_lifetime: 16 hours
+    key_management: https://help.moloco.com/hc/en-us/articles/22420665601559-Create-and-manage-API-key
+    keys_per_workplace: 1 non-expiring API key per workplace
+    tls_minimum: TLS 1.2
+  moloco_commerce_media:
+    style: platform API key
+    header: 'x-api-key: $API_KEY'
+    deprecated_alternative: 'Authorization bearer (marked deprecated in the Management API spec)'
+    key_management: https://mcm-docs.moloco.com/docs/api-and-sso-credential-management
+    note: API keys are displayed once at creation and are not retrievable afterwards.
+  artifact: authentication/moloco-authentication.yml
+versioning:
+  moloco_ads:
+    scheme: request header
+    header: Moloco-Cloud-Api-Version
+    example: 'Moloco-Cloud-Api-Version: v1.10'
+    default: most recent generally available version when the header is omitted
+    default_lag: >-
+      For one month after a new version ships, the previous version remains the default so callers can
+      migrate before the oldest version is deprecated.
+    cadence: a new version roughly every 6 months; every version supported at least 12 months
+    docs: https://developer.moloco.cloud/docs/versioning
+  moloco_commerce_media:
+    scheme: uri-path
+    example: /rmp/mgmt/v1/platforms/{platform_id}/...
+  artifact: lifecycle/moloco-lifecycle.yml
+pagination:
+  moloco_commerce_media:
+    style: page-index
+    response_field: page_info
+    response_shape:
+      page_index: current page
+      page_size: items per page
+      pages_total: total number of pages
+    schema: commonPageInfo
+    source: openapi/moloco-commerce-media-management-openapi.yml
+  moloco_ads:
+    style: list-all
+    note: >-
+      The Campaign Management list operations are scoped by parent id (ad_account_id / product_id) and do not
+      declare page/cursor query parameters in the published spec; ordering is controlled with order_by.key.
+idempotency:
+  supported: true
+  scope: money-moving writes, webhook delivery and recommendation replay
+  keys:
+  - name: request_id
+    surface: MCM Management API wallet and credit top-up / withdraw
+    location: path parameter
+    description: >-
+      Caller-supplied request id on the money-moving operations. "For retries, the same request_id should be
+      used again to prevent duplicate requests." Alphanumeric, underscore and hyphen only, 8-64 characters.
+    operations:
+    - RmpManagementApi_TopUpWallet
+    - RmpManagementApi_WithdrawWallet
+    - RmpManagementApi_TopUpCredit
+    - RmpManagementApi_WithdrawCredit
+    source: openapi/moloco-commerce-media-management-openapi.yml
+  - name: x-moloco-webhook-id
+    surface: MCM webhook deliveries (inbound to the customer)
+    location: header
+    description: >-
+      Required idempotency key on every MCM webhook delivery. The value is identical to the body `id`.
+      Consumers are instructed to store processed IDs and ignore duplicate deliveries.
+    source: openapi/moloco-commerce-media-webhooks-openapi.yml
+  - name: recommendation key
+    surface: MCM Management API recommendation fields
+    location: request body
+    description: Unique recommendation key from the QE Surface Engine, documented in-spec as an idempotency key.
+    source: openapi/moloco-commerce-media-management-openapi.yml
+  not_supported:
+    - surface: Moloco Ads Campaign Management writes
+      note: >-
+        No Idempotency-Key request header is declared for POST/PUT operations on api.moloco.cloud; retries of
+        create operations are not documented as idempotent.
+request_tracing:
+  error_log_id: >-
+    Moloco Ads error payloads carry an api.adcloud.common.APIErrorInfo detail with an error_log_id used by
+    support to trace a failed call (e.g. "permission denied [id:xtE0pGc9XpaXEyeb]").
+  webhook_user_agent: 'Moloco-Webhook/1'
+error_envelope:
+  format: google.rpc.Status (gRPC-gateway)
+  media_type: application/json
+  shape:
+    code: numeric gRPC status code
+    message: human-readable message
+    details: array of typed detail objects (e.g. type.googleapis.com/api.adcloud.common.APIErrorInfo)
+  rfc9457: false
+  categorized_codes: true
+  artifact: errors/moloco-problem-types.yml
+rate_limiting:
+  signaling: >-
+    Quotas are published per endpoint in the documentation; the OpenAPI documents declare a 429 response on
+    the MCM Decision and Event APIs. No RateLimit-* response headers are documented.
+  artifact: rate-limits/moloco-rate-limits.yml
+webhook_security:
+  signature_header: x-moloco-webhook-signature
+  algorithm: HMAC-SHA256 over "{t}.{raw_request_body}" using the platform signing secret
+  format: 't=<unix>,v1=<hex signature>'
+  key_rotation: more than one v1 value may be present during signing-key rotation
+  guidance: do not parse or re-serialize the body before verification
+  acknowledgement: any 2xx acknowledges the delivery; non-2xx is treated as a failed attempt and may be retried
+  source: openapi/moloco-commerce-media-webhooks-openapi.yml
+data_conventions:
+  timestamps: RFC 3339 / ISO 8601 UTC (e.g. 1957-06-09T13:43:21.054Z)
+  money: 'amount + currency objects; VAT-exclusive amounts on wallet and credit operations'
+  enums: 'UPPER_SNAKE_CASE with an UNKNOWN_* zero value (protobuf-derived)'
+  field_naming: snake_case
+cross_links:
+  authentication: authentication/moloco-authentication.yml
+  scopes: scopes/moloco-scopes.yml
+  errors: errors/moloco-problem-types.yml
+  error_codes: errors/moloco-error-codes.yml
+  lifecycle: lifecycle/moloco-lifecycle.yml
+  rate_limits: rate-limits/moloco-rate-limits.yml
+  sandbox: sandbox/moloco-sandbox.yml
+  webhooks: asyncapi/moloco-commerce-media-webhooks.yml

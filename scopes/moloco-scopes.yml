@@ -1,0 +1,64 @@
+generated: '2026-07-31'
+method: probed
+source: https://api.moloco.cloud/.well-known/oauth-authorization-server
+note: >-
+  Moloco's published OpenAPI documents declare only apiKey security schemes (Authorization bearer token /
+  x-api-key), so no scopes are derivable from the specs. The OAuth surface was found by probing the API host
+  directly: api.moloco.cloud serves RFC 8414 authorization-server metadata, and mcp.moloco.cloud/mcp answers
+  with an RFC 9728 WWW-Authenticate challenge naming the required scope. Scope descriptions below are the
+  observed identifiers only — Moloco publishes no scope reference page, so no descriptions are asserted.
+authorization_server:
+  issuer: https://api.moloco.cloud
+  authorization_endpoint: https://api.moloco.cloud/oauth/authorize
+  token_endpoint: https://api.moloco.cloud/oauth/token
+  revocation_endpoint: https://api.moloco.cloud/oauth/revoke
+  jwks_uri: https://api.moloco.cloud/oauth/jwks.json
+  grant_types_supported:
+  - authorization_code
+  - refresh_token
+  response_types_supported:
+  - code
+  code_challenge_methods_supported:
+  - S256
+  token_endpoint_auth_methods_supported:
+  - none
+  client_id_metadata_document_supported: true
+  authorization_response_iss_parameter_supported: true
+  metadata_file: well-known/moloco-oauth-authorization-server.json
+protected_resources:
+- resource: https://mcp.moloco.cloud/mcp
+  authorization_servers:
+  - https://api.moloco.cloud
+  scopes_supported:
+  - cloudapi.read
+  - offline_access
+  metadata_file: well-known/moloco-mcp-oauth-protected-resource.json
+  challenge: 'Bearer scope="cloudapi.read", resource_metadata="https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp"'
+scopes:
+- scope: cloudapi.read
+  description: null
+  flows:
+  - authorizationCode
+  sources:
+  - https://api.moloco.cloud/.well-known/oauth-authorization-server
+  - https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp
+  required_by:
+  - https://mcp.moloco.cloud/mcp
+- scope: offline_access
+  description: null
+  flows:
+  - authorizationCode
+  - refresh_token
+  sources:
+  - https://api.moloco.cloud/.well-known/oauth-authorization-server
+  - https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp
+x-evidence:
+  fetched: '2026-07-31'
+  authorization_server_metadata:
+    url: https://api.moloco.cloud/.well-known/oauth-authorization-server
+    http_status: 200
+    content_type: application/json
+  protected_resource_metadata:
+    url: https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp
+    http_status: 200
+    content_type: application/json

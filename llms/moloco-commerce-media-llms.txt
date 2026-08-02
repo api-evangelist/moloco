@@ -1,0 +1,182 @@
+# MCM Documentation Documentation
+
+> Documentation for MCM Documentation
+
+## Guides
+- [What is Moloco Commerce Media](https://mcm-docs.moloco.com/docs/what-is-moloco-mcm.md)
+- [Basic concepts](https://mcm-docs.moloco.com/docs/basic-concepts.md)
+- [[Beta] MCM Docs Assistant](https://mcm-docs.moloco.com/docs/mcm-docs-assistant.md): Conversational search across MCM's documentation — ask a question in any language, get an answer with links to the source. Responses may contain errors or omissions — always confirm important details against the linked source documents.
+- [Platform](https://mcm-docs.moloco.com/docs/solution-components.md)
+- [Campaign managers](https://mcm-docs.moloco.com/docs/campaign-managers.md)
+- [Platform Insights](https://mcm-docs.moloco.com/docs/platform-insights.md)
+- [Ad accounts](https://mcm-docs.moloco.com/docs/ad-accounts.md)
+- [Ad Account Labels](https://mcm-docs.moloco.com/docs/ad-account-labels.md)
+- [Ad inventories](https://mcm-docs.moloco.com/docs/ad-inventories.md)
+- [Ad campaigns](https://mcm-docs.moloco.com/docs/ad-campaigns.md)
+- [Sponsored Products](https://mcm-docs.moloco.com/docs/sponsored-product-campaign-creation.md)
+- [Sponsored Brands](https://mcm-docs.moloco.com/docs/sponsored-brands-campaign-creation.md)
+- [Sponsored Display](https://mcm-docs.moloco.com/docs/sponsored-display-campaign-creation.md)
+- [Reserved Display](https://mcm-docs.moloco.com/docs/reserved-display.md)
+- [Placement Targeting](https://mcm-docs.moloco.com/docs/placement-targeting.md)
+- [Audience Targeting](https://mcm-docs.moloco.com/docs/audience-targeting.md)
+- [Custom Targeting](https://mcm-docs.moloco.com/docs/custom-targeting.md)
+- [Platform onboarding](https://mcm-docs.moloco.com/docs/platform-configurations.md)
+- [Integration Workflow](https://mcm-docs.moloco.com/docs/integration-workflow.md)
+- [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-and-sso-credential-management.md)
+- [SSO & MFA](https://mcm-docs.moloco.com/docs/sso-mfa.md)
+- [Catalog feed](https://mcm-docs.moloco.com/docs/catalog-feed.md)
+- [Choosing a Catalog Feed Format](https://mcm-docs.moloco.com/docs/sspi-vs-mspi.md)
+- [SSPI Catalog feed specification](https://mcm-docs.moloco.com/docs/sspi-catalog-feed-specification.md)
+- [MSPI Catalog feed specification](https://mcm-docs.moloco.com/docs/mspi-catalog-feed-specification.md)
+- [Third party catalog feeds](https://mcm-docs.moloco.com/docs/third-party-catalog-feeds.md)
+- [How MCM Uses Catalog Fields for Relevance and Filtering](https://mcm-docs.moloco.com/docs/how-mcm-uses-catalog-fields-for-relevance-and-filtering.md)
+- [Catalog file construction guidelines](https://mcm-docs.moloco.com/docs/catalog-construction-guidelines.md)
+- [Catalog feed integration](https://mcm-docs.moloco.com/docs/catalog-feed-integration.md)
+- [Catalog feed validator](https://mcm-docs.moloco.com/docs/catalog-feed-validator.md)
+- [User event data streams](https://mcm-docs.moloco.com/docs/user-event-data-streams.md)
+- [Event data delivery options](https://mcm-docs.moloco.com/docs/event-data-delivery-options.md)
+- [Event integration trade-offs](https://mcm-docs.moloco.com/docs/event-integration-trade-offs.md)
+- [Google Tag Manager integration guide](https://mcm-docs.moloco.com/docs/google-tag-manager-integration-guide.md)
+- [Generating persistent identifiers](https://mcm-docs.moloco.com/docs/generating-persistent-identifiers.md)
+- [User event data specifications](https://mcm-docs.moloco.com/docs/user-event-data-specifications.md)
+- [Send user events to Moloco Commerce Media](https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media.md)
+- [Testing real time events](https://mcm-docs.moloco.com/docs/testing-real-time-events.md)
+- [User Event API failure protocol](https://mcm-docs.moloco.com/docs/user-event-api-failure-protocol.md)
+- [User Event API Error Categories](https://mcm-docs.moloco.com/docs/user-event-api-error-categories.md)
+- [Audience feed](https://mcm-docs.moloco.com/docs/audience-feed.md)
+- [Ad serving and tracking](https://mcm-docs.moloco.com/docs/ad-serving-and-tracking.md)
+- [Firing Impression & Click Trackers](https://mcm-docs.moloco.com/docs/calling-trackers.md)
+- [Ad serving end to end latency](https://mcm-docs.moloco.com/docs/ad-serving-e2e-latency.md)
+- [Decision API Filtering](https://mcm-docs.moloco.com/docs/decision-api-filtering.md)
+- [Item Kill Switch](https://mcm-docs.moloco.com/docs/item-kill-switch.md)
+- [Decision API Error Categories](https://mcm-docs.moloco.com/docs/decisionuserevent-api-error-categories.md)
+- [Graceful fallback behavior](https://mcm-docs.moloco.com/docs/graceful-fallback-behavior.md)
+- [Campaign Management](https://mcm-docs.moloco.com/docs/campaign-management.md)
+- [Standalone campaign manager](https://mcm-docs.moloco.com/docs/standalone-campaign-manager.md)
+- [Widgetized campaign manager](https://mcm-docs.moloco.com/docs/widgetized-campaign-manager.md)
+- [Build your own Campaign Manager](https://mcm-docs.moloco.com/docs/build-your-own-campaign-manager.md)
+- [User Roles & Permissions](https://mcm-docs.moloco.com/docs/user-roles-permissions.md)
+- [Management API Error Categories](https://mcm-docs.moloco.com/docs/management-api-error-categories.md)
+- [Campaign states](https://mcm-docs.moloco.com/docs/campaign-states.md)
+- [Billing](https://mcm-docs.moloco.com/docs/billing.md)
+- [Wallet](https://mcm-docs.moloco.com/docs/prepaid-wallet.md)
+- [API Guidance](https://mcm-docs.moloco.com/docs/api-guidance-wallet.md)
+- [Spending Limit](https://mcm-docs.moloco.com/docs/postpaid-spending-limit-control.md)
+- [API Guidance](https://mcm-docs.moloco.com/docs/api-guidance-spending-limit.md)
+- [Spend Cap](https://mcm-docs.moloco.com/docs/spend-cap.md)
+- [API Guidance](https://mcm-docs.moloco.com/docs/api-guidance.md)
+- [Multi-Currency Support](https://mcm-docs.moloco.com/docs/multi-currency-support.md)
+- [FAQ](https://mcm-docs.moloco.com/docs/faq-wallet.md)
+- [Maximize advertising potential](https://mcm-docs.moloco.com/docs/maximize-advertising-potential.md)
+- [Smart Guidance](https://mcm-docs.moloco.com/docs/advertiser-guidance.md)
+- [Forecast](https://mcm-docs.moloco.com/docs/forecast.md)
+- [Suggested Items](https://mcm-docs.moloco.com/docs/suggested-items.md)
+- [Demand Agent](https://mcm-docs.moloco.com/docs/demand-agent.md)
+- [Bulk Data Export](https://mcm-docs.moloco.com/docs/bulk-data-export.md)
+- [Ad Performance](https://mcm-docs.moloco.com/docs/ad-performance-reporting.md)
+- [Campaign Information](https://mcm-docs.moloco.com/docs/campaign-info.md)
+- [Financial Data](https://mcm-docs.moloco.com/docs/financial-data.md)
+- [How to Transfer Data](https://mcm-docs.moloco.com/docs/how-to-transfer-data.md)
+- [GCP](https://mcm-docs.moloco.com/docs/gcp.md)
+- [Attribution Methodology](https://mcm-docs.moloco.com/docs/attribution-methodology.md)
+- [MCM CLI](https://mcm-docs.moloco.com/docs/mcm-cli.md): MCM Command Line Interface tool
+- [MCM Sandbox](https://mcm-docs.moloco.com/docs/mcm-sandbox.md)
+- [MCM Postman templates](https://mcm-docs.moloco.com/docs/mcm-postman-templates.md)
+- [MCM FAQ](https://mcm-docs.moloco.com/docs/mcm-faq.md)
+- [Terminology FAQ](https://mcm-docs.moloco.com/docs/terminology.md)
+- [User Data Deletion Request](https://mcm-docs.moloco.com/docs/user-data-deletion-request.md)
+- [Quotas & Limits](https://mcm-docs.moloco.com/docs/limits.md)
+- [MCP](https://mcm-docs.moloco.com/docs/mcp.md)
+
+## API Reference
+- [DecideAdProducts](https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts.md): Request product ads by auction. Server host may vary by platform. Moloco's staff will provide accurate host information.
+- [DecideAdBrands](https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadbrands.md): Request brand ads by auction. Server host may vary by platform. Moloco's staff will provide accurate host information.
+- [DecideAdDisplay](https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideaddisplay.md): Request display ads by auction. Server host may vary by platform. Moloco's staff will provide accurate host information.
+- [DecideAdReservedDisplay](https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadreserveddisplay.md): Request reserved display ads. Server host may vary by platform. Moloco's staff will provide accurate host information.
+- [ListAdAccounts](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts.md): List all the ad accounts on the platform.
+- [CreateAdAccount](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createadaccount.md): Create a new ad account.
+- [ReadAdAccount](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readadaccount.md): Read a ad account.
+- [UpdateAdAccount](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updateadaccount.md): Update an ad account.
+- [UpdateAdAccountStateInfo](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updateadaccountstateinfo.md): Update an ad account's state info.
+- [QueryAudienceSummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryaudiencesummary.md): Read summarized reporting information of campaign with respect to audience targeting.
+- [QueryPlacementSummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryplacementsummary.md): Read summarized reporting information of campaign with respect to placement targeting.
+- [QueryAdAccountSummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryadaccountsummary.md): Read summarized reporting information of an ad account.
+- [QueryAdManagerAccountSummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryadmanageraccountsummary.md): Read summarized reporting information of an ad manager account.
+- [QueryPlatformSummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryplatformsummary.md): Read summarized reporting information of a platform.
+- [QueryKeywordSummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querykeywordsummary.md): Read summarized reporting information of campaigned keywords.
+- [ReadCampaignForecast](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readcampaignforecast.md): Show campaign forecast metrics such as click, imp, and purchase when an advertiser sets up their campaign.
+- [ReadCampaignGuidance](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readcampaignguidance.md): Read guidance for a reasonable campaign setup.
+- [QuerySuggestedItems](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querysuggesteditems.md): Query suggested catalog items associated with the ad account. Prior to using this API, please get in touch with the RMP associate to ensure correct configuration of this feature.
+- [ReadItemBasedCampaignGuidance](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readitembasedcampaignguidance.md): Get item-based guidance recommendations for campaign optimization based on item performance analysis.
+- [ListCampaignReviews](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listcampaignreviews.md): List campaign reviews.
+- [CreateCampaignReview](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createcampaignreview.md): Create a campaign component's review. It generates the review for the given campaign's resources such as assets or landing page
+- [UpdateCampaignReviewsBulk](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updatecampaignreviewsbulk.md): Update campaign components' reviews in bulk.
+- [UpdateCampaignReview](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updatecampaignreview.md): Update a campaign component's review. It updates the review status of the given campaign's resources such as assets or landing page
+- [ListCampaigns](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listcampaigns.md): List all the campaigns of an ad account.
+- [CreateCampaign](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createcampaign.md): Create a campaign of an ad account. The daily_budget field is deprecated. Please use the budget field as an alternative.
+- [ReadCampaign](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readcampaign.md): Read a campaign of an ad account.
+- [UpdateCampaign](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updatecampaign.md): Update a campaign of an ad account.
+- [QueryItemsCampaign](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryitemscampaign.md): Query catalog items associated with the campaign
+- [QueryCampaignItemsHistory](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycampaignchangelogitems.md): Query items' history in the campaign.
+- [QueryCampaignHistory](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycampaignchangelogs.md): Query campaign history.
+- [QueryWalletHistory](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querywalletaccounthistory.md): Query wallet account history.
+- [QueryAdManagerAccountHistory](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryadmanageraccountchangelogs.md): Query the ad manager account history.
+- [QueryCreditsHistory](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycredithistory.md): Query credits history. To be used for spending limit credit.
+- [ListSpendingLimits](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listspendinglimits.md): List all spending limits of an ad account. Currently, an ad account can have a single spending limit.
+- [ReadSpendingLimit](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readspendinglimit.md): Read spending limit of the ad account.
+- [UpdateSpendingLimit](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updatespendinglimit.md): Update a spending limit.
+- [QuerySpendingLimits](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryspendinglimits.md): Query all spending limits for the platform.
+- [ListCredits](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listcredits.md): List credits of the ad account that has spending limit.
+- [TopUpCredits](https://mcm-docs.moloco.com/reference/rmpmanagementapi_topupcredit.md): Top up an amount of money (VAT exclusive) to the credits balance.
+- [WithdrawCredits](https://mcm-docs.moloco.com/reference/rmpmanagementapi_withdrawcredit.md): Withdraw an amount of money (VAT exclusive) from the credits balance of the ad account.
+- [QueryCredits](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycredits.md): Query all credits for the platform using spending limit.
+- [QuerySpendingLimitCreditHistory](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryspendinglimitcredithistory.md): Query spending limit credits history.
+- [QueryCustomTargetKeys](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycustomtargetkeys.md): Query all available custom target keys for the platform.
+- [QueryCustomTargetValues](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycustomtargetvalues.md): Query all available custom target values for a given key.
+- [ReadCustomTargetKeysBulk](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readcustomtargetkeysbulk.md): Read custom target keys in bulk.
+- [ReadCustomTargetValuesBulk](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readcustomtargetvaluesbulk.md): Read custom target values in bulk.
+- [QueryCustomTargetDailySummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycustomtargetdailysummary2.md): Retrieve the custom targeting daily summary reports for a single line item.
+- [QueryCustomTargetDailySummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querycustomtargetdailysummary.md): Retrieve the custom targeting daily summary reports for a single line item.
+- [ReadCustomTargetKeysWithCustomReportBulk](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readcustomtargetkeyswithcustomreportbulk.md): Read the keys that have available report data in bulk.
+- [ListImageAssets](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listimageassets.md): List all the image assets.
+- [CreateImageAsset](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createimageasset.md): Create image asset
+- [ReadImageAsset](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readimageasset.md): Read image asset information
+- [ListVideoAssets](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listvideoassets.md): List all the video assets.
+- [CreateVideoAsset](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createvideoasset.md): Create video asset
+- [ReadVideoAsset](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readvideoasset.md): Read video asset information
+- [CreateBulkImageUploadSession](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createbulkimageuploadsession.md): Create session for bulk image upload
+- [CreateBulkVideoUploadSession](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createbulkvideouploadsession.md): Create session for bulk video upload
+- [UpsertOrderWithLineItems](https://mcm-docs.moloco.com/reference/rmpmanagementapi_upsertorderwithlineitems.md): Create or update an order along with its associated line items in a single atomic operation.
+- [ReadOrder](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readorder.md): Read order information with line items.
+- [QueryLineItemDailySummary](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querylineitemdailysummary.md): Retrieve the daily summary reports for a single line item.
+- [ListReservedDisplayInventories](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listreserveddisplayinventories.md): List all eligible reserved display inventories.
+- [QueryReservedInventoryForecast](https://mcm-docs.moloco.com/reference/rmpmanagementapi_queryreservedinventoryforecast.md): Query forecasted impressions for reserved inventory.
+- [ListSpendCaps](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listspendcaps.md): List spend caps for an ad account.
+- [CreateSpendCap](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createspendcap.md): Create a spend cap of an ad account.
+- [ReadSpendCap](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readspendcap.md): Read a spend cap of an ad account.
+- [UpdateSpendCap](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updatespendcap.md): Update a spend cap of an ad account.
+- [ListWallets](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listwallets.md): List all wallets of an ad account. Currently, an ad account can have a single wallet.
+- [TopUpWallet](https://mcm-docs.moloco.com/reference/rmpmanagementapi_topupwallet.md): Top up an amount of money (VAT exclusive) for the wallet of the ad account.
+- [WithdrawWallet](https://mcm-docs.moloco.com/reference/rmpmanagementapi_withdrawwallet.md): Withdraw an amount of money (VAT exclusive) from a wallet of the ad account.
+- [QueryWallets](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querywallets.md): Query all wallets for the platform.
+- [QueryWalletTransactionHistory](https://mcm-docs.moloco.com/reference/rmpmanagementapi_querywallettransactionhistory.md): Query wallet transaction history.
+- [ListAdManagerAccounts](https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadmanageraccounts.md): List ad manager accounts
+- [CreateAdManagerAccount](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createadmanageraccount.md): Create an ad manager account
+- [ReadAdManagerAccount](https://mcm-docs.moloco.com/reference/rmpmanagementapi_readadmanageraccount.md): Read an ad manager account
+- [UpdateAdManagerAccount](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updateadmanageraccount.md): Update an ad manager account
+- [CreateUserDataDeletionRequest](https://mcm-docs.moloco.com/reference/rmpmanagementapi_createuserdatadeletionrequest.md): Requests for the User data deletion request. We process the request by deleting the user event data in the batch job.
+- [RotateDataExportKey](https://mcm-docs.moloco.com/reference/rmpmanagementapi_rotatedataexportkey.md): Rotate the data export key. The previous keys associated with the platform's service account would be deleted.
+- [UpdateItemStatusBulk](https://mcm-docs.moloco.com/reference/rmpmanagementapi_updateitemstatusbulk.md): Item Kill Switch API. Immediate removal of specified items from ad serving in bulk.
+- [PostUserEvent](https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent.md): Post an individual user event. Server host may vary by platform. Moloco's account manager will provide accurate host information.
+
+## Changelog
+- [June 2026](https://mcm-docs.moloco.com/changelog/june-2026.md)
+- [May 2026](https://mcm-docs.moloco.com/changelog/may-2026.md)
+- [April 2026](https://mcm-docs.moloco.com/changelog/april-2026.md)
+- [March 2026](https://mcm-docs.moloco.com/changelog/march-2026.md)
+- [February 2026](https://mcm-docs.moloco.com/changelog/february-2026.md)
+- [January 2026](https://mcm-docs.moloco.com/changelog/january-2026.md)
+- [December 2025](https://mcm-docs.moloco.com/changelog/december-2025.md)
+- [November 2025](https://mcm-docs.moloco.com/changelog/november-2025.md)
+- [October 2025](https://mcm-docs.moloco.com/changelog/october-2025.md)
+- [September 2025](https://mcm-docs.moloco.com/changelog/september-2025.md)

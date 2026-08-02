@@ -1,0 +1,29 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Moloco Commerce Media Event API
+  version: 1.0.0
+extends: openapi/moloco-commerce-media-event-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: moloco
+    x-apievangelist-generated: '2026-07-31'
+    x-apievangelist-method: generated
+    x-apievangelist-source: https://dash.readme.com/api/v1/api-registry/ (ReadMe api-registry, harvested 2026-07-31)
+    x-apievangelist-operations: 1
+    x-apievangelist-artifacts:
+      authentication: authentication/moloco-authentication.yml
+      conventions: conventions/moloco-conventions.yml
+      errors: errors/moloco-problem-types.yml
+      lifecycle: lifecycle/moloco-lifecycle.yml
+      rate_limits: rate-limits/moloco-rate-limits.yml
+      data_model: data-model/moloco-data-model.yml
+      conformance: conformance/moloco-conformance.yml
+      skills: skills/_index.yml
+    x-apievangelist-notes:
+    - at least one of user_id, device.persistent_id or custom_id must be present
+    - 429 is declared but no numeric quota is published
+- target: $.servers
+  update:
+  - url: https://sandbox-evt.mcm-api.moloco.com
+    description: Observed reachable host recorded by the API Evangelist enrichment pipeline

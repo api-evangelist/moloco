@@ -1,0 +1,601 @@
+openapi: 3.1.0
+info:
+  description: 'Reference schemas for webhook requests sent by Moloco Commerce Media (MCM).
+
+
+    Each delivery is an HTTP `POST` to the HTTPS endpoint configured for the
+
+    platform. Verify the signature against the raw request body, then use
+
+    `x-moloco-webhook-id` as the idempotency key before processing the event.
+
+    '
+  summary: Webhook events delivered by Moloco Commerce Media
+  title: MCM Webhooks
+  version: 0.1.0
+tags:
+- description: Event payloads that MCM sends to registered webhook endpoints.
+  name: Webhook Events
+webhooks:
+  ad_account.re_engage.churned:
+    post:
+      description: 'Provides campaign recommendations for re-engaging churned ad accounts.
+
+        A delivery contains at most 20 ad accounts and at most 20 recommended
+
+        campaigns in total.
+
+        '
+      operationId: receiveAdAccountReEngageChurned
+      parameters:
+      - $ref: '#/components/parameters/WebhookSignature'
+      - $ref: '#/components/parameters/WebhookId'
+      - $ref: '#/components/parameters/WebhookUserAgent'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdAccountReEngageChurnedWebhook'
+        description: A signed `ad_account.re_engage.churned` webhook delivery.
+        required: true
+      responses:
+        2XX:
+          description: Return any 2xx status to acknowledge the delivery.
+        default:
+          description: A non-2xx response is treated as a failed attempt and may be retried.
+      summary: ad_account.re_engage.churned
+      tags:
+      - Webhook Events
+  campaign.budget.high_upsell:
+    post:
+      description: 'Provides budget-increase recommendations for campaigns with high budget
+
+        utilization. A delivery can batch campaigns from up to 20 ad accounts.
+
+        '
+      operationId: receiveCampaignBudgetHighUpsell
+      parameters:
+      - $ref: '#/components/parameters/WebhookSignature'
+      - $ref: '#/components/parameters/WebhookId'
+      - $ref: '#/components/parameters/WebhookUserAgent'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignBudgetHighUpsellWebhook'
+        description: A signed `campaign.budget.high_upsell` webhook delivery.
+        required: true
+      responses:
+        2XX:
+          description: Return any 2xx status to acknowledge the delivery.
+        default:
+          description: A non-2xx response is treated as a failed attempt and may be retried.
+      summary: campaign.budget.high_upsell
+      tags:
+      - Webhook Events
+components:
+  parameters:
+    WebhookId:
+      description: 'Idempotency key for the delivery. This value is identical to the body
+
+        `id`. Store processed IDs and ignore duplicate deliveries.
+
+        '
+      in: header
+      name: x-moloco-webhook-id
+      required: true
+      schema:
+        $ref: '#/components/schemas/WebhookDeliveryId'
+    WebhookSignature:
+      description: 'Versioned HMAC signature for the raw request body. The value has the
+
+        form `t=<unix>,v1=<hex signature>`. During signing-key rotation, more
+
+        than one `v1` value can be present.
+
+
+        Compute `HMAC-SHA256(signing_secret, "{t}.{raw_request_body}")` and
+
+        compare its lowercase hexadecimal digest with a `v1` value. Do not
+
+        parse or re-serialize the body before verification.
+
+        '
+      in: header
+      name: x-moloco-webhook-signature
+      required: true
+      schema:
+        pattern: ^t=[0-9]+,v1=[0-9a-f]{64}(,v1=[0-9a-f]{64})*$
+        type: string
+    WebhookUserAgent:
+      description: Identifies webhook requests sent by MCM.
+      in: header
+      name: User-Agent
+      required: true
+      schema:
+        const: Moloco-Webhook/1
+        type: string
+  schemas:
+    AdAccountReEngageChurnedData:
+      additionalProperties: false
+      description: Campaign recommendations grouped by churned ad account.
+      properties:
+        ad_account_count:
+          description: Number of objects in `ad_accounts`.
+          format: int32
+          maximum: 20
+          minimum: 1
+          type: integer
+        campaign_count:
+          description: Total number of recommended campaigns across all ad accounts.
+          format: int32
+          maximum: 20
+          minimum: 1
+          type: integer
+        ad_accounts:
+          description: 'Ad accounts in the delivery. Each ad account ID is unique. The
+
+            combined number of campaigns across this array does not exceed 20.
+
+            '
+          items:
+            $ref: '#/components/schemas/ChurnedAdAccount'
+          maxItems: 20
+          minItems: 1
+          type: array
+      required:
+      - ad_account_count
+      - campaign_count
+      - ad_accounts
+      type: object
+    AdAccountReEngageChurnedWebhook:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/WebhookDeliveryId'
+        event:
+          const: ad_account.re_engage.churned
+          description: Event type for this delivery.
+          type: string
+        test:
+          description: Whether the delivery was initiated as a test.
+          type: boolean
+        event_at:
+          description: Time at which MCM created the webhook event, in RFC 3339 format.
+          format: date-time
+          type: string
+        platform_id:
+          description: MCM platform that owns the webhook endpoint.
+          minLength: 1
+          type: string
+        data:
+          $ref: '#/components/schemas/AdAccountReEngageChurnedData'
+      required:
+      - id
+      - event
+      - test
+      - event_at
+      - platform_id
+      - data
+      type: object
+    AdType:
+      description: Recommended campaign ad type.
+      enum:
+      - ITEM
+      - BRAND
+      - DISPLAY
+      - RESERVED_DISPLAY
+      type: string
+    Budget:
+      additionalProperties: false
+      description: Recommended campaign budget.
+      properties:
+        period:
+          description: Period over which the budget can be consumed.
+          enum:
+          - DAILY
+          - WEEKLY
+          type: string
+        amount:
+          $ref: '#/components/schemas/MoneyMicro'
+      required:
+      - period
+      - amount
+      type: object
+    CampaignBudgetHighUpsellData:
+      additionalProperties: false
+      description: Budget recommendations grouped by ad account.
+      properties:
+        ad_account_count:
+          description: Number of objects in `ad_accounts`.
+          format: int32
+          maximum: 20
+          minimum: 1
+          type: integer
+        campaign_count:
+          description: Total number of campaigns across all ad accounts.
+          format: int32
+          minimum: 1
+          type: integer
+        ad_accounts:
+          description: Ad accounts in the delivery. Each ad account ID is unique.
+          items:
+            $ref: '#/components/schemas/HighUpsellAdAccount'
+          maxItems: 20
+          minItems: 1
+          type: array
+      required:
+      - ad_account_count
+      - campaign_count
+      - ad_accounts
+      type: object
+    CampaignBudgetHighUpsellWebhook:
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/WebhookDeliveryId'
+        event:
+          const: campaign.budget.high_upsell
+          description: Event type for this delivery.
+          type: string
+        test:
+          description: Whether the delivery was initiated as a test.
+          type: boolean
+        event_at:
+          description: Time at which MCM created the webhook event, in RFC 3339 format.
+          format: date-time
+          type: string
+        platform_id:
+          description: MCM platform that owns the webhook endpoint.
+          minLength: 1
+          type: string
+        data:
+          $ref: '#/components/schemas/CampaignBudgetHighUpsellData'
+      required:
+      - id
+      - event
+      - test
+      - event_at
+      - platform_id
+      - data
+      type: object
+    CampaignGoal:
+      description: 'Optimization goal for the recommended campaign. Exactly one setting
+
+        object is present, and it matches `type`.
+
+        '
+      discriminator:
+        mapping:
+          FIXED_CPC: '#/components/schemas/FixedCpcGoal'
+          OPTIMIZE_ROAS: '#/components/schemas/OptimizeRoasGoal'
+          FIXED_COMMISSION_RATE: '#/components/schemas/FixedCommissionRateGoal'
+          FIXED_CPM: '#/components/schemas/FixedCpmGoal'
+          MAXIMIZE_SALES: '#/components/schemas/MaximizeSalesGoal'
+        propertyName: type
+      oneOf:
+      - $ref: '#/components/schemas/FixedCpcGoal'
+      - $ref: '#/components/schemas/OptimizeRoasGoal'
+      - $ref: '#/components/schemas/FixedCommissionRateGoal'
+      - $ref: '#/components/schemas/FixedCpmGoal'
+      - $ref: '#/components/schemas/MaximizeSalesGoal'
+    ChurnedAdAccount:
+      additionalProperties: false
+      properties:
+        id:
+          description: Ad account ID.
+          minLength: 1
+          type: string
+        title:
+          description: Human-readable ad account title.
+          minLength: 1
+          type: string
+        campaigns:
+          description: Recommended, not-yet-created campaigns for this ad account.
+          items:
+            $ref: '#/components/schemas/WebhookCampaignRecommendation'
+          minItems: 1
+          type: array
+      required:
+      - id
+      - title
+      - campaigns
+      type: object
+    Currency:
+      description: ISO 4217 currency code.
+      enum:
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      type: string
+    DailyBudget:
+      additionalProperties: false
+      description: A daily campaign budget.
+      properties:
+        period:
+          const: DAILY
+          description: Budget period. Always `DAILY` for this event.
+          type: string
+        amount:
+          $ref: '#/components/schemas/MoneyMicro'
+      required:
+      - period
+      - amount
+      type: object
+    FixedCommissionRateGoal:
+      additionalProperties: false
+      properties:
+        type:
+          const: FIXED_COMMISSION_RATE
+          type: string
+        optimize_fixed_commission_rate:
+          $ref: '#/components/schemas/OptimizeFixedCommissionRateSetting'
+      required:
+      - type
+      - optimize_fixed_commission_rate
+      type: object
+    FixedCpcGoal:
+      additionalProperties: false
+      properties:
+        type:
+          const: FIXED_CPC
+          type: string
+        optimize_fixed_cpc:
+          $ref: '#/components/schemas/OptimizeFixedCpcSetting'
+      required:
+      - type
+      - optimize_fixed_cpc
+      type: object
+    FixedCpmGoal:
+      additionalProperties: false
+      properties:
+        type:
+          const: FIXED_CPM
+          type: string
+        optimize_fixed_cpm:
+          $ref: '#/components/schemas/OptimizeFixedCpmSetting'
+      required:
+      - type
+      - optimize_fixed_cpm
+      type: object
+    HighUpsellAdAccount:
+      additionalProperties: false
+      properties:
+        id:
+          description: Ad account ID.
+          minLength: 1
+          type: string
+        title:
+          description: Human-readable ad account title.
+          minLength: 1
+          type: string
+        campaigns:
+          description: Campaigns recommended for a budget increase. IDs are unique within the ad account.
+          items:
+            $ref: '#/components/schemas/HighUpsellCampaign'
+          minItems: 1
+          type: array
+      required:
+      - id
+      - title
+      - campaigns
+      type: object
+    HighUpsellCampaign:
+      additionalProperties: false
+      properties:
+        id:
+          description: Existing campaign ID.
+          minLength: 1
+          type: string
+        title:
+          description: Existing campaign title.
+          minLength: 1
+          type: string
+        recommended_budget:
+          allOf:
+          - $ref: '#/components/schemas/DailyBudget'
+          description: Recommended daily campaign budget. It is greater than `current_budget`.
+        current_budget:
+          allOf:
+          - $ref: '#/components/schemas/DailyBudget'
+          description: Current daily campaign budget, in the same currency as `recommended_budget`.
+        additional_budget:
+          allOf:
+          - $ref: '#/components/schemas/DailyBudget'
+          description: Positive difference between `recommended_budget` and `current_budget`.
+        budget_utilization_pct:
+          description: Current budget utilization in percent, for example `97`.
+          format: int32
+          minimum: 1
+          type: integer
+      required:
+      - id
+      - title
+      - recommended_budget
+      - current_budget
+      - additional_budget
+      - budget_utilization_pct
+      type: object
+    MaximizeSalesGoal:
+      additionalProperties: false
+      properties:
+        type:
+          const: MAXIMIZE_SALES
+          type: string
+        maximize_sales:
+          $ref: '#/components/schemas/MaximizeSalesSetting'
+      required:
+      - type
+      - maximize_sales
+      type: object
+    MaximizeSalesSetting:
+      additionalProperties: false
+      description: Empty settings object for the `MAXIMIZE_SALES` goal.
+      type: object
+    MoneyMicro:
+      additionalProperties: false
+      description: 'A monetary amount in millionths of the currency unit. For example,
+
+        `1234` micro USD represents USD 0.001234. `amount_micro` is encoded as a
+
+        decimal string to preserve 64-bit integer precision.
+
+        '
+      properties:
+        currency:
+          $ref: '#/components/schemas/Currency'
+        amount_micro:
+          description: Positive amount in micro units, encoded as a decimal string.
+          pattern: ^[1-9][0-9]*$
+          type: string
+      required:
+      - currency
+      - amount_micro
+      type: object
+    OptimizeFixedCommissionRateSetting:
+      additionalProperties: false
+      properties:
+        commission_rate:
+          description: Target commission rate percentage, rounded to one decimal place.
+          exclusiveMinimum: 0
+          format: double
+          type: number
+      required:
+      - commission_rate
+      type: object
+    OptimizeFixedCpcSetting:
+      additionalProperties: false
+      properties:
+        target_cpc:
+          allOf:
+          - $ref: '#/components/schemas/MoneyMicro'
+          description: Target cost per click.
+      required:
+      - target_cpc
+      type: object
+    OptimizeFixedCpmSetting:
+      additionalProperties: false
+      properties:
+        target_cpm:
+          allOf:
+          - $ref: '#/components/schemas/MoneyMicro'
+          description: Target cost per thousand impressions.
+      required:
+      - target_cpm
+      type: object
+    OptimizeRoasGoal:
+      additionalProperties: false
+      properties:
+        type:
+          const: OPTIMIZE_ROAS
+          type: string
+        optimize_roas:
+          $ref: '#/components/schemas/OptimizeRoasSetting'
+      required:
+      - type
+      - optimize_roas
+      type: object
+    OptimizeRoasSetting:
+      additionalProperties: false
+      properties:
+        target_roas:
+          description: Target return on ad spend, in percent.
+          format: uint32
+          maximum: 4294967295
+          minimum: 1
+          type: integer
+      required:
+      - target_roas
+      type: object
+    TimeInterval:
+      additionalProperties: false
+      description: Recommended campaign schedule in RFC 3339 format.
+      properties:
+        start:
+          description: Campaign start time.
+          format: date-time
+          type: string
+        end:
+          description: Campaign end time. Omitted for an open-ended campaign.
+          format: date-time
+          type: string
+      required:
+      - start
+      type: object
+    WebhookCampaignRecommendation:
+      additionalProperties: false
+      properties:
+        recommendation_id:
+          description: 'Recommendation ID. Pass this value when creating the recommended
+
+            campaign so its impact can be tracked. IDs are unique within the delivery.
+
+            '
+          minLength: 1
+          type: string
+        title:
+          description: Suggested campaign title.
+          minLength: 1
+          type: string
+        ad_type:
+          $ref: '#/components/schemas/AdType'
+        goal:
+          $ref: '#/components/schemas/CampaignGoal'
+        budget:
+          $ref: '#/components/schemas/Budget'
+        schedule:
+          $ref: '#/components/schemas/TimeInterval'
+        catalog_item_ids:
+          description: 'Recommended catalog item IDs. This is an empty array for campaigns
+
+            that use smart selection without explicit item targets.
+
+            '
+          items:
+            type: string
+          type: array
+        expires_at:
+          description: Time at which the recommendation expires, in RFC 3339 format.
+          format: date-time
+          type: string
+        reason:
+          description: Human-readable reason for the recommendation.
+          minLength: 1
+          type: string
+      required:
+      - recommendation_id
+      - title
+      - ad_type
+      - goal
+      - budget
+      - schedule
+      - catalog_item_ids
+      - expires_at
+      - reason
+      type: object
+    WebhookDeliveryId:
+      description: A 16-character Base62 delivery identifier. It remains unchanged across automatic retries and manual resends.
+      pattern: ^[A-Za-z][A-Za-z0-9]{15}$
+      type: string

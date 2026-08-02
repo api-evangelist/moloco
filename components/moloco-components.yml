@@ -1,0 +1,73 @@
+generated: '2026-07-31'
+method: searched
+source:
+- https://mcm-docs.moloco.com/docs/widgetized-campaign-manager
+- https://mcm-docs.moloco.com/docs/standalone-campaign-manager
+- https://mcm-docs.moloco.com/docs/build-your-own-campaign-manager
+- https://mcm-docs.moloco.com/docs/google-tag-manager-integration-guide
+- https://github.com/moloco-mcm/mcm-gtm-template
+summary: >-
+  Moloco Commerce Media ships hosted, embeddable surfaces rather than a JS element library: platforms either
+  embed the prebuilt Campaign Manager in an iframe behind a signed SSO URL, link out to the standalone
+  Campaign Manager, or build their own UI on the Management API. Event collection also ships as a Google Tag
+  Manager template. Moloco Ads (DSP) publishes no embeddable UI components.
+families:
+- name: Campaign Manager
+  kind: hosted-embeddable
+  components:
+  - name: Widgetized Campaign Manager
+    docs: https://mcm-docs.moloco.com/docs/widgetized-campaign-manager
+    embed: iframe
+    auth: >-
+      signed SSO URL — the URL carries the caller's user id, ad account id and title, ad manager account id
+      and title, role and platform id, signed with the platform SSO secret key
+    secret_management: https://mcm-docs.moloco.com/docs/api-and-sso-credential-management
+    side_effects: >-
+      creates the ad account if the ad account id has never been used, and updates the ad account title on
+      sign-in if it differs from the stored value
+    examples: https://github.com/moloco-mcm/sso-examples
+    description: >-
+      Embeds the prebuilt MCM Campaign Manager inside the platform's own application so advertisers and
+      sellers do not need a separate login.
+  - name: Standalone Campaign Manager
+    docs: https://mcm-docs.moloco.com/docs/standalone-campaign-manager
+    embed: hosted application
+    description: >-
+      Moloco-hosted campaign management application, also the admin surface where Platform Owners generate
+      API keys and SSO secrets under Developer > Credential Management.
+  - name: Build your own Campaign Manager
+    docs: https://mcm-docs.moloco.com/docs/build-your-own-campaign-manager
+    embed: none
+    description: >-
+      The API-only path — build the advertiser UI directly on the MCM Management API instead of embedding a
+      Moloco surface.
+- name: Ad rendering
+  kind: template
+  components:
+  - name: Ad preview template
+    docs: skills/moloco-ad-preview-template.md
+    format: static HTML with mustache-style {{macro}} placeholders
+    sandboxing: rendered in a sandboxed iframe; no JavaScript execution permitted
+    formats_supported: [Sponsored Display, Sponsored Brands]
+    description: >-
+      HTML templates that MCM renders with ad asset data (headline, CTA, banner image/video, brand logo,
+      catalog items). Submitted through an account representative; the macro contract is published as an
+      Agent Skill by Moloco.
+- name: Event collection
+  kind: tag-template
+  components:
+  - name: MCM Google Tag Manager template
+    repository: https://github.com/moloco-mcm/mcm-gtm-template
+    docs: https://mcm-docs.moloco.com/docs/google-tag-manager-integration-guide
+    description: >-
+      GTM custom template for sending first-party user events to the MCM Event API without hand-writing the
+      collection layer.
+- name: Mobile ad rendering
+  kind: sdk-surface
+  components:
+  - name: Moloco SDK (Android / iOS / Unity)
+    packages: packages/moloco-packages.yml
+    description: >-
+      Publisher-side ad rendering SDKs for Moloco's supply surface. Distributed as native packages rather
+      than web components, listed under packages/ — recorded here only as the client-side rendering surface.
+loader_libraries: []

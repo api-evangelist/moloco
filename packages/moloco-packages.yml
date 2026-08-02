@@ -1,0 +1,107 @@
+generated: '2026-07-31'
+method: searched
+source: >-
+  npm registry search, PyPI, Maven Central (search.maven.org), github.com/moloco-mcm, github.com/moloco
+note: >-
+  Moloco ships two distinct package families: API client libraries for Moloco Commerce Media (published under
+  the @moloco-rmp npm scope and the moloco-mcm GitHub org) and mobile ad SDKs for publishers/app developers
+  (com.moloco.sdk on Maven Central, Swift Package Manager for iOS, Unity plugins). There is no first-party
+  Python or Go client for the Moloco Ads Campaign Management API; the mcm-cli package is the CLI (see
+  cli/moloco-cli.yml). The legacy CocoaPods "MolocoSDK" pod (2019, personally owned trunk account) is NOT
+  recorded here as official.
+packages:
+- language: javascript
+  registry: npm
+  name: '@moloco-rmp/decision-api-client'
+  version: 3.4.0
+  url: https://www.npmjs.com/package/@moloco-rmp/decision-api-client
+  repository: https://github.com/moloco-mcm/decision-api-client-js
+  install: npm install @moloco-rmp/decision-api-client
+  license: Apache-2.0
+  description: JavaScript/TypeScript library for the MOLOCO RMP (Commerce Media) Decision API.
+  covers: openapi/moloco-commerce-media-decision-openapi.yml
+  official: true
+- language: javascript
+  registry: npm
+  name: '@moloco-rmp/event-api-client'
+  version: 1.2.0
+  url: https://www.npmjs.com/package/@moloco-rmp/event-api-client
+  repository: https://github.com/moloco-mcm/event-api-client-js
+  install: npm install @moloco-rmp/event-api-client
+  license: Apache-2.0
+  description: JavaScript/TypeScript library for the MOLOCO MCM Event API.
+  covers: openapi/moloco-commerce-media-event-openapi.yml
+  official: true
+- language: javascript
+  registry: npm
+  name: '@moloco-rmp/user-event-api-client'
+  version: 0.1.0
+  url: https://www.npmjs.com/package/@moloco-rmp/user-event-api-client
+  install: npm install @moloco-rmp/user-event-api-client
+  description: Early user-event API client published under the Moloco RMP npm scope.
+  covers: openapi/moloco-commerce-media-event-openapi.yml
+  official: true
+- language: python
+  registry: pypi
+  name: mcm-cli
+  version: 1.9.0
+  url: https://pypi.org/project/mcm-cli/
+  repository: https://github.com/moloco-mcm/mcm-cli
+  install: pip install mcm-cli
+  license: Apache-2.0
+  description: Command-line interface for the Moloco Commerce Media platform (also a Python client library).
+  covers: openapi/moloco-commerce-media-management-openapi.yml
+  official: true
+- language: java
+  registry: maven
+  name: com.moloco.sdk:moloco-sdk
+  version: 3.11.0
+  url: https://central.sonatype.com/artifact/com.moloco.sdk/moloco-sdk
+  install: 'implementation("com.moloco.sdk:moloco-sdk:3.11.0")'
+  description: Moloco Android ad SDK for publishers (ad rendering, bidding, mediation core).
+  official: true
+- language: java
+  registry: maven
+  name: com.moloco.sdk.adapters:moloco
+  version: 3.11.0.0
+  url: https://central.sonatype.com/artifact/com.moloco.sdk.adapters/moloco
+  description: Moloco mediation adapter package for Android.
+  official: true
+- language: swift
+  registry: swift-package-manager
+  name: moloco-sdk-ios-spm
+  url: https://github.com/moloco/moloco-sdk-ios-spm
+  install: 'Add https://github.com/moloco/moloco-sdk-ios-spm as a Swift Package dependency'
+  description: Moloco iOS ad SDK distributed via Swift Package Manager.
+  official: true
+reference_implementations:
+- name: user-event-sink-connector-java
+  url: https://github.com/moloco-mcm/user-event-sink-connector-java
+  language: java
+  description: User Event Sink Connector reference implementation for Java.
+  official: true
+- name: user-event-sink-connector-js
+  url: https://github.com/moloco-mcm/user-event-sink-connector-js
+  language: javascript
+  description: User Event Sink Connector reference implementation for JavaScript.
+  official: true
+- name: sso-examples
+  url: https://github.com/moloco-mcm/sso-examples
+  language: java
+  description: Worked examples of signing Widgetized Campaign Manager SSO URLs.
+  official: true
+- name: mcm-gtm-template
+  url: https://github.com/moloco-mcm/mcm-gtm-template
+  description: Google Tag Manager template for MCM user-event collection.
+  official: true
+registries_probed:
+  npm: hit
+  pypi: hit
+  maven_central: hit
+  swift_package_manager: hit
+  nuget: not-found
+  pkg_go_dev: not-found
+  rubygems: not-found
+  packagist: not-found
+  crates_io: not-found
+  cocoapods: found-but-unofficial

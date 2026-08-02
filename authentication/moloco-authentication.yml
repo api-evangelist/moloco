@@ -1,0 +1,27 @@
+generated: '2026-07-31'
+method: derived
+source: openapi/moloco-ads-campaign-management-openapi.yml, openapi/moloco-cloud-auth-openapi.yml,
+  openapi/moloco-commerce-media-decision-openapi.yml, openapi/moloco-commerce-media-event-openapi.yml,
+  openapi/moloco-commerce-media-management-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: Bearer
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/moloco-ads-campaign-management-openapi.yml
+  - openapi/moloco-cloud-auth-openapi.yml
+  - openapi/moloco-commerce-media-management-openapi.yml
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  sources:
+  - openapi/moloco-commerce-media-decision-openapi.yml
+  - openapi/moloco-commerce-media-event-openapi.yml
+  - openapi/moloco-commerce-media-management-openapi.yml

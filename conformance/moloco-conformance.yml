@@ -1,0 +1,114 @@
+generated: '2026-07-31'
+method: derived
+source:
+- openapi/moloco-ads-campaign-management-openapi.yml
+- openapi/moloco-cloud-auth-openapi.yml
+- openapi/moloco-commerce-media-management-openapi.yml
+- openapi/moloco-commerce-media-decision-openapi.yml
+- openapi/moloco-commerce-media-event-openapi.yml
+- openapi/moloco-commerce-media-webhooks-openapi.yml
+- https://api.moloco.cloud/.well-known/oauth-authorization-server
+- https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp
+- https://www.moloco.com/terms-and-policies/security
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: five published documents declare openapi 3.0.0/3.0.1
+- id: openapi-3.1
+  conforms: true
+  evidence: openapi/moloco-commerce-media-webhooks-openapi.yml declares openapi 3.1.0 and uses the webhooks object
+- id: oauth2
+  conforms: true
+  evidence: >-
+    api.moloco.cloud publishes RFC 8414 authorization-server metadata with authorization_code + refresh_token
+    grants; mcp.moloco.cloud/mcp challenges with a Bearer scope. Note the published OpenAPI documents do NOT
+    declare oauth2 securitySchemes — they declare apiKey only.
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: https://api.moloco.cloud/.well-known/oauth-authorization-server returns 200 application/json
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: >-
+    https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp returns 200 and the 401 challenge
+    carries a resource_metadata parameter
+- id: rfc7636-pkce
+  conforms: true
+  evidence: code_challenge_methods_supported = [S256]
+- id: oauth-client-id-metadata-document
+  conforms: true
+  evidence: client_id_metadata_document_supported = true in the authorization-server metadata
+- id: openid-connect
+  conforms: false
+  evidence: no /.well-known/openid-configuration on any Moloco host
+- id: model-context-protocol
+  conforms: true
+  evidence: >-
+    mcm-docs.moloco.com/mcp negotiates protocolVersion 2025-06-18 and returns a real tools/list;
+    mcp.moloco.cloud/mcp is an OAuth-protected MCP resource
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 on every Moloco host probed
+    (www.moloco.com, api.moloco.cloud, mcp.moloco.cloud, developer.moloco.cloud, mcm-docs.moloco.com)
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    every error response is application/json carrying a google.rpc.Status envelope; no application/problem+json
+    media type appears in any spec
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on www.moloco.com, api.moloco.cloud and both docs hosts
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: the deprecation policy is calendar-based and notified by email; no Sunset or Deprecation header is documented
+- id: rfc9116-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404
+- id: idempotency-key
+  conforms: partial
+  evidence: >-
+    x-moloco-webhook-id is a required idempotency key on MCM webhook deliveries and the Management API
+    documents a recommendation idempotency key; no Idempotency-Key request header exists on write operations
+- id: llmstxt
+  conforms: true
+  evidence: https://developer.moloco.cloud/llms.txt and https://mcm-docs.moloco.com/llms.txt both return 200
+- id: hmac-webhook-signing
+  conforms: true
+  evidence: >-
+    x-moloco-webhook-signature carries t=<unix>,v1=<hex> HMAC-SHA256 over the raw body, with multi-key
+    rotation support
+- id: openrtb
+  conforms: partial
+  evidence: >-
+    the Campaign Management API references IAB content categories from the OpenRTB API Specification 2.3.1
+    for App categorization
+- id: skadnetwork
+  conforms: true
+  evidence: >-
+    SKAdNetwork conversion-value configuration operations and SKAN analytics are first-class in the Campaign
+    Management API (DspApi_QueryAnalyticsSkAdNetwork, DspApi_ReadProductSkanConversionConfig)
+- id: gdpr
+  conforms: true
+  evidence: >-
+    documented compliance alignment plus product surface — RmpManagementApi_CreateUserDataDeletionRequest and
+    the METRIC_ONLY / ID_LESS personalization_mode values added for GDPR obligations
+- id: soc2
+  conforms: true
+  evidence: 'SOC 2 named on https://www.moloco.com/terms-and-policies/security; reports available via https://trust.moloco.com/'
+- id: iso-27001
+  conforms: true
+  evidence: 'ISO/IEC 27001 named on https://www.moloco.com/terms-and-policies/security and the SafeBase trust center'
+- id: pci-dss
+  conforms: false
+  evidence: not claimed
+- id: hipaa
+  conforms: false
+  evidence: not claimed
+- id: fedramp
+  conforms: false
+  evidence: not claimed
+- id: tls-1.2-minimum
+  conforms: true
+  evidence: >-
+    "You must be using Transport Layer Security (TLS) ver. 1.2 or later" — getting-started docs; probes
+    observed TLSv1.3 on www.moloco.com, developer.moloco.cloud and api.moloco.cloud

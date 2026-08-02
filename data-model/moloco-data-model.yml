@@ -1,0 +1,158 @@
+generated: '2026-07-31'
+method: derived
+source:
+- openapi/moloco-ads-campaign-management-openapi.yml
+- openapi/moloco-cloud-auth-openapi.yml
+- openapi/moloco-commerce-media-management-openapi.yml
+docs:
+- https://developer.moloco.cloud/docs/campaign-management-api
+- https://developer.moloco.cloud/docs/auth
+- https://mcm-docs.moloco.com/docs/basic-concepts
+note: >-
+  Relationships were derived from id-reference fields on the published entity schemas (dspCampaign.product_id,
+  dspAdGroup.creative_group_ids, and so on) and cross-checked against the entity-relationship narrative in the
+  campaign-management and auth guides. Two largely parallel models: Moloco Ads (DSP) and Moloco Commerce
+  Media (retail media), joined only through the shared Ad Account concept.
+domains:
+- name: moloco-ads-identity
+  spec: openapi/moloco-cloud-auth-openapi.yml
+  entities:
+  - name: Workplace
+    description: The tenant a user account is assigned to. All API tokens are issued per workplace.
+    fields: [id, title]
+  - name: User
+    description: A single Moloco account; can be registered to one or more workplaces.
+    fields: [id, email, name, signed_up, created_at, updated_at]
+  - name: Role
+    description: >-
+      Administrative role bound to a workplace or an ad account. A user holds at most one role per binding;
+      the most authoritative role governs. Values include WORKPLACE_OWNER, AD_ACCOUNT_OWNER,
+      AD_ACCOUNT_MEMBER and AD_ACCOUNT_VIEWER.
+  - name: Token
+    description: Bearer access token issued from an API key, scoped to one workplace, valid 16 hours.
+  relationships:
+  - from: Workplace
+    to: User
+    type: has_many
+    via: role binding
+  - from: User
+    to: Role
+    type: has_many
+    via: role grant
+  - from: Role
+    to: Workplace
+    type: belongs_to
+    via: binding
+  - from: Role
+    to: AdAccount
+    type: belongs_to
+    via: binding
+  - from: Token
+    to: Workplace
+    type: belongs_to
+    via: token issuance
+- name: moloco-ads-campaigns
+  spec: openapi/moloco-ads-campaign-management-openapi.yml
+  entities:
+  - name: AdAccount
+    description: The advertiser — an individual or an organization.
+    id_fields: [billing_account_id]
+  - name: Product
+    description: The app or website a campaign advertises.
+    id_fields: [ad_account_id]
+  - name: TrackingLink
+    description: Tracking link that collects the data used to analyse campaign results.
+    id_fields: [ad_account_id, product_id]
+  - name: Campaign
+    id_fields: [ad_account_id, product_id, tracking_link_id]
+  - name: AdGroup
+    id_fields: [campaign_id, product_id, ad_account_id, experiment_id, pricing_model_id, creative_group_ids]
+  - name: CreativeGroup
+    id_fields: [ad_account_id, product_id, creative_ids, tracking_link_id]
+  - name: Creative
+    description: The creative asset(s) a campaign uses; uploaded through an asset upload session.
+    id_fields: [ad_account_id, product_id]
+  - name: AudienceTarget
+    description: A group of users a campaign targets; owned by the ad account.
+  - name: CustomerSet
+    description: A set of users reusable for different targeting purposes; owned by the ad account.
+  - name: Report
+    id_fields: [ad_account_id, product_id]
+  - name: ReportExport
+  - name: Log
+    description: Impression, click, conversion, SKAN conversion or engaged-view log export.
+    id_fields: [ad_account_id]
+  relationships:
+  - {from: AdAccount, to: Product, type: has_many, via: ad_account_id}
+  - {from: AdAccount, to: AudienceTarget, type: has_many, via: ad_account_id}
+  - {from: AdAccount, to: CustomerSet, type: has_many, via: ad_account_id}
+  - {from: AdAccount, to: Log, type: has_many, via: ad_account_id}
+  - {from: AdAccount, to: Report, type: has_many, via: ad_account_id}
+  - {from: Product, to: TrackingLink, type: has_many, via: product_id}
+  - {from: Product, to: Creative, type: has_many, via: product_id}
+  - {from: Product, to: CreativeGroup, type: has_many, via: product_id}
+  - {from: Product, to: Campaign, type: has_many, via: product_id}
+  - {from: Campaign, to: TrackingLink, type: has_one, via: tracking_link_id}
+  - {from: Campaign, to: AdGroup, type: has_many, via: campaign_id}
+  - {from: AdGroup, to: CreativeGroup, type: has_many, via: creative_group_ids}
+  - {from: CreativeGroup, to: Creative, type: has_many, via: creative_ids}
+  - {from: CreativeGroup, to: TrackingLink, type: has_one, via: tracking_link_id}
+  creation_order:
+  - AdAccount
+  - Product
+  - TrackingLink
+  - Creative
+  - CreativeGroup
+  - Campaign
+  source_for_order: https://developer.moloco.cloud/docs/campaign-management-api
+- name: moloco-commerce-media
+  spec: openapi/moloco-commerce-media-management-openapi.yml
+  entities:
+  - name: Platform
+    description: The retailer or marketplace operating the retail-media network. Carried in the URL path as platform_id.
+  - name: AdManagerAccount
+    description: An agency-style account that can own multiple ad accounts.
+  - name: AdAccount
+    description: An advertiser or seller on the platform. Also created implicitly by the Widgetized Campaign Manager SSO flow.
+  - name: Campaign
+    description: Sponsored Products, Sponsored Brands, Sponsored Display or Reserved Display campaign.
+  - name: Order
+    description: Reserved Display order, upserted atomically together with its line items.
+  - name: LineItem
+    description: A reserved-display line item belonging to an order.
+  - name: ImageAsset
+  - name: VideoAsset
+  - name: CatalogItem
+    description: A catalog SKU ingested through the catalog feed; targetable and subject to the item kill switch.
+  - name: Wallet
+    description: Prepaid balance for an ad account. One wallet per ad account today.
+  - name: SpendingLimit
+    description: Postpaid credit control for an ad account. One spending limit per ad account today.
+  - name: Credit
+    description: Credits topped up against a spending limit.
+  - name: SpendCap
+  - name: CustomTargetKey
+    description: Key-value targeting attribute key; up to 100,000 values per key.
+  - name: CustomTargetValue
+  - name: CampaignReview
+    description: Review record for a campaign's assets or landing page.
+  relationships:
+  - {from: Platform, to: AdManagerAccount, type: has_many, via: platform_id}
+  - {from: Platform, to: AdAccount, type: has_many, via: platform_id}
+  - {from: Platform, to: CustomTargetKey, type: has_many, via: platform_id}
+  - {from: AdManagerAccount, to: AdAccount, type: has_many, via: ad manager account ownership}
+  - {from: AdAccount, to: Campaign, type: has_many, via: ad_account_id}
+  - {from: AdAccount, to: Wallet, type: has_one, via: ad_account_id}
+  - {from: AdAccount, to: SpendingLimit, type: has_one, via: ad_account_id}
+  - {from: AdAccount, to: SpendCap, type: has_many, via: ad_account_id}
+  - {from: SpendingLimit, to: Credit, type: has_many, via: spending limit}
+  - {from: Order, to: LineItem, type: has_many, via: upsert order with line items}
+  - {from: Campaign, to: ImageAsset, type: has_many, via: creative assets}
+  - {from: Campaign, to: VideoAsset, type: has_many, via: creative assets}
+  - {from: Campaign, to: CatalogItem, type: has_many, via: item selection}
+  - {from: Campaign, to: CampaignReview, type: has_many, via: campaign review}
+  - {from: CustomTargetKey, to: CustomTargetValue, type: has_many, via: key}
+pagination:
+  shape: commonPageInfo {page_index, page_size, pages_total}
+  spec: openapi/moloco-commerce-media-management-openapi.yml
+subway: null

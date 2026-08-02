@@ -1,0 +1,76 @@
+generated: '2026-07-31'
+method: searched
+source:
+- openapi/moloco-commerce-media-decision-openapi.yml
+- openapi/moloco-commerce-media-event-openapi.yml
+- https://mcm-docs.moloco.com/docs/testing-real-time-events
+- https://mcm-docs.moloco.com/docs/user-event-api-failure-protocol
+- https://mcm-docs.moloco.com/docs/catalog-feed-validator
+summary: >-
+  Moloco Commerce Media runs a named sandbox environment: the published Decision and Event API OpenAPI
+  documents point at sandbox-dcsn.mcm-api.moloco.com and sandbox-evt.mcm-api.moloco.com, and both resolve to
+  the same regional serving hosts as production. There is no self-serve sandbox for Moloco Ads — access to
+  api.moloco.cloud requires an account provisioned by a Moloco representative, and there is no test-mode key
+  prefix or magic test-value catalogue. Onboarding test scenarios are run jointly with a Moloco representative.
+environments:
+- name: MCM sandbox (decision)
+  host: https://sandbox-dcsn.mcm-api.moloco.com
+  resolves_to: dcsn-pdx.rmp-api.moloco.com
+  source: openapi/moloco-commerce-media-decision-openapi.yml servers[0]
+  api: Moloco Commerce Media Decision API
+- name: MCM sandbox (events)
+  host: https://sandbox-evt.mcm-api.moloco.com
+  resolves_to: evt-pdx.rmp-api.moloco.com
+  source: openapi/moloco-commerce-media-event-openapi.yml servers[0]
+  api: Moloco Commerce Media Event API
+- name: MCM management
+  host_template: 'https://<platform>-mgmt.mcm-api.moloco.com'
+  source: openapi/moloco-commerce-media-management-openapi.yml servers[0]
+  note: >-
+    The published server is templated on the platform id; sandbox-mgmt.mcm-api.moloco.com resolves to
+    mgmt-pdx.rmp-api.moloco.com. Moloco issues the correct host during onboarding.
+- name: Moloco Ads production
+  host: https://api.moloco.cloud
+  test_mode: false
+  note: >-
+    No separate test host or test-mode API key. A workplace holds one non-expiring API key; access tokens
+    minted from it are valid for 16 hours.
+credentials:
+  moloco_ads:
+    provisioning: >-
+      Accounts are created by a Moloco representative (help center ticket form 6882981198743). The API key is
+      generated in the Moloco Ads portal under User settings > API Access; one non-expiring key per workplace,
+      which the owner can reset or deactivate.
+    key_prefixes: none published
+  moloco_commerce_media:
+    provisioning: >-
+      API keys and SSO secrets are self-managed by users holding the Platform Owner role, in the Standalone
+      Campaign Manager under Developer > Credential Management.
+    retrievability: 'displayed once at creation; not retrievable afterwards'
+    key_prefixes: none published
+test_values:
+  cards: null
+  bank_accounts: null
+  identifiers: null
+  note: >-
+    Moloco publishes no magic test identifiers, test card numbers or fixture tokens. NOT FABRICATED — the
+    absence is the finding.
+test_tooling:
+- name: Real-time event test matrix
+  url: https://mcm-docs.moloco.com/docs/testing-real-time-events
+  description: >-
+    A published test-case table (Home, Page View, Item View, Search, Add to Cart, Purchase and more) with test
+    steps and the expected result on both the customer side and the Moloco side. Run jointly with a Moloco
+    representative during integration.
+- name: User Event API failure protocol
+  url: https://mcm-docs.moloco.com/docs/user-event-api-failure-protocol
+  description: Troubleshooting guide for unexpected event-ingestion results.
+- name: Catalog feed validator
+  url: https://mcm-docs.moloco.com/docs/catalog-feed-validator
+  description: Validates a catalog feed before ingestion.
+- name: Webhook test deliveries
+  source: openapi/moloco-commerce-media-webhooks-openapi.yml
+  description: >-
+    Every webhook payload carries a boolean `test` field indicating whether the delivery was initiated as a
+    test, so consumers can distinguish test deliveries from live ones.
+time_simulation: null

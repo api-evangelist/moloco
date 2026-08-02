@@ -1,0 +1,92 @@
+generated: '2026-07-31'
+method: searched
+source: https://mcm-docs.moloco.com/docs/management-api-error-categories
+docs:
+- https://mcm-docs.moloco.com/docs/management-api-error-categories
+- https://mcm-docs.moloco.com/docs/user-event-api-error-categories
+- https://mcm-docs.moloco.com/docs/decisionuserevent-api-error-categories
+- https://mcm-docs.moloco.com/docs/user-event-api-failure-protocol
+scope: Moloco Commerce Media Management API
+envelope_field: error_category
+note: >-
+  Moloco Commerce Media publishes a numbered error-category registry for the Management API on top of the
+  gRPC status envelope. Categories are grouped by leading digit: 1xx request/entity state, 1000 entitlement,
+  2xxx user and permission, 3xxx billing and balance, 4xxx campaign, 5xxx asset. This is the non-payments
+  sibling of a decline-code catalog. Values are transcribed verbatim from the published table.
+error_codes:
+- code: 0
+  enum: DEFAULT_ERROR_CATEGORY
+  description: null
+  action: null
+- code: 1
+  enum: INPUT_VALIDATION
+  description: The input you provided failed validation checks.
+  action: Double-check your input, make sure it adheres to the required format or parameters, and try again.
+- code: 100
+  enum: TIMESTAMP_MISMATCH
+  description: The timestamp provided doesn't match the latest value.
+  action: Read the target entity again and retrieve the latest timestamp value.
+- code: 1000
+  enum: FEATURE_NOT_ALLOWED
+  description: The feature you're trying to use is not allowed for your platform.
+  action: Review the service terms to understand which features are permitted.
+- code: 2000
+  enum: REINVITE_NOT_ALLOWED
+  description: The user already exists in the ad account/platform and cannot be re-invited.
+  action: null
+- code: 2001
+  enum: LAST_OWNER_REVOKE_NOT_ALLOWED
+  description: The last remaining owner's permissions cannot be revoked.
+  action: Ensure at least one other owner is present before attempting to revoke permissions.
+- code: 2002
+  enum: LAST_OWNER_DELETE_NOT_ALLOWED
+  description: Deleting the last remaining owner is not permitted.
+  action: Ensure at least one other owner is present before attempting to delete.
+- code: 3000
+  enum: INSUFFICIENT_SPENDING_LIMIT
+  description: >-
+    The ad account had been suspended due to reaching its spending limit and was reactivated without
+    sufficient limit.
+  action: Increase the spending limit.
+- code: 3001
+  enum: AD_ACCOUNT_ALREADY_OWNED
+  description: The ad account you are attempting to add is already owned by another ad manager account.
+  action: Exclude the conflicting ad account ID or remove the existing owner for the ad manager account.
+- code: 3002
+  enum: INSUFFICIENT_WALLET_BALANCE
+  description: The wallet you are attempting to withdraw from does not have enough remaining balance.
+  action: Request a withdraw amount less than the wallet's remaining balance.
+- code: 4000
+  enum: MAX_CAMPAIGN_COUNT_REACHED
+  description: The ad account has reached the maximum number (1,000) of campaigns allowed.
+  action: null
+- code: 4001
+  enum: MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+  description: Modifications to archived campaigns are not permitted.
+  action: Unarchive the campaign before making any changes.
+- code: 4002
+  enum: INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+  description: The campaign's current status doesn't allow it to be archived.
+  action: Change the campaign status to one that can be archived (PAUSED or ENDED), then retry.
+- code: 4004
+  enum: INACTIVE_AD_ACCOUNT
+  description: The ad account you are attempting to create an enabled campaign under is inactive.
+  action: Activate the ad account to create an enabled campaign, or create the campaign in a paused state.
+- code: 4005
+  enum: DUPLICATE_AUDIENCE
+  description: The defined audience label in custom audience targeting is duplicated.
+  action: Use another audience label for the campaign.
+- code: 5000
+  enum: EXCEED_MAX_IMAGE_SIZE
+  description: The asset's file size exceeds the platform's maximum allowed size.
+  action: Use a smaller image or increase the maximum image size in the configuration settings.
+user_event_api:
+  envelope: JSON-serialized gRPC status; ignore `code` and `details`, use the HTTP status and `message`
+  reference: https://grpc.io/docs/guides/status-codes/
+  docs: https://mcm-docs.moloco.com/docs/user-event-api-error-categories
+  note: >-
+    The published User Event API table is keyed on HTTP status + example message rather than on a numeric
+    registry, and the docs state it is not an exhaustive list, so individual messages are not transcribed here.
+completeness: >-
+  Transcribed from the published Management API error-category table (16 rows) as of 2026-07-31. Moloco states
+  the documented lists are not exhaustive.

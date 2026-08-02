@@ -1,0 +1,107 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: MOLOCO
+providerId: moloco
+created: '2026-07-31'
+modified: '2026-07-31'
+generated: '2026-07-31'
+method: searched
+tags:
+- Rate Limiting
+- Advertising
+- Retail Media
+description: >-
+  Moloco Ads publishes per-endpoint quotas enforced at the ad-account level (with one user-level limit), plus
+  X-Rate-Limit-* response headers on every call. Reporting and analytics endpoints carry much tighter quotas
+  than CRUD endpoints, and the Report API quota varies with the requested date range. Moloco Commerce Media
+  declares a 429 on the Decision and Event APIs but publishes no numeric quota.
+sources:
+- https://developer.moloco.cloud/docs/rate-limits
+- openapi/moloco-commerce-media-decision-openapi.yml
+- openapi/moloco-commerce-media-event-openapi.yml
+headers:
+  quota: X-Rate-Limit-Quota
+  remaining: X-Rate-Limit-Remaining
+  reset: X-Rate-Limit-Reset
+responseCodes:
+  throttled: 429
+  moloco_ads_error: 'gRPC code 8 (ResourceExhausted) — "API quota exceeded. Please try again later."'
+limits:
+- name: All Moloco Ads endpoints (default)
+  scope: ad_account
+  metric: requests
+  limit: 300
+  timeFrame: 5 minutes
+- name: GET /ad-accounts
+  scope: user
+  metric: requests
+  limit: 300
+  timeFrame: 5 minutes
+  operation: DspApi_ListAdAccounts
+- name: POST /analytics-overview
+  scope: ad_account
+  metric: requests
+  limit: 60
+  timeFrame: minute
+  operation: DspApi_QueryAnalyticsOverview
+- name: POST /analytics-detail
+  scope: ad_account
+  metric: requests
+  limit: 60
+  timeFrame: hour
+  operation: DspApi_QueryAnalyticsDetail
+  row_limit: 10000
+- name: POST /analytics-skadnetwork
+  scope: ad_account
+  metric: requests
+  limit: 60
+  timeFrame: hour
+  operation: DspApi_QueryAnalyticsSkAdNetwork
+- name: GET /cohort-summary (ROAS type)
+  scope: ad_account
+  metric: requests
+  limit: 60
+  timeFrame: minute
+  operation: DspApi_ReadCohortSummary
+- name: GET /cohort-summary (KPI action type)
+  scope: ad_account
+  metric: requests
+  limit: 60
+  timeFrame: hour
+  operation: DspApi_ReadCohortSummary
+- name: POST /reports (0-1 day date range)
+  scope: ad_account
+  metric: requests
+  limit: 30
+  timeFrame: day
+  operation: DspApi_CreateReport
+  row_limit: 4000000
+- name: POST /reports (2-7 day date range)
+  scope: ad_account
+  metric: requests
+  limit: 10
+  timeFrame: day
+  operation: DspApi_CreateReport
+- name: POST /reports (8-31 day date range)
+  scope: ad_account
+  metric: requests
+  limit: 5
+  timeFrame: day
+  operation: DspApi_CreateReport
+- name: GET /logs
+  scope: ad_account
+  metric: requests
+  limit: 30
+  timeFrame: day
+  operation: DspApi_ListLogs
+undocumented:
+- api: Moloco Commerce Media Decision API
+  note: 429 "Too many requests either by platform or by user" is declared in the spec; no numeric quota published.
+- api: Moloco Commerce Media Event API
+  note: 429 "Too many requests either by platform or by user" is declared in the spec; no numeric quota published.
+guidance:
+  reporting_choice: >-
+    Use POST /analytics-detail (synchronous, 60/hour, 10,000 rows, full dimensions + filters) for dashboards
+    and ad-hoc analysis; use the Report API (asynchronous, date-range-tiered daily quota, 4 million rows,
+    CSV or JSON, no filters) for scheduled bulk extraction.

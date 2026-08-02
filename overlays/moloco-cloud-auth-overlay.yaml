@@ -1,0 +1,31 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for MOLOCO Cloud Auth API
+  version: 1.0.0
+extends: openapi/moloco-cloud-auth-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: moloco
+    x-apievangelist-generated: '2026-07-31'
+    x-apievangelist-method: generated
+    x-apievangelist-source: https://dash.readme.com/api/v1/api-registry/ (ReadMe api-registry, harvested 2026-07-31)
+    x-apievangelist-operations: 28
+    x-apievangelist-artifacts:
+      authentication: authentication/moloco-authentication.yml
+      conventions: conventions/moloco-conventions.yml
+      errors: errors/moloco-problem-types.yml
+      lifecycle: lifecycle/moloco-lifecycle.yml
+      rate_limits: rate-limits/moloco-rate-limits.yml
+      data_model: data-model/moloco-data-model.yml
+      conformance: conformance/moloco-conformance.yml
+      skills: skills/_index.yml
+    x-apievangelist-notes:
+    - the spec declares server https://morse-us-prod.adsmoloco.com, which does not resolve publicly; the documented token
+      endpoint is https://api.moloco.cloud/cm/v1/auth/tokens
+    - access tokens are valid for 16 hours
+    - 409 Conflict is declared on registration/creation operations
+- target: $.servers
+  update:
+  - url: https://api.moloco.cloud
+    description: Observed reachable host recorded by the API Evangelist enrichment pipeline

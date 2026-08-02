@@ -1,0 +1,117 @@
+# Moloco Ads Developer Portal Documentation
+
+> Documentation for Moloco Ads Developer Portal
+
+## Guides
+- [Get started with Moloco Ads API](https://developer.moloco.cloud/docs/getting-started.md): This page helps you get started with Moloco Ads API.
+- [Glossary](https://developer.moloco.cloud/docs/glossary-1.md): This page will help you get started with Moloco Ads API.
+- [Access and manage user accounts](https://developer.moloco.cloud/docs/auth.md)
+- [Versioning](https://developer.moloco.cloud/docs/versioning.md)
+- [Rate limits](https://developer.moloco.cloud/docs/rate-limits.md)
+- [Create and manage your campaign](https://developer.moloco.cloud/docs/campaign-management-api.md)
+- [Generate campaign data reports](https://developer.moloco.cloud/docs/report-api.md)
+- [Keep track of campaign events](https://developer.moloco.cloud/docs/log-api.md)
+- [Create a target for your campaigns](https://developer.moloco.cloud/docs/create-a-target-audience-for-your-campaign.md)
+
+## API Reference
+- [List up AdAccounts.](https://developer.moloco.cloud/reference/dspapi_listadaccounts-1.md): List all AdAccounts accessible by the current user on the current Workplace.
+- [Create a new AdAccount.](https://developer.moloco.cloud/reference/dspapi_createadaccount-1.md): Create a new AdAccount on the Workplace.
+- [Read an existing AdAccount.](https://developer.moloco.cloud/reference/dspapi_readadaccount-1.md): Read an existing AdAccount.
+- [Delete an existing AdAccount.](https://developer.moloco.cloud/reference/dspapi_deleteadaccount-1.md): Delete an AdAccount from the current Workplace.
+- [Update an existing AdAccount.](https://developer.moloco.cloud/reference/dspapi_updateadaccount-1.md): Update an existing AdAccount.
+- [List up AdGroups.](https://developer.moloco.cloud/reference/dspapi_listadgroups-1.md): List up all AdGroups of the Campaign.
+- [Create a new AdGroup.](https://developer.moloco.cloud/reference/dspapi_createadgroup-1.md): Create a new AdGroup of the Campaign.
+- [Read an existing AdGroup.](https://developer.moloco.cloud/reference/dspapi_readadgroup-1.md): Read an existing AdGroup.
+- [Delete an existing AdGroup.](https://developer.moloco.cloud/reference/dspapi_deleteadgroup-1.md): Delete an existing AdGroup.
+- [Update an existing AdGroup.](https://developer.moloco.cloud/reference/dspapi_updateadgroup-1.md): Update an existing AdGroup.
+- [Provide the detail of ad performance analytics.](https://developer.moloco.cloud/reference/dspapi_queryanalyticsdetail.md): Provide the detail of ad performance analytics.
+- [Provide the overview of ad performance analytics.](https://developer.moloco.cloud/reference/dspapi_queryanalyticsoverview.md): Provide the overview of ad performance analytics.
+- [Provide the SKAdNetwork ad performance analytics.](https://developer.moloco.cloud/reference/dspapi_queryanalyticsskadnetwork.md): Provide the SKAdNetwork ad performance analytics.
+- [List up AudienceTargets.](https://developer.moloco.cloud/reference/dspapi_listaudiencetargets-1.md): List up all AudienceTargets of the AdAccount.
+- [Create a new AudienceTarget.](https://developer.moloco.cloud/reference/dspapi_createaudiencetarget-1.md): Create a new AudienceTarget of the AdAccount.
+- [Read an existing AudienceTarget.](https://developer.moloco.cloud/reference/dspapi_readaudiencetarget-1.md): Read an existing AudienceTarget.
+- [Delete an existing AudienceTarget.](https://developer.moloco.cloud/reference/dspapi_deleteaudiencetarget-1.md): Delete an existing AudienceTarget.
+- [Update an existing AudienceTarget.](https://developer.moloco.cloud/reference/dspapi_updateaudiencetarget-1.md): Update an existing AudienceTarget.
+- [Query given Campaigns' setting overview](https://developer.moloco.cloud/reference/dspapi_querycampaignoverviews.md): Retrieve not only Campaign itself but all the entities related to the Campaign
+- [List up Campaigns.](https://developer.moloco.cloud/reference/dspapi_listcampaigns-1.md): List up all Campaigns of the AdAccount or the Product.
+- [Create a new Campaign.](https://developer.moloco.cloud/reference/dspapi_createcampaign-1.md): Create a new Campaign.
+- [Read an existing Campaign.](https://developer.moloco.cloud/reference/dspapi_readcampaign-1.md): Read an existing Campaign.
+- [Delete an existing Campaign.](https://developer.moloco.cloud/reference/dspapi_deletecampaign-1.md): Delete an existing Campaign. Only Campaigns that have never been activated can be deleted.
+- [Update an existing Campaign.](https://developer.moloco.cloud/reference/dspapi_updatecampaign-1.md): Update an existing Campaign.
+- [Read a cohort summary.](https://developer.moloco.cloud/reference/dspapi_readcohortsummary-1.md): Read a cohort summary.
+- [Create a new asset upload session.](https://developer.moloco.cloud/reference/dspapi_createassetuploadsession-1.md): Create a new asset upload session for the AdAccount. A URL would be returned in a successful response for uploading the actual asset content. After asset upload has been successfully completed, see [the campaign creation guide](https://developer.moloco.cloud/docs/campaign-management-api) and follow [Section 4-1 for those using Moloco Ads API v1.7 or later](https://developer.moloco.cloud/docs/campaign-management-api#4-1-upload-a-creative-asset-to-storage-for-those-using-moloco-ads-api-v17-or-later)
+- [List CreativeReviews.](https://developer.moloco.cloud/reference/dspapi_listcreativereviews-1.md): List the creative reviews of an AdAccount. Only creatives with UNDER_REVIEW, BLOCKED, or ETC status are returned. Id is provided through the query param ad_account_id.
+- [List up Creatives.](https://developer.moloco.cloud/reference/dspapi_listcreatives-1.md): List up all creatives of the AdAccount or the Product.
+- [Delete existing Creatives.](https://developer.moloco.cloud/reference/dspapi_deletecreativesbulk-1.md): Delete existing creatives.
+- [Create a new Creative.](https://developer.moloco.cloud/reference/dspapi_createcreative-1.md): Create a new creative of the product. One and only one of the sources must be specified for the Creative.
+- [Copy Creatives synchronously.](https://developer.moloco.cloud/reference/dspapi_copycreativessync.md): Copy selected Creatives from one Product to another(or the same)Product within an AdAccount synchronously
+- [Read an existing Creative.](https://developer.moloco.cloud/reference/dspapi_readcreative-1.md): Read an existing creative.
+- [Delete an existing Creative.](https://developer.moloco.cloud/reference/dspapi_deletecreative-1.md): Delete an existing creative.
+- [Update an existing Creative.](https://developer.moloco.cloud/reference/dspapi_updatecreative-1.md): Update an existing creative. Only 'title', 'custom_key_values', 'enabling_state' could be updated. Exceptionally 'RICH_CUSTOM_HTML' could be updated.
+- [List up CreativeGroups.](https://developer.moloco.cloud/reference/dspapi_listcreativegroups-1.md): List up all CreativeGroups of the AdAccount or the Product.
+- [Delete existing CreativeGroups.](https://developer.moloco.cloud/reference/dspapi_deletecreativegroupsbulk-1.md): Delete existing CreativeGroups.
+- [Create a new CreativeGroup.](https://developer.moloco.cloud/reference/dspapi_createcreativegroup-1.md): Create a new CreativeGroup of the Product.
+- [Copy CreativeGroups synchronously.](https://developer.moloco.cloud/reference/dspapi_copycreativegroupssync.md): Copy selected CreativeGroups from one Product to another(or the same) Product within an AdAccount synchronously.
+- [Read an existing CreativeGroup.](https://developer.moloco.cloud/reference/dspapi_readcreativegroup-1.md): Read an existing CreativeGroup.
+- [Delete an existing CreativeGroup.](https://developer.moloco.cloud/reference/dspapi_deletecreativegroup-1.md): Delete an existing CreativeGroup.
+- [Update an existing CreativeGroup.](https://developer.moloco.cloud/reference/dspapi_updatecreativegroup-1.md): Update an existing CreativeGroup.
+- [List up CustomerSets.](https://developer.moloco.cloud/reference/dspapi_listcustomersets-1.md): List up all CustomerSets of the AdAccount.
+- [Create a new CustomerSet.](https://developer.moloco.cloud/reference/dspapi_createcustomerset-1.md): Create a new CustomerSet.
+- [Read an existing CustomerSet.](https://developer.moloco.cloud/reference/dspapi_readcustomerset-1.md): Read an existing CustomerSet.
+- [Delete an existing CustomerSet.](https://developer.moloco.cloud/reference/dspapi_deletecustomerset-1.md): Delete an existing CustomerSet.
+- [Update an existing CustomerSet.](https://developer.moloco.cloud/reference/dspapi_updatecustomerset-1.md): Update an existing CustomerSet.
+- [Read entity counts](https://developer.moloco.cloud/reference/dspapi_readentitycount-1.md): Retrieve the current number of entities and the limits under each ancestor types. Visit the [guide document](https://developer.moloco.cloud/docs/entity-quota) for more details.
+- [List up logs.](https://developer.moloco.cloud/reference/dspapi_listlogs-1.md): List up logs in the given Workplace.
+- [Create a new log.](https://developer.moloco.cloud/reference/dspapi_createlog-1.md): Create a new log.
+- [Read an existing log.](https://developer.moloco.cloud/reference/dspapi_readlog-1.md): Read an existing log.
+- [Delete an existing log.](https://developer.moloco.cloud/reference/dspapi_deletelog-1.md): Delete an existing log.
+- [Read log status.](https://developer.moloco.cloud/reference/dspapi_readlogstatus-1.md): Read the most recent log status. It will also show URLs containing log contents.
+- [List up Products.](https://developer.moloco.cloud/reference/dspapi_listproducts.md): List all Products of the AdAccount.
+- [Create a new Product.](https://developer.moloco.cloud/reference/dspapi_createproduct.md): Create a new Product of the AdAccount.
+- [Read an existing Product.](https://developer.moloco.cloud/reference/dspapi_readproduct.md): Read an existing Product.
+- [Delete an existing Product.](https://developer.moloco.cloud/reference/dspapi_deleteproduct.md): Delete an existing Product.
+- [Update an existing Product.](https://developer.moloco.cloud/reference/dspapi_updateproduct.md): Update an existing Product.
+- [Read an existing Product's app event summary.](https://developer.moloco.cloud/reference/dspapi_readproductappeventsummary.md): Read an existing Product's app event summary.
+- [Read conversion value configuration from an integrated MMP.](https://developer.moloco.cloud/reference/dspapi_readproductskanconversionconfigfrommmp-1.md): Read conversion value configuration stored in the MMP that is integrated with the Product using the tracking company and bundle ID data from its postback integration data.
+- [Read conversion value configurations.](https://developer.moloco.cloud/reference/dspapi_readproductskanconversionconfig.md): Read conversion value configurations under an existing Product.
+- [Update conversion value configurations.](https://developer.moloco.cloud/reference/dspapi_updateproductskanconversionconfig.md): Update conversion value configurations under an existing Product.
+- [List up report action events.](https://developer.moloco.cloud/reference/dspapi_listreportactionevents.md): List up all available report action events for ad_account.
+- [List up report filter options.](https://developer.moloco.cloud/reference/dspapi_listreportfilters.md): List up all available report filter options for ad_account.
+- [List up report exports.](https://developer.moloco.cloud/reference/dspapi_listreportexports.md): List up report exports in the given Workplace or AdAccount or Product.
+- [Create a new report export.](https://developer.moloco.cloud/reference/dspapi_createreportexport.md): Create a new report export.
+- [Read an existing report export.](https://developer.moloco.cloud/reference/dspapi_readreportexport.md): Read an existing report export.
+- [Delete an existing report export.](https://developer.moloco.cloud/reference/dspapi_deletereportexport.md): Delete an existing report export.
+- [List up reports.](https://developer.moloco.cloud/reference/dspapi_listreports.md): List up reports in the given Workplace and AdAccount.
+- [Create a new report.](https://developer.moloco.cloud/reference/dspapi_createreport.md): Create a new report of a specific AdAccount.
+- [Read an existing report.](https://developer.moloco.cloud/reference/dspapi_readreport.md): Read an existing report.
+- [Delete an existing report.](https://developer.moloco.cloud/reference/dspapi_deletereport.md): Delete an existing report.
+- [Read report status.](https://developer.moloco.cloud/reference/dspapi_readreportstatus.md): Read the most recent report status. It will also show URLs containing report contents.
+- [List up TrackingLinks.](https://developer.moloco.cloud/reference/dspapi_listtrackinglinks.md): List up all TrackingLinks of the AdAccount or the Product.
+- [Create a new TrackingLink.](https://developer.moloco.cloud/reference/dspapi_createtrackinglink.md): Create a new TrackingLink of the Product.
+- [Validate a TrackingLink.](https://developer.moloco.cloud/reference/dspapi_validatetrackinglink-1.md): Validate a TrackingLink of the product.
+- [Read an existing TrackingLink.](https://developer.moloco.cloud/reference/dspapi_readtrackinglink.md): Read an existing TrackingLink.
+- [Delete an existing TrackingLink.](https://developer.moloco.cloud/reference/dspapi_deletetrackinglink.md): Delete an existing TrackingLink.
+- [Update an existing TrackingLink.](https://developer.moloco.cloud/reference/dspapi_updatetrackinglink.md): Update an existing TrackingLink.
+- [Read a Workplace summary.](https://developer.moloco.cloud/reference/dspapi_readworkplacesummary.md): Read a Workplace summary.
+- [List ad account users](https://developer.moloco.cloud/reference/dspapi_listadaccountusers-1.md): List users under a certain ad account. With `include_role` query parameter, response can include roles. API callers who have a WORKPLACE_OWNER or AD_ACCOUNT_OWNER or AD_ACCOUNT_MEMBER role can call this API.
+- [Update user password](https://developer.moloco.cloud/reference/dspapi_updatepassword-1.md): Update user password. You can call this API with token whose type is AUTH_TOKEN, UPDATE_PASSWORD_TOKEN.
+- [List workplace users](https://developer.moloco.cloud/reference/dspapi_listworkplaceusers-1.md): List users under a certain workplace. With `include_role` query parameter, response can include roles. Only API callers who have a WORKPLACE_OWNER role can call this API.
+- [Complete user signup](https://developer.moloco.cloud/reference/dspapi_completesignup.md): Complete the user signup with additional info. The bearer token should be the password reset token which is achieved from `create password email`. Once this API succeeds, the user’s signed_up status becomes true.
+- [Expel the user](https://developer.moloco.cloud/reference/dspapi_expeluser-1.md): Expel the user from an API callers’ workplace. Only API callers who have the WORKPLACE_OWNER role can expel users. Expelled users will no longer have any roles under the workplace.
+- [Forgot user password](https://developer.moloco.cloud/reference/dspapi_forgotpassword-1.md): If the user forgot the password, use this API to receive `password reset email`. The `password reset email` contains password reset token for updating password and user’s email which will be used to call `UpdatePassword` API. The token is valid for 7 days.
+- [Invite the user](https://developer.moloco.cloud/reference/dspapi_inviteuser-1.md): Invite the user to an API callers’ workplace. The user who has WORKPLACE_OWNER or AD_ACCOUNT_OWNER or AD_ACCOUNT_MEMBER Roles can invite users to a workplace.
+- [Reset the user password](https://developer.moloco.cloud/reference/dspapi_resetpassword-1.md): reset the user password. The bearer token should be the password reset token which is achieved from `password reset email`. Once this API succeeds, the user’s signed_up status becomes true.
+- [Delete the user](https://developer.moloco.cloud/reference/dspapi_deleteuser-1.md): Delete the user.
+- [Read the user](https://developer.moloco.cloud/reference/dspapi_readuser-1.md): Read the user under API caller's workplace. If include_role specified, response will include roles bound to API caller's workplace and ad account (if exists). The user who has any role except AD_ACCOUNT_VIEWER can call this API. A user who has an AD_ACCOUNT_VIEWER role can only read itself.
+- [Update the user](https://developer.moloco.cloud/reference/dspapi_updateuser-1.md): Update the user's info such as name.
+- [List API caller's registered workplaces](https://developer.moloco.cloud/reference/dspapi_listworkplaces-1.md): List workplaces to which the user has registered.
+- [List workplaces by domain with invitation status](https://developer.moloco.cloud/reference/dspapi_listworkplacesbydomain.md): List workplaces by domain with the info whether API caller requested an invitation to this workplace or not.
+- [Grant the role to the user](https://developer.moloco.cloud/reference/dspapi_grantrole-1.md): Grant the Role to the user.
+- [Revoke the role from the user](https://developer.moloco.cloud/reference/dspapi_revokerole-1.md): Revoke the role from the user
+- [Issue a new token.](https://developer.moloco.cloud/reference/dspapi_createtoken-1.md): Issues a new token that gives you access to Moloco Ads APIs. Tokens are issued by workplace such that you need a unique token for each workplace you would like access to. Each token is valid for 16 hours, and you will need a new token after the token has expired.
+- [Read the workplace](https://developer.moloco.cloud/reference/dspapi_readworkplace-1.md): Read the workplace. The workplace is an API caller's signed workplace. All roles can call this API.
+
+## Pages
+- [Release notes](https://developer.moloco.cloud/release-notes.md)
+- [v1.10 Release note](https://developer.moloco.cloud/v110-release-note.md)
+- [v1.9 Release note](https://developer.moloco.cloud/v19-release-note.md)

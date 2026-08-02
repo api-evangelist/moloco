@@ -1,0 +1,131 @@
+generated: '2026-07-31'
+method: derived
+source: mcp/moloco-mcm-docs-mcp-tools.json + openapi/*.yml
+note: >-
+  Moloco's anonymously reachable MCP server (MCM Documentation) does not expose one tool per REST operation.
+  It exposes seven SPEC-LEVEL meta-tools that read the OpenAPI documents and one generic executor
+  (execute-request) that can invoke ANY operation in any registered spec via a HAR request object. The
+  crosswalk therefore binds tools to the spec surface rather than to individual operationIds, and records the
+  fan-out honestly: no operation has a dedicated tool, and every operation is reachable through one.
+surfaces:
+  openapi:
+  - file: openapi/moloco-ads-campaign-management-openapi.yml
+    title: Moloco Ads Campaign Management API
+    version: '1.10'
+    operations: 96
+  - file: openapi/moloco-cloud-auth-openapi.yml
+    title: MOLOCO Cloud Auth API
+    version: 1.0.0
+    operations: 28
+  - file: openapi/moloco-commerce-media-management-openapi.yml
+    title: Management API
+    version: '1.0'
+    operations: 74
+  - file: openapi/moloco-commerce-media-decision-openapi.yml
+    title: Decision API
+    version: '1.0'
+    operations: 4
+  - file: openapi/moloco-commerce-media-event-openapi.yml
+    title: Event API
+    version: '1.0'
+    operations: 1
+  graphql: null
+  mcp:
+  - url: https://mcm-docs.moloco.com/mcp
+    gated: false
+    tools_listed: 7
+  - url: https://mcp.moloco.cloud/mcp
+    gated: true
+    gate: OAuth 2.0 bearer, scope cloudapi.read
+    tools_listed: 0
+  - url: https://developer.moloco.cloud/mcp
+    gated: true
+    gate: Authorization required
+    tools_listed: 0
+crosswalk:
+- tool: list-specs
+  category: discovery
+  rest: []
+  binding: spec-index
+  confidence: high
+  note: Enumerates the OpenAPI documents registered with the MCM portal; no backing REST operation.
+- tool: list-endpoints
+  category: discovery
+  rest: []
+  binding: spec-index
+  confidence: high
+  note: Reads paths + methods out of a named OpenAPI document; no backing REST operation.
+- tool: search-endpoints
+  category: discovery
+  rest: []
+  binding: spec-index
+  confidence: high
+  note: Full-text search across paths, operations and parameters of the registered specs.
+- tool: get-endpoint
+  category: discovery
+  rest: []
+  binding: spec-index
+  confidence: high
+  note: Returns one operation's detail (security schemes, servers) from the spec.
+- tool: search
+  category: documentation
+  rest: []
+  binding: docs
+  confidence: high
+  note: Searches the MCM documentation corpus (mcm-docs.moloco.com), not the API.
+- tool: fetch
+  category: documentation
+  rest: []
+  binding: docs
+  confidence: high
+  note: Retrieves a documentation page by the id returned from search.
+- tool: execute-request
+  category: execution
+  rest: ['*']
+  binding: rest
+  confidence: high
+  note: >-
+    Generic HAR-request executor. Fans out to every operation in the named spec — 79 MCM operations
+    (74 Management + 4 Decision + 1 Event) via the MCM portal registration. The real inputSchema of any
+    given call is that operation's parameters + requestBody in the referenced OpenAPI document; the tool's
+    own schema is only {harRequest, title}.
+mcp_only:
+- tool: list-specs
+  reason: spec catalog, no REST equivalent
+- tool: list-endpoints
+  reason: spec introspection, no REST equivalent
+- tool: search-endpoints
+  reason: spec introspection, no REST equivalent
+- tool: get-endpoint
+  reason: spec introspection, no REST equivalent
+- tool: search
+  reason: documentation search, no REST equivalent
+- tool: fetch
+  reason: documentation retrieval, no REST equivalent
+rest_only:
+- capability: Moloco Ads campaign management (ad accounts, products, tracking links, campaigns, ad groups,
+    creatives, creative groups, audience targets, customer sets, analytics, cohort summaries, reports, report
+    exports, logs, entity quotas, workplace/user/role administration)
+  spec: openapi/moloco-ads-campaign-management-openapi.yml
+  operations: 96
+  reason: not registered with the anonymously reachable MCM MCP server
+- capability: Moloco Cloud authentication and authorization (token issuance, workplaces, userspaces, users,
+    passwords, role grants, permissions, ad-account registrations, health)
+  spec: openapi/moloco-cloud-auth-openapi.yml
+  operations: 28
+  reason: not registered with the anonymously reachable MCM MCP server
+- capability: MCM management, decisioning and event ingestion
+  specs:
+  - openapi/moloco-commerce-media-management-openapi.yml
+  - openapi/moloco-commerce-media-decision-openapi.yml
+  - openapi/moloco-commerce-media-event-openapi.yml
+  operations: 79
+  reason: reachable only through the generic execute-request tool, not as named per-operation tools
+coverage:
+  tools_named: 7
+  tools_bound_to_rest: 1
+  mcp_only_tools: 6
+  rest_operations_total: 203
+  rest_operations_with_a_dedicated_tool: 0
+  rest_operations_reachable_via_execute_request: 79
+  gated_servers: 2
