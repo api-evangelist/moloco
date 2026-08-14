@@ -15,7 +15,7 @@ x-type: company
 x-source: harvest:secondary-market
 specificationVersion: '0.21'
 created: '2026-07-31'
-modified: '2026-07-31'
+modified: '2026-08-13'
 tags:
 - advertising
 - adtech
@@ -151,6 +151,8 @@ apis:
     url: openapi/moloco-commerce-media-webhooks-openapi.yml
   - type: Webhooks
     url: asyncapi/moloco-commerce-media-webhooks.yml
+  - type: Overlay
+    url: overlays/moloco-commerce-media-webhooks-overlay.yaml
 common:
 - type: AgenticAccess
   url: agentic-access/moloco-agentic-access.yml
@@ -236,13 +238,18 @@ common:
   url: asyncapi/moloco-commerce-media-webhooks.yml
 - type: LLMsTxt
   url: llms/moloco-commerce-media-llms.txt
+- type: Plans
+  url: plans/moloco-plans-pricing.yml
+- type: Pricing
+  url: https://help.moloco.com/hc/en-us/articles/15764588719255-Pricing
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 x-enrichment:
-  date: '2026-07-31'
+  date: '2026-08-13'
   status: enriched
-  artifacts_added: 44
+  artifacts_added: 2
+  artifacts_updated: 4
   pass: local-v1
