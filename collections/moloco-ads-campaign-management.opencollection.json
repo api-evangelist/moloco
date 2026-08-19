@@ -1,0 +1,2338 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Moloco Ads Campaign Management API",
+    "version": "1.10"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AdAccount",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up AdAccounts.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/ad-accounts"
+          },
+          "docs": "List all AdAccounts accessible by the current user on the current Workplace."
+        },
+        {
+          "info": {
+            "name": "Create a new AdAccount.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/ad-accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new AdAccount on the Workplace."
+        },
+        {
+          "info": {
+            "name": "Read an existing AdAccount.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/ad-accounts/:ad_account_id",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AdAccount to be retrieved."
+              }
+            ]
+          },
+          "docs": "Read an existing AdAccount."
+        },
+        {
+          "info": {
+            "name": "Update an existing AdAccount.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/ad-accounts/:ad_account_id",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AdAccount."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing AdAccount."
+        },
+        {
+          "info": {
+            "name": "Delete an existing AdAccount.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/ad-accounts/:ad_account_id",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount ID to be deleted."
+              }
+            ]
+          },
+          "docs": "Delete an AdAccount from the current Workplace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "AdGroup",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up AdGroups.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/ad-groups",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID to which AdGroups belong to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID to which AdGroups belong to."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "The Campaign ID which AdGroups belong to.\nIf not specified, response will contains all AdGroups under the Product."
+              },
+              {
+                "name": "inquiry_option",
+                "value": "",
+                "type": "query",
+                "description": "InquiryOption to specify which information to retrieve.\n\n - INQUIRY_ENTITY: Only the target entity itself is returned in response.\nThis InquiryOption is faster than other options as it reads the single entity from the database.\n - INQUIRY_OVERVIEW: The target entity's overview information is returned in response.\nIn general, the overview information includes the brief content of the target entity and its related entities.\nThis InquiryOption is slower than INQUIRY_ENTITY but the returned data size is usually smaller than that.\n - INQUIRY_ALL: The target entity and its summary information is returned in response.\nThis InquiryOption is equivalent to INQUIRY_ENTITY + INQUIRY_OVERVIEW, and it's slow and big."
+              }
+            ]
+          },
+          "docs": "List up all AdGroups of the Campaign."
+        },
+        {
+          "info": {
+            "name": "Create a new AdGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/ad-groups",
+            "params": [
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "The Campaign ID the AdGroup belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new AdGroup of the Campaign."
+        },
+        {
+          "info": {
+            "name": "Read an existing AdGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/ad-groups/:ad_group_id",
+            "params": [
+              {
+                "name": "ad_group_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AdGroup to be retrieved."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "The Campaign ID the AdGroup belongs to."
+              }
+            ]
+          },
+          "docs": "Read an existing AdGroup."
+        },
+        {
+          "info": {
+            "name": "Update an existing AdGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/ad-groups/:ad_group_id",
+            "params": [
+              {
+                "name": "ad_group_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AdGroup to be updated."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "The Campaign ID the AdGroup belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing AdGroup."
+        },
+        {
+          "info": {
+            "name": "Delete an existing AdGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/ad-groups/:ad_group_id",
+            "params": [
+              {
+                "name": "ad_group_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AdGroup to be deleted."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "The Campaign ID the AdGroup belongs to."
+              }
+            ]
+          },
+          "docs": "Delete an existing AdGroup."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Provide the detail of ad performance analytics.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/analytics-detail",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Provide the detail of ad performance analytics."
+        },
+        {
+          "info": {
+            "name": "Provide the overview of ad performance analytics.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/analytics-overview",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Provide the overview of ad performance analytics."
+        },
+        {
+          "info": {
+            "name": "Provide the SKAdNetwork ad performance analytics.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/analytics-skadnetwork",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Provide the SKAdNetwork ad performance analytics."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "AudienceTarget",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up AudienceTargets.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/audience-targets",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID the AudienceTargets belong to."
+              }
+            ]
+          },
+          "docs": "List up all AudienceTargets of the AdAccount."
+        },
+        {
+          "info": {
+            "name": "Create a new AudienceTarget.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/audience-targets",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID the AudienceTarget belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new AudienceTarget of the AdAccount."
+        },
+        {
+          "info": {
+            "name": "Read an existing AudienceTarget.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/audience-targets/:audience_target_id",
+            "params": [
+              {
+                "name": "audience_target_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AudienceTarget to be retrieved."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID the AudienceTarget belongs to."
+              }
+            ]
+          },
+          "docs": "Read an existing AudienceTarget."
+        },
+        {
+          "info": {
+            "name": "Update an existing AudienceTarget.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/audience-targets/:audience_target_id",
+            "params": [
+              {
+                "name": "audience_target_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AudienceTarget to be updated."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID the AudienceTarget belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing AudienceTarget."
+        },
+        {
+          "info": {
+            "name": "Delete an existing AudienceTarget.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/audience-targets/:audience_target_id",
+            "params": [
+              {
+                "name": "audience_target_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the AudienceTarget to be deleted."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID the AudienceTarget belongs to."
+              }
+            ]
+          },
+          "docs": "Delete an existing AudienceTarget."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List ad account users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/auth/ad-account/:ad_account_id/users",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The ad account ID."
+              },
+              {
+                "name": "include_role",
+                "value": "",
+                "type": "query",
+                "description": "Flag whether response includes user's role."
+              }
+            ]
+          },
+          "docs": "List users under a certain ad account.\nWith `include_role` query parameter, response can include roles.\nAPI callers who have a WORKPLACE_OWNER or AD_ACCOUNT_OWNER or AD_ACCOUNT_MEMBER role can call this API."
+        },
+        {
+          "info": {
+            "name": "Update user password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update user password.\nYou can call this API with token whose type is AUTH_TOKEN, UPDATE_PASSWORD_TOKEN."
+        },
+        {
+          "info": {
+            "name": "List workplace users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users",
+            "params": [
+              {
+                "name": "include_role",
+                "value": "",
+                "type": "query",
+                "description": "Flag whether response includes user's role."
+              },
+              {
+                "name": "filter_roles",
+                "value": "",
+                "type": "query",
+                "description": "Filter the users who have this role.\nIf multiple roles are given, users who have one of these roles are filtered.\n\n - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
+              },
+              {
+                "name": "match_roles",
+                "value": "",
+                "type": "query",
+                "description": "Select the users who have this role.\nIf multiple roles are given, only users who have all of these roles are selected.\n\n - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
+              }
+            ]
+          },
+          "docs": "List users under a certain workplace.\nWith `include_role` query parameter, response can include roles.\nOnly API callers who have a WORKPLACE_OWNER role can call this API."
+        },
+        {
+          "info": {
+            "name": "Complete user signup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/complete-signup",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Complete the user signup with additional info.\nThe bearer token should be the password reset token which is achieved from `create password email`.\nOnce this API succeeds, the user’s signed_up status becomes true."
+        },
+        {
+          "info": {
+            "name": "Expel the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/expel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Expel the user from an API callers’ workplace.\nOnly API callers who have the WORKPLACE_OWNER role can expel users.\nExpelled users will no longer have any roles under the workplace."
+        },
+        {
+          "info": {
+            "name": "Forgot user password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/forgot-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "If the user forgot the password, use this API to receive `password reset email`.\nThe `password reset email` contains password reset token for updating password and user’s email which will be used to call `UpdatePassword` API.\nThe token is valid for 7 days."
+        },
+        {
+          "info": {
+            "name": "Invite the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/invite",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invite the user to an API callers’ workplace.\nThe user who has WORKPLACE_OWNER or AD_ACCOUNT_OWNER or AD_ACCOUNT_MEMBER Roles can invite users to a workplace."
+        },
+        {
+          "info": {
+            "name": "Reset the user password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/reset-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "reset the user password.\nThe bearer token should be the password reset token which is achieved from `password reset email`.\nOnce this API succeeds, the user’s signed_up status becomes true."
+        },
+        {
+          "info": {
+            "name": "Delete the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/withdrawal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete the user.\n"
+        },
+        {
+          "info": {
+            "name": "Read the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The user ID."
+              },
+              {
+                "name": "include_role",
+                "value": "",
+                "type": "query",
+                "description": "Flag whether response includes user's role."
+              }
+            ]
+          },
+          "docs": "Read the user under API caller's workplace.\nIf include_role specified, response will include roles bound to API caller's workplace and ad account (if exists).\nThe user who has any role except AD_ACCOUNT_VIEWER can call this API.\nA user who has an AD_ACCOUNT_VIEWER role can only read itself."
+        },
+        {
+          "info": {
+            "name": "Update the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/auth/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The user ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the user's info such as name."
+        },
+        {
+          "info": {
+            "name": "List API caller's registered workplaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/auth/workplaces",
+            "params": [
+              {
+                "name": "show_history",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include creation request histories.\nIf true, the response will include Workplace creation request histories.\nIf false, the response will not include Workplace creation request histories."
+              }
+            ]
+          },
+          "docs": "List workplaces to which the user has registered."
+        },
+        {
+          "info": {
+            "name": "List workplaces by domain with invitation status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/auth/workplaces-by-domain"
+          },
+          "docs": "List workplaces by domain with the info whether API caller requested an invitation to this workplace or not."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Role",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Grant the role to the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/roles/grant",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grant the Role to the user."
+        },
+        {
+          "info": {
+            "name": "Revoke the role from the user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/roles/revoke",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Revoke the role from the user"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Token",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Issue a new token.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/auth/tokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Issues a new token that gives you access to Moloco Ads APIs.\nTokens are issued by workplace such that you need a unique token for each workplace you would like access to.\nEach token is valid for 16 hours, and you will need a new token after the token has expired."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workplace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read the workplace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/auth/workplaces/:workplace_id",
+            "params": [
+              {
+                "name": "workplace_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the workplace."
+              }
+            ]
+          },
+          "docs": "Read the workplace. The workplace is an API caller's signed workplace. All roles can call this API."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Campaign",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query given Campaigns' setting overview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/campaign-overviews",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID which the Campaigns belong to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID which the Campaigns belongs to."
+              },
+              {
+                "name": "campaign_ids",
+                "value": "",
+                "type": "query",
+                "description": "The list of Campaign IDs to query for the overview data."
+              }
+            ]
+          },
+          "docs": "Retrieve not only Campaign itself but all the entities related to the Campaign"
+        },
+        {
+          "info": {
+            "name": "List up Campaigns.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/campaigns",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID to which the Campaigns belong to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID to which the Campaigns belong to."
+              },
+              {
+                "name": "states",
+                "value": "",
+                "type": "query",
+                "description": "The states of the Campaigns to be listed.\nDeleted Campaigns can not be listed with this parameter.\n\n - SUBMITTED: All the required data are entered and passed all the validation. It's eligible\nto be reviewed by Moloco for activation.\n - READY: Campaign is before schedule and internally ready but disabled.\nWill transit to PAUSED when it becomes on schdule.\n - UPCOMING: Campaign is before schedule and internally ready and disabled.\nWill transit to ACTIVE when it becomes on schdule.\n - ACTIVE: Campaign is on schedule and spending the budget.\n - PAUSED: Campaign is paused and not spending the budget.\n - SUSPENDED: Campaign activation is suspended by the system for the following reasons:\n- App has been found to be in violation of Moloco's creative policy.\n - COMPLETED: Campaign is completed but may still get attributions for some time."
+              },
+              {
+                "name": "fetch_option",
+                "value": "",
+                "type": "query",
+                "description": "Fetch option to query Campaigns only deleted or all(deleted & not deleted).\nIf fetch_option is not specified, it will fetch only alive Campaigns.\n\n - FETCH_ALL: Fetch all Campaigns including deleted and not deleted.\n - FETCH_ONLY_DELETED: Fetch only deleted Campaigns."
+              }
+            ]
+          },
+          "docs": "List up all Campaigns of the AdAccount or the Product."
+        },
+        {
+          "info": {
+            "name": "Create a new Campaign.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/campaigns",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID which the Campaign belongs to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID which the Campaign belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Campaign."
+        },
+        {
+          "info": {
+            "name": "Read an existing Campaign.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/campaigns/:campaign_id",
+            "params": [
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Campaign to be retrieved."
+              }
+            ]
+          },
+          "docs": "Read an existing Campaign."
+        },
+        {
+          "info": {
+            "name": "Update an existing Campaign.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/campaigns/:campaign_id",
+            "params": [
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Campaign to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing Campaign."
+        },
+        {
+          "info": {
+            "name": "Delete an existing Campaign.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/campaigns/:campaign_id",
+            "params": [
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Campaign to be deleted."
+              }
+            ]
+          },
+          "docs": "Delete an existing Campaign. Only Campaigns that have never been activated can be deleted."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "CohortSummary",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read a cohort summary.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/cohort-summary",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID to which a cohort summary belongs to."
+              },
+              {
+                "name": "date_range.start",
+                "value": "",
+                "type": "query",
+                "description": "Start date in the format of YYYY-MM-DD (inclusive)."
+              },
+              {
+                "name": "date_range.end",
+                "value": "",
+                "type": "query",
+                "description": "End date in the format of YYYY-MM-DD (inclusive).\nMax 31 days from the start date."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Cohort metric type. If not specified, ROAS is selected.\n\n - ROAS: Deprecated.\n - KPI_ACTION: Deprecated.\n - UA_ROAS: Cohort ROAS metric type for user acquisition Campaigns.\n - UA_KPI_ACTION: Cohort KPI actions metric type for user acquisition Campaigns.\n - RE_ROAS: Cohort ROAS metric type for re-engagement Campaigns.\n - RE_KPI_ACTION: Cohort KPI actions metric type for re-engagement Campaigns."
+              },
+              {
+                "name": "actions",
+                "value": "",
+                "type": "query",
+                "description": "Actions to be included in a cohort summary, which are revenue actions\nfor ROAS or KPI actions for KPI_ACTION.\nIf not specified, all the actions are included."
+              }
+            ]
+          },
+          "docs": "Read a cohort summary."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Creative",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new asset upload session.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/creative-assets",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new asset upload session for the AdAccount. A URL would be returned in a successful response for uploading the actual asset content.\nAfter asset upload has been successfully completed, see [the campaign creation guide](https://developer.moloco.cloud/docs/campaign-management-api) and follow [Section 4-1 for those using Moloco Ads API v1.7 or later](https://developer.moloco.cloud/docs/campaign-management-api#4-1-upload-a-creative-asset-to-storage-for-those-using-moloco-ads-api-v17-or-late"
+        },
+        {
+          "info": {
+            "name": "List CreativeReviews.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/creative-reviews",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "review_states",
+                "value": "",
+                "type": "query",
+                "description": "The CreativeReview status to retrieve.\nRetrieves all status as a default (If it is empty).\nIt should be given by query params in the REST API. (e.g. ?review_states=UNDER_REVIEW&review_states=APPROVED).\n\n - UNDER_REVIEW: Creative is currently under review.\n - APPROVED: Creative has been accepted by the exchange.\n - BLOCKED: Creative has been rejected by the exchange.\n - ETC: Refer to ReviewAction for more details.\n - APPROVED_FOR_ADULTS: Creative has been accepted only for adults by the exchange.\n - GOOGLE_PLATFORM_APPROVED: Creative is rejected by ADX (and ADX_RTB) on network policy but approved on platform policy.\nIn ADX requests, a flag will indicate whether a creative with this status can bid.\nThis status will only be used in ADX reviews."
+              },
+              {
+                "name": "campaign_states",
+                "value": "",
+                "type": "query",
+                "description": "The Campaign status of the list of CreativeGroups used by.\nRetrieves all status as a default (If it is empty).\nIt should be given by query params in the REST API. (e.g. ?campaign_states=DRAFT&campaign_states=SUBMITTED).\n\n - SUBMITTED: All the required data are entered and passed all the validation. It's eligible\nto be reviewed by Moloco for activation.\n - READY: Campaign is before schedule and internally ready but disabled.\nWill transit to PAUSED when it becomes on schdule.\n - UPCOMING: Campaign is before schedule and internally ready and disabled.\nWill transit to ACTIVE when it becomes on schdule.\n - ACTIVE: Campaign is on schedule and spending the budget.\n - PAUSED: Campaign is paused and not spending the budget.\n - SUSPENDED: Campaign activation is suspended by the system for the following reasons:\n- App has been found to be in violation of Moloco's creative policy.\n - COMPLETED: Campaign is completed but may still get attributions for some time."
+              }
+            ]
+          },
+          "docs": "List the creative reviews of an AdAccount. Only creatives with UNDER_REVIEW, BLOCKED, or ETC status are returned. Id is provided through the query param ad_account_id."
+        },
+        {
+          "info": {
+            "name": "List up Creatives.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/creatives",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID to which the Creatives belong to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID to which the Creatives belong to."
+              },
+              {
+                "name": "types",
+                "value": "",
+                "type": "query",
+                "description": "The type of the Creatives to be listed.\nIf not specified, all types of Creatives will be listed.\n\n - UNKNOWN_TYPE: This value is not part of the specification.\n - IMAGE: Image Creative. The image Creative source must be specified for this type.\n - VIDEO: Video Creative. The video Creative source must be specified for this type.\n - VAST_VIDEO: Vast video Creative. The vast video Creative source must be specified for this type.\n - NATIVE: Deprecated. v1.5 is the last version supporting this version.\nNative Creative. The native Creative source must be specified for this type.\n - NATIVE_IMAGE: Native image Creative. The native image Creative source must be specified for this type.\n - NATIVE_VIDEO: Native video Creative. The native video Creative source must be specified for this type.\n - CUSTOM_HTML: (Will be supported soon) Custom HTML Creative. The custom HTML Creative source must be specified for this type.\n - TEMPLATE_HTML: (Will be supported soon) Template HTML Creative. The template HTML Creative source must be specified for this type.\n - RICH_CUSTOM_HTML: The rich custom HTML Creative. The rich custom HTML Creative source must be specified for this type.\n - DYNAMIC_HTML: (Will be supported soon) The dynamic HTML Creative. The dynamic HTML Creative source must be specified for this type.\n - AD_TAG: (Will be supported soon) Third-party ad tag Creative with script-based or vast tag-based ad tag."
+              },
+              {
+                "name": "order_by.key",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order_by.is_descending",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "inquiry_option",
+                "value": "",
+                "type": "query",
+                "description": "InquiryOption to specify which information to retrieve.\n\n - INQUIRY_ENTITY: Only the target entity itself is returned in response.\nThis InquiryOption is faster than other options as it reads the single entity from the database.\n - INQUIRY_OVERVIEW: The target entity's overview information is returned in response.\nIn general, the overview information includes the brief content of the target entity and its related entities.\nThis InquiryOption is slower than INQUIRY_ENTITY but the returned data size is usually smaller than that.\n - INQUIRY_ALL: The target entity and its summary information is returned in response.\nThis InquiryOption is equivalent to INQUIRY_ENTITY + INQUIRY_OVERVIEW, and it's slow and big."
+              }
+            ]
+          },
+          "docs": "List up all creatives of the AdAccount or the Product."
+        },
+        {
+          "info": {
+            "name": "Create a new Creative.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/creatives",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID which the Creative belongs to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID which the Creative belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new creative of the product.\nOne and only one of the sources must be specified for the Creative."
+        },
+        {
+          "info": {
+            "name": "Delete existing Creatives.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/creatives",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID."
+              },
+              {
+                "name": "creative_ids",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the Creatives to be deleted."
+              }
+            ]
+          },
+          "docs": "Delete existing creatives."
+        },
+        {
+          "info": {
+            "name": "Copy Creatives synchronously.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/creatives/sync-clones",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Copy selected Creatives from one Product to another(or the same)Product within an AdAccount synchronously"
+        },
+        {
+          "info": {
+            "name": "Read an existing Creative.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/creatives/:creative_id",
+            "params": [
+              {
+                "name": "creative_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Creative to be retrieved."
+              }
+            ]
+          },
+          "docs": "Read an existing creative."
+        },
+        {
+          "info": {
+            "name": "Update an existing Creative.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/creatives/:creative_id",
+            "params": [
+              {
+                "name": "creative_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Creative to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing creative. Only 'title', 'custom_key_values', 'enabling_state' could be updated. Exceptionally 'RICH_CUSTOM_HTML' could be updated."
+        },
+        {
+          "info": {
+            "name": "Delete an existing Creative.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/creatives/:creative_id",
+            "params": [
+              {
+                "name": "creative_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Creative to be deleted."
+              }
+            ]
+          },
+          "docs": "Delete an existing creative."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "CreativeGroup",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up CreativeGroups.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/creative-groups",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID of the listing CreativeGroups belong to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID to which the CreativeGroups belong."
+              },
+              {
+                "name": "inquiry_option",
+                "value": "",
+                "type": "query",
+                "description": "InquiryOption to specify which information to retrieve.\n\n - INQUIRY_ENTITY: Only the target entity itself is returned in response.\nThis InquiryOption is faster than other options as it reads the single entity from the database.\n - INQUIRY_OVERVIEW: The target entity's overview information is returned in response.\nIn general, the overview information includes the brief content of the target entity and its related entities.\nThis InquiryOption is slower than INQUIRY_ENTITY but the returned data size is usually smaller than that.\n - INQUIRY_ALL: The target entity and its summary information is returned in response.\nThis InquiryOption is equivalent to INQUIRY_ENTITY + INQUIRY_OVERVIEW, and it's slow and big."
+              }
+            ]
+          },
+          "docs": "List up all CreativeGroups of the AdAccount or the Product."
+        },
+        {
+          "info": {
+            "name": "Create a new CreativeGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/creative-groups",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID to which the CreativeGroup belongs to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID to which the CreativeGroup belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new CreativeGroup of the Product."
+        },
+        {
+          "info": {
+            "name": "Delete existing CreativeGroups.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/creative-groups",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID of the CreativeGroups to be deleted."
+              },
+              {
+                "name": "creative_group_ids",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the CreativeGroups to be deleted."
+              }
+            ]
+          },
+          "docs": "Delete existing CreativeGroups."
+        },
+        {
+          "info": {
+            "name": "Copy CreativeGroups synchronously.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/creative-groups/sync-clones",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Copy selected CreativeGroups from one Product to another(or the same) Product within an AdAccount synchronously."
+        },
+        {
+          "info": {
+            "name": "Read an existing CreativeGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/creative-groups/:creative_group_id",
+            "params": [
+              {
+                "name": "creative_group_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the CreativeGroup to be retrieved."
+              },
+              {
+                "name": "inquiry_option",
+                "value": "",
+                "type": "query",
+                "description": "InquiryOption to specify which information to retrieve.\n\n - INQUIRY_ENTITY: Only the target entity itself is returned in response.\nThis InquiryOption is faster than other options as it reads the single entity from the database.\n - INQUIRY_OVERVIEW: The target entity's overview information is returned in response.\nIn general, the overview information includes the brief content of the target entity and its related entities.\nThis InquiryOption is slower than INQUIRY_ENTITY but the returned data size is usually smaller than that.\n - INQUIRY_ALL: The target entity and its summary information is returned in response.\nThis InquiryOption is equivalent to INQUIRY_ENTITY + INQUIRY_OVERVIEW, and it's slow and big."
+              }
+            ]
+          },
+          "docs": "Read an existing CreativeGroup."
+        },
+        {
+          "info": {
+            "name": "Update an existing CreativeGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/creative-groups/:creative_group_id",
+            "params": [
+              {
+                "name": "creative_group_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the CreativeGroup to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing CreativeGroup."
+        },
+        {
+          "info": {
+            "name": "Delete an existing CreativeGroup.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/creative-groups/:creative_group_id",
+            "params": [
+              {
+                "name": "creative_group_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the CreativeGroup to be deleted."
+              }
+            ]
+          },
+          "docs": "Delete an existing CreativeGroup."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "CustomerSet",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up CustomerSets.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/customer-sets",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID."
+              }
+            ]
+          },
+          "docs": "List up all CustomerSets of the AdAccount."
+        },
+        {
+          "info": {
+            "name": "Create a new CustomerSet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/customer-sets",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new CustomerSet."
+        },
+        {
+          "info": {
+            "name": "Read an existing CustomerSet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/customer-sets/:customer_set_id",
+            "params": [
+              {
+                "name": "customer_set_id",
+                "value": "",
+                "type": "path",
+                "description": "The CustomerSet ID."
+              }
+            ]
+          },
+          "docs": "Read an existing CustomerSet."
+        },
+        {
+          "info": {
+            "name": "Update an existing CustomerSet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/customer-sets/:customer_set_id",
+            "params": [
+              {
+                "name": "customer_set_id",
+                "value": "",
+                "type": "path",
+                "description": "The CustomerSet ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing CustomerSet."
+        },
+        {
+          "info": {
+            "name": "Delete an existing CustomerSet.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/customer-sets/:customer_set_id",
+            "params": [
+              {
+                "name": "customer_set_id",
+                "value": "",
+                "type": "path",
+                "description": "The CustomerSet ID."
+              }
+            ]
+          },
+          "docs": "Delete an existing CustomerSet."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ReadEntityCount",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read entity counts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/entity-counts",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID of the given entity type.\nRequired for entity types: Product, Campaign, AdGroup, CreativeGroup, Creative, TrackingLink, Target, CustomterSet."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID of the given entity type.\nRequired for entity types: Campaign, CreativeGroup, Creative."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "The Campaign ID of the given entity type.\nRequired for entity types: AdGroup."
+              },
+              {
+                "name": "entity_type",
+                "value": "",
+                "type": "query",
+                "description": "Entity type to query for."
+              }
+            ]
+          },
+          "docs": "Retrieve the current number of entities and the limits under each ancestor types.\nVisit the [guide document](https://developer.moloco.cloud/docs/entity-quota) for more details."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Log",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up logs.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/logs",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the AdAccount to list up logs."
+              },
+              {
+                "name": "date_range.start",
+                "value": "",
+                "type": "query",
+                "description": "Start date in the format of YYYY-MM-DD (inclusive)."
+              },
+              {
+                "name": "date_range.end",
+                "value": "",
+                "type": "query",
+                "description": "End date in the format of YYYY-MM-DD (inclusive). Max 31 days from the start date."
+              }
+            ]
+          },
+          "docs": "List up logs in the given Workplace."
+        },
+        {
+          "info": {
+            "name": "Create a new log.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/logs",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "Ad account ID to which a log associated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new log."
+        },
+        {
+          "info": {
+            "name": "Read an existing log.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/logs/:log_id",
+            "params": [
+              {
+                "name": "log_id",
+                "value": "",
+                "type": "path",
+                "description": "Log ID to read."
+              }
+            ]
+          },
+          "docs": "Read an existing log."
+        },
+        {
+          "info": {
+            "name": "Delete an existing log.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/logs/:log_id",
+            "params": [
+              {
+                "name": "log_id",
+                "value": "",
+                "type": "path",
+                "description": "Log ID to delete."
+              }
+            ]
+          },
+          "docs": "Delete an existing log."
+        },
+        {
+          "info": {
+            "name": "Read log status.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/logs/:log_id/status",
+            "params": [
+              {
+                "name": "log_id",
+                "value": "",
+                "type": "path",
+                "description": "Log ID to read the status."
+              }
+            ]
+          },
+          "docs": "Read the most recent log status. It will also show URLs containing log contents."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Product",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up Products.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/products",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID to which the Product belongs."
+              }
+            ]
+          },
+          "docs": "List all Products of the AdAccount."
+        },
+        {
+          "info": {
+            "name": "Create a new Product.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/products",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID to which the Product belongs."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new Product of the AdAccount."
+        },
+        {
+          "info": {
+            "name": "Read an existing Product.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/products/:product_id",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "The Product ID to be retrieved."
+              }
+            ]
+          },
+          "docs": "Read an existing Product."
+        },
+        {
+          "info": {
+            "name": "Update an existing Product.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/products/:product_id",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Product to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing Product."
+        },
+        {
+          "info": {
+            "name": "Delete an existing Product.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/products/:product_id",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Product to delete."
+              }
+            ]
+          },
+          "docs": "Delete an existing Product."
+        },
+        {
+          "info": {
+            "name": "Read an existing Product's app event summary.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/products/:product_id/app-event-summary",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "The Product ID to be retrieved."
+              },
+              {
+                "name": "condition.attribution",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "condition.revenue",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "condition.time_window",
+                "value": "",
+                "type": "query",
+                "description": " - TIME_WINDOW_D30: Query with recent 30 days. (Default).\n - TIME_WINDOW_D90: Query with recent 90 days.\n - TIME_WINDOW_TODAY: Query with today’s data."
+              }
+            ]
+          },
+          "docs": "Read an existing Product's app event summary."
+        },
+        {
+          "info": {
+            "name": "Read conversion value configuration from an integrated MMP.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/products/:product_id/mmp-skan-conversion-config",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Product to import SKAdNetwork conversion value configuration.\nThe type of product OS should be IOS."
+              }
+            ]
+          },
+          "docs": "Read conversion value configuration stored in the MMP that is integrated with the Product using the tracking company and bundle ID data from its postback integration data."
+        },
+        {
+          "info": {
+            "name": "Read conversion value configurations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/products/:product_id/skan-conversion-config",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Product related to the MMPI which will be updated."
+              }
+            ]
+          },
+          "docs": "Read conversion value configurations under an existing Product."
+        },
+        {
+          "info": {
+            "name": "Update conversion value configurations.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/products/:product_id/skan-conversion-config",
+            "params": [
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the Product related to the MMPI which will be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update conversion value configurations under an existing Product."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "CampaignSummary",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up report action events.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/report-action-events",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID of Campaigns to fetch the report actions."
+              },
+              {
+                "name": "include_moloco_pixel_events",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List up all available report action events for ad_account."
+        },
+        {
+          "info": {
+            "name": "List up report filter options.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/report-filters",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID of Campaigns to generate the report filter."
+              }
+            ]
+          },
+          "docs": "List up all available report filter options for ad_account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ReportExport",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up report exports.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/report-exports",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the AdAccount to list up report exports."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the Product to list up report exports."
+              }
+            ]
+          },
+          "docs": "List up report exports in the given Workplace or AdAccount or Product."
+        },
+        {
+          "info": {
+            "name": "Create a new report export.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/report-exports",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "Ad account ID to which the report-export associated."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "Product ID to which the report-export associated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new report export."
+        },
+        {
+          "info": {
+            "name": "Read an existing report export.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/report-exports/:report_export_id",
+            "params": [
+              {
+                "name": "report_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Report Export ID to read."
+              }
+            ]
+          },
+          "docs": "Read an existing report export."
+        },
+        {
+          "info": {
+            "name": "Delete an existing report export.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/report-exports/:report_export_id",
+            "params": [
+              {
+                "name": "report_export_id",
+                "value": "",
+                "type": "path",
+                "description": "Report Export ID to delete."
+              }
+            ]
+          },
+          "docs": "Delete an existing report export."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Report",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up reports.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/reports",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the AdAccount to list up reports."
+              }
+            ]
+          },
+          "docs": "List up reports in the given Workplace and AdAccount."
+        },
+        {
+          "info": {
+            "name": "Create a new report.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/reports",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID of Campaigns to create the reports."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new report of a specific AdAccount."
+        },
+        {
+          "info": {
+            "name": "Read an existing report.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/reports/:report_id",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Report ID to read."
+              }
+            ]
+          },
+          "docs": "Read an existing report."
+        },
+        {
+          "info": {
+            "name": "Delete an existing report.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/reports/:report_id",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Report ID to delete."
+              }
+            ]
+          },
+          "docs": "Delete an existing report."
+        },
+        {
+          "info": {
+            "name": "Read report status.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/reports/:report_id/status",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "Report ID to read the status."
+              }
+            ]
+          },
+          "docs": "Read the most recent report status. It will also show URLs containing report contents."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "TrackingLink",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List up TrackingLinks.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/tracking-links",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID which the TrackingLinks belong to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID which the TrackingLinks belong to."
+              },
+              {
+                "name": "inquiry_option",
+                "value": "",
+                "type": "query",
+                "description": "InquiryOption to specify which information to retrieve.\n\n - INQUIRY_ENTITY: Only the target entity itself is returned in response.\nThis InquiryOption is faster than other options as it reads the single entity from the database.\n - INQUIRY_OVERVIEW: The target entity's overview information is returned in response.\nIn general, the overview information includes the brief content of the target entity and its related entities.\nThis InquiryOption is slower than INQUIRY_ENTITY but the returned data size is usually smaller than that.\n - INQUIRY_ALL: The target entity and its summary information is returned in response.\nThis InquiryOption is equivalent to INQUIRY_ENTITY + INQUIRY_OVERVIEW, and it's slow and big."
+              }
+            ]
+          },
+          "docs": "List up all TrackingLinks of the AdAccount or the Product."
+        },
+        {
+          "info": {
+            "name": "Create a new TrackingLink.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/tracking-links",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID which the TrackingLink belongs to."
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "query",
+                "description": "The Product ID which the TrackingLink belongs to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new TrackingLink of the Product."
+        },
+        {
+          "info": {
+            "name": "Validate a TrackingLink.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.moloco.cloud/cm/v1/tracking-links/validate",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "query",
+                "description": "The AdAccount ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validate a TrackingLink of the product."
+        },
+        {
+          "info": {
+            "name": "Read an existing TrackingLink.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/tracking-links/:tracking_link_id",
+            "params": [
+              {
+                "name": "tracking_link_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the TrackingLink to be retrieved."
+              },
+              {
+                "name": "include_attempts",
+                "value": "",
+                "type": "query",
+                "description": "Flag for whether include TrackingLink verification attempts."
+              }
+            ]
+          },
+          "docs": "Read an existing TrackingLink."
+        },
+        {
+          "info": {
+            "name": "Update an existing TrackingLink.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.moloco.cloud/cm/v1/tracking-links/:tracking_link_id",
+            "params": [
+              {
+                "name": "tracking_link_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the TrackingLink to be updated."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing TrackingLink."
+        },
+        {
+          "info": {
+            "name": "Delete an existing TrackingLink.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.moloco.cloud/cm/v1/tracking-links/:tracking_link_id",
+            "params": [
+              {
+                "name": "tracking_link_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the TrackingLink to be deleted."
+              }
+            ]
+          },
+          "docs": "Delete an existing TrackingLink."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "WorkplaceSummary",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Read a Workplace summary.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.moloco.cloud/cm/v1/workplace-summary",
+            "params": [
+              {
+                "name": "month_range.start",
+                "value": "",
+                "type": "query",
+                "description": "Start month in the 'YYYY-MM' format."
+              },
+              {
+                "name": "month_range.end",
+                "value": "",
+                "type": "query",
+                "description": "End month in the 'YYYY-MM' format."
+              }
+            ]
+          },
+          "docs": "Read a Workplace summary."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

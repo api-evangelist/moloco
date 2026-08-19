@@ -137,3 +137,63 @@ cross_links:
   rate_limits: rate-limits/moloco-rate-limits.yml
   sandbox: sandbox/moloco-sandbox.yml
   webhooks: asyncapi/moloco-commerce-media-webhooks.yml
+host_resolution:
+  added: '2026-08-13'
+  method: searched
+  source: https://mcm-docs.moloco.com/llms.txt
+  summary: >-
+    Moloco Commerce Media does NOT publish its production hostnames. Every Decision API and Event API
+    operation in the MCM documentation index carries the same caveat verbatim — "Server host may vary by
+    platform. Moloco's staff will provide accurate host information." An integrator therefore cannot derive
+    a callable production base URL from the docs alone; the host is handed over by a Moloco representative
+    during onboarding.
+  moloco_ads:
+    host: https://api.moloco.cloud
+    published: true
+    templated: false
+    note: A single fixed, publicly documented host for both the Campaign Management and Cloud Auth APIs.
+  moloco_commerce_media:
+    published: false
+    pattern: https://<platform>-<service>.mcm-api.moloco.com
+    services:
+      management: mgmt
+      decision: dcsn
+      event: evt
+    production_hosts: assigned per platform by Moloco; not documented publicly
+    documented_hosts:
+    - url: https://sandbox-mgmt.mcm-api.moloco.com
+      tier: sandbox
+      resolves: true
+    - url: https://sandbox-dcsn.mcm-api.moloco.com
+      tier: sandbox
+      resolves: true
+    - url: https://sandbox-evt.mcm-api.moloco.com
+      tier: sandbox
+      resolves: true
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+      tier: production
+      templated: true
+      note: the templated form published in the Management API spec's own servers[] block
+    integrator_impact: >-
+      The sandbox hosts are the only concrete MCM hosts Moloco publishes, so they are what this repo records
+      as baseURL for the MCM API entries. They are real and reachable — all three resolve and answer — but
+      they are the SANDBOX tier. Swapping in a production host is an onboarding step that requires Moloco,
+      not a string substitution a client can perform from the documentation.
+  x-evidence:
+    checked: '2026-08-13'
+    probes:
+    - url: https://sandbox-mgmt.mcm-api.moloco.com/
+      status: 404
+      note: host resolves (34.120.102.15); 404 at root is expected for a path-scoped API
+    - url: https://sandbox-dcsn.mcm-api.moloco.com/
+      status: 404
+      note: host resolves (34.36.134.0)
+    - url: https://sandbox-evt.mcm-api.moloco.com/
+      status: 404
+      note: host resolves (34.117.205.168)
+    - url: https://mcm-api.moloco.com/
+      status: 000
+      note: NXDOMAIN — there is no bare apex API host
+    - url: https://mcm-docs.moloco.com/llms.txt
+      status: 200
+      note: carries the "Server host may vary by platform" caveat on all five Decision/Event operations

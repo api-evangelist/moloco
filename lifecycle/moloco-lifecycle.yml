@@ -87,9 +87,39 @@ sla:
   note: No public SLA or uptime commitment was found on the developer portal or the marketing site.
 status_page:
   url: null
+  rechecked: '2026-08-13'
   note: >-
-    No public status page was found. status.moloco.com does not resolve, and neither developer portal links
-    to a status page. Incident communication runs through the Help Center and account representatives.
+    No public status page was found for MOLOCO Inc. status.moloco.com and status.moloco.cloud do not resolve,
+    and neither developer portal links to a status page. Incident communication runs through the Help Center
+    and account representatives.
+  rejected_candidates:
+  - url: https://moloco.statuspage.io/
+    http_status: 200
+    api: https://moloco.statuspage.io/api/v2/summary.json
+    api_status: 200
+    accepted: false
+    reason: >-
+      A real Atlassian Statuspage titled "Moloco Status" answers 200 on this subdomain, but it does NOT
+      belong to MOLOCO Inc and must not be credited to it. It has been frozen since 2020-10-03, still
+      carries the Statuspage setup placeholders ("API (example)", "Management Portal (example)", an incident
+      literally named "This is an example incident"), and has been stuck reporting "Partial System Outage"
+      for six years. Decisively, its primary component is named "itsmoloco.net" and described as "Access to
+      our main website" — a domain that does not resolve at all, and that is not MOLOCO Inc's site
+      (www.moloco.com). This is an abandoned page belonging to a different, defunct "Moloco".
+    checked: '2026-08-13'
+  x-evidence:
+  - url: https://status.moloco.com/
+    status: 000
+    note: NXDOMAIN
+  - url: https://status.moloco.cloud/
+    status: 000
+    note: NXDOMAIN
+  - url: https://moloco.statuspage.io/api/v2/summary.json
+    status: 200
+    note: page.updated_at 2020-10-03; rejected as not MOLOCO Inc's
+  - url: https://itsmoloco.net/
+    status: 000
+    note: NXDOMAIN — the domain the rejected statuspage calls "our main website"
 support:
   help_center: https://help.moloco.com/hc/en-us
   ticket_form: https://help.moloco.com/hc/en-us/requests/new?ticket_form_id=6882981198743

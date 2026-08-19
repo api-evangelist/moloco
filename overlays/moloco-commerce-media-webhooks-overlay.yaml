@@ -1,0 +1,49 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Moloco Commerce Media Webhooks
+  version: 1.0.0
+extends: openapi/moloco-commerce-media-webhooks-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: moloco
+    x-apievangelist-generated: '2026-08-13'
+    x-apievangelist-method: generated
+    x-apievangelist-source: https://mcm-docs.moloco.com/docs/campaign-management (MCM webhook documentation, harvested 2026-07-31)
+    x-apievangelist-operations: 2
+    x-apievangelist-artifacts:
+      authentication: authentication/moloco-authentication.yml
+      conventions: conventions/moloco-conventions.yml
+      errors: errors/moloco-problem-types.yml
+      lifecycle: lifecycle/moloco-lifecycle.yml
+      rate_limits: rate-limits/moloco-rate-limits.yml
+      data_model: data-model/moloco-data-model.yml
+      conformance: conformance/moloco-conformance.yml
+      webhooks: asyncapi/moloco-commerce-media-webhooks.yml
+      skills: skills/_index.yml
+    x-apievangelist-notes:
+    - this is an OpenAPI 3.1 webhooks document — Moloco calls the consumer, the consumer serves these operations
+    - x-moloco-webhook-id is the idempotency key; de-duplicate on it BEFORE processing a delivery
+    - verify x-moloco-webhook-signature (t=<unix>,v1=<hex> HMAC-SHA256) against the RAW body before parsing
+    - signing supports multi-key rotation, so accept any v1 value that validates against a currently-active key
+    - any 2xx acknowledges a delivery; a non-2xx is treated as a failed attempt and may be retried
+    - deliveries are batched — at most 20 ad accounts per delivery
+- target: $.info
+  update:
+    x-apievangelist-delivery:
+      direction: outbound
+      transport: https
+      method: POST
+      content_type: application/json
+      endpoint: platform-configured HTTPS endpoint
+      retry: non-2xx responses may be retried
+      idempotency_key: x-moloco-webhook-id
+      signature_header: x-moloco-webhook-signature
+      signature_algorithm: HMAC-SHA256 over the raw request body
+      signature_format: t=<unix-timestamp>,v1=<hex-digest>
+      key_rotation: supported (multiple active signing keys)
+- target: $.tags
+  update:
+  - name: Webhook Events
+    description: Event payloads that MCM sends to registered webhook endpoints.
+    x-apievangelist-event-count: 2

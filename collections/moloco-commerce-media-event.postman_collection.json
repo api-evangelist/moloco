@@ -1,0 +1,568 @@
+{
+  "item": [
+    {
+      "id": "303a38ed-de25-4d8f-88b3-2eb3a730a1b9",
+      "name": "RmpEventApi",
+      "description": {
+        "content": "UserEvent is a service to collect external user events.",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "80c4c469-56bd-4443-8f48-693487f9893b",
+      "name": "Event",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "74df3297-e19c-4459-9751-6fa945a75f23",
+          "name": "PostUserEvent",
+          "request": {
+            "name": "PostUserEvent",
+            "description": {
+              "content": "Post an individual user event. Server host may vary by platform. Moloco's account manager will provide accurate host information.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rmp",
+                "event",
+                "v1",
+                "platforms",
+                ":platform",
+                "userevents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "platform",
+                  "description": "(Required) Platform for the user event."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\",\n    \"key_0\": 8041.054951737744\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f2b0fcd6-d09a-42a8-8c83-8097ee2485b1",
+              "name": "A successful response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rmp",
+                    "event",
+                    "v1",
+                    "platforms",
+                    ":platform",
+                    "userevents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform",
+                      "description": "(Required) Platform for the user event."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\"\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": \"string\",\n  \"key_1\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1cee4ca-fa74-4c81-b09c-78471c04840b",
+              "name": "Bad request. Detailed cause can be found in the response message.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rmp",
+                    "event",
+                    "v1",
+                    "platforms",
+                    ":platform",
+                    "userevents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform",
+                      "description": "(Required) Platform for the user event."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\"\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 6643,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {},\n      \"key_2\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {}\n    }\n  ],\n  \"key_0\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2a93e127-bccb-4a08-9695-18ce63ed719c",
+              "name": "Unauthorized. The request does not have valid authentication credentials for the operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rmp",
+                    "event",
+                    "v1",
+                    "platforms",
+                    ":platform",
+                    "userevents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform",
+                      "description": "(Required) Platform for the user event."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\"\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2530,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "baf94181-2ea3-4363-bc39-7f10458f918e",
+              "name": "Permission denied. The caller does not have permission to execute the specified operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rmp",
+                    "event",
+                    "v1",
+                    "platforms",
+                    ":platform",
+                    "userevents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform",
+                      "description": "(Required) Platform for the user event."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\"\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2530,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f3fe9578-c05a-484c-a510-39f07849f458",
+              "name": "Not found. One or more resources required to perform the request does not exist. Detailed cause can be found in the response message.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rmp",
+                    "event",
+                    "v1",
+                    "platforms",
+                    ":platform",
+                    "userevents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform",
+                      "description": "(Required) Platform for the user event."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\"\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2530,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fefb8ffc-6084-4def-a212-f9d5c6b9dd20",
+              "name": "Too many requests either by platform or by user. Detailed cause can be found in the response message.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rmp",
+                    "event",
+                    "v1",
+                    "platforms",
+                    ":platform",
+                    "userevents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform",
+                      "description": "(Required) Platform for the user event."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\"\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2530,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d7fd01d-a7dd-4b3d-b1c0-4714788ab7a1",
+              "name": "Internal server error. Detailed cause can be found in the response message.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rmp",
+                    "event",
+                    "v1",
+                    "platforms",
+                    ":platform",
+                    "userevents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform",
+                      "description": "(Required) Platform for the user event."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"UNKNOWN_EVENT_TYPE\",\n  \"timestamp\": \"<int64>\",\n  \"channel_type\": \"UNKNOWN_CHANNEL_TYPE\",\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"user_id\": \"<string>\",\n  \"device\": {\n    \"os\": \"<string>\",\n    \"os_version\": \"<string>\",\n    \"advertising_id\": \"<string>\",\n    \"unique_device_id\": \"<string>\",\n    \"persistent_id\": \"<string>\",\n    \"model\": \"<string>\",\n    \"ua\": \"<string>\",\n    \"language\": \"<string>\"\n  },\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"price\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      },\n      \"quantity\": \"<integer>\",\n      \"item_group_id\": \"<string>\",\n      \"seller_id\": \"<string>\",\n      \"price_seller\": {\n        \"currency\": \"UNKNOWN_CURRENCY\",\n        \"amount\": \"<double>\"\n      }\n    }\n  ],\n  \"revenue\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"search_query\": \"<string>\",\n  \"session_id\": \"<string>\",\n  \"custom_id\": \"<string>\",\n  \"page_id\": \"<string>\",\n  \"referrer_page_id\": \"<string>\",\n  \"shipping_charge\": {\n    \"currency\": \"UNKNOWN_CURRENCY\",\n    \"amount\": \"<double>\"\n  },\n  \"decision_track_id\": \"<string>\",\n  \"personalization_mode\": \"UNKNOWN_PERSONALIZATION_MODE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2530,\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"@type\": \"string\",\n      \"key_0\": {},\n      \"key_1\": {}\n    },\n    {\n      \"@type\": \"string\",\n      \"key_0\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sandbox-evt.mcm-api.moloco.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b5ca405d-7af7-4f59-806c-0f070181d34a",
+    "name": "Event API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Contact Support:\n Name: Moloco Inc.",
+      "type": "text/plain"
+    }
+  }
+}

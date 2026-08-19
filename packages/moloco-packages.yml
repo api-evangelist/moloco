@@ -1,7 +1,8 @@
-generated: '2026-07-31'
+generated: '2026-08-13'
 method: searched
 source: >-
-  npm registry search, PyPI, Maven Central (search.maven.org), github.com/moloco-mcm, github.com/moloco
+  registry.npmjs.org, pypi.org/pypi/<pkg>/json, repo1.maven.org maven-metadata.xml,
+  github.com/moloco-mcm, github.com/moloco
 note: >-
   Moloco ships two distinct package families: API client libraries for Moloco Commerce Media (published under
   the @moloco-rmp npm scope and the moloco-mcm GitHub org) and mobile ad SDKs for publishers/app developers
@@ -9,11 +10,21 @@ note: >-
   Python or Go client for the Moloco Ads Campaign Management API; the mcm-cli package is the CLI (see
   cli/moloco-cli.yml). The legacy CocoaPods "MolocoSDK" pod (2019, personally owned trunk account) is NOT
   recorded here as official.
+currency_note: >-
+  Every version below was re-read from the registry metadata endpoint on 2026-08-13. The 2026-07-31 round
+  recorded the Android SDK at 3.11.0 (2025-06-26); that came from the search.maven.org solr index, which is
+  stale for this group. The authoritative repo1.maven.org maven-metadata.xml reports 4.11.1 released
+  2026-08-10 for BOTH com.moloco.sdk:moloco-sdk and com.moloco.sdk.adapters:moloco — a full major line ahead.
+  The mobile ad SDKs are the freshest thing Moloco publishes (Android 4.11.1 and iOS v4.9.1 both landed
+  2026-08-10, on a roughly two-week cadence). The API client libraries are materially older: the MCM Event
+  API client last shipped 2025-08-29 and mcm-cli 2025-12-11, while @moloco-rmp/user-event-api-client has not
+  been touched since 2021-12-03 and should be treated as abandoned in favour of the event-api-client.
 packages:
 - language: javascript
   registry: npm
   name: '@moloco-rmp/decision-api-client'
   version: 3.4.0
+  published: '2026-06-03'
   url: https://www.npmjs.com/package/@moloco-rmp/decision-api-client
   repository: https://github.com/moloco-mcm/decision-api-client-js
   install: npm install @moloco-rmp/decision-api-client
@@ -25,6 +36,7 @@ packages:
   registry: npm
   name: '@moloco-rmp/event-api-client'
   version: 1.2.0
+  published: '2025-08-29'
   url: https://www.npmjs.com/package/@moloco-rmp/event-api-client
   repository: https://github.com/moloco-mcm/event-api-client-js
   install: npm install @moloco-rmp/event-api-client
@@ -36,15 +48,21 @@ packages:
   registry: npm
   name: '@moloco-rmp/user-event-api-client'
   version: 0.1.0
+  published: '2021-12-03'
   url: https://www.npmjs.com/package/@moloco-rmp/user-event-api-client
   install: npm install @moloco-rmp/user-event-api-client
   description: Early user-event API client published under the Moloco RMP npm scope.
   covers: openapi/moloco-commerce-media-event-openapi.yml
   official: true
+  status: abandoned
+  note: >-
+    Only ever released once, on 2021-12-03, and still at 0.1.0 — superseded by
+    @moloco-rmp/event-api-client. Recorded because it is still installable, not because it is usable.
 - language: python
   registry: pypi
   name: mcm-cli
   version: 1.9.0
+  published: '2025-12-11'
   url: https://pypi.org/project/mcm-cli/
   repository: https://github.com/moloco-mcm/mcm-cli
   install: pip install mcm-cli
@@ -55,25 +73,36 @@ packages:
 - language: java
   registry: maven
   name: com.moloco.sdk:moloco-sdk
-  version: 3.11.0
+  version: 4.11.1
+  published: '2026-08-10'
   url: https://central.sonatype.com/artifact/com.moloco.sdk/moloco-sdk
-  install: 'implementation("com.moloco.sdk:moloco-sdk:3.11.0")'
+  metadata: https://repo1.maven.org/maven2/com/moloco/sdk/moloco-sdk/maven-metadata.xml
+  install: 'implementation("com.moloco.sdk:moloco-sdk:4.11.1")'
   description: Moloco Android ad SDK for publishers (ad rendering, bidding, mediation core).
   official: true
 - language: java
   registry: maven
   name: com.moloco.sdk.adapters:moloco
-  version: 3.11.0.0
+  version: 4.11.1
+  published: '2026-08-10'
   url: https://central.sonatype.com/artifact/com.moloco.sdk.adapters/moloco
+  metadata: https://repo1.maven.org/maven2/com/moloco/sdk/adapters/moloco/maven-metadata.xml
+  install: 'implementation("com.moloco.sdk.adapters:moloco:4.11.1")'
   description: Moloco mediation adapter package for Android.
   official: true
 - language: swift
   registry: swift-package-manager
   name: moloco-sdk-ios-spm
+  version: v4.9.1
+  published: '2026-08-10'
   url: https://github.com/moloco/moloco-sdk-ios-spm
   install: 'Add https://github.com/moloco/moloco-sdk-ios-spm as a Swift Package dependency'
   description: Moloco iOS ad SDK distributed via Swift Package Manager.
   official: true
+  note: >-
+    Swift Package Manager has no central registry metadata endpoint; version and date are read from the git
+    tag on the distribution repository (v4.9.1, tagged 2026-08-10). The iOS line (4.9.x) tracks a different
+    minor series to the Android line (4.11.x) — this is a separate release train, not a lag.
 reference_implementations:
 - name: user-event-sink-connector-java
   url: https://github.com/moloco-mcm/user-event-sink-connector-java
@@ -105,3 +134,20 @@ registries_probed:
   packagist: not-found
   crates_io: not-found
   cocoapods: found-but-unofficial
+x-evidence:
+  checked: '2026-08-13'
+  probes:
+  - url: https://registry.npmjs.org/@moloco-rmp/decision-api-client
+    status: 200
+  - url: https://registry.npmjs.org/@moloco-rmp/event-api-client
+    status: 200
+  - url: https://registry.npmjs.org/@moloco-rmp/user-event-api-client
+    status: 200
+  - url: https://pypi.org/pypi/mcm-cli/json
+    status: 200
+  - url: https://repo1.maven.org/maven2/com/moloco/sdk/moloco-sdk/maven-metadata.xml
+    status: 200
+  - url: https://repo1.maven.org/maven2/com/moloco/sdk/adapters/moloco/maven-metadata.xml
+    status: 200
+  - url: https://api.github.com/repos/moloco/moloco-sdk-ios-spm/tags
+    status: 200

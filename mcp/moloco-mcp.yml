@@ -1,13 +1,12 @@
 generated: '2026-07-31'
 method: searched
 status: published
-note: >-
-  Moloco operates two distinct remote MCP servers. The MCM documentation server (mcm-docs.moloco.com/mcp) is
-  documented and answers tools/list anonymously — its seven tools are captured verbatim below and in
+note: Moloco operates two distinct remote MCP servers. The MCM documentation server (mcm-docs.moloco.com/mcp)
+  is documented and answers tools/list anonymously — its seven tools are captured verbatim below and in
   mcp/moloco-mcm-docs-mcp-tools.json. The Moloco Cloud server (mcp.moloco.cloud/mcp) was found by probing;
-  it is OAuth-protected (RFC 9728 challenge, scope cloudapi.read) and its tools/list is gated, so no tool list
-  is asserted for it. The Moloco Ads docs server (developer.moloco.cloud/mcp) exists but rejects anonymous
-  tools/list with "Authorization required".
+  it is OAuth-protected (RFC 9728 challenge, scope cloudapi.read) and its tools/list is gated, so no tool
+  list is asserted for it. The Moloco Ads docs server (developer.moloco.cloud/mcp) exists but rejects
+  anonymous tools/list with "Authorization required".
 servers:
 - name: moloco-commerce-media-docs
   title: MCM Documentation MCP Server
@@ -31,15 +30,22 @@ servers:
   tools:
   - name: list-endpoints
     description: Lists all API paths and their HTTP methods with summaries, organized by path.
-    input: [title]
+    input:
+    - title
     read_only: true
   - name: get-endpoint
-    description: Gets detailed information about a specific API endpoint, including security schemes and servers.
-    input: [path, method, title]
+    description: Gets detailed information about a specific API endpoint, including security schemes and
+      servers.
+    input:
+    - path
+    - method
+    - title
     read_only: true
   - name: search-endpoints
-    description: Performs a deep search through paths, operations, and parameters to discover relevant API endpoints.
-    input: [pattern]
+    description: Performs a deep search through paths, operations, and parameters to discover relevant
+      API endpoints.
+    input:
+    - pattern
     read_only: true
   - name: list-specs
     description: Lists all available OpenAPI specs. Use the title to select a spec.
@@ -47,15 +53,19 @@ servers:
     read_only: true
   - name: execute-request
     description: Executes an API request with a given HAR request object.
-    input: [harRequest, title]
+    input:
+    - harRequest
+    - title
     read_only: false
   - name: search
     description: Searches through documentation with the given search query.
-    input: [query]
+    input:
+    - query
     read_only: true
   - name: fetch
     description: Gets detailed content for documentation by ID returned from the search tool.
-    input: [id]
+    input:
+    - id
     read_only: true
 - name: moloco-cloud
   title: Moloco Cloud MCP Server
@@ -65,9 +75,11 @@ servers:
   discovery: probed (not referenced in the public developer documentation as of 2026-07-31)
   auth:
     type: oauth2
-    challenge: 'Bearer scope="cloudapi.read", resource_metadata="https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp"'
+    challenge: Bearer scope="cloudapi.read", resource_metadata="https://mcp.moloco.cloud/.well-known/oauth-protected-resource/mcp"
     authorization_server: https://api.moloco.cloud
-    scopes: [cloudapi.read, offline_access]
+    scopes:
+    - cloudapi.read
+    - offline_access
     resource_metadata: well-known/moloco-mcp-oauth-protected-resource.json
   tools_list:
     method: probed
@@ -82,7 +94,7 @@ servers:
   status: published
   auth:
     type: gated
-    note: 'anonymous tools/list returns JSON-RPC error -32001 "Authorization required"'
+    note: anonymous tools/list returns JSON-RPC error -32001 "Authorization required"
   tools_list:
     method: probed
     http_status: 401
@@ -92,12 +104,19 @@ x-evidence:
   fetched: '2026-07-31'
   probes:
   - url: https://mcm-docs.moloco.com/mcp
-    method: 'POST initialize + tools/list'
+    method: POST initialize + tools/list
     http_status: 200
     content_type: text/event-stream
   - url: https://mcp.moloco.cloud/mcp
-    method: 'POST tools/list'
+    method: POST tools/list
     http_status: 401
   - url: https://developer.moloco.cloud/mcp
-    method: 'POST tools/list'
+    method: POST tools/list
     http_status: 401
+deployment:
+  mode: remote
+  endpoint: https://mcp.moloco.cloud/mcp
+  verified: probed
+  probe: gated
+  checked: '2026-08-12'
+  source: catalog MCP census

@@ -1,0 +1,114 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Decision API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Decision",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DecideAdBrands",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-dcsn.mcm-api.moloco.com/rmp/decision/v1/platforms/:platform_id/brand-auction",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request brand ads by auction. Server host may vary by platform. Moloco's staff will provide accurate host information."
+        },
+        {
+          "info": {
+            "name": "DecideAdDisplay",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-dcsn.mcm-api.moloco.com/rmp/decision/v1/platforms/:platform_id/display-auction",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request display ads by auction. Server host may vary by platform. Moloco's staff will provide accurate host information."
+        },
+        {
+          "info": {
+            "name": "DecideAdProducts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-dcsn.mcm-api.moloco.com/rmp/decision/v1/platforms/:platform_id/product-auction",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request product ads by auction. Server host may vary by platform. Moloco's staff will provide accurate host information."
+        },
+        {
+          "info": {
+            "name": "DecideAdReservedDisplay",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sandbox-dcsn.mcm-api.moloco.com/rmp/decision/v1/platforms/:platform_id/reserved-display-ads",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request reserved display ads. Server host may vary by platform. Moloco's staff will provide accurate host information."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,942 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "MOLOCO Cloud Auth API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Health",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check the health of the service.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/ready"
+          },
+          "docs": "Check the health of the MOLOCO Cloud Auth API service."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "AdAccount",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the list of ad account users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/ad-accounts/:ad_account_id/users",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Ad Account ID."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "Platform ID."
+              },
+              {
+                "name": "with_status",
+                "value": "",
+                "type": "query",
+                "description": "If given, the result will include the user status info."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the list of users registered to the given ad account."
+        },
+        {
+          "info": {
+            "name": "Register a user to an ad account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/ad-accounts/:ad_account_id/users",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Ad Account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Register a user to an ad account in the same workplace."
+        },
+        {
+          "info": {
+            "name": "Remove a user from an ad account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/ad-accounts/:ad_account_id/users/:user_id",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Ad Account to which the user was registered."
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "The platform ID to which the user belongs."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete the user registration to an a specific ad account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workplace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a workplace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/platforms",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a workplace for the campaign management."
+        },
+        {
+          "info": {
+            "name": "Read a workplace information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/platforms/:platform_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The platform ID."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read a workplace information for the given workplace ID."
+        },
+        {
+          "info": {
+            "name": "Update a workplace information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/platforms/:platform_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The platform ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a workplace information with the given new information."
+        },
+        {
+          "info": {
+            "name": "Delete a workplace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/platforms/:platform_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The platform ID."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a workplace for the given workplace ID."
+        },
+        {
+          "info": {
+            "name": "Upload the workplace logo.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/platforms/:platform_id/logo",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The platform ID."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "logo",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload the workplace logo to the public bucket and update the workplace database record."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "RmpAdAccount",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "v1_list_rmp_ad_account_registrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/rmp-ad-accounts/:ad_account_id/users",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Ad Account ID."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "Platform ID."
+              },
+              {
+                "name": "with_status",
+                "value": "",
+                "type": "query",
+                "description": "If given, the result will include the user status info."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the list of users registered to the given ad account."
+        },
+        {
+          "info": {
+            "name": "Register a user to an ad account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/rmp-ad-accounts/:ad_account_id/users",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Ad Account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Register a user to an rmp ad account in the same workplace."
+        },
+        {
+          "info": {
+            "name": "Remove a user from an ad account.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/rmp-ad-accounts/:ad_account_id/users/:user_id",
+            "params": [
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The Ad Account to which the user was registered."
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "The platform ID to which the user belongs."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete the user registration to an a specific ad account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Token",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new token.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/tokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new token to access MOLOCO APIs. The token is valid for one hour. Therefore, it is recommended to periodically refresh the token before it expires."
+        },
+        {
+          "info": {
+            "name": "Refresh the existing token.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/tokens",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Issue a new token with a previous one. Expired tokens cannot be refreshed."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List users.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the platform to search users."
+              },
+              {
+                "name": "userspace_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the userspace to search users."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "The email address of a user to search."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "The name of the users to search."
+              },
+              {
+                "name": "filter_role",
+                "value": "",
+                "type": "query",
+                "description": "Filter the users with this role."
+              },
+              {
+                "name": "match_role",
+                "value": "",
+                "type": "query",
+                "description": "Select the users with this role."
+              },
+              {
+                "name": "with_roles",
+                "value": "",
+                "type": "query",
+                "description": "If set to true, the role names granted to each user will be returned as well.\nWhen this parameter is used, the platform_id should be given as well because\nrole grant is done under a specific platform.\n"
+              },
+              {
+                "name": "with_status",
+                "value": "",
+                "type": "query",
+                "description": "If set to true, the status of each user will be returned as well."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List users matching the given condition."
+        },
+        {
+          "info": {
+            "name": "Create a new user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new user in a given userspace."
+        },
+        {
+          "info": {
+            "name": "Update the user password.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:email/password",
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "path",
+                "description": "The email address of the user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update the user password with the given password reset token in the header."
+        },
+        {
+          "info": {
+            "name": "Delete the user password.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:email/password",
+            "params": [
+              {
+                "name": "email",
+                "value": "",
+                "type": "path",
+                "description": "The email address of the user."
+              },
+              {
+                "name": "userspace_id",
+                "value": "",
+                "type": "query",
+                "description": "Userspace ID."
+              },
+              {
+                "name": "forward_url",
+                "value": "",
+                "type": "query",
+                "description": "Forward URL that will be included in the password reset email."
+              }
+            ]
+          },
+          "docs": "Reset the user password and issue a password reset token."
+        },
+        {
+          "info": {
+            "name": "Read a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user, which can be Morse UID or email address."
+              },
+              {
+                "name": "userspace_id",
+                "value": "",
+                "type": "query",
+                "description": "The userspace ID to which the user belongs."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "The platform ID to which the user is registered."
+              },
+              {
+                "name": "with_roles",
+                "value": "",
+                "type": "query",
+                "description": "Get the role names bound to the user as well.\nThis param should be used with platform_id.\n"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Read a user information in the given userspace."
+        },
+        {
+          "info": {
+            "name": "Update an existing user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update an existing user matching the given user ID."
+        },
+        {
+          "info": {
+            "name": "Delete a user.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "userspace_id",
+                "value": "",
+                "type": "query",
+                "description": "The userspace ID."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a user matching the user ID in a specific userspace."
+        },
+        {
+          "info": {
+            "name": "List the user permissions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id/permissions",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the platform to which the user belongs."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List the permissions given to the user."
+        },
+        {
+          "info": {
+            "name": "Add a user to a workplace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id/platforms/:platform_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the platform to which the user will be registered."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Register a user to a specific workplace."
+        },
+        {
+          "info": {
+            "name": "Remove the user from a workplace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id/platforms/:platform_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the platform from which the user will be removed."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deregister the given user from a specific workplace."
+        },
+        {
+          "info": {
+            "name": "Get role grants.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id/rolegrants",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "Platform ID."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the list of role grants to the given user."
+        },
+        {
+          "info": {
+            "name": "Create a role grant.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id/rolegrants",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a role grant that attaches roles to a resource and a user."
+        },
+        {
+          "info": {
+            "name": "Delete a role grant.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/users/:user_id/rolegrants",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "query",
+                "description": "The platform ID to which the user belongs."
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "query",
+                "description": "The resource to which the role is granted."
+              },
+              {
+                "name": "resource_instance_id",
+                "value": "",
+                "type": "query",
+                "description": "The actual instance ID of the resource."
+              },
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the granted role."
+              },
+              {
+                "name": "role_platform_id",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the platform in which the role is defined."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a specific role attached to a specific resource."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Userspace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List workplaces.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://morse-us-prod.adsmoloco.com/v1/userspaces/:userspace_id/platforms",
+            "params": [
+              {
+                "name": "userspace_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the userspace."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List workplaces for a given userspace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

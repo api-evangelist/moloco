@@ -1,0 +1,84 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+provider: MOLOCO
+providerId: moloco
+created: '2026-08-13'
+modified: '2026-08-13'
+generated: '2026-08-13'
+method: searched
+source: https://help.moloco.com/hc/en-us/articles/15764588719255-Pricing
+description: >-
+  Moloco publishes NO self-serve plans, tiers or list prices for any of its three platforms (Moloco Ads,
+  Moloco Commerce Media, Moloco Streaming Monetization). There is no /pricing page anywhere on the marketing
+  site or either developer portal — all four candidate paths return 404. Access to every API in this repo is
+  granted by a Moloco representative, not by signing up for a plan: the MCM sandbox doc states the API key
+  "can be provided by your Moloco representative", and the MCM billing doc says "To start using billing
+  features, please contact your Moloco Commerce Media representative." What Moloco does publish is a PRICING
+  MODEL rather than a price list — oCPM (optimized cost per mille) on the Moloco Ads side, described in the
+  Help Center Pricing article.
+plan_count: 0
+plans: []
+pricing_model:
+  name: oCPM (optimized cost per mille)
+  applies_to: Moloco Ads (Cloud DSP)
+  docs: https://help.moloco.com/hc/en-us/articles/15764588719255-Pricing
+  summary: >-
+    Cost for every 1,000 impressions delivered, optimized toward the campaign goal. Every impression is
+    priced dynamically from predicted user value and market competition rather than at a fixed CPM, so the
+    effective CPI/CPA falls out of the auction. Moloco documents oCPM as the only pricing model available.
+  list_price: null
+  note: >-
+    Third-party ad-network directories quote minimum daily budgets for Moloco Ads. Those figures are NOT
+    provider-published and are deliberately not recorded here.
+billing_surface:
+  note: >-
+    Moloco Commerce Media exposes advertiser-facing spend controls through the Management API rather than
+    subscription plans. These govern what a PLATFORM'S OWN advertisers may spend, not what the platform pays
+    Moloco.
+  controls:
+  - name: Wallet
+    model: prepaid funding, supports credit issuance
+  - name: Spending Limit
+    model: postpaid spend cap at the ad-account level, supports credit issuance
+  - name: Spend Cap
+    model: budget guardrail associated with one or more campaigns inside an ad account
+  constraint: >-
+    A platform may use exactly ONE of Wallet, Spending Limit or Spend Cap; they are not used simultaneously
+    on the same platform configuration.
+  docs: https://mcm-docs.moloco.com/docs/billing
+  spec: openapi/moloco-commerce-media-management-openapi.yml
+access_model: contact-sales
+free_tier: false
+sandbox_access:
+  available: true
+  self_serve: false
+  note: >-
+    The MCM sandbox is real and reachable (sandbox-dcsn / sandbox-evt / sandbox-mgmt all resolve), but the
+    authorization key is issued by a Moloco representative via the contact-us form — there is no self-serve
+    signup that yields a working key.
+  docs: https://mcm-docs.moloco.com/docs/mcm-sandbox
+  artifact: sandbox/moloco-sandbox.yml
+x-evidence:
+  checked: '2026-08-13'
+  probes:
+  - url: https://www.moloco.com/pricing
+    status: 404
+  - url: https://www.moloco.com/products/moloco-ads/pricing
+    status: 404
+  - url: https://developer.moloco.cloud/docs/pricing
+    status: 404
+  - url: https://mcm-docs.moloco.com/docs/pricing
+    status: 404
+  - url: https://mcm-docs.moloco.com/docs/billing.md
+    status: 200
+    note: billing doc retrieved verbatim; describes advertiser spend controls, not Moloco plans
+  - url: https://mcm-docs.moloco.com/docs/mcm-sandbox.md
+    status: 200
+    note: confirms sandbox API keys are issued by a Moloco representative
+  - url: https://help.moloco.com/hc/en-us/articles/15764588719255-Pricing
+    status: 403
+    note: >-
+      The Pricing article is published and publicly indexed, but the entire help.moloco.com Zendesk host sits
+      behind a Cloudflare bot challenge ("Just a moment...") that returns 403 to non-browser clients — the
+      help-center root returns 403 as well. The oCPM model recorded above is read from that published page's
+      indexed content, not fabricated.

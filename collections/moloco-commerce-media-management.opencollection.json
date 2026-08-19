@@ -1,0 +1,2420 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Management API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AdAccount",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListAdAccounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              }
+            ]
+          },
+          "docs": "List all the ad accounts on the platform."
+        },
+        {
+          "info": {
+            "name": "CreateAdAccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new ad account."
+        },
+        {
+          "info": {
+            "name": "ReadAdAccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ]
+          },
+          "docs": "Read a ad account."
+        },
+        {
+          "info": {
+            "name": "UpdateAdAccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an ad account."
+        },
+        {
+          "info": {
+            "name": "UpdateAdAccountStateInfo",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/state-info",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an ad account's state info."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Report",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "QueryAudienceSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/audience-report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read summarized reporting information of campaign with respect to audience targeting."
+        },
+        {
+          "info": {
+            "name": "QueryKeywordSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/keyword-report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read summarized reporting information of campaigned keywords."
+        },
+        {
+          "info": {
+            "name": "QueryPlacementSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/placement-report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read summarized reporting information of campaign with respect to placement targeting."
+        },
+        {
+          "info": {
+            "name": "QueryAdAccountSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read summarized reporting information of an ad account."
+        },
+        {
+          "info": {
+            "name": "QueryAdManagerAccountSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-manager-accounts/:ad_manager_account_id/report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_manager_account_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the ad manager account who requests management api. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read summarized reporting information of an ad manager account."
+        },
+        {
+          "info": {
+            "name": "QueryPlatformSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read summarized reporting information of a platform."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ReadCampaignForecast",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaign-forecast",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Show campaign forecast metrics such as click, imp, and purchase when an advertiser sets up their campaign."
+        },
+        {
+          "info": {
+            "name": "ReadCampaignGuidance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaign-guidances",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "Campaign id must be specified when requesting guidance for an existing campaign to be guided according to the campaign history."
+              },
+              {
+                "name": "goal_type",
+                "value": "",
+                "type": "query",
+                "description": "Campaign goal type must be specified when requesting guidance for a new campaign to be selectively guided according to the goal."
+              },
+              {
+                "name": "ad_type",
+                "value": "",
+                "type": "query",
+                "description": "Campaign ad type must be specified when requesting guidance for a new campaign."
+              }
+            ]
+          },
+          "docs": "Read guidance for a reasonable campaign setup."
+        },
+        {
+          "info": {
+            "name": "ReadItemBasedCampaignGuidance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/item-based-campaign-guidances",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get item-based guidance recommendations for campaign optimization based on item performance analysis."
+        },
+        {
+          "info": {
+            "name": "QuerySuggestedItems",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/suggested-items",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query suggested catalog items associated with the ad account. Prior to using this API, please get in touch with the RMP associate to ensure correct configuration of this feature."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Campaign",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListCampaignReviews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaign-reviews",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this campaign review."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "query",
+                "description": "The id of the campaign that owns this campaign review."
+              },
+              {
+                "name": "brand_entity_type",
+                "value": "",
+                "type": "query",
+                "description": "Brand entity type to be listed. Default is ALL type."
+              },
+              {
+                "name": "brand_entity_ids",
+                "value": "",
+                "type": "query",
+                "description": "Lists campaign reviews for given entity ids."
+              }
+            ]
+          },
+          "docs": "List campaign reviews."
+        },
+        {
+          "info": {
+            "name": "CreateCampaignReview",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaign-reviews",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this campaign review."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a campaign component's review. It generates the review for the given campaign's resources such as assets or landing page"
+        },
+        {
+          "info": {
+            "name": "UpdateCampaignReviewsBulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaign-reviews-bulk",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this campaign review."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update campaign components' reviews in bulk."
+        },
+        {
+          "info": {
+            "name": "UpdateCampaignReview",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaign-reviews/:brand_entity_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this campaign review."
+              },
+              {
+                "name": "brand_entity_id",
+                "value": "",
+                "type": "path",
+                "description": "Brand entity id of the review. It must be asset id or landing page id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a campaign component's review. It updates the review status of the given campaign's resources such as assets or landing page"
+        },
+        {
+          "info": {
+            "name": "ListCampaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaigns",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "without_catalog_item_ids",
+                "value": "",
+                "type": "query",
+                "description": "Option to exclude catalog item ids which belonging to the campaign. It is passed as a query parameter."
+              }
+            ]
+          },
+          "docs": "List all the campaigns of an ad account."
+        },
+        {
+          "info": {
+            "name": "CreateCampaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaigns",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a campaign of an ad account. The daily_budget field is deprecated. Please use the budget field as an alternative."
+        },
+        {
+          "info": {
+            "name": "ReadCampaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaigns/:campaign_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign id."
+              }
+            ]
+          },
+          "docs": "Read a campaign of an ad account."
+        },
+        {
+          "info": {
+            "name": "UpdateCampaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaigns/:campaign_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a campaign of an ad account."
+        },
+        {
+          "info": {
+            "name": "QueryItemsCampaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaigns/:campaign_id/items",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query catalog items associated with the campaign"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ChangeHistory",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "QueryCampaignItemsHistory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaigns/:campaign_id/change-log-items",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query items' history in the campaign."
+        },
+        {
+          "info": {
+            "name": "QueryCampaignHistory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/campaigns/:campaign_id/change-logs",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "campaign_id",
+                "value": "",
+                "type": "path",
+                "description": "Campaign id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query campaign history."
+        },
+        {
+          "info": {
+            "name": "QueryCreditsHistory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/credits/:credit_id/account-history",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "credit_id",
+                "value": "",
+                "type": "path",
+                "description": "Credit ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query credits history. To be used for spending limit credit."
+        },
+        {
+          "info": {
+            "name": "QueryWalletHistory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/wallets/:wallet_id/account-history",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "wallet_id",
+                "value": "",
+                "type": "path",
+                "description": "Wallet id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query wallet account history."
+        },
+        {
+          "info": {
+            "name": "QueryAdManagerAccountHistory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-manager-accounts/:ad_manager_account_id/change-logs",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_manager_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdManagerAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query the ad manager account history."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SpendingLimit",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListCredits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/credits",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              }
+            ]
+          },
+          "docs": " List credits of the ad account that has spending limit."
+        },
+        {
+          "info": {
+            "name": "TopUpCredits",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/credits/:credit_id/top-up/:request_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              },
+              {
+                "name": "credit_id",
+                "value": "",
+                "type": "path",
+                "description": "The Credit id."
+              },
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The TopUp request Id. For retries, the same request_id should used again to prevent multiple requests."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Top up an amount of money (VAT exclusive) to the credits balance."
+        },
+        {
+          "info": {
+            "name": "QuerySpendingLimitCreditHistory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/credits/:credit_id/transaction-history",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "Ad Account ID."
+              },
+              {
+                "name": "credit_id",
+                "value": "",
+                "type": "path",
+                "description": "Credit ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query spending limit credits history."
+        },
+        {
+          "info": {
+            "name": "WithdrawCredits",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/credits/:credit_id/withdraw/:request_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              },
+              {
+                "name": "credit_id",
+                "value": "",
+                "type": "path",
+                "description": "The Credit id."
+              },
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The Withdraw request Id. For retries, the same request_id should be used again to prevent multiple requests."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Withdraw an amount of money (VAT exclusive) from the credits balance of the ad account."
+        },
+        {
+          "info": {
+            "name": "ListSpendingLimits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/spending-limits",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              }
+            ]
+          },
+          "docs": "List all spending limits of an ad account. Currently, an ad account can have a single spending limit."
+        },
+        {
+          "info": {
+            "name": "ReadSpendingLimit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/spending-limits/:spending_limit_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              },
+              {
+                "name": "spending_limit_id",
+                "value": "",
+                "type": "path",
+                "description": "The Spend Limit id."
+              }
+            ]
+          },
+          "docs": "Read spending limit of the ad account."
+        },
+        {
+          "info": {
+            "name": "UpdateSpendingLimit",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/spending-limits/:spending_limit_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              },
+              {
+                "name": "spending_limit_id",
+                "value": "",
+                "type": "path",
+                "description": "The Spend Limit id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a spending limit."
+        },
+        {
+          "info": {
+            "name": "QueryCredits",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/credits-bulk/read",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              }
+            ]
+          },
+          "docs": "Query all credits for the platform using spending limit."
+        },
+        {
+          "info": {
+            "name": "QuerySpendingLimits",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/spending-limits-bulk/read",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              }
+            ]
+          },
+          "docs": "Query all spending limits for the platform."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "CustomTargeting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ReadCustomTargetKeysBulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/custom-target-keys-bulk",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account to query custom target keys. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read custom target keys in bulk."
+        },
+        {
+          "info": {
+            "name": "ReadCustomTargetValuesBulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/custom-target-keys/:custom_target_key_id/custom-target-values-bulk",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account to query custom target values. It is passed as a path parameter."
+              },
+              {
+                "name": "custom_target_key_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the custom target key. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Read custom target values in bulk."
+        },
+        {
+          "info": {
+            "name": "QueryCustomTargetDailySummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/orders/:order_id/line-items/:line_item_id/custom-daily-report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account. It is passed as a path parameter."
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the order. It is passed as a path parameter."
+              },
+              {
+                "name": "line_item_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the line item. It is passed as a path parameter."
+              },
+              {
+                "name": "date_range.date_start",
+                "value": "",
+                "type": "query",
+                "description": "Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month."
+              },
+              {
+                "name": "date_range.date_end",
+                "value": "",
+                "type": "query",
+                "description": "Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month."
+              },
+              {
+                "name": "custom_target_key_id",
+                "value": "",
+                "type": "query",
+                "description": "Custom target key id to retrieve the report."
+              }
+            ]
+          },
+          "docs": "Retrieve the custom targeting daily summary reports for a single line item."
+        },
+        {
+          "info": {
+            "name": "QueryCustomTargetDailySummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/orders/:order_id/line-items/:line_item_id/custom-daily-report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account. It is passed as a path parameter."
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the order. It is passed as a path parameter."
+              },
+              {
+                "name": "line_item_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the line item. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieve the custom targeting daily summary reports for a single line item."
+        },
+        {
+          "info": {
+            "name": "ReadCustomTargetKeysWithCustomReportBulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/orders/:order_id/line-items/:line_item_id/custom-target-keys-with-custom-report-bulk",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account. It is passed as a path parameter."
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the order. It is passed as a path parameter."
+              },
+              {
+                "name": "line_item_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the line item. It is passed as a path parameter."
+              }
+            ]
+          },
+          "docs": "Read the keys that have available report data in bulk."
+        },
+        {
+          "info": {
+            "name": "QueryCustomTargetKeys",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/custom-target-keys",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query all available custom target keys for the platform."
+        },
+        {
+          "info": {
+            "name": "QueryCustomTargetValues",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/custom-target-keys/:custom_target_key_id/custom-target-values",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform. It is passed as a path parameter."
+              },
+              {
+                "name": "custom_target_key_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the custom target key. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query all available custom target values for a given key."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Asset",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListImageAssets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/image-assets",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns the image asset."
+              },
+              {
+                "name": "image_asset_type",
+                "value": "",
+                "type": "query",
+                "description": "Image asset type"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all the image assets."
+        },
+        {
+          "info": {
+            "name": "CreateImageAsset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/image-assets",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this image asset."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "image_asset",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "object_key",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create image asset"
+        },
+        {
+          "info": {
+            "name": "CreateBulkImageUploadSession",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/image-assets/upload-session",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Platform identifier."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "Ad account identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create session for bulk image upload"
+        },
+        {
+          "info": {
+            "name": "ReadImageAsset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/image-assets/:image_asset_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this image asset."
+              },
+              {
+                "name": "image_asset_id",
+                "value": "",
+                "type": "path",
+                "description": "Image asset ID."
+              }
+            ]
+          },
+          "docs": "Read image asset information"
+        },
+        {
+          "info": {
+            "name": "ListVideoAssets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/video-assets",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this video asset."
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "List of video asset IDs."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Video asset status."
+              }
+            ]
+          },
+          "docs": "List all the video assets."
+        },
+        {
+          "info": {
+            "name": "CreateVideoAsset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/video-assets",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this video asset."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "object_key",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create video asset"
+        },
+        {
+          "info": {
+            "name": "CreateBulkVideoUploadSession",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/video-assets/upload-session",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this video asset."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create session for bulk video upload"
+        },
+        {
+          "info": {
+            "name": "ReadVideoAsset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/video-assets/:video_asset_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account that owns this video asset."
+              },
+              {
+                "name": "video_asset_id",
+                "value": "",
+                "type": "path",
+                "description": "Video asset ID."
+              }
+            ]
+          },
+          "docs": "Read video asset information"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ReservedDisplay",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "UpsertOrderWithLineItems",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/orders-with-line-items",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update an order along with its associated line items in a single atomic operation."
+        },
+        {
+          "info": {
+            "name": "ReadOrder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/orders/:order_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account. It is passed as a path parameter."
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the order. It is passed as a path parameter."
+              }
+            ]
+          },
+          "docs": "Read order information with line items."
+        },
+        {
+          "info": {
+            "name": "QueryLineItemDailySummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/orders/:order_id/line-items/:line_item_id/daily-report",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the ad account. It is passed as a path parameter."
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the order. It is passed as a path parameter."
+              },
+              {
+                "name": "line_item_id",
+                "value": "",
+                "type": "path",
+                "description": "The id of the line item. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieve the daily summary reports for a single line item."
+        },
+        {
+          "info": {
+            "name": "ListReservedDisplayInventories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/reserved-display-inventories",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform. It is passed as a path parameter."
+              }
+            ]
+          },
+          "docs": "List all eligible reserved display inventories."
+        },
+        {
+          "info": {
+            "name": "QueryReservedInventoryForecast",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/reserved-display-inventories/:inventory_id/forecast",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "inventory_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query forecasted impressions for reserved inventory."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SpendCap",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListSpendCaps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/spend-caps",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform. Passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "filter.status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by spend cap status.\n\n - SCHEDULED: The SpendCap is not in an Active state due to an unexpected error case\n Similar to the Scheduled state of a campaign, the SpendCap is in a “reserved” state because its period has not yet started.\n - INACTIVE: The status when the user manually changes the SpendCap from Active to Inactive.\n - ACTIVE: The SpendCap is in an Active state. As long as the amount is not depleted, the mapped campaigns can remain Active and serve ads without issues\n - ENDED: One of the cases where the SpendCap is no longer Active because its defined period has ended.\n - DEPLETED: The SpendCap has reached its allocated amount (0 remaining). As a result, the mapped campaigns can no longer remain active and ad serving stops, even though the period itself has not yet ended.\n - ERROR: Error state. The campaign state does not belong to any states above."
+              }
+            ]
+          },
+          "docs": "List spend caps for an ad account."
+        },
+        {
+          "info": {
+            "name": "CreateSpendCap",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/spend-caps",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a spend cap of an ad account."
+        },
+        {
+          "info": {
+            "name": "ReadSpendCap",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/spend-caps/:spend_cap_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "spend_cap_id",
+                "value": "",
+                "type": "path",
+                "description": "Id of the spend cap to be retrieved."
+              }
+            ]
+          },
+          "docs": "Read a spend cap of an ad account."
+        },
+        {
+          "info": {
+            "name": "UpdateSpendCap",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/spend-caps/:spend_cap_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "spend_cap_id",
+                "value": "",
+                "type": "path",
+                "description": "Spend Cap id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a spend cap of an ad account."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Wallet",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListWallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/wallets",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              }
+            ]
+          },
+          "docs": "List all wallets of an ad account. Currently, an ad account can have a single wallet."
+        },
+        {
+          "info": {
+            "name": "TopUpWallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/wallets/:wallet_id/top-up/:request_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              },
+              {
+                "name": "wallet_id",
+                "value": "",
+                "type": "path",
+                "description": "The Wallet id."
+              },
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The TopUp request ID. For retries, the same request_id should be used again to prevent duplicate requests. Only alphanumeric characters, underscores, and hyphens are allowed, and 8-64 characters are required."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Top up an amount of money (VAT exclusive) for the wallet of the ad account."
+        },
+        {
+          "info": {
+            "name": "QueryWalletTransactionHistory",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/wallets/:wallet_id/transaction-history",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdAccount id."
+              },
+              {
+                "name": "wallet_id",
+                "value": "",
+                "type": "path",
+                "description": "Wallet id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Query wallet transaction history."
+        },
+        {
+          "info": {
+            "name": "WithdrawWallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-accounts/:ad_account_id/wallets/:wallet_id/withdraw/:request_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              },
+              {
+                "name": "ad_account_id",
+                "value": "",
+                "type": "path",
+                "description": "The AdAccount id."
+              },
+              {
+                "name": "wallet_id",
+                "value": "",
+                "type": "path",
+                "description": "The Wallet id."
+              },
+              {
+                "name": "request_id",
+                "value": "",
+                "type": "path",
+                "description": "The Withdraw request ID. For retries, the same request_id should be used again to prevent duplicate requests. Only alphanumeric characters, underscores, and hyphens are allowed, and 8-64 characters are required."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Withdraw an amount of money (VAT exclusive) from a wallet of the ad account."
+        },
+        {
+          "info": {
+            "name": "QueryWallets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/wallets-bulk/read",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "The Platform id."
+              }
+            ]
+          },
+          "docs": "Query all wallets for the platform."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "AdManagerAccount",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ListAdManagerAccounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-manager-accounts",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              }
+            ]
+          },
+          "docs": "List ad manager accounts"
+        },
+        {
+          "info": {
+            "name": "CreateAdManagerAccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-manager-accounts",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an ad manager account"
+        },
+        {
+          "info": {
+            "name": "ReadAdManagerAccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-manager-accounts/:ad_manager_account_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_manager_account_id",
+                "value": "",
+                "type": "path",
+                "description": "AdManagerAccount id."
+              }
+            ]
+          },
+          "docs": "Read an ad manager account"
+        },
+        {
+          "info": {
+            "name": "UpdateAdManagerAccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/ad-manager-accounts/:ad_manager_account_id",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              },
+              {
+                "name": "ad_manager_account_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the AdManagerAccount. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an ad manager account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "UserDataDeletionRequest",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "CreateUserDataDeletionRequest",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/data-deletion-requests/user-events",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests data deletion. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requests for the User data deletion request. We process the request by deleting the user event data in the batch job."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "DataExport",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "RotateDataExportKey",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/data-export/key",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform. It is passed as a path parameter."
+              }
+            ]
+          },
+          "docs": "Rotate the data export key. The previous keys associated with the platform's service account would be deleted."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Item",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "UpdateItemStatusBulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://<platform>-mgmt.mcm-api.moloco.com/rmp/mgmt/v1/platforms/:platform_id/item-status-bulk",
+            "params": [
+              {
+                "name": "platform_id",
+                "value": "",
+                "type": "path",
+                "description": "Identifier of the platform who requests management api. It is passed as a path parameter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Item Kill Switch API. Immediate removal of specified items from ad serving in bulk."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
