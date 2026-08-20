@@ -17,6 +17,19 @@ specificationVersion: '0.23'
 created: '2026-07-31'
 modified: '2026-08-13'
 tags:
+- Advertising
+- AdTech
+- Demand-Side Platform
+- Retail Media
+- Commerce Media
+- Programmatic Advertising
+- Campaign Management
+- Ad Serving
+- Machine-Learning
+- Mobile Marketing
+- Reporting
+- user-events
+tags_raw:
 - advertising
 - adtech
 - demand-side-platform
@@ -39,6 +52,12 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
+  - Advertising
+  - Demand-Side Platform
+  - Campaign Management
+  - Reporting
+  - Ad Serving
+  tags_raw:
   - advertising
   - demand-side-platform
   - campaign-management
@@ -61,6 +80,10 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/auth
   baseURL: https://api.moloco.cloud
   tags:
+  - Authentication
+  - Authorization
+  - User Management
+  tags_raw:
   - authentication
   - authorization
   - user-management
@@ -80,6 +103,12 @@ apis:
   humanURL: https://mcm-docs.moloco.com/docs/campaign-management
   baseURL: https://sandbox-mgmt.mcm-api.moloco.com
   tags:
+  - Retail Media
+  - Commerce Media
+  - Campaign Management
+  - Reporting
+  - Billing
+  tags_raw:
   - retail-media
   - commerce-media
   - campaign-management
@@ -102,6 +131,10 @@ apis:
   humanURL: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
   baseURL: https://sandbox-dcsn.mcm-api.moloco.com
   tags:
+  - Retail Media
+  - Ad Serving
+  - Real-Time Bidding
+  tags_raw:
   - retail-media
   - ad-serving
   - real-time-bidding
@@ -122,6 +155,10 @@ apis:
   humanURL: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
   baseURL: https://sandbox-evt.mcm-api.moloco.com
   tags:
+  - Retail Media
+  - user-events
+  - Data Ingestion
+  tags_raw:
   - retail-media
   - user-events
   - data-ingestion
@@ -143,6 +180,10 @@ apis:
   humanURL: https://mcm-docs.moloco.com/docs/campaign-management
   baseURL: https://sandbox-mgmt.mcm-api.moloco.com
   tags:
+  - Retail Media
+  - Webhook
+  - Event
+  tags_raw:
   - retail-media
   - webhooks
   - events
