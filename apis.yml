@@ -9,6 +9,18 @@ description: >-
   on mcm-api.moloco.com for the commerce-media side, covering ad accounts, products, campaigns, ad groups,
   creatives, audience targets, catalog items, wallets, spending limits, reporting, log export, real-time ad
   decisioning and first-party user-event ingestion.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.prod.website-files.com/6237fca0466ffd9274a1dbdd/6a4b55676ce1b724bd4b3bb2_Open%20Graph%20image.jpg
 url: https://raw.githubusercontent.com/api-evangelist/moloco/refs/heads/main/apis.yml
 x-type: company
@@ -1275,6 +1287,9 @@ apis:
   - type: Webhooks
     url: asyncapi/moloco-commerce-media-webhooks.yml
 common:
+- type: CapabilityMap
+  url: capabilities/moloco-capability-edges.yml
+  name: MOLOCO Business Capability Map
 - type: Overlay
   url: overlays/moloco-ads-campaign-management-overlay.yaml
 - type: Overlay
