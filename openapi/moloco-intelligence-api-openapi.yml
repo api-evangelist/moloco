@@ -1,0 +1,1059 @@
+openapi: 3.2.0
+info:
+  title: Moloco Intelligence API
+  version: '1.0'
+  contact:
+    name: Moloco Inc.
+    url: https://www.molocoads.com
+  description: 'Operations tagged Intelligence across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://<platform>-mgmt.mcm-api.moloco.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: Intelligence
+paths:
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-forecast:
+    post:
+      summary: ReadCampaignForecast
+      description: Show campaign forecast metrics such as click, imp, and purchase when an advertiser sets up their campaign.
+      operationId: RmpManagementApi_ReadCampaignForecast
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadCampaignForecastResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                forecast_campaign:
+                  $ref: '#/components/schemas/ReadCampaignForecastRequestForecastCampaignParams'
+              description: ReadCampaignForecast request.
+              required:
+              - forecast_campaign
+              additionalProperties: true
+        required: true
+      tags:
+      - Intelligence
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaign-guidances:
+    get:
+      summary: ReadCampaignGuidance
+      description: Read guidance for a reasonable campaign setup.
+      operationId: RmpManagementApi_ReadCampaignGuidance
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadCampaignGuidanceResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: campaign_id
+        description: Campaign id must be specified when requesting guidance for an existing campaign to be guided according to the campaign history.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: goal_type
+        description: Campaign goal type must be specified when requesting guidance for a new campaign to be selectively guided according to the goal.
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - FIXED_CPC
+          - OPTIMIZE_ROAS
+          - FIXED_COMMISSION_RATE
+          default: UNKNOWN_CAMPAIGN_GOAL_TYPE
+      - name: ad_type
+        description: Campaign ad type must be specified when requesting guidance for a new campaign.
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ITEM
+          default: UNKNOWN_AD_TYPE
+      tags:
+      - Intelligence
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/item-based-campaign-guidances:
+    post:
+      summary: ReadItemBasedCampaignGuidance
+      description: Get item-based guidance recommendations for campaign optimization based on item performance analysis.
+      operationId: RmpManagementApi_ReadItemBasedCampaignGuidance
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadItemBasedCampaignGuidanceResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                guidance_campaign:
+                  $ref: '#/components/schemas/ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParams'
+              description: ReadItemBasedCampaignGuidance request.
+              additionalProperties: true
+        required: true
+      tags:
+      - Intelligence
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/suggested-items:
+    post:
+      summary: QuerySuggestedItems
+      description: Query suggested catalog items associated with the ad account. Prior to using this API, please get in touch with the RMP associate to ensure correct configuration of this feature.
+      operationId: RmpManagementApi_QuerySuggestedItems
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicItemSearchResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_by:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/publicItemSearchRequestOrderBy'
+                  description: Sort options for the result. If empty, the default value will be PRICE DESC.
+                search_keyword:
+                  type: array
+                  items:
+                    type: string
+                  description: Search keyword. Specific string in the product id/title/category to search for.
+                filter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/commonfilterQueryFilter'
+                  description: Query Filter.
+                limit:
+                  type: string
+                  format: int64
+                  description: Limit option for the result. If empty, the default value will be 10.
+                new_item_timestamp:
+                  type: string
+                  description: Timestamp for determining whether an item is new. New item refers to an item that has been added since certain timestamp, such as campaign's last updated timestamp.
+              description: SuggestedItemsRequest.
+              additionalProperties: true
+        required: true
+      tags:
+      - Intelligence
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+components:
+  schemas:
+    publicItemSearchRequestOrderBy:
+      type: object
+      properties:
+        column:
+          $ref: '#/components/schemas/rmpcommonOrderByColumn'
+        direction:
+          $ref: '#/components/schemas/commonOrderByDirection'
+      additionalProperties: true
+    publicUInt32Guidance:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: uint32
+          description: Value of the guidance.
+        min:
+          type: integer
+          format: uint32
+          description: Minimum value of the guidance.
+        max:
+          type: integer
+          format: uint32
+          description: Maximum value of the guidance.
+      description: Guidance for uint32 value. It is used for ROAS guidance. The value is in percent.
+      required:
+      - value
+      - min
+      - max
+      additionalProperties: true
+    v1ItemSearchResultRowCategoryPath:
+      type: object
+      properties:
+        levels:
+          type: array
+          items:
+            type: string
+          description: Hierarchical category levels, e.g., ["Esport", "Ciclisme", "Shoes"]
+      additionalProperties: true
+    publicUInt64Guidance:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: uint64
+          description: Value of the guidance.
+        min:
+          type: integer
+          format: uint64
+          description: Minimum value of the guidance.
+        max:
+          type: integer
+          format: uint64
+          description: Maximum value of the guidance.
+      description: Guidance for uint64 value. It is used for budget and fixed CPC guidance.
+      required:
+      - value
+      - min
+      - max
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    ReadCampaignForecastRequestForecastCampaignParamsCampaignGoalOptimizeFixedCpc:
+      type: object
+      properties:
+        target_cpc:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Detailed configuration of FIXED_CPC goal.
+      required:
+      - target_cpc
+      additionalProperties: true
+    ReadItemBasedCampaignGuidanceResponseConfidenceLevel:
+      type: object
+      properties:
+        low_confidence_level:
+          type: boolean
+          description: If true, the confidence level is low.
+      description: Confidence level of the guidance.
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    ReadCampaignForecastRequestForecastCampaignParamsCampaignGoal:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ForecastCampaignParamsCampaignGoalCampaignGoalType'
+        optimize_fixed_cpc:
+          $ref: '#/components/schemas/ReadCampaignForecastRequestForecastCampaignParamsCampaignGoalOptimizeFixedCpc'
+        optimize_roas:
+          $ref: '#/components/schemas/ReadCampaignForecastRequestForecastCampaignParamsCampaignGoalOptimizeRoas'
+      description: CampaignGoal describes which cost-metric goal a campaign aims for.
+      required:
+      - type
+      additionalProperties: true
+    commonfilterFilterColumn:
+      type: string
+      enum:
+      - UNKNOWN_FILTER_FIELD
+      - IS_ACTIVE
+      - CREATED_TIMESTAMP
+      - CUSTOM_LABEL_0
+      - GTIN
+      default: UNKNOWN_FILTER_FIELD
+    SmartSelectionSettingExclude:
+      type: object
+      properties:
+        item_ids:
+          type: array
+          items:
+            type: string
+          description: Canonical catalog item IDs to exclude from the selection.
+      description: Exclusion filters for Smart Selection.
+      additionalProperties: true
+    rmpcommonBudgetPeriod:
+      type: string
+      enum:
+      - UNKNOWN_PERIOD
+      - DAILY
+      - WEEKLY
+      default: UNKNOWN_PERIOD
+    GuidedMessageGuidedMessageType:
+      type: string
+      enum:
+      - UNKNOWN
+      - NO_GUIDED_MESSAGE
+      - ADD_MORE_SUGGESTED_ITEMS
+      - RECOMMEND_BID
+      - RECOMMEND_BUDGET
+      - RECOMMEND_ROAS
+      - NO_GUIDED_MESSAGE_IN_COOLDOWN
+      - NO_GUIDED_MESSAGE_INSUFFICIENT_DATA
+      default: UNKNOWN
+    ForecastCampaignParamsCampaignGoalCampaignGoalType:
+      type: string
+      enum:
+      - FIXED_CPC
+      - OPTIMIZE_ROAS
+      default: UNKNOWN_TYPE
+      description: This message follows same field number with CampaignGoalType.
+    ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParams:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+          description: Campaign id. It is required for an existing campaign.
+        ad_type:
+          $ref: '#/components/schemas/ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParamsAdType'
+        goal_type:
+          $ref: '#/components/schemas/ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParamsCampaignGoalType'
+        item_option:
+          $ref: '#/components/schemas/ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParamsCampaignItemOption'
+      description: ReadItemBasedCampaignGuidanceRequest request.
+      required:
+      - ad_type
+      - goal_type
+      - item_option
+      additionalProperties: true
+    ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParamsCampaignItemOption:
+      type: object
+      properties:
+        include_all:
+          type: boolean
+          description: If true, include all items from the given AdAccountId regardless of what the ItemList contains.
+        item_list:
+          type: array
+          items:
+            type: string
+          description: Item list for campaign guidance. It's required when the IncludeAll is false.
+        excluded_item_list:
+          type: array
+          items:
+            type: string
+          description: When the IncludeAll is true, exclude the item from the list.
+        item_selection_type:
+          $ref: '#/components/schemas/CampaignCampaignItemSelectionType'
+        smart_selection_setting:
+          $ref: '#/components/schemas/CampaignItemSelectionSmartSelectionSetting'
+      description: CampaignItemOption is used to specify the item list for campaign guidance.
+      required:
+      - include_all
+      - item_selection_type
+      additionalProperties: true
+    commonfilterQueryFilter:
+      type: object
+      properties:
+        column:
+          $ref: '#/components/schemas/commonfilterFilterColumn'
+        filter_operator:
+          $ref: '#/components/schemas/commonfilterFilterOperator'
+        value:
+          type: string
+          description: 'Single value for filtering. Used with EQ, GE, LE operators. Examples: ''true''/''false'' for boolean, RFC3339 timestamp for CREATED_TIMESTAMP (e.g. ''2000-01-01T02:03:04.567890Z.)'
+        values:
+          type: array
+          items:
+            type: string
+          description: Multiple values for filtering. To be used with IN operator. IN operator is only supported for Filter column.
+      additionalProperties: true
+    v1ItemSearchResultRow:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of Item.
+        title:
+          type: string
+          description: Title of Item.
+        price:
+          $ref: '#/components/schemas/rmpcommonMoney'
+        sale_price:
+          $ref: '#/components/schemas/rmpcommonMoney'
+        link:
+          type: string
+          description: Link of Item.
+        image_link:
+          type: string
+          description: Image link of Item.
+        category:
+          type: string
+          description: 'DEPRECATED: Use categories field instead. Category of Item in old format with dedicated delimiters.'
+        review_count:
+          type: string
+          format: int64
+          description: Review count of Item.
+        rating_score:
+          type: number
+          format: float
+          description: Rating of Item.
+        is_active:
+          type: boolean
+          description: Activeness of Item.
+        is_new:
+          type: boolean
+          description: Whether an Item is new.
+        created_timestamp:
+          type: string
+          format: date-time
+          description: Created timestamp of Item.
+        gtin:
+          type: string
+          description: GTIN
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ItemSearchResultRowCategoryPath'
+          description: Structured category paths for the item. Supports multiple category assignments.
+        brand:
+          type: string
+          description: Brand name of the item.
+        brand_id:
+          type: string
+          description: Brand ID of the item.
+        price_seller:
+          $ref: '#/components/schemas/rmpcommonMoney'
+        sale_price_seller:
+          $ref: '#/components/schemas/rmpcommonMoney'
+      description: ItemSearchResultRow represents a row of item search results.
+      additionalProperties: true
+    SmartSelectionSettingIncludeCategoryPath:
+      type: object
+      properties:
+        levels:
+          type: array
+          items:
+            type: string
+          description: Ordered category levels, e.g. ["Electronics", "Phones", "Smartphones"].
+      description: Hierarchical category path represented as ordered levels.
+      additionalProperties: true
+    ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParamsAdType:
+      type: string
+      enum:
+      - ITEM
+      - BRAND
+      default: UNKNOWN_AD_TYPE
+      description: This message follows same field number with AdType.
+    publicExpectedGuidanceMetric:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/publicExpectedGuidanceMetricMetricType'
+        increment_ratio:
+          $ref: '#/components/schemas/publicDoubleGuidance'
+      required:
+      - type
+      - increment_ratio
+      additionalProperties: true
+    commonOrderByDirection:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_DIRECTION
+      - ASC
+      - DESC
+      default: UNKNOWN_ORDER_BY_DIRECTION
+    publicReadItemBasedCampaignGuidanceResponse:
+      type: object
+      properties:
+        guided_value:
+          $ref: '#/components/schemas/ReadItemBasedCampaignGuidanceResponseGuidedValue'
+        guided_message:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadItemBasedCampaignGuidanceResponseGuidedMessage'
+        expected_metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/publicExpectedGuidanceMetric'
+          description: Expected metric increase in percent
+        confidence_level:
+          $ref: '#/components/schemas/ReadItemBasedCampaignGuidanceResponseConfidenceLevel'
+      description: ReadItemBasedCampaignGuidance response.
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    CampaignItemSelectionSmartSelectionSetting:
+      type: object
+      properties:
+        include:
+          $ref: '#/components/schemas/SmartSelectionSettingInclude'
+        exclude:
+          $ref: '#/components/schemas/SmartSelectionSettingExclude'
+      description: Configuration for Smart Selection filtering (e.g. brands, categories, on-sale, exclusions list).
+      additionalProperties: true
+    commonfilterFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_FILTER_OPERATOR
+      - EQ
+      - GT
+      - GE
+      - LT
+      - LE
+      - CONTAINS
+      - IN
+      default: UNKNOWN_FILTER_OPERATOR
+    rmpcommonOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY
+      - ID
+      - TITLE
+      - PRICE
+      - SALE_PRICE
+      - CATEGORY
+      - REVIEW_COUNT
+      - RATING_SCORE
+      - ACTIVE
+      default: UNKNOWN_ORDER_BY
+    publicForecastValue:
+      type: object
+      properties:
+        min:
+          type: string
+          format: int64
+          description: Minimum value of the forecast.
+        max:
+          type: string
+          format: int64
+          description: Maximum value of the forecast.
+      description: Forecast value with range.
+      required:
+      - min
+      - max
+      additionalProperties: true
+    publicForecastCampaignCampaignItemOption:
+      type: object
+      properties:
+        item_list:
+          type: array
+          items:
+            type: string
+          description: Item list for campaign forecast. It's required when the IncludeAll is false.
+        include_all:
+          type: boolean
+          description: If true, include all items from the given AdAccountId regardless of what the ItemList contains.
+        excluded_item_list:
+          type: array
+          items:
+            type: string
+          description: When the IncludeAll is true, exclude the item from the list. The maximum number of items is 5000.
+        item_selection_type:
+          $ref: '#/components/schemas/CampaignCampaignItemSelectionType'
+        smart_selection_setting:
+          $ref: '#/components/schemas/CampaignItemSelectionSmartSelectionSetting'
+      description: CampaignItemOption is used to specify the item list for campaign forecast.
+      additionalProperties: true
+    ReadCampaignForecastRequestForecastCampaignParamsCampaignGoalOptimizeRoas:
+      type: object
+      properties:
+        target_roas:
+          type: integer
+          format: int64
+          description: Target ROAS in percent.
+      description: Detailed configuration of OPTIMIZE_ROAS goal.
+      required:
+      - target_roas
+      additionalProperties: true
+    publicReadCampaignGuidanceResponse:
+      type: object
+      properties:
+        guided_budget_micro:
+          $ref: '#/components/schemas/publicUInt64Guidance'
+        guided_cpc_micro:
+          $ref: '#/components/schemas/publicUInt64Guidance'
+        guided_roas:
+          $ref: '#/components/schemas/publicUInt32Guidance'
+        guided_commission_rate:
+          type: integer
+          format: int64
+          description: Target commission rate guidance in percent.
+        expected_metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/publicExpectedGuidanceMetric'
+          description: Expected metric increase in percent. Only valid when the target is commission rate.
+      description: ReadCampaignGuidance response.
+      additionalProperties: true
+    publicDoubleGuidance:
+      type: object
+      properties:
+        value:
+          type: number
+          format: double
+          description: Value of the guidance.
+        min:
+          type: number
+          format: double
+          description: Minimum value of the guidance.
+        max:
+          type: number
+          format: double
+          description: Maximum value of the guidance.
+      description: Guidance for double value. It is used for increment ratio guidance.
+      required:
+      - value
+      - min
+      - max
+      additionalProperties: true
+    CampaignCampaignItemSelectionType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - MANUAL_SELECTION
+      - SMART_SELECTION
+      default: UNKNOWN_TYPE
+      description: Type of item selection for campaign. Choose MANUAL_SELECTION to select items manually or SMART_SELECTION to let Moloco choose items automatically.
+    rmpcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
+    publicItemSearchResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ItemSearchResultRow'
+          description: Rows of items search result.
+        num_counts:
+          type: integer
+          format: int32
+          description: Number of counts
+      description: ItemSearch response
+      required:
+      - rows
+      - num_counts
+      additionalProperties: true
+    publicExpectedGuidanceMetricMetricType:
+      type: string
+      enum:
+      - UNKNOWN_METRIC
+      - IMPRESSION
+      - CLICK
+      - PURCHASE
+      default: UNKNOWN_METRIC
+      description: "MetricType enumerates all types of metric.\n\n - IMPRESSION: The metric type for impression.\n - CLICK: The metric type for click.\n - PURCHASE: The metric type for purchase."
+    publicReadCampaignForecastResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/publicReadCampaignForecastResponseStatus'
+        imp:
+          $ref: '#/components/schemas/publicForecastValue'
+        click:
+          $ref: '#/components/schemas/publicForecastValue'
+        purchase:
+          $ref: '#/components/schemas/publicForecastValue'
+      description: ReadCampaignForecast response.
+      additionalProperties: true
+    rmpcommonBudget:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/rmpcommonBudgetPeriod'
+        amount:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Budget describes the amount of budget to be consumed during the designated period.
+      required:
+      - period
+      - amount
+      additionalProperties: true
+    ReadCampaignForecastRequestForecastCampaignParamsAdType:
+      type: string
+      enum:
+      - ITEM
+      default: UNKNOWN_AD_TYPE
+      description: This message follows same field number with AdType.
+    ReadItemBasedCampaignGuidanceResponseGuidedMessage:
+      type: object
+      properties:
+        guided_message_type:
+          $ref: '#/components/schemas/GuidedMessageGuidedMessageType'
+      description: GuidedMessage is used to include the message to guide the client.
+      additionalProperties: true
+    SmartSelectionSettingInclude:
+      type: object
+      properties:
+        brands:
+          type: array
+          items:
+            type: string
+          description: Brands to include.
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/SmartSelectionSettingIncludeCategoryPath'
+          description: Category paths to include. Each path is a hierarchical list of levels.
+        on_sale_only:
+          type: boolean
+          description: When true, only on-sale items are included.
+      description: Inclusion filters for Smart Selection.
+      additionalProperties: true
+    ReadItemBasedCampaignGuidanceResponseGuidedValue:
+      type: object
+      properties:
+        guided_budget_micro:
+          $ref: '#/components/schemas/publicUInt64Guidance'
+        guided_bid_micro:
+          $ref: '#/components/schemas/publicUInt64Guidance'
+        guided_roas:
+          $ref: '#/components/schemas/publicUInt32Guidance'
+      description: GuidedValue is used to include the recommneded value.
+      additionalProperties: true
+    ReadCampaignForecastRequestForecastCampaignParams:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Campaign id. It is required for an existing campaign.
+        ad_type:
+          $ref: '#/components/schemas/ReadCampaignForecastRequestForecastCampaignParamsAdType'
+        goal:
+          $ref: '#/components/schemas/ReadCampaignForecastRequestForecastCampaignParamsCampaignGoal'
+        budget:
+          $ref: '#/components/schemas/rmpcommonBudget'
+        item_option:
+          $ref: '#/components/schemas/publicForecastCampaignCampaignItemOption'
+        is_targeted:
+          type: boolean
+          description: If the forecasted campaign uses manual targeting. It should be true.
+      description: ReadCampaignForecast request.
+      required:
+      - ad_type
+      - goal
+      - budget
+      - item_option
+      - is_targeted
+      additionalProperties: true
+    rmpcommonMoneyMicro:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/rmpcommonCurrency'
+        amount_micro:
+          type: string
+          format: int64
+          description: Amount in micro unit. (e.g., 1234 means 0.001234)
+      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
+
+        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
+      required:
+      - currency
+      - amount_micro
+      additionalProperties: true
+    ReadItemBasedCampaignGuidanceRequestItemBasedCampaignGuidanceParamsCampaignGoalType:
+      type: string
+      enum:
+      - UNKNOWN_GOAL_TYPE
+      - FIXED_CPC
+      - OPTIMIZE_ROAS
+      - FIXED_CPM
+      - MAXIMIZE_SALES
+      default: UNKNOWN_GOAL_TYPE
+      description: This message follows same field number with CampaignGoalType.
+    publicReadCampaignForecastResponseStatus:
+      type: string
+      enum:
+      - UNKNOWN
+      - OK
+      - NOT_IN_GUIDANCE_RANGE
+      - TARGETED_CAMPAIGN
+      - NO_ITEMS_AVAILABLE
+      - LOW_BUDGET
+      default: UNKNOWN
+      description: " - OK: Forecast values are available.\n - NOT_IN_GUIDANCE_RANGE: Forecast values are unavailable."
+    rmpcommonMoney:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/rmpcommonCurrency'
+        amount:
+          type: number
+          format: double
+          description: Amount of money. (e.g., 12.34)
+      description: "A monetary amount in a specific currency.\nFor example, `{currency: \"USD\", amount: 12.34}` means $12.34. \nPrice of the single item."
+      required:
+      - currency
+      - amount
+      additionalProperties: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
+    Bearer:
+      type: apiKey
+      description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
+      name: Authorization
+      in: header
+x-refined-from:
+- mcm-management-api.json
+- moloco-commerce-media-management-openapi.yml
+x-readme:
+  explorer-enabled: true

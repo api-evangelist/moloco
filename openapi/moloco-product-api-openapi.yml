@@ -1,0 +1,1459 @@
+openapi: 3.2.0
+info:
+  title: Moloco Product API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged Product across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: Product
+paths:
+  /cm/v1/products:
+    get:
+      summary: List up Products.
+      description: List all Products of the AdAccount.
+      operationId: DspApi_ListProducts
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListProductsResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListProductsError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID to which the Product belongs.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - Product
+    post:
+      summary: Create a new Product.
+      description: Create a new Product of the AdAccount.
+      operationId: DspApi_CreateProduct
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateProductResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateProductError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID to which the Product belongs.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspProduct'
+        description: The Product data to be created.
+        required: true
+      tags:
+      - Product
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/products/{product_id}:
+    get:
+      summary: Read an existing Product.
+      description: Read an existing Product.
+      operationId: DspApi_ReadProduct
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductError'
+      parameters:
+      - name: product_id
+        description: The Product ID to be retrieved.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Product
+    delete:
+      summary: Delete an existing Product.
+      description: Delete an existing Product.
+      operationId: DspApi_DeleteProduct
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteProductResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteProductError'
+      parameters:
+      - name: product_id
+        description: The ID of the Product to delete.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Product
+    put:
+      summary: Update an existing Product.
+      description: Update an existing Product.
+      operationId: DspApi_UpdateProduct
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateProductResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateProductError'
+      parameters:
+      - name: product_id
+        description: The ID of the Product to be updated.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspProduct'
+        description: The Product data to be updated.
+        required: true
+      tags:
+      - Product
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/products/{product_id}/app-event-summary:
+    get:
+      summary: Read an existing Product's app event summary.
+      description: Read an existing Product's app event summary.
+      operationId: DspApi_ReadProductAppEventSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductAppEventSummaryResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductAppEventSummaryError'
+      parameters:
+      - name: product_id
+        description: The Product ID to be retrieved.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: condition.attribution
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - UNKNOWN_ATTRIBUTION
+          - ATTRIBUTION_ALL
+          - ATTRIBUTED
+          - UNATTRIBUTED
+          default: UNKNOWN_ATTRIBUTION
+      - name: condition.revenue
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - UNKNOWN_REVENUE
+          - REVENUE_ALL
+          - REVENUE_TRUE
+          - REVENUE_FALSE
+          default: UNKNOWN_REVENUE
+      - name: condition.time_window
+        description: " - TIME_WINDOW_D30: Query with recent 30 days. (Default).\n - TIME_WINDOW_D90: Query with recent 90 days.\n - TIME_WINDOW_TODAY: Query with today’s data."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - UNKNOWN_TIME_WINDOW
+          - TIME_WINDOW_D30
+          - D30
+          - TIME_WINDOW_D90
+          - D90
+          - TIME_WINDOW_TODAY
+          default: UNKNOWN_TIME_WINDOW
+      tags:
+      - Product
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/products/{product_id}/mmp-skan-conversion-config:
+    get:
+      summary: Read conversion value configuration from an integrated MMP.
+      description: Read conversion value configuration stored in the MMP that is integrated with the Product using the tracking company and bundle ID data from its postback integration data.
+      operationId: DspApi_ReadProductSKANConversionConfigFromMmp
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductSKANConversionConfigFromMmpResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductSKANConversionConfigFromMmpError'
+      parameters:
+      - name: product_id
+        description: 'The ID of the Product to import SKAdNetwork conversion value configuration.
+
+          The type of product OS should be IOS.'
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Product
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/products/{product_id}/skan-conversion-config:
+    get:
+      summary: Read conversion value configurations.
+      description: Read conversion value configurations under an existing Product.
+      operationId: DspApi_ReadProductSKANConversionConfig
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductSKANConversionConfigResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadProductSKANConversionConfigError'
+      parameters:
+      - name: product_id
+        description: The ID of the Product related to the MMPI which will be updated.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Product
+    put:
+      summary: Update conversion value configurations.
+      description: Update conversion value configurations under an existing Product.
+      operationId: DspApi_UpdateProductSKANConversionConfig
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateProductSKANConversionConfigResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateProductSKANConversionConfigError'
+      parameters:
+      - name: product_id
+        description: The ID of the Product related to the MMPI which will be updated.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MmpIntegrationConversionValueConfigurationItem'
+        description: The SKAdNetwork conversion configuration data to be updated.
+        required: true
+      tags:
+      - Product
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    ConversionValueConfigurationItemCvConfigurationForSingleEvent:
+      type: object
+      properties:
+        cv_revenue_events:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ConversionValueConfigurationItemCvConfigurationForSingleEventEventInfo'
+          description: 'Information on relationships between conversion value and (event name & revenue interval) for single event scheme.
+
+            The key of this map is the registered conversion value between 1 to 63.
+
+            The value of this map is a EventInfo message.
+
+            EventInfo without revenue value should be unique.
+
+            For the same event name, conversion value should be consecutive.
+
+            Range min value cannot be smaller than previous range''s max value.
+
+            At least 4 Purchase Value should be registered for each event.'
+    ProductSuspensionActionType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - SUSPEND_UNTIL
+      - SUSPEND_INDEFINITELY
+      - STOP_SUSPENSION
+      default: UNKNOWN_TYPE
+      description: "The type which the current action achieves.\n\n - SUSPEND_UNTIL: The current action is for product suspension until someday.\n - SUSPEND_INDEFINITELY: The current action is for product suspension indefinitely.\n - STOP_SUSPENSION: The current action is to stop product suspension."
+    messagesUpdateProductSKANConversionConfigErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - PRODUCT_EMPTY_REVENUE_INTERVAL_FOR_SAME_EVENT_MUST_BE_UNIQUE
+      - PRODUCT_INVALID_CONVERSION_VALUE
+      - PRODUCT_INVALID_REVENUE_INTERVAL
+      - PRODUCT_NON_CONSECUTIVE_CONVERSION_VALUE_FOR_SAME_EVENTS
+      - PRODUCT_CONVERSION_VALUE_MUST_START_AFTER_PREVIOUS_RANGE
+      - PRODUCT_INVALID_PURCHASE_VALUE
+      - PRODUCT_INVALID_EVENT_COUNTER
+      - PRODUCT_INVALID_HOURS_FROM_INSTALL
+      - CAMPAIGN_SKAN_COOLDOWN_TIME_NOT_PASSED
+      default: ERROR_REASON_UNKNOWN
+      description: " - PRODUCT_EMPTY_REVENUE_INTERVAL_FOR_SAME_EVENT_MUST_BE_UNIQUE: Event without revenue value should be unique.\n - PRODUCT_INVALID_CONVERSION_VALUE: Invalid conversion value.\n - PRODUCT_INVALID_REVENUE_INTERVAL: Invalid revenue interval.\n - PRODUCT_NON_CONSECUTIVE_CONVERSION_VALUE_FOR_SAME_EVENTS: Conversion values should be consecutive for the same event name.\n - PRODUCT_CONVERSION_VALUE_MUST_START_AFTER_PREVIOUS_RANGE: Range min value cannot be smaller than previous range's max value\n - PRODUCT_INVALID_PURCHASE_VALUE: At least 4 Purchase Value should be registered for each event.\n - PRODUCT_INVALID_EVENT_COUNTER: The event counter should be larger than 0.\n - PRODUCT_INVALID_HOURS_FROM_INSTALL: The hours from install should be larger than 0.\n - CAMPAIGN_SKAN_COOLDOWN_TIME_NOT_PASSED: SKAN campaigns must be stopped before 72 hours before any changes."
+    messagesListProductsResponse:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspProduct'
+          description: The list of Products.
+    messagesReadProductResponse:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/dspProduct'
+          description: The retrieved Product data.
+    MmpIntegrationConversionValueConfigurationItem:
+      type: object
+      properties:
+        effective_date:
+          type: string
+          description: The start date of the CV configuration in the form of YYYY-MM-DD.
+        scheme:
+          $ref: '#/components/schemas/ConversionValueConfigurationItemConversionValueScheme'
+          description: 'Scheme of CV configuration.
+
+            There are two types of scheme single event scheme and multiple events scheme.'
+        cv_single:
+          $ref: '#/components/schemas/ConversionValueConfigurationItemCvConfigurationForSingleEvent'
+        cv_multi:
+          $ref: '#/components/schemas/ConversionValueConfigurationItemCvConfigurationForMultipleEvents'
+        cv_custom:
+          $ref: '#/components/schemas/ConversionValueConfigurationItemCvConfigurationForCustomEvents'
+        cv_skan_v4:
+          $ref: '#/components/schemas/ConversionValueConfigurationItemCvConfigurationForSkanV4Events'
+        auto_refresh:
+          $ref: '#/components/schemas/ConversionValueConfigurationItemCvConfigurationAutoRefresh'
+          description: Settings for SKAdNetwork conversion value configuration auto-refresh.
+      description: 'Conversion value configuration.
+
+        Show the valid item among the history in the storage entity.
+
+        (Most recent item of which the effective date is not later than current date.)
+
+        Use case in MCP: https://help.moloco.com/hc/en-us/articles/1500012981641-SKAdNetwork-Conversion-Value-Configuration- .'
+    messagesReadProductAppEventSummaryErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadProductAppEventSummaryErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadProductErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    MmpIntegrationMmpContext:
+      type: object
+      properties:
+        adjust:
+          $ref: '#/components/schemas/MmpContextAdjustContext'
+          description: 1 is deprecated. Do not reuse it.
+    dspPostbackIntegrationStatus:
+      type: object
+      properties:
+        device_os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: The device OS of the postback integration.
+        country:
+          type: string
+          description: 'Country to which the postback is integrated with.
+
+            The field should conform to [ISO-3166-1 Alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) format e.g. "KOR", "USA".
+
+            It is used for filtering bid requests by country name.'
+        complete_percentage:
+          type: number
+          format: double
+          description: Integration completion percentage per each country.
+        integration_success:
+          type: boolean
+          description: The flag that specifies the integration is completed in any country.
+    messagesCreateProductErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateProductErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    CvConfigurationForCustomEventsEventList:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ConversionValueConfigurationItemCvConfigurationForCustomEventsEventInfo'
+          description: events hold multiple EventInfo.
+    dspPostbackIntegration:
+      type: object
+      properties:
+        mmp:
+          $ref: '#/components/schemas/adcloudcommonTrackingCompany'
+          description: MMP (e.g., Appsflyer, MAT, and so on).
+        bundle_id:
+          type: string
+          description: "bundle_id to be used in the MMP integration. This corresponds to app_bundle in postback table.\nWe've relied on the identifier sent by the tracker to keep track of events in our internal database.\nWhen we want to target to the audience of a Campaign, we need to exactly specify the identifier in the\ntarget description. Unfortunately, it depends on tracker's policy especially for iOS app as follows:\n  - Appsflyer: \"id\" + NUMBER, where NUMBER is app bundle.\n  - Tune: independent string to NUMBER.\n          e.g., memebox is denoted as \"com.memebox.ios.memebox\" while app bundle is 896990789\n  - Adjust: same with the app_bundle\n  - trackfnt: same with the app_bundle\nNote that 'bundle' field will be used as tracking bundle if 'tracking_bundle' is not given. In many\ncase, this field can be filled after we receive the very first event from tracker for an app."
+      description: PostbackIntegration represents the postback integration information.
+    messagesUpdateProductErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - PRODUCT_INVALID_APP_RATING
+      default: ERROR_REASON_UNKNOWN
+      description: ' - PRODUCT_INVALID_APP_RATING: The product''s app property has invalid rating.'
+    CvConfigurationAutoRefreshAutoRefreshResult:
+      type: string
+      enum:
+      - UNKNOWN
+      - OK
+      - ERROR
+      default: UNKNOWN
+    messagesUpdateProductError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateProductErrorAPIErrorInfo'
+    messagesDeleteProductError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteProductErrorAPIErrorInfo'
+    CvConfigurationForSkanV4EventsPostback:
+      type: object
+      properties:
+        postback_sequence_index:
+          type: integer
+          format: int32
+        measurement_window:
+          type: integer
+          format: int32
+        coarse_grained_values:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CvConfigurationForCustomEventsEventList'
+          description: 'Information on relationships between coarse-grained conversion value and its detailed events.
+
+            The possible keys of the map are low, medium or high.'
+        fine_grained_values:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CvConfigurationForCustomEventsEventList'
+          description: 'Information on relationships between fine-grained conversion value and its detailed events.
+
+            The key of this map is the registered conversion value between 1 to 63.'
+    messagesUpdateProductErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateProductErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadProductSKANConversionConfigFromMmpError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadProductSKANConversionConfigFromMmpErrorAPIErrorInfo'
+    messagesReadProductSKANConversionConfigFromMmpErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadProductSKANConversionConfigFromMmpErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesListProductsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListProductsErrorAPIErrorInfo'
+    AppPropertiesIosSecondaryMeasurement:
+      type: string
+      enum:
+      - IOS_SECONDARY_MEASUREMENT_UNKNOWN
+      - IOS_SECONDARY_MEASUREMENT_NONE
+      - IOS_SECONDARY_MEASUREMENT_NA
+      - IOS_SECONDARY_MEASUREMENT_SKAN
+      - IOS_SECONDARY_MEASUREMENT_MMP
+      - IOS_SECONDARY_MEASUREMENT_OTHER_MMP
+      - IOS_SECONDARY_MEASUREMENT_OTHER_3P
+      - IOS_SECONDARY_MEASUREMENT_INCREMENTALITY
+      - IOS_SECONDARY_MEASUREMENT_CUSTOM
+      default: IOS_SECONDARY_MEASUREMENT_UNKNOWN
+      description: "Secondary measurement used for iOS apps.\n\n - IOS_SECONDARY_MEASUREMENT_UNKNOWN: Zero value. Every non-iOS app must have this value.\n - IOS_SECONDARY_MEASUREMENT_NONE: Unset value for iOS app. It means the secondary measurement is not decided yet.\n - IOS_SECONDARY_MEASUREMENT_NA: Not applicable. It means the iOS app does not use any secondary measurement.\n - IOS_SECONDARY_MEASUREMENT_SKAN: SKAdNetwork (SKAN). SKAN cannot be configured as both the primary and secondary measurement. If a secondary measurement is not required, use 'NA'.\n - IOS_SECONDARY_MEASUREMENT_MMP: MMP Probabilistic Attribution. MMP cannot be configured as both the primary and secondary measurement. If a secondary measurement is not required, use 'NA'.\n - IOS_SECONDARY_MEASUREMENT_OTHER_MMP: Other MMP measurements (e.g., unified iOS reporting, AppsFlyer SSOT, etc.)\n - IOS_SECONDARY_MEASUREMENT_OTHER_3P: Other 3P measurement tool (e.g., some customers are using other BI tools)\n - IOS_SECONDARY_MEASUREMENT_INCREMENTALITY: Incrementality measurement\n - IOS_SECONDARY_MEASUREMENT_CUSTOM: Custom measurement"
+    messagesCreateProductResponse:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/dspProduct'
+          description: The created Product data.
+        postback_integration_statuses:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspPostbackIntegrationStatus'
+          description: The postback integration status.
+    messagesCreateProductError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateProductErrorAPIErrorInfo'
+    messagesDeleteProductErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteProductErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspProductType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - APP
+      - WEB
+      default: UNKNOWN_TYPE
+      description: "Product type.\n\n - UNKNOWN_TYPE: This value is not part of the specification.\n - APP: App type.\n - WEB: Web type."
+    messagesUpdateProductSKANConversionConfigError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateProductSKANConversionConfigErrorAPIErrorInfo'
+    ConversionValueConfigurationItemCvConfigurationForMultipleEvents:
+      type: object
+      properties:
+        cv_events:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Information on relationships between conversion value and event name for multiple events scheme.
+
+            The key of this map is the registered conversion value between 0 to 5.
+
+            The value of this map is the event name.'
+    ConversionValueConfigurationItemConversionValueScheme:
+      type: string
+      enum:
+      - UNKNOWN_CONVERSION_VALUE_SCHEME
+      - CONVERSION_VALUE_SCHEME_SINGLE_EVENT
+      - CONVERSION_VALUE_SCHEME_MULTIPLE_EVENTS
+      - CONVERSION_VALUE_SCHEME_CUSTOM_EVENTS
+      - CONVERSION_VALUE_SCHEME_SKAN_V4_EVENTS
+      default: UNKNOWN_CONVERSION_VALUE_SCHEME
+    AppPropertiesIosPrimaryMeasurement:
+      type: string
+      enum:
+      - IOS_PRIMARY_MEASUREMENT_UNKNOWN
+      - IOS_PRIMARY_MEASUREMENT_NONE
+      - IOS_PRIMARY_MEASUREMENT_SKAN
+      - IOS_PRIMARY_MEASUREMENT_MMP
+      default: IOS_PRIMARY_MEASUREMENT_UNKNOWN
+      description: "Primary measurement used for iOS apps.\n\n - IOS_PRIMARY_MEASUREMENT_UNKNOWN: Zero value. Every non-iOS app must have this value.\n - IOS_PRIMARY_MEASUREMENT_NONE: Unset value for iOS app. It means the primary measurement is not decided yet.\n - IOS_PRIMARY_MEASUREMENT_SKAN: SKAdNetwork (SKAN)\n - IOS_PRIMARY_MEASUREMENT_MMP: MMP Probabilistic Attribution"
+    messagesUpdateProductSKANConversionConfigResponse:
+      type: object
+      properties:
+        skan_conversion_config:
+          $ref: '#/components/schemas/MmpIntegrationConversionValueConfigurationItem'
+    messagesReadProductErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadProductErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadProductAppEventSummaryErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    dspPostbackIntegrationEventSummary:
+      type: object
+      properties:
+        summary:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/PostbackIntegrationEventSummaryEventTypeSummary'
+        last_modified_at:
+          type: string
+          format: date-time
+    AppPropertiesAppEventType:
+      type: string
+      enum:
+      - UNKNOWN
+      - IN_APP_ADVERTISING
+      - IN_APP_PURCHASE
+      - SIGN_UP
+      - SUBSCRIPTION
+      - PREDICTED_LIFETIME_VALUE
+      - ACHIEVE_LEVEL
+      - START_TRIAL
+      - ADD_PAYMENT_INFO
+      - VIEW_PRODUCT_OR_CONTENT
+      - ADD_TO_WISHLIST
+      - SEARCH
+      - ADD_TO_CART
+      - BEGIN_CHECKOUT
+      - FIRST_DEPOSIT
+      - FIRST_TRADE
+      - OTHER
+      default: UNKNOWN
+      description: AppEventType indicates standardized event types representing each in-app event.
+    MmpContextAdjustContext:
+      type: object
+      properties:
+        url_host_universal_link:
+          type: string
+          title: Immutable. Ends with ".adj.st" ex) moloco.adj.st
+        url_host_branded_link:
+          type: string
+          title: Immutable. Ends with ".go.link" ex) moloco.go.link
+    messagesUpdateProductResponse:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/dspProduct'
+          description: The updated Product data.
+        postback_integration_statuses:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspPostbackIntegrationStatus'
+          description: The postback integration status.
+    messagesReadProductSKANConversionConfigError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadProductSKANConversionConfigErrorAPIErrorInfo'
+    messagesUpdateProductSKANConversionConfigErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateProductSKANConversionConfigErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    adcloudcommonTrackingCompany:
+      type: string
+      enum:
+      - UNKNOWN_TRACKING_COMPANY
+      - KOCHAVA
+      - ADJUST
+      - MAT
+      - MOLOCO_PIXEL
+      - APPSFLYER
+      - ADBRIX
+      - WEB
+      - GENERIC
+      - TRACKFNT
+      - AIRBRIDGE
+      - MOLOCO_E2E
+      - APSALAR
+      - BRANCH
+      - TENJIN
+      - SINGULAR
+      - ADBRIX_V2
+      - TRAFFICGUARD
+      - GAMELOFT
+      - SKADNETWORK
+      - MYTRACKER
+      - MOLOCO_RMP
+      - MOLOCO_PIXEL_V2
+      - JUSTTRACK
+      - SHOPEE
+      - KOCHAVA_FOR_PUBLISHER
+      - GAMESIGHT
+      - CAULY
+      - HASOFFER
+      - ADACTION
+      - CURATE
+      default: UNKNOWN_TRACKING_COMPANY
+      description: "Enumeration for tracking companies supported by Moloco Ads.\n\n - WEB: Unnamed trackers\n - AIRBRIDGE: Moloco's e2e tracker (test purpose only)\n - KOCHAVA_FOR_PUBLISHER: Kochava's CTV to web event dedicated tracking company."
+    messagesListProductsErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListProductsErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadProductAppEventSummaryResponse:
+      type: object
+      properties:
+        postback_integration_event_summary:
+          $ref: '#/components/schemas/dspPostbackIntegrationEventSummary'
+          description: The events summary of postback integration per each events and time windows.
+    messagesReadProductSKANConversionConfigFromMmpErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    commonDeviceOs:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_OS
+      - ANDROID
+      - IOS
+      - VERSATILE
+      - MOBILE_WEB
+      - MACOS
+      - WINDOWS
+      - NEXT_VERSATILE
+      default: UNKNOWN_DEVICE_OS
+      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
+    dspMmpIntegrationStatus:
+      type: string
+      enum:
+      - UNKNOWN_STATUS
+      - UNDER_REVIEW
+      - DENIED
+      - ACTIVE
+      default: UNKNOWN_STATUS
+    messagesReadProductSKANConversionConfigErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesCreateProductErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - PRODUCT_INVALID_APP_RATING
+      - PRODUCT_INVALID_APP_POSTBACK_INTEGRATION_BUNDLE
+      - PRODUCT_INVALID_APP_BUNDLE_PATTERN
+      - PRODUCT_TRACKING_BUNDLE_CANNOT_CONTAIN_LEADING_OR_TRAILING_WHITESPACE
+      - PRODUCT_OS_MISMATCH_WITH_STORE_URL
+      - PRODUCT_INVALID_APP_STORE_URL
+      - PRODUCT_NOT_SUPPORTED_MMP_FOR_WEB
+      default: ERROR_REASON_UNKNOWN
+      description: " - PRODUCT_INVALID_APP_RATING: The product's app property has invalid rating.\n - PRODUCT_INVALID_APP_POSTBACK_INTEGRATION_BUNDLE: Invalid bundle of the product's app postback integration.\n - PRODUCT_INVALID_APP_BUNDLE_PATTERN: App bundle string does not match the pattern of specified App store.\n - PRODUCT_TRACKING_BUNDLE_CANNOT_CONTAIN_LEADING_OR_TRAILING_WHITESPACE: tracking bundle cannot contain leading or trailing whitespace\n - PRODUCT_OS_MISMATCH_WITH_STORE_URL: Specified OS does not match with store URL.\n - PRODUCT_INVALID_APP_STORE_URL: App store cannot be identified from the URL.\n - PRODUCT_NOT_SUPPORTED_MMP_FOR_WEB: Given product mmp is not supported for web type. We only support MOLOCO_PIXEL_V2 for web type."
+    dspProduct:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the Product. Automatically set by server on creation.
+        ad_account_id:
+          type: string
+          description: The ID of the AdAccount the Product belongs to.
+          readOnly: true
+        title:
+          type: string
+          description: A descriptive name of the Product.
+        description:
+          type: string
+          description: A short description of the Product.
+        advertiser_domain:
+          type: string
+          description: 'Advertiser domain (e.g., "ford.com"). Usually the domain of AdAccounts''s web page.
+
+            From v1.7.4, it should be non empty if the value of allow_empty_advertiser_domain is false.
+
+            If the value is empty, some exchanges may deny campaigns under the product.'
+        allow_empty_advertiser_domain:
+          type: boolean
+          description: 'A flag to allow empty value of advertiser_domain. Setting this flag to true acknowledges that some exchanges may deny campaigns if the advertiser_domain is empty.
+
+            From v1.7.4, the value should be true if the value of advertiser_domain is empty.'
+        device_os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: Device OS of the Product. It means that the OS of the device where the Campaign of this Product is provided.
+        developer_name:
+          type: string
+          description: 'The developer name of the Product. Some publishers request the sponsor information for the native Creative.
+
+            The value of developer_name will be used to fill that information. Please note that this value could be displayed on user''s screen.
+
+            If this field is empty, native Creative''s title will be used.'
+        type:
+          $ref: '#/components/schemas/dspProductType'
+          description: The type of the Product.
+        app:
+          $ref: '#/components/schemas/ProductAppProperties'
+          description: Required for APP type.
+        web:
+          $ref: '#/components/schemas/ProductWebProperties'
+          description: Required for WEB type.
+        dynamic_creative_property:
+          $ref: '#/components/schemas/ProductDynamicCreativeProperty'
+          description: Properties for using dynamic Creative. Immutable.
+        suspension_history:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ProductSuspensionAction'
+          description: 'List of suspension actions.
+
+            It is sorted by timestamp in descending order, so the first one is the current suspension result.'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+          readOnly: true
+      description: 'Product represents an app (per device OS) or a website that an AdAccount want to promote with a Campaign.
+
+        A Campaign should be associated with a single Product.'
+      required:
+      - type
+      - title
+      - advertiser_domain
+    dspMmpIntegration:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the MmpIntegration.
+        mmp_bundle_id:
+          type: string
+          description: Exact key which is used in MMP.
+        mmp:
+          $ref: '#/components/schemas/adcloudcommonTrackingCompany'
+          description: MMP (e.g., Appsflyer, MAT, and so on).
+        ownership:
+          type: boolean
+          description: Whether the Product's AdAccount has ownership for the MmpIntegration.
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/dspMmpIntegrationStatus'
+          description: Current status of this IntegrationID.
+        denied_reason:
+          type: string
+          description: Review denied reason if its status is DENIED.
+        cv_config_item:
+          $ref: '#/components/schemas/MmpIntegrationConversionValueConfigurationItem'
+          description: Conversion value configuration setting.
+        mmp_context:
+          $ref: '#/components/schemas/MmpIntegrationMmpContext'
+          description: Stores MMP-specific contextual data.
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+        allow_fingerprinting:
+          type: boolean
+          description: Whether the app owner has allowed the MMP's fingerprinting for attributions.
+        fingerprinting_last_auto_refreshed_at:
+          type: string
+          format: date-time
+          description: Timestamp for last update of "allow_fingerprinting".
+          readOnly: true
+      description: MmpIntegration represents the MMP integration information.
+    messagesListProductsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    adcloudcommonFloatingPointRange:
+      type: object
+      properties:
+        start:
+          type: number
+          format: double
+        end:
+          type: number
+          format: double
+    ConversionValueConfigurationItemCvConfigurationForSkanV4Events:
+      type: object
+      properties:
+        postbacks:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CvConfigurationForSkanV4EventsPostback'
+    ConversionValueConfigurationItemCvConfigurationForSingleEventEventInfo:
+      type: object
+      properties:
+        event_name:
+          type: string
+        revenue_interval:
+          $ref: '#/components/schemas/adcloudcommonFloatingPointRange'
+          description: 'Revenue value cannot be negative.
+
+            Range min value cannot be larger than the range max value.'
+    PostbackIntegrationEventSummaryEventTypeSummary:
+      type: object
+      properties:
+        event_name:
+          type: string
+          description: The name of the in-app event.
+        total_count:
+          type: string
+          format: int64
+          description: Number of events of the event type.
+        attributed_count:
+          type: string
+          format: int64
+          description: Number of attributed events of the event type.
+        is_revenue:
+          type: boolean
+          description: The flag that specifies whether the event comes with revenue value.
+        total_revenue:
+          type: number
+          format: double
+          description: 'The total revenue from the event type.
+
+            Its currency follows the currency of the ad account.'
+        total_revenue_usd:
+          type: number
+          format: double
+          description: The USD total revenue from the event type.
+    ProductAppProperties:
+      type: object
+      properties:
+        bundle_id:
+          type: string
+          description: App bundle ID. Immutable.
+        category:
+          type: string
+          description: 'The main IAB content category of the App.
+
+
+            This field is now output only and will be removed after v1.10.
+
+            Before that, it is auto-filled from the categories field.
+
+            Please use ''categories'' field instead.
+
+
+            Valid category values can be found in section "5.1 Content Categories" in the [OpenRTB API Specification]
+
+            (https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf).'
+          readOnly: true
+        categories:
+          type: array
+          items:
+            type: string
+          description: 'The IAB categories of the App. All the categories must be valid IAB categories.
+
+
+            On create Product, the system checks the App Metadata Inventory: if the app is found, the Inventory values override user input; otherwise, the API uses the provided input.
+
+
+            This field is editable only when the app is not in Inventory, and becomes read-only if the app exists there.
+
+
+            Valid category values can be found in section "5.1 Content Categories" in the [OpenRTB API Specification]
+
+            (https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf).'
+        category_readable:
+          type: string
+          title: App category in a human-readable format from the app store
+        rating:
+          type: number
+          format: double
+          description: App rating in the range of [0, 5].
+        rating_cnt:
+          type: string
+          format: int64
+          title: Total number of app ratings from the app store
+        app_store_url:
+          type: string
+          description: App store URL for Google Play, Apple App Store or Other App Markets.
+        available_countries:
+          type: array
+          items:
+            type: string
+          description: 'Country codes where the app is available in the store.
+
+            The value format is ISO-3166-1 Alpha-2 using uppercase letters only, such as "KR" or "US".'
+        unavailable_countries:
+          type: array
+          items:
+            type: string
+          description: 'Country codes where the app is unavailable in the store.
+
+            The value format is ISO-3166-1 Alpha-2 using uppercase letters only, such as "KR" or "US".'
+        rtb_bundle_ids:
+          type: array
+          items:
+            type: string
+          description: 'RTB bundle names that related to the target app for which a Campaign runs.
+
+            This field is useful when the target app and/or its family apps send out bid requests to the exchanges:
+
+            (1) by nature, the Campaign must not deliver ad to the AdAccount''s own apps;
+
+            (2) it''s better to ignore such apps for ads serving model training.'
+        postback_integration:
+          $ref: '#/components/schemas/dspPostbackIntegration'
+          description: Active postback integration for the app.
+        mmp_integration:
+          $ref: '#/components/schemas/dspMmpIntegration'
+          description: MmpIntegration of the Product. Immutable.
+        skadn_mmp_integration:
+          $ref: '#/components/schemas/dspMmpIntegration'
+          description: SKAN MmpIntegration of the Product. Immutable.
+        content_rating:
+          type: string
+          description: Content rating(App store age information) of the App.
+        storekit_enabled:
+          type: boolean
+          description: StoreKit can be applied only for iOS app.
+        autoinline_enabled:
+          type: boolean
+          description: AutoInline can be applied only for Android app.
+        localized_app_name:
+          type: object
+          additionalProperties:
+            type: string
+          title: Field for mapping language to it’s app name
+          readOnly: true
+        localized_app_icon_url:
+          type: object
+          additionalProperties:
+            type: string
+          description: Field for url of app icon.
+          readOnly: true
+        localized_app_screenshots:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AppPropertiesAppScreenshots'
+          description: App screenshots from the app store.
+          readOnly: true
+        app_event_types:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AppPropertiesAppEventType'
+          description: 'Information on relationships between in-app events and its event type.
+
+            This field is to categorize in-app events and categorized event types for each in-app event are used to optimize training of ML model.'
+        description:
+          type: string
+          title: App description from the app store
+        short_description:
+          type: string
+          description: Short description (promo text) from the app store.
+        ios_primary_measurement:
+          $ref: '#/components/schemas/AppPropertiesIosPrimaryMeasurement'
+          description: Primary measurement used for iOS apps.
+        ios_secondary_measurement:
+          $ref: '#/components/schemas/AppPropertiesIosSecondaryMeasurement'
+          description: Secondary measurement used for iOS apps.
+        ios_custom_measurement:
+          type: string
+          title: 'Custom secondary measurement label for iOS apps.
+
+            Set only when ios_secondary_measurement == IOS_SECONDARY_MEASUREMENT_CUSTOM.
+
+            If set when the secondary measurement is not CUSTOM, this field must be empty'
+      description: 'AppProperties defines the App type Product specific properties.
+
+        Should contain only one of ''app'' or ''web''.'
+      required:
+      - bundle_id
+    messagesDeleteProductErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesReadProductSKANConversionConfigFromMmpResponse:
+      type: object
+      properties:
+        skan_conversion_config:
+          $ref: '#/components/schemas/MmpIntegrationConversionValueConfigurationItem'
+    messagesDeleteProductResponse:
+      type: object
+    ProductSuspensionAction:
+      type: object
+      properties:
+        user_name:
+          type: string
+          description: Name who judges the product to be suspended.
+          readOnly: true
+        user_email:
+          type: string
+          description: Email who judges the product to be suspended.
+          readOnly: true
+        reason:
+          type: string
+          description: The reason for the product suspension.
+        kind:
+          $ref: '#/components/schemas/ProductSuspensionActionKind'
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/ProductSuspensionActionType'
+        effective_from:
+          type: string
+          format: date-time
+          description: The time from the app suspension will have been effective.
+        effective_until:
+          type: string
+          format: date-time
+          description: 'The time until the app suspension will have been effective.
+
+            If the value of Type is set to STOP_SUSPENSION, SUSPEND_INDEFINITELY, there is no need to enter a value and
+
+            the system automatically enters a value for you.'
+        created_at:
+          type: string
+          format: date-time
+          description: The time when the current suspension action is created.
+          readOnly: true
+      description: 'Product suspension action to block campaign activation under the product.
+
+        The value can be updated only on Moloco''s end.'
+    messagesReadProductSKANConversionConfigErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadProductSKANConversionConfigErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadProductAppEventSummaryError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadProductAppEventSummaryErrorAPIErrorInfo'
+    messagesReadProductSKANConversionConfigResponse:
+      type: object
+      properties:
+        skan_conversion_config:
+          $ref: '#/components/schemas/MmpIntegrationConversionValueConfigurationItem'
+    ConversionValueConfigurationItemCvConfigurationForCustomEventsEventInfo:
+      type: object
+      properties:
+        event_name:
+          type: string
+          description: In-app event.
+        event_value:
+          type: string
+          description: 'String set by the developer containing data to be decoded
+
+            by the AdAccount in their systems.
+
+            Typically this is in the format of a JSON.'
+        revenue_interval:
+          $ref: '#/components/schemas/adcloudcommonFloatingPointRange'
+          description: Optional. Revenue range for the event.
+        predict_revenue_interval:
+          $ref: '#/components/schemas/adcloudcommonFloatingPointRange'
+          title: 'Optional. Revenue range for customer''s predicted future spending.
+
+            Reference: https://mlc.atlassian.net/browse/MMP-166'
+        event_counter:
+          type: integer
+          format: int32
+          description: 'Number of times the event is duplicated on decoding.
+
+            Typically it represents the number of times the user performed a given action.
+
+            Minimum value 1.'
+        hours_from_install:
+          type: integer
+          format: int32
+          description: 'Hours elapsed since the install. Minimum value: 1.
+
+            The value for all rows of a given conversion_value must be identical.
+
+            Meaning different values for different conversion values is permitted.'
+      title: 'EventInfo holds data for decoding conversion value to events.
+
+        Reference: https://support.appsflyer.com/hc/en-us/articles/360014696297-Custom-conversion-value-decode-for-SKAdNetwork#decode-csv-file-specification'
+      required:
+      - event_name
+      - event_counter
+      - hours_from_install
+    ConversionValueConfigurationItemCvConfigurationForCustomEvents:
+      type: object
+      properties:
+        cv_events:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CvConfigurationForCustomEventsEventList'
+          description: 'Information on relationships between conversion value and events for custom event scheme.
+
+            The key of this map is the registered conversion value between 1 to 63.
+
+            The value of this map is the list of events for each conversion value.'
+    ProductSuspensionActionKind:
+      type: string
+      enum:
+      - UNKNOWN_KIND
+      - CREATE
+      - UPDATE
+      default: UNKNOWN_KIND
+      description: "The kind to represent whether the current action is newly created, or is for updating the previous action.\n\n - CREATE: This suspension action is independently created.\n - UPDATE: This suspension action is for updating the previous suspension action."
+    AppPropertiesAppScreenshots:
+      type: object
+      properties:
+        urls:
+          type: array
+          items:
+            type: string
+    messagesReadProductError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadProductErrorAPIErrorInfo'
+    ConversionValueConfigurationItemCvConfigurationAutoRefresh:
+      type: object
+      properties:
+        enable_auto_refresh:
+          type: boolean
+          description: 'Enables automatically importing the latest SKAdNetwork CV configuration
+
+            from the integrated MMP and updating CV config items.'
+        refresh_result:
+          $ref: '#/components/schemas/CvConfigurationAutoRefreshAutoRefreshResult'
+          description: Result status of auto refresh.
+          readOnly: true
+        refresh_error_message:
+          type: string
+          description: Auto refresh error message in case the refresh request failed.
+          readOnly: true
+        last_auto_refreshed_at:
+          type: string
+          format: date-time
+          description: Timestamp when the last auto SKAdNetwork CV configuration refresh occurred.
+          readOnly: true
+      description: Settings for automatically importing and updating SKAdNetwork conversion value configuration from MMP.
+    ProductWebProperties:
+      type: object
+      properties:
+        category:
+          type: string
+          description: 'The main IAB content category of the web product.
+
+
+            When creating a WEB product, provide exactly one of ''category'' or ''categories'';
+
+            the other field is derived automatically. Providing both is rejected.
+
+            REQUIRED was dropped to allow ''categories''-only WEB creates; BRAND products reuse
+
+            this message via ''brand.web'' and still require ''category'' (enforced at the API layer).
+
+
+            Valid category values can be found in section "5.1 Content Categories" in the [OpenRTB API Specification]
+
+            (https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf)'
+        landing_url:
+          type: string
+          description: 'URL of the final destination page the audience users will be redirected to.
+
+            Length of the URL should not exceed 10000 characters.'
+        categories:
+          type: array
+          items:
+            type: string
+          description: 'Multiple IAB categories of the web product.
+
+
+            When creating a product, provide exactly one of ''category'' or ''categories'';
+
+            the other field is derived automatically. Providing both is rejected.
+
+
+            Valid category values can be found in section "5.1 Content Categories" in the [OpenRTB API Specification]
+
+            (https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf).'
+      description: 'WebProperties defines the Web type Product specific properties.
+
+        Should contain only one of ''app'' or ''web''.'
+    ProductDynamicCreativeProperty:
+      type: object
+      properties:
+        permission:
+          type: boolean
+          description: Permission to use dynamic CreativeGroups.
+      description: Dynamic Creative specific properties.
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

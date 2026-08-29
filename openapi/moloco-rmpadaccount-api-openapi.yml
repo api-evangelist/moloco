@@ -1,0 +1,285 @@
+openapi: 3.2.0
+info:
+  title: Moloco Rmp Ad Account API
+  version: 1.0.0
+  description: 'Operations tagged RmpAdAccount across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: RmpAdAccount
+paths:
+  /v1/rmp-ad-accounts/{ad_account_id}/users:
+    get:
+      security:
+      - Bearer: []
+      description: Get the list of users registered to the given ad account.
+      tags:
+      - RmpAdAccount
+      operationId: v1_list_rmp_ad_account_registrations
+      parameters:
+      - description: The Ad Account ID.
+        name: ad_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Platform ID.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: If given, the result will include the user status info.
+        name: with_status
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The list of users that the advertiser has.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listRmpAdAccountRegistrationsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to list users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      security:
+      - Bearer: []
+      description: Register a user to an rmp ad account in the same workplace.
+      tags:
+      - RmpAdAccount
+      summary: Register a user to an ad account.
+      operationId: v1_create_rmp_ad_account_registration
+      parameters:
+      - description: The Ad Account ID.
+        name: ad_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createRmpAdAccountRegistrationRequest'
+        description: The request body
+        required: true
+      responses:
+        '204':
+          description: The user is successfully registered to the advertiser.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: Conflict - the user is already registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/rmp-ad-accounts/{ad_account_id}/users/{user_id}:
+    delete:
+      security:
+      - Bearer: []
+      description: Delete the user registration to an a specific ad account.
+      tags:
+      - RmpAdAccount
+      summary: Remove a user from an ad account.
+      operationId: v1_delete_rmp_ad_account_registration
+      parameters:
+      - description: The Ad Account to which the user was registered.
+        name: ad_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The platform ID to which the user belongs.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The user is successfully removed from the Ad Account.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to delete.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    createRmpAdAccountRegistrationRequest:
+      description: A request to register a user to an Ad Account.
+      type: object
+      required:
+      - platform_id
+      - registration
+      properties:
+        platform_id:
+          description: The platform ID.
+          type: string
+        registration:
+          $ref: '#/components/schemas/rmpAdAccountRegistration'
+    listRmpAdAccountRegistrationsResponse:
+      description: Lists the user registrations to an Ad Account with roles assigned to each user.
+      type: object
+      required:
+      - registrations
+      properties:
+        registrations:
+          description: The user registrations to an Ad Account with user roles.
+          type: array
+          items:
+            $ref: '#/components/schemas/rmpAdAccountRegistrationWithUserInfo'
+    userStatus:
+      description: The set of status values for a user.
+      type: object
+      required:
+      - signed_up
+      properties:
+        signed_up:
+          description: The signed up status of the user.
+          type: boolean
+    rmpAdAccountRegistration:
+      description: A user registered to an Ad Account.
+      type: object
+      required:
+      - id
+      - ad_account_id
+      - ad_account_title
+      properties:
+        ad_account_id:
+          description: The Ad Account to which the user is registered.
+          type: string
+        ad_account_title:
+          description: The display name of the Ad Account.
+          type: string
+        id:
+          description: The user ID.
+          type: string
+    rmpAdAccountRegistrationWithUserInfo:
+      description: A user registered to an Ad Account and the roles given to the user for the Ad Account.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/rmpAdAccountRegistration'
+      - properties:
+          roles:
+            type: array
+            items:
+              $ref: '#/components/schemas/resourceToRoleReferences'
+          status:
+            $ref: '#/components/schemas/userStatus'
+          user_email:
+            type: string
+          user_name:
+            type: string
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    roleReference:
+      description: Reference to a role defined in a platform.
+      type: object
+      required:
+      - id
+      - platform_id
+      properties:
+        id:
+          description: The ID of the role.
+          type: string
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
+      type: object
+      required:
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

@@ -1,0 +1,948 @@
+openapi: 3.2.0
+info:
+  title: Moloco Asset API
+  version: '1.0'
+  contact:
+    name: Moloco Inc.
+    url: https://www.molocoads.com
+  description: 'Operations tagged Asset across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://<platform>-mgmt.mcm-api.moloco.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: Asset
+paths:
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets:
+    get:
+      summary: ListImageAssets
+      description: List all the image assets.
+      operationId: RmpManagementApi_ListImageAssets
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicListImageAssetsResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account that owns the image asset.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: image_asset_type
+        description: Image asset type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - UNKNOWN_IMAGE_ASSET_TYPE
+          - BANNER
+          - LOGO
+          default: UNKNOWN_IMAGE_ASSET_TYPE
+      - name: ids
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      tags:
+      - Asset
+    post:
+      summary: CreateImageAsset
+      description: Create image asset
+      operationId: RmpManagementApi_CreateImageAsset
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicCreateImageAssetResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account that owns this image asset.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image_asset:
+                  description: "Provide a JSON string representing the `image_asset` object.\n\n**Field Details:**\n- **title** (string, required): A descriptive name of the image asset.\n- **image_asset_type** (string, required): The type of image asset. Allowed values:\n  - `BANNER`\n  - `LOGO`\n- **image_url** (object, optional): Only provide this field when neither `file` parameter nor `object_key` parameter is provided. Details about the image source:\n  - **url** (string): The URL of the image.\n  - **file_name** (string): The file name of the image. e.g., `image.png`.\n\n**Upload Methods (choose only one):**\n1. **Upload by file**: Use the `file` parameter with the actual image file\n2. **Upload by CDN**: Include the `image_url` object in this `image_asset` object\n3. **Upload by session**: Include the `object_key` parameter which is issued from `CreateBulkImageUploadSession` API\n\n**Examples:**\n\n**Example 1: Upload by file**\n- Provide the `file` parameter with the image file and omit both `object_key` and `image_url` object in the `image_asset` object.\n```json\n{\n  \"title\": \"Banner Image\",\n  \"image_asset_type\": \"BANNER\"\n}\n```\n\n**Example 2: Upload by CDN**\n- Omit both `object_key` and `file` parameter and include the `image_url` object in the `image_asset` object.\n```json\n{\n  \"title\": \"Logo Image\",\n  \"image_asset_type\": \"LOGO\",\n  \"image_url\": {\n    \"url\": \"https://example.com/logo.png\",\n    \"file_name\": \"logo.png\"\n  }\n}\n```\n\n**Example 3: Upload by session**\n- Provide the `object_key` parameter and omit both `file` and `image_url` object in the `image_asset` object.\n```json\n{\n  \"title\": \"Banner Image\",\n  \"image_asset_type\": \"BANNER\"\n}\n```"
+                  type: string
+                file:
+                  description: Provide the image file when using upload by file method. Do not use this parameter if `image_url` object is included in the `image_asset` object or if `object_key` parameter is provided.
+                  type: string
+                  format: binary
+                object_key:
+                  description: 'Provide the object key when using upload by session method. Do not use this parameter if `file` parameter is provided or if `image_url` object is included in the `image_asset` object. The object key can be obtained from `CreateBulkImageUploadSession` API''s response. User need to upload a image file after this API''s response. Please make sure file is uploaded and then request with the object_key. '
+                  type: string
+              required:
+              - image_asset
+        required: true
+      tags:
+      - Asset
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets/upload-session:
+    post:
+      summary: CreateBulkImageUploadSession
+      description: Create session for bulk image upload
+      operationId: RmpManagementApi_CreateBulkImageUploadSession
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicCreateBulkImageUploadSessionResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Platform identifier.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: Ad account identifier.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/publicCreateBulkImageUploadSessionRequestFileInfo'
+                  description: List of files to upload.
+              description: Request to create an upload session for image upload.
+              required:
+              - files
+              additionalProperties: true
+        required: true
+      tags:
+      - Asset
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets/{image_asset_id}:
+    get:
+      summary: ReadImageAsset
+      description: Read image asset information
+      operationId: RmpManagementApi_ReadImageAsset
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadImageAssetResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account that owns this image asset.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: image_asset_id
+        description: Image asset ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Asset
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets:
+    get:
+      summary: ListVideoAssets
+      description: List all the video assets.
+      operationId: RmpManagementApi_ListVideoAssets
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicListVideoAssetsResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account that owns this video asset.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ids
+        description: List of video asset IDs.
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: status
+        description: Video asset status.
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ALL
+          - PENDING
+          - READY
+          default: ALL
+      tags:
+      - Asset
+    post:
+      summary: CreateVideoAsset
+      description: Create video asset
+      operationId: RmpManagementApi_CreateVideoAsset
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicCreateVideoAssetResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account that owns this video asset.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: "Provide the video file when using upload by file method. Do not use this parameter if `object_key` parameter is provided.\n\n**File Requirements:**\n- **Format**: MP4\n- **Size**: 300MB \n"
+                  type: string
+                  format: binary
+                object_key:
+                  description: Provide the object key when using upload by session method. Do not use this parameter if `file` parameter is provided. The object key can be obtained from `CreateBulkVideoUploadSession` API's response. User need to upload a video file after this API's response. Please make sure file is uploaded and then request with the object_key.
+                  type: string
+      tags:
+      - Asset
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets/upload-session:
+    post:
+      summary: CreateBulkVideoUploadSession
+      description: Create session for bulk video upload
+      operationId: RmpManagementApi_CreateBulkVideoUploadSession
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicCreateBulkVideoUploadSessionResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account that owns this video asset.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/publicCreateBulkVideoUploadSessionRequestFileInfo'
+                  description: List of files to upload.
+              description: CreateBulkVideoUploadSession request.
+              required:
+              - files
+              additionalProperties: true
+        required: true
+      tags:
+      - Asset
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets/{video_asset_id}:
+    get:
+      summary: ReadVideoAsset
+      description: Read video asset information
+      operationId: RmpManagementApi_ReadVideoAsset
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadVideoAssetResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account that owns this video asset.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: video_asset_id
+        description: Video asset ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Asset
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+components:
+  schemas:
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    publicCreateImageAssetResponse:
+      type: object
+      properties:
+        image_asset:
+          $ref: '#/components/schemas/v1ImageAsset'
+      description: CreateImageAsset response.
+      required:
+      - image_asset
+      additionalProperties: true
+    publicCreateBulkImageUploadSessionResponse:
+      type: object
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/publicCreateBulkImageUploadSessionResponseSession'
+          description: List of upload sessions with URLs and object keys.
+        expires_at:
+          type: string
+          format: date-time
+          description: Expiration time of session URL.
+      description: Response containing upload session details.
+      required:
+      - sessions
+      - expires_at
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    publicReadVideoAssetResponse:
+      type: object
+      properties:
+        video_asset:
+          $ref: '#/components/schemas/v1VideoAsset'
+      description: ReadVideoAsset response.
+      required:
+      - video_asset
+      additionalProperties: true
+    v1VideoAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the video asset. Must be left unset for the video asset creation request. Must be set for the other requests.
+          readOnly: true
+        ad_account_id:
+          type: string
+          description: The id of the ad account that owns this video asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
+          readOnly: true
+        video_source:
+          $ref: '#/components/schemas/v1VideoSource'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
+          readOnly: true
+      description: VideoAsset that could be used for the campaign's asset.
+      additionalProperties: true
+    publicCreateBulkVideoUploadSessionRequestFileInfo:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Original file name.
+        mime_type:
+          type: string
+          description: MIME type of the file (e.g., video/mp4).
+      additionalProperties: true
+    publicListImageAssetsResponse:
+      type: object
+      properties:
+        image_assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ImageAsset'
+          description: Image assets information.
+      description: ListImageAssets response.
+      required:
+      - image_assets
+      additionalProperties: true
+    publicCreateBulkImageUploadSessionRequestFileInfo:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Original file name.
+        mime_type:
+          type: string
+          description: MIME type of the file (e.g., image/png, image/jpeg).
+      additionalProperties: true
+    publicCreateVideoAssetResponse:
+      type: object
+      properties:
+        video_asset:
+          $ref: '#/components/schemas/v1VideoAsset'
+      description: CreateVideoAsset response.
+      required:
+      - video_asset
+      additionalProperties: true
+    v1ImageSource:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL of the image.
+        width:
+          type: integer
+          format: int64
+          description: The width of the image.
+          readOnly: true
+        height:
+          type: integer
+          format: int64
+          description: The height of the image.
+          readOnly: true
+        size:
+          type: integer
+          format: int64
+          description: The file size in bytes of the image.
+          readOnly: true
+        file_name:
+          type: string
+          description: The file name of the image.
+      description: Detailed information of an image.
+      required:
+      - url
+      - width
+      - height
+      - size
+      - file_name
+      additionalProperties: true
+    publicCreateBulkImageUploadSessionResponseSession:
+      type: object
+      properties:
+        upload_url:
+          type: string
+          description: Session URL for uploading the image file.
+        object_key:
+          type: string
+          description: The object key where the image file will be stored.
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    v1VideoSource:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL of the video.
+          readOnly: true
+        file_name:
+          type: string
+          description: The file name of the video.
+          readOnly: true
+        width:
+          type: integer
+          format: int64
+          description: The width of the video.
+          readOnly: true
+        height:
+          type: integer
+          format: int64
+          description: The height of the video.
+          readOnly: true
+        size_bytes:
+          type: integer
+          format: int64
+          description: The file size in bytes of the video.
+          readOnly: true
+        duration_sec:
+          type: integer
+          format: int64
+          description: The duration of the video in seconds.
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/v1VideoSourceStatus'
+      description: Detailed information of a video.
+      additionalProperties: true
+    publicCreateBulkVideoUploadSessionResponse:
+      type: object
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/publicCreateBulkVideoUploadSessionResponseSession'
+          description: List of upload sessions with URLs and object keys.
+        expires_at:
+          type: string
+          format: date-time
+          description: Expiration time of session URL.
+      description: CreateBulkVideoUploadSession response.
+      required:
+      - sessions
+      - expires_at
+      additionalProperties: true
+    publicListVideoAssetsResponse:
+      type: object
+      properties:
+        video_assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1VideoAsset'
+          description: Video assets information.
+      description: ListVideoAssets response.
+      required:
+      - video_assets
+      additionalProperties: true
+    publicReadImageAssetResponse:
+      type: object
+      properties:
+        image_asset:
+          $ref: '#/components/schemas/v1ImageAsset'
+      description: ReadImageAsset response.
+      required:
+      - image_asset
+      additionalProperties: true
+    v1VideoSourceStatus:
+      type: string
+      enum:
+      - UNKNOWN_STATUS
+      - PENDING
+      - READY
+      default: UNKNOWN_STATUS
+      description: " - PENDING: The video asset isn't ready to use yet.\n - READY: The video asset is ready to use."
+    publicCreateBulkVideoUploadSessionResponseSession:
+      type: object
+      properties:
+        upload_url:
+          type: string
+          description: Session URL for uploading the video file.
+        object_key:
+          type: string
+          description: The object key where the video file will be stored.
+      additionalProperties: true
+    v1ImageAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the image asset. Must be left unset for the image asset creation request. Must be set for the other requests.
+        ad_account_id:
+          type: string
+          description: The id of the ad account that owns this image asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
+        image_asset_type:
+          $ref: '#/components/schemas/rmpcommonImageAssetType'
+        title:
+          type: string
+          description: A descriptive name of the image asset.
+        image_source:
+          $ref: '#/components/schemas/v1ImageSource'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
+          readOnly: true
+      description: ImageAsset that could be used for the campaign's asset.
+      required:
+      - ad_account_id
+      - image_asset_type
+      additionalProperties: true
+    rmpcommonImageAssetType:
+      type: string
+      enum:
+      - UNKNOWN_IMAGE_ASSET_TYPE
+      - BANNER
+      - LOGO
+      default: UNKNOWN_IMAGE_ASSET_TYPE
+      description: ImageAssetType enumerates available image asset types.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
+    Bearer:
+      type: apiKey
+      description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
+      name: Authorization
+      in: header
+x-refined-from:
+- mcm-management-api.json
+- moloco-commerce-media-management-openapi.yml
+x-readme:
+  explorer-enabled: true

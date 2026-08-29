@@ -1,0 +1,379 @@
+openapi: 3.2.0
+info:
+  title: Moloco Log API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged Log across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: Log
+paths:
+  /cm/v1/logs:
+    get:
+      summary: List up logs.
+      description: List up logs in the given Workplace.
+      operationId: DspApi_ListLogs
+      responses:
+        '200':
+          description: Successfully listed up the logs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListLogsResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: ad_account_id
+        description: ID of the AdAccount to list up logs.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: date_range.start
+        description: Start date in the format of YYYY-MM-DD (inclusive).
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: date_range.end
+        description: End date in the format of YYYY-MM-DD (inclusive). Max 31 days from the start date.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - Log
+    post:
+      summary: Create a new log.
+      description: Create a new log.
+      operationId: DspApi_CreateLog
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateLogResponse'
+        '202':
+          description: Accepted the log creation request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateLogResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: ad_account_id
+        description: Ad account ID to which a log associated.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspLog'
+        description: The details of the new log specification.
+        required: true
+      tags:
+      - Log
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/logs/{log_id}:
+    get:
+      summary: Read an existing log.
+      description: Read an existing log.
+      operationId: DspApi_ReadLog
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadLogResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: log_id
+        description: Log ID to read.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Log
+    delete:
+      summary: Delete an existing log.
+      description: Delete an existing log.
+      operationId: DspApi_DeleteLog
+      responses:
+        '200':
+          description: Successfully deleted log.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteLogResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: log_id
+        description: Log ID to delete.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Log
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/logs/{log_id}/status:
+    get:
+      summary: Read log status.
+      description: Read the most recent log status. It will also show URLs containing log contents.
+      operationId: DspApi_ReadLogStatus
+      responses:
+        '200':
+          description: Successfully read log status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadLogStatusResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: log_id
+        description: Log ID to read the status.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Log
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    messagesReadLogStatusResponse:
+      type: object
+      example:
+        status: READY
+        location_csv: https://{PLATFORM_LOG_STORAGE}/logs/anExistingLogId.csv?token={ONE_TIME_TOKEN}
+      properties:
+        status:
+          $ref: '#/components/schemas/dspLogStatus'
+          description: Current status of a log.
+        location_csv:
+          type: array
+          items:
+            type: string
+          description: URL of the log contents in CSV form. Will be expired in an hour.
+        location_avro:
+          type: array
+          items:
+            type: string
+          description: URL of the log contents in Avro form. Will be expired in an hour.
+    messagesReadLogResponse:
+      type: object
+      example:
+        log:
+          id: sampleLogId
+          ad_account_id: sampleAdAccountId
+          type: IMP
+          format: CSV
+          date: '2020-01-01'
+          created_at: '2020-01-01T03:12:50.124101982Z'
+          updated_at: '2020-01-01T03:24:21.109821241Z'
+      properties:
+        log:
+          $ref: '#/components/schemas/dspLog'
+          description: The details of a log.
+    dspLogType:
+      type: string
+      enum:
+      - UNKNOWN_LOG_TYPE
+      - IMP
+      - CLICK
+      - CONVERSION
+      - SKAN_CONVERSION
+      - ENGAGED_VIEW
+      default: UNKNOWN_LOG_TYPE
+      description: "Type enumerates available log types.\n\nUnknown log type.\n\n - IMP: Log type which includes every impression log.\n - CLICK: Log type which includes every click log.\n - CONVERSION: Log type which includes every conversion event log.\n - SKAN_CONVERSION: Log type which includes SKAdNetwork attributed conversion event log.\n - ENGAGED_VIEW: Log type which includes every engaged view log."
+    dspLogFormat:
+      type: string
+      enum:
+      - UNKNOWN_LOG_FORMAT
+      - CSV
+      - AVRO
+      - PARQUET
+      default: UNKNOWN_LOG_FORMAT
+      description: "Format enumerates the format of log. Default is CSV.\n\n - CSV: CSV format.\n - AVRO: Avro format.\n - PARQUET: Parquet format."
+    dspLogStatus:
+      type: string
+      enum:
+      - UNKNOWN_LOG_STATUS
+      - ACCEPTED
+      - READY
+      - FAILED
+      default: UNKNOWN_LOG_STATUS
+      description: "Status enumerates the status of log.\n\n - ACCEPTED: Successfully initiated the log generation request.\n - READY: Successfully generated the log. It's ready to download from the location.\n - FAILED: Failed to generate the log. Reasons of failure can be found at errors."
+    messagesListLogsResponse:
+      type: object
+      example:
+        logs:
+        - id: sampleLogId
+          ad_account_id: sampleAdAccountId
+          type: IMP
+          format: CSV
+          date: '2020-01-01'
+          status: ACCEPTED
+          created_at: '2020-01-01T03:12:50.124101982Z'
+          updated_at: '2020-01-01T03:24:21.109821241Z'
+        - id: anotherLogId
+          ad_account_id: sampleAdAccountId
+          type: CLICK
+          format: CSV
+          date: '2020-01-01'
+          status: READY
+          expire_at: '2020-01-01T06:24:21.109821241Z'
+          created_at: '2020-01-01T05:12:50.124101982Z'
+          updated_at: '2020-01-01T05:24:21.109821241Z'
+      properties:
+        logs:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspLog'
+          description: List of logs in the given Workplace.
+    messagesDeleteLogResponse:
+      type: object
+      example: {}
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    dspLog:
+      type: object
+      example:
+        id: sampleLogId
+        ad_account_id: sampleAdAccountId
+        type: IMP
+        format: CSV
+        date: '2020-01-01'
+        created_at: '2020-01-03T03:12:50.124101982Z'
+        updated_at: '2020-01-03T03:24:21.109821241Z'
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the Log. Automatically set by server on creation.
+        type:
+          $ref: '#/components/schemas/dspLogType'
+          description: Type of data which a log contains.
+        format:
+          $ref: '#/components/schemas/dspLogFormat'
+          description: Format of generated log files.
+        date:
+          type: string
+          description: Date for which a log contains the data in "yyyy-mm-dd" format.
+        ad_account_id:
+          type: string
+          description: Ad account ID to which the log is bound.
+        status:
+          $ref: '#/components/schemas/dspLogStatus'
+          description: Status of the log generation.
+          readOnly: true
+        skip_compression:
+          type: boolean
+          description: Flag whether to skip compression.
+        expire_at:
+          type: string
+          format: date-time
+          description: The time when a log will be expired.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+      description: The metadata of a log.
+      required:
+      - type
+      - date
+      - ad_account_id
+    messagesCreateLogResponse:
+      type: object
+      example:
+        log:
+          id: newlyCreatedLogId
+          ad_account_id: sampleAdAccountId
+          type: IMP
+          format: CSV
+          date: '2020-01-01'
+          created_at: '2020-01-01T03:12:50.124101982Z'
+          updated_at: '2020-01-01T03:12:50.124101982Z'
+        href: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId
+        status: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId/status
+      properties:
+        log:
+          $ref: '#/components/schemas/dspLog'
+          description: The details of a created log.
+        href:
+          type: string
+          description: Reference URL that shows the log.
+        status:
+          type: string
+          description: Reference URL that shows the most recent status of the log.
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

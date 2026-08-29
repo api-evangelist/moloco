@@ -1,0 +1,1936 @@
+openapi: 3.2.0
+info:
+  title: Moloco Analytics API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged Analytics across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: Analytics
+paths:
+  /cm/v1/analytics-detail:
+    post:
+      summary: Provide the detail of ad performance analytics.
+      description: Provide the detail of ad performance analytics.
+      operationId: DspApi_QueryAnalyticsDetail
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesQueryAnalyticsDetailResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesQueryAnalyticsDetailRequest'
+        required: true
+      tags:
+      - Analytics
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/analytics-overview:
+    post:
+      summary: Provide the overview of ad performance analytics.
+      description: Provide the overview of ad performance analytics.
+      operationId: DspApi_QueryAnalyticsOverview
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesQueryAnalyticsOverviewResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesQueryAnalyticsOverviewRequest'
+        required: true
+      tags:
+      - Analytics
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/analytics-skadnetwork:
+    post:
+      summary: Provide the SKAdNetwork ad performance analytics.
+      description: Provide the SKAdNetwork ad performance analytics.
+      operationId: DspApi_QueryAnalyticsSKAdNetwork
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesQueryAnalyticsSKAdNetworkResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesQueryAnalyticsSKAdNetworkRequest'
+        required: true
+      tags:
+      - Analytics
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    dspAnalyticsDetailDimensionFilter:
+      type: object
+      properties:
+        dimension:
+          $ref: '#/components/schemas/dspAnalyticsDetailDimension'
+          description: Dimension to filter on.
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsDetailDimensionFilterOperator'
+        values:
+          type: array
+          items:
+            type: string
+          description: Values to filter by the dimension.
+      description: AnalyticsDetailDimensionFilter specifies a filter for the detailed analytics dimensions.
+    dspAnalyticsSKAdNetworkMetric:
+      type: string
+      enum:
+      - UNKNOWN_METRIC
+      - IMPRESSIONS
+      - CLICKS
+      - INSTALLS
+      - INSTALLS_CT
+      - MMP_CONVERSIONS
+      - TARGET_ACTIONS
+      - SPEND
+      - REVENUE
+      - SKAN_INSTALLS
+      - SKAN_ACTIONS
+      - SKAN_REVENUE
+      - CTR
+      - IPM
+      - CPC
+      - CPI
+      - CPA
+      - CPCONV
+      - SKAN_CPA
+      - SKAN_IPM
+      - SKAN_CPI
+      - SKAN_CONVERSION_VALUE_RATIO
+      default: UNKNOWN_METRIC
+      description: "Metric enumerates available metrics.\n\n - UNKNOWN_METRIC: This value is not part of the API specification.\n - IMPRESSIONS: DEFAULT METRICS\n - CTR: RATIO METRICS"
+    dspAnalyticsDetailJob:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the job.
+      description: The job information executed for the detailed analytics query request.
+    dspAnalyticsSKAdNetworkMetricColumn:
+      type: object
+      properties:
+        impressions:
+          type: string
+          format: int64
+          description: The total number of impressions.
+        clicks:
+          type: string
+          format: int64
+          description: The total number of clicks.
+        installs:
+          type: string
+          format: int64
+          description: The total number of installs.
+        installs_ct:
+          type: string
+          format: int64
+          description: The total number of click-through installs.
+        mmp_conversions:
+          type: string
+          format: int64
+          description: The total number counted based on the MMP kpi action event in Campaign.
+        target_actions:
+          type: string
+          format: int64
+          description: The total number of CPA Campaign's target actions.
+        spend:
+          type: number
+          format: double
+          description: The total ads spending for the current row.
+        revenue:
+          type: number
+          format: double
+          description: The total revenue for the current row.
+        skan_actions:
+          type: string
+          format: int64
+          description: The total number of SKAdNetwork actions for the current row.
+        skan_installs:
+          type: string
+          format: int64
+          description: The total number of SKAdNetwork installs for the current row.
+        skan_revenue:
+          type: number
+          format: double
+          description: 'The total SKAdNetwork revenue for the current row.
+
+            From the API version 1.5.1, it will be calculated as the average of the minimum and maximum sum values within the revenue interval of conversion events.
+
+            For previous API versions, it will return the maximum sum value within the revenue interval of conversion events.'
+        ctr:
+          type: number
+          format: double
+          description: The total ads CTR for the current row.
+        ipm:
+          type: number
+          format: double
+          description: The total ads IPM for the current row.
+        cpc:
+          type: number
+          format: double
+          description: The total ads CPC for the current row.
+        cpi:
+          type: number
+          format: double
+          description: The total ads CPI for the current row.
+        cpa:
+          type: number
+          format: double
+          description: The total ads CPA for the current row.
+        cpconv:
+          type: number
+          format: double
+          description: The total ads CPConv for the current row.
+        skan_ipm:
+          type: number
+          format: double
+          description: The total ads SKAdNetwork IPM for the current row.
+        skan_cpi:
+          type: number
+          format: double
+          description: The total ads SKAdNetwork CPI for the current row.
+        skan_cpa:
+          type: number
+          format: double
+          description: The total ads SKAdNetwork CPA for the current row.
+        skan_conversion_value_ratio:
+          type: number
+          format: double
+          description: The rate of SKAN Conversion Values (0 ~ 63) to the total postbacks.
+      description: MetricColumn represents a structured column containing metric numbers.
+    messagesQueryAnalyticsOverviewResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsOverviewRow'
+        num_rows:
+          type: string
+          format: int64
+          description: The number of the rows returned.
+    dspAnalyticsOverviewSubPublisherColumnType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - APP
+      - SITE
+      default: UNKNOWN_TYPE
+      description: ' - UNKNOWN_TYPE: This value is not part of the API specification.'
+    dspAnalyticsDetailMetricFilter:
+      type: object
+      properties:
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsDetailMetric'
+          description: Metric to filter on.
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsDetailMetricFilterOperator'
+        value:
+          type: string
+          description: Value to filter by the metric.
+      description: AnalyticsDetailMetricFilter specifies a filter for the detailed analytics metrics.
+    dspAnalyticsDetailAdAccountColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an ad-account.
+        title:
+          type: string
+          description: Descriptive name of an ad-account.
+        currency:
+          $ref: '#/components/schemas/adcloudcommonCurrency'
+          description: Contract currency in ISO-4217.
+      description: AdAccountColumn represents a structured column containing ad-account information.
+    dspAnalyticsSKAdNetworkMetricFilter:
+      type: object
+      properties:
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkMetric'
+          description: Metric to filter on.
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkMetricFilterOperator'
+        value:
+          type: string
+          description: Value to filter by the metric.
+      description: AnalyticsSKAdNetworkMetricFilter specifies a filter for the SKAdNetwork analytics metrics.
+    dspAnalyticsSKAdNetworkJob:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the job.
+      description: The job information executed for the SKAdNetwork analytics query request.
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    dspAnalyticsDetailCampaignColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a campaign.
+        title:
+          type: string
+          description: Descriptive name of a campaign.
+        type:
+          type: string
+          description: Type of a campaign.
+        target_countries:
+          type: array
+          items:
+            type: string
+          description: Target country code list in ISO-3166 Alpha-3.
+        bid_country:
+          type: string
+          description: Bid country code in ISO-3166 Alpha-3.
+        country:
+          type: string
+          description: Representative target country code in ISO-3166 Alpha-3.
+        goal_type:
+          type: string
+          description: Goal Type of a campaign.
+        is_cross_promo:
+          type: boolean
+          description: Flag indicating whether the campaign is cross promo campaign.
+      description: CampaignColumn represents a structured column containing campaign information.
+    dspAnalyticsOverviewType:
+      type: string
+      enum:
+      - USER_ACQUISITION
+      - REENGAGEMENT
+      default: USER_ACQUISITION
+    dspAnalyticsOverviewMetricRevenue:
+      type: object
+      properties:
+        d1:
+          type: number
+          format: double
+          description: Cumulative revenue by day 1.
+        d3:
+          type: number
+          format: double
+          description: Cumulative revenue by day 3.
+        d7:
+          type: number
+          format: double
+          description: Cumulative revenue by day 7.
+        d14:
+          type: number
+          format: double
+          description: Cumulative revenue by day 14.
+        d30:
+          type: number
+          format: double
+          description: Cumulative revenue by day 30.
+      description: MetricRevenue represents a structured column containing revenue metrics.
+    dspAnalyticsDetailMetricFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_METRIC_OPERATOR
+      - EQ
+      - GT
+      - GE
+      - LT
+      - LE
+      default: UNKNOWN_METRIC_OPERATOR
+      description: Operator for the metric filter.
+    dspAnalyticsSKAdNetworkCampaignColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a Campaign.
+        title:
+          type: string
+          description: Descriptive name of a Campaign.
+        type:
+          type: string
+          description: Type of a Campaign.
+        target_countries:
+          type: array
+          items:
+            type: string
+          description: Target country code list in ISO-3166 Alpha-3.
+        country:
+          type: string
+          description: Representative target country code in ISO-3166 Alpha-3.
+      description: CampaignColumn represents a structured column containing Campaign information.
+    AnalyticsSKAdNetworkSKANConversionColumn:
+      type: object
+      properties:
+        conversion_value:
+          type: string
+          description: SKAdNetwork fine-grained conversion value. ToString([0, 63]) or "NULL".
+        version:
+          type: string
+          description: SKAdNetwork version. (e.g, 2.0, 2.1, 2.2).
+        fidelity_type:
+          type: string
+          description: 'Raw SKAdNetwork fidelity type defined in Apple''s following document.
+
+            https://developer.apple.com/documentation/storekit/skadnetwork/receiving_ad_attributions_and_postbacks
+
+            As of June 2021, values are ToString([0, 1]) or "NULL".'
+        conversion_count:
+          type: string
+          format: int64
+          description: 'The total number of SKAdNetwork conversions.
+
+
+            It counts all SKAdNetwork conversions having did-win value as null for before version 3.0, and true for version 3.0 and later.
+
+            See did-win flag in the [following document](https://developer.apple.com/documentation/storekit/skadnetwork/verifying_an_install-validation_postback?language=objc) for further details.'
+        non_winning_conversion_count:
+          type: string
+          format: int64
+          description: 'The total number of non-winning SKAdNetwork conversions.
+
+            It counts all SKAdNetwork conversions having did-win value as false for version 3.0 and later.
+
+            See did-win flag in the [following document](https://developer.apple.com/documentation/storekit/skadnetwork/verifying_an_install-validation_postback?language=objc) for further details.'
+        conversion_events:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AnalyticsSKAdNetworkSKANConversionEventColumn'
+          description: SKAdNetwork Conversion Events associated with this specific conversion_value.
+      description: SKANConversionColumn represents a structured column containing SKAdNetwork conversion value and its count for the current row.
+    dspAnalyticsOverviewSiteColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a Site.
+        title:
+          type: string
+          description: Descriptive name of a Site.
+        domain:
+          type: string
+          description: Domain of the site.
+      description: SiteColumn represents a structured column containing site information.
+    dspAnalyticsOverviewSubPublisherColumn:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/dspAnalyticsOverviewSubPublisherColumnType'
+          description: Type of a sub-publisher. This will be either App or Site.
+      description: SubPublisherColumn represents a structured column containing sub-publisher information.
+    dspAnalyticsOverviewCreativeGroupColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a creative-group.
+        title:
+          type: string
+          description: Descriptive name of a creative-group.
+        is_dca:
+          type: boolean
+          description: Flag indicating whether the creative-group is a DCA (Dynamic Creative Assembly) creative-group.
+      description: CreativeGroupColumn represents a structured column containing creative-group information.
+    dspAnalyticsOverviewMetricFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_METRIC_OPERATOR
+      - EQ
+      - GT
+      - GE
+      - LT
+      - LE
+      default: UNKNOWN_METRIC_OPERATOR
+      description: Operator for the metric filter.
+    dspAnalyticsDetailDimension:
+      type: string
+      enum:
+      - UNKNOWN_DIMENSION
+      - DATE
+      - HOUR
+      - TIMEZONE
+      - AD_ACCOUNT_ID
+      - AD_ACCOUNT_TITLE
+      - AD_ACCOUNT_CURRENCY
+      - APP_OR_SITE_ID
+      - APP_OR_SITE_TITLE
+      - APP_TYPE
+      - APP_OS
+      - APP_STORE_ID
+      - SITE_DOMAIN
+      - CAMPAIGN_ID
+      - CAMPAIGN_TITLE
+      - CAMPAIGN_TYPE
+      - CAMPAIGN_TARGET_COUNTRIES
+      - CAMPAIGN_BID_COUNTRY
+      - CAMPAIGN_COUNTRY
+      - CAMPAIGN_GOAL_TYPE
+      - AD_GROUP_ID
+      - AD_GROUP_TITLE
+      - CREATIVE_GROUP_ID
+      - CREATIVE_GROUP_TITLE
+      - CREATIVE_GROUP_IS_DCA
+      - CREATIVE_ID
+      - CREATIVE_TITLE
+      - CREATIVE_TYPE
+      - CREATIVE_MAIN_ASSET_LOCATION
+      - CREATIVE_FORMAT
+      - CREATIVE_VIDEO_DURATION_SECONDS
+      - CREATIVE_VIDEO_END_CARD_TYPE
+      - CREATIVE_IS_DCA
+      - EXCHANGE_ID
+      - SUB_PUBLISHER_ID
+      - SUB_PUBLISHER_TITLE
+      - INVENTORY_TYPE
+      - TRAFFIC_LAT
+      default: UNKNOWN_DIMENSION
+      description: "Dimension enumerates available dimensions.\n\n - UNKNOWN_DIMENSION: This value is not part of the API specification.\n - AD_ACCOUNT_ID: AD_ACCOUNT\n - APP_OR_SITE_ID: APP_OR_SITE\n - CAMPAIGN_ID: CAMPAIGN\n - AD_GROUP_ID: AD_GROUP\n - CREATIVE_GROUP_ID: CREATIVE_GROUP\n - CREATIVE_ID: CREATIVE\n - EXCHANGE_ID: EXCHANGE\n - INVENTORY_TYPE: INVENTORY\n - TRAFFIC_LAT: TRAFFIC"
+    messagesQueryAnalyticsSKAdNetworkResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsSKAdNetworkRow'
+          description: Result rows for the requested query.
+        job:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkJob'
+          description: The job information executed for the SKAdNetwork analytics query request.
+    AnalyticsSKAdNetworkSKANConversionDimension:
+      type: string
+      enum:
+      - UNKNOWN_SKAN_CONVERSION_DIMENSION
+      - CONVERSION_VALUE
+      - VERSION
+      - FIDELITY_TYPE
+      default: UNKNOWN_SKAN_CONVERSION_DIMENSION
+      description: "SKANConversionDimension enumerates available SKAN conversion related dimensions.\n\n - UNKNOWN_SKAN_CONVERSION_DIMENSION: This value is not part of the API specification."
+    dspAnalyticsOverviewMetricCount:
+      type: object
+      properties:
+        d1:
+          type: string
+          format: int64
+          description: Cumulative count by day 1.
+        d3:
+          type: string
+          format: int64
+          description: Cumulative count by day 3.
+        d7:
+          type: string
+          format: int64
+          description: Cumulative count by day 7.
+        d14:
+          type: string
+          format: int64
+          description: Cumulative count by day 14.
+        d30:
+          type: string
+          format: int64
+          description: Cumulative count by day 30.
+      description: MetricCount represents a structured column containing count metrics.
+    dspAnalyticsSKAdNetworkAppColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an App.
+        title:
+          type: string
+          description: Descriptive name of an App.
+        store_id:
+          type: string
+          description: Store ID of an App.
+      description: AppColumn represents a structured column containing app information.
+    dspAnalyticsOverviewMetric:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_COLUMN
+      - IMPRESSIONS
+      - ENGAGED_VIEWS
+      - CLICKS
+      - INSTALLS
+      - TARGET_ACTIONS
+      - CONVERSIONS
+      - SPEND
+      - REVENUE
+      - CTR
+      - IPM
+      - CPC
+      - CPI
+      - CPA
+      - CPCONV
+      - D1_KPI_ACTION
+      - D1_KPI_USER
+      - D1_PURCHASE
+      - D1_PURCHASER
+      - D1_REVENUE
+      - D1_ROAS
+      - D1_CPA
+      - D3_KPI_ACTION
+      - D3_KPI_USER
+      - D3_PURCHASE
+      - D3_PURCHASER
+      - D3_REVENUE
+      - D3_ROAS
+      - D3_CPA
+      - D7_KPI_ACTION
+      - D7_KPI_USER
+      - D7_PURCHASE
+      - D7_PURCHASER
+      - D7_REVENUE
+      - D7_ROAS
+      - D7_CPA
+      - D14_KPI_ACTION
+      - D14_KPI_USER
+      - D14_PURCHASE
+      - D14_PURCHASER
+      - D14_REVENUE
+      - D14_ROAS
+      - D14_CPA
+      - D30_KPI_ACTION
+      - D30_KPI_USER
+      - D30_PURCHASE
+      - D30_PURCHASER
+      - D30_REVENUE
+      - D30_ROAS
+      - D30_CPA
+      - PAGE_VISITS
+      - SESSIONS
+      - CPS
+      - CPPV
+      - PVPI
+      - DRIVEN_INSTALLS
+      - MOLOCO_MEASURED_INSTALLS
+      - MOLOCO_MEASURED_EQUAL_PRIORITY_WINDOW_INSTALLS
+      - LANDING_2H
+      - CPRE
+      - UNIQUE_VISITORS
+      - UNIQUE_PURCHASERS
+      - CPUV
+      - CPUP
+      - PAGE_VISITS_1D
+      - PAGE_VISITS_3D
+      - PAGE_VISITS_7D
+      - PAGE_VISITS_14D
+      default: UNKNOWN_ORDER_BY_COLUMN
+      description: "Metric enumerates available metrics.\n\n - UNKNOWN_ORDER_BY_COLUMN: This value is not part of the API specification.\n - D1_KPI_ACTION: D1\n - D3_KPI_ACTION: D3\n - D7_KPI_ACTION: D7\n - D14_KPI_ACTION: D14\n - D30_KPI_ACTION: D30\n - PAGE_VISITS: CTV-WEB METRICS + CTV-WEB RATIO METRICS\n - LANDING_2H: RE-ENGAGEMENT METRICS\n - UNIQUE_VISITORS: UNIQUE USER METRICS\n - PAGE_VISITS_1D: PAGE VISITS COHORT METRICS"
+    dspAnalyticsSKAdNetworkRow:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date in the local timezone with 'YYYY-MM-DD' format.
+        hour:
+          type: integer
+          format: int32
+          description: Hour in the local timezone.
+        timezone:
+          type: string
+          description: Timezone.
+        ad_account:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkAdAccountColumn'
+          description: AdAccount column.
+        app:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkAppColumn'
+          description: App column.
+        campaign:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkCampaignColumn'
+          description: Campaign column.
+        traffic:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkTrafficColumn'
+          description: Traffic column.
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkMetricColumn'
+          description: Metric column.
+        skan_conversions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AnalyticsSKAdNetworkSKANConversionColumn'
+          description: List of SKAdNetwork Conversion Column.
+      description: Row defines one row of the overview query result.
+    dspAnalyticsSKAdNetworkDimension:
+      type: string
+      enum:
+      - UNKNOWN_DIMENSION
+      - DATE
+      - HOUR
+      - TIMEZONE
+      - AD_ACCOUNT_ID
+      - AD_ACCOUNT_TITLE
+      - AD_ACCOUNT_CURRENCY
+      - APP_ID
+      - APP_TITLE
+      - APP_STORE_ID
+      - CAMPAIGN_ID
+      - CAMPAIGN_TITLE
+      - CAMPAIGN_TYPE
+      - CAMPAIGN_TARGET_COUNTRIES
+      - CAMPAIGN_COUNTRY
+      - TRAFFIC_LAT
+      - TRAFFIC_SKAN_REQ
+      - TRAFFIC_SKAN_BID
+      - TRAFFIC_MMP_EFFECTIVE
+      default: UNKNOWN_DIMENSION
+      description: "Dimension enumerates available dimensions.\n\n - UNKNOWN_DIMENSION: This value is not part of the API specification.\n - AD_ACCOUNT_ID: AD_ACCOUNT\n - APP_ID: APP\n - CAMPAIGN_ID: CAMPAIGN\n - TRAFFIC_LAT: TRAFFIC"
+    dspAnalyticsSKAdNetworkOrderByFilter:
+      type: object
+      properties:
+        dimension:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkDimension'
+          description: Dimension column.
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkMetric'
+          description: Metric column.
+        is_descending:
+          type: boolean
+          description: Whether it is descending order.
+      description: AnalyticsSKAdNetworkOrderByFilter specifies a filter for the SKAdNetwork analytics order by.
+    dspAnalyticsDetailDimensionFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_DIMENSION_OPERATOR
+      - IN
+      - NOT_IN
+      default: UNKNOWN_DIMENSION_OPERATOR
+      description: Operator for the dimension filter.
+    dspAnalyticsDetailSiteColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a Site.
+        title:
+          type: string
+          description: Descriptive name of a Site.
+        domain:
+          type: string
+          description: Domain of the site.
+      description: SiteColumn represents a structured column containing site information.
+    messagesQueryAnalyticsOverviewRequest:
+      type: object
+      properties:
+        ad_account_id:
+          type: string
+          description: (Required) The AdAccount ID to generate the overview.
+        date_range:
+          $ref: '#/components/schemas/adcloudcommonDateInterval'
+          description: '(Required) Date range for the overview to generate. Both start and end dates are inclusive.
+
+            The specified timezone in the request will be used.
+
+
+            Note the allowed maximum duration for the date range is 101 days (184 days for the version >= v1.7.2).'
+        dimensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAnalyticsOverviewDimension'
+          description: '(Required) A list of dimensions. At least one dimension must be selected.
+
+            Following dimensions are only available for the version >= v1.7.2:
+
+            - Campaign_GoalType
+
+            - CreativeGroup-related dimensions
+
+            - Creative-related dimensions
+
+            - Exchange_ID
+
+            - SubPublisher_Type
+
+            - Inventory_Type
+
+            For the earlier version, they won''t be supported.'
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAnalyticsOverviewMetric'
+          description: '(Required) A list of metrics. At least one metric must be selected.
+
+            Cohort metrics are only available for the version >= v1.7.2.'
+        order_by_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsOverviewOrderByFilter'
+          description: (Optional) Order by conditions.
+        limit:
+          type: string
+          format: int64
+          description: "(Optional) A maximum possible number of rows in the response.\nWhen this field is left empty or equal to 0, it will return the following number of rows:\n  - For the version < 1.7.1: all rows of summary will be sent through the response.\n  - For the version >= 1.7.1: 10000 will be applied as a default.\n  - For the version >= 1.7.1: If the limit value is bigger than 10000, then 10000 will be applied as an upper limit."
+        dimension_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsOverviewDimensionFilter'
+          description: (Optional) A set of filtering conditions of dimensions.
+        metric_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsOverviewMetricFilter'
+          description: (Optional) A set of filtering conditions of metrics.
+        type:
+          $ref: '#/components/schemas/dspAnalyticsOverviewType'
+          title: '(Optional) Type of the analytics overview.
+
+            If absent, API request will be treated as UA'
+      title: '///////////////////////////////////////////////////////
+
+        Analytics Overview'
+      required:
+      - ad_account_id
+      - date_range
+      - dimensions
+      - metrics
+    dspAnalyticsSKAdNetworkMetricFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_METRIC_OPERATOR
+      - EQ
+      - GT
+      - GE
+      - LT
+      - LE
+      default: UNKNOWN_METRIC_OPERATOR
+      description: Operator for the metric filter.
+    dspAnalyticsOverviewCreativeColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a creative.
+        title:
+          type: string
+          description: Descriptive name of a creative.
+        type:
+          type: string
+          description: Type of a creative.
+        main_asset_url:
+          type: string
+          description: URL of the main asset of a creative.
+        format:
+          type: string
+          description: Format of a creative.
+        video_duration_seconds:
+          type: integer
+          format: int32
+          description: Duration of a video creative.
+        video_end_card_type:
+          type: string
+          description: End card type of a video creative.
+        is_dca:
+          type: boolean
+          description: Flag indicating whether the creative is a DCA (Dynamic Creative Assembly) creative.
+      description: CreativeColumn represents a structured column containing creative information.
+    dspAnalyticsDetailMetricColumn:
+      type: object
+      properties:
+        impressions:
+          type: string
+          format: int64
+          description: The total number of impressions.
+        engaged_views:
+          type: string
+          format: int64
+          description: The total number of engaged views.
+        engaged_clicks:
+          type: string
+          format: int64
+          description: The total number of engaged clicks.
+        clicks:
+          type: string
+          format: int64
+          description: The total number of clicks.
+        installs:
+          type: string
+          format: int64
+          description: The total number of installs.
+        installs_ct:
+          type: string
+          format: int64
+          description: The total number of click-through installs.
+        conversions:
+          type: string
+          format: int64
+          description: The total number of conversions selected by a user.
+        target_actions:
+          type: string
+          format: int64
+          description: The total number of CPA Campaign's target actions.
+        spend:
+          type: number
+          format: double
+          description: The total ads spending for the current row.
+        revenue:
+          type: number
+          format: double
+          description: The total revenue for the current row.
+        ctr:
+          type: number
+          format: double
+          description: The total ads CTR for the current row.
+        ipm:
+          type: number
+          format: double
+          description: The total ads IPM for the current row.
+        cpc:
+          type: number
+          format: double
+          description: The total ads CPC for the current row.
+        cpi:
+          type: number
+          format: double
+          description: The total ads CPI for the current row.
+        cpa:
+          type: number
+          format: double
+          description: The total ads CPA for the current row.
+        cpconv:
+          type: number
+          format: double
+          description: The total ads CPConv for the current row.
+        vtr:
+          type: number
+          format: double
+          description: The total VTR for the current row.
+        cpcv:
+          type: number
+          format: double
+          description: The total ads CPCV for the current row.
+        cps:
+          type: number
+          format: double
+          description: The total ads CPS for the current row.
+        cppv:
+          type: number
+          format: double
+          description: The total ads CPPV for the current row.
+        pvpi:
+          type: number
+          format: double
+          description: The total ads PVPI for the current row.
+        video_play_1q:
+          type: string
+          format: int64
+          description: 'VideoMetric columns represent video view progress metric numbers.
+
+            The total number of video play for 1st quarter.'
+        video_play_2q:
+          type: string
+          format: int64
+          description: The total number of video play for 2nd quarter.
+        video_play_3q:
+          type: string
+          format: int64
+          description: The total number of video play for 3rd quarter.
+        video_play_4q:
+          type: string
+          format: int64
+          description: The total number of video play for 4th quarter.
+        page_visits:
+          type: string
+          format: int64
+          title: Page visits
+        sessions:
+          type: string
+          format: int64
+          title: Sessions
+        driven_installs:
+          type: string
+          format: int64
+        moloco_measured_installs:
+          type: string
+          format: int64
+        moloco_measured_equal_priority_window_installs:
+          type: string
+          format: int64
+        unique_visitors:
+          type: string
+          format: int64
+        unique_purchasers:
+          type: string
+          format: int64
+        cpuv:
+          type: number
+          format: double
+        cpup:
+          type: number
+          format: double
+        page_visits_1d:
+          type: string
+          format: int64
+          description: The total number of page visits within 1 day of the corresponding impression.
+        page_visits_3d:
+          type: string
+          format: int64
+          description: The total number of page visits within 3 days of the corresponding impression.
+        page_visits_7d:
+          type: string
+          format: int64
+          description: The total number of page visits within 7 days of the corresponding impression.
+        page_visits_14d:
+          type: string
+          format: int64
+          description: The total number of page visits within 14 days of the corresponding impression.
+      description: MetricColumn represents a structured column containing metric numbers.
+    dspAnalyticsSKAdNetworkDimensionFilter:
+      type: object
+      properties:
+        dimension:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkDimension'
+          description: Dimension to filter on.
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsSKAdNetworkDimensionFilterOperator'
+        values:
+          type: array
+          items:
+            type: string
+          description: Values to filter by the dimension.
+      description: AnalyticsSKAdNetworkDimensionFilter specifies a filter for the SKAdNetwork analytics dimensions.
+    dspAnalyticsSKAdNetworkTrafficColumn:
+      type: object
+      properties:
+        lat:
+          type: boolean
+          description: Flag indicating whether LAT option is on or not.
+        skan_req:
+          type: boolean
+          description: Flag indicating whether bid request contains SKAdNetwork extension.
+        skan_bid:
+          type: boolean
+          description: Flag indicating whether bid response fills SKAdNetwork extensions.
+        mmp_effective:
+          type: boolean
+          description: Flag indicating whether MMP attribution is effective.
+      description: TrafficColumn represents a structured column containing LAT information.
+    dspAnalyticsDetailCreativeColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a creative.
+        title:
+          type: string
+          description: Descriptive name of a creative.
+        type:
+          type: string
+          description: Type of a creative.
+        main_asset_location:
+          type: string
+          description: URL of the main asset of a creative.
+        format:
+          type: string
+          title: Size of creatives (e.g. 1080x1920, HTML, etc)
+        video_duration_seconds:
+          type: integer
+          format: int32
+          description: Total duration(Seconds) of the Video creatives.
+        video_end_card_type:
+          type: string
+          description: Type of the end card of the Video creatives.
+        is_dca:
+          type: boolean
+          description: Flag indicating whether the creative is a DCA (Dynamic Creative Assembly) creative.
+      description: CreativeColumn represents a structured column containing creative information.
+    dspAnalyticsDetailExchangeColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an exchange.
+      description: ExchangeColumn represents a structured column containing exchange information.
+    dspAnalyticsDetailConversionEventColumn:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the conversion event.
+        count:
+          type: string
+          format: int64
+          description: The total number of the conversion event.
+        revenue:
+          type: number
+          format: double
+          description: The total revenue of the conversion event.
+      description: ConversionEventColumn represents a structured column containing conversion event name and metrics for the current row.
+    dspAnalyticsDetailInventoryColumn:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of an ad slot inventory.
+      description: InventoryColumn represents a structured column containing inventory information.
+    dspAnalyticsOverviewRow:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date in the local timezone with 'YYYY-MM-DD' format.
+        timezone:
+          type: string
+          description: Timezone.
+        ad_account:
+          $ref: '#/components/schemas/dspAnalyticsOverviewAdAccountColumn'
+          description: AdAccount column.
+        app:
+          $ref: '#/components/schemas/dspAnalyticsOverviewAppColumn'
+          description: App column.
+        site:
+          $ref: '#/components/schemas/dspAnalyticsOverviewSiteColumn'
+          description: Site column.
+        campaign:
+          $ref: '#/components/schemas/dspAnalyticsOverviewCampaignColumn'
+          description: Campaign column.
+        ad_group:
+          $ref: '#/components/schemas/dspAnalyticsOverviewAdGroupColumn'
+          description: AdGroup column.
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricColumn'
+          description: Metric column.
+        traffic:
+          $ref: '#/components/schemas/dspAnalyticsOverviewTrafficColumn'
+          description: Traffic column.
+        creative_group:
+          $ref: '#/components/schemas/dspAnalyticsOverviewCreativeGroupColumn'
+          title: Part of AnalyticsOverview Extension
+        creative:
+          $ref: '#/components/schemas/dspAnalyticsOverviewCreativeColumn'
+        exchange:
+          $ref: '#/components/schemas/dspAnalyticsOverviewExchangeColumn'
+        sub_publisher:
+          $ref: '#/components/schemas/dspAnalyticsOverviewSubPublisherColumn'
+        inventory:
+          $ref: '#/components/schemas/dspAnalyticsOverviewInventoryColumn'
+        device:
+          $ref: '#/components/schemas/dspAnalyticsOverviewDeviceColumn'
+      description: Row defines one row of the overview query result.
+    adcloudcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      default: UNKNOWN_CURRENCY
+      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
+    dspAnalyticsOverviewExchangeColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an exchange.
+      description: ExchangeColumn represents a structured column containing exchange information.
+    dspAnalyticsDetailAppColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an App.
+        title:
+          type: string
+          description: Descriptive name of an App.
+        store_id:
+          type: string
+          description: Store ID of an App.
+        os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: OS type of an App.
+      description: AppColumn represents a structured column containing app information.
+    dspAnalyticsOverviewDeviceColumn:
+      type: object
+      description: DeviceColumn represents a structured column containing device information.
+    dspAnalyticsDetailOrderByFilter:
+      type: object
+      properties:
+        dimension:
+          $ref: '#/components/schemas/dspAnalyticsDetailDimension'
+          description: Dimension column to apply order by.
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsDetailMetric'
+          description: Metric column to apply order by.
+        conversion_event:
+          type: string
+          description: ConversionEvent names comes here if order_by should be applied to ConversionEvent column.
+        is_descending:
+          type: boolean
+          description: 'Whether it is descending order. If is_descending is false (which
+
+            is default), the result will be sorted in ascending order.'
+      description: AnalyticsDetailOrderByFilter specifies a filter for the detailed analytics order by.
+    dspAnalyticsDetailCreativeGroupColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a creative-group.
+        title:
+          type: string
+          description: Descriptive name of a creative-group.
+        is_dca:
+          type: boolean
+          description: Flag indicating whether the creative-group is a DCA (Dynamic Creative Assembly) creative-group.
+      description: CreativeGroupColumn represents a structured column containing creative-group information.
+    dspAnalyticsDetailMetric:
+      type: string
+      enum:
+      - UNKNOWN_METRIC
+      - IMPRESSIONS
+      - ENGAGED_VIEWS
+      - CLICKS
+      - INSTALLS
+      - INSTALLS_CT
+      - CONVERSIONS
+      - TARGET_ACTIONS
+      - SPEND
+      - REVENUE
+      - CTR
+      - IPM
+      - CPC
+      - CPI
+      - CPA
+      - CPCONV
+      - VTR
+      - CPCV
+      - CPS
+      - CPPV
+      - PVPI
+      - VIDEO_PLAY_1Q
+      - VIDEO_PLAY_2Q
+      - VIDEO_PLAY_3Q
+      - VIDEO_PLAY_4Q
+      - PAGE_VISITS
+      - SESSIONS
+      - DRIVEN_INSTALLS
+      - MOLOCO_MEASURED_INSTALLS
+      - MOLOCO_MEASURED_EQUAL_PRIORITY_WINDOW_INSTALLS
+      - UNIQUE_VISITORS
+      - UNIQUE_PURCHASERS
+      - CPUV
+      - CPUP
+      - PAGE_VISITS_1D
+      - PAGE_VISITS_3D
+      - PAGE_VISITS_7D
+      - PAGE_VISITS_14D
+      default: UNKNOWN_METRIC
+      description: "Metric enumerates available metrics.\n\n - UNKNOWN_METRIC: This value is not part of the API specification.\n - IMPRESSIONS: DEFAULT METRICS\n - CTR: RATIO METRICS\n - CPS: CTV RATIO METRICS\n - VIDEO_PLAY_1Q: VIDEO METRICS\n - PAGE_VISITS: CTV METRICS\n - PAGE_VISITS_1D: The total number of page visits within 1 day of the corresponding impression.\n - PAGE_VISITS_3D: The total number of page visits within 3 days of the corresponding impression.\n - PAGE_VISITS_7D: The total number of page visits within 7 days of the corresponding impression.\n - PAGE_VISITS_14D: The total number of page visits within 14 days of the corresponding impression."
+    AnalyticsSKAdNetworkSKANConversionEventColumn:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Conversion event name.
+        count:
+          type: string
+          format: int64
+          description: The total number of conversions for a specific event.
+        revenue_min_sum:
+          type: number
+          format: double
+          description: The min sum value of revenue interval in conversion event.
+        revenue_max_sum:
+          type: number
+          format: double
+          description: The max sum value of revenue interval in conversion event.
+      description: SKANConversionEventColumn represents a structured column containing the derived conversion event from SKAdNetwork conversion value.
+    dspAnalyticsOverviewTrafficColumn:
+      type: object
+      properties:
+        lat:
+          type: string
+          description: Flag indicating whether LAT option is on or not, "TRUE", "FALSE", or "NULL".
+      description: TrafficColumn represents a structured column containing LAT information.
+    dspAnalyticsOverviewAdAccountColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an ad-account.
+        title:
+          type: string
+          description: Descriptive name of an ad-account.
+        currency:
+          $ref: '#/components/schemas/adcloudcommonCurrency'
+          description: Contract currency in ISO-4217.
+      description: AdAccountColumn represents a structured column containing ad-account information.
+    dspAnalyticsDetailSubPublisherColumnType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - APP
+      - SITE
+      default: UNKNOWN_TYPE
+      description: ' - UNKNOWN_TYPE: This value is not part of the API specification.'
+    dspAnalyticsOverviewCampaignColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a Campaign.
+        title:
+          type: string
+          description: Descriptive name of a Campaign.
+        target_countries:
+          type: array
+          items:
+            type: string
+          description: Target country code list in ISO-3166 Alpha-3.
+        bid_country:
+          type: string
+          description: Bid country code in ISO-3166 Alpha-3.
+        type:
+          type: string
+          description: Type of a Campaign.
+        goal_type:
+          type: string
+          description: Goal Type of a Campaign.
+        is_cross_promo:
+          type: boolean
+          description: Flag indicating whether the Campaign is cross-promotion.
+      description: CampaignColumn represents a structured column containing Campaign information.
+    dspAnalyticsOverviewAppColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an App.
+        title:
+          type: string
+          description: Descriptive name of an App.
+        store_id:
+          type: string
+          description: Store ID of an App.
+        os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: OS type of an App.
+      description: AppColumn represents a structured column containing app information.
+    dspAnalyticsDetailSubPublisherColumn:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/dspAnalyticsDetailSubPublisherColumnType'
+          description: Type of a sub-publisher. This will be either App or Site.
+        id:
+          type: string
+          description: "Unique ID of a sub-publisher.\n\nThis ID will be either\n  - bid-request.app.bundle\n  - bid-request.site.domain"
+        title:
+          type: string
+          description: Descriptive name of a sub-publisher.
+      description: SubPublisherColumn represents a structured column containing sub-publisher information.
+    dspAnalyticsOverviewDimension:
+      type: string
+      enum:
+      - UNKNOWN_GROUP_BY
+      - DATE
+      - TIMEZONE
+      - AD_ACCOUNT_ID
+      - AD_ACCOUNT_TITLE
+      - AD_ACCOUNT_CURRENCY
+      - APP_OR_SITE_ID
+      - APP_OR_SITE_TITLE
+      - APP_TYPE
+      - APP_OS
+      - APP_STORE_ID
+      - SITE_DOMAIN
+      - CAMPAIGN_ID
+      - CAMPAIGN_TITLE
+      - CAMPAIGN_TYPE
+      - CAMPAIGN_TARGET_COUNTRIES
+      - CAMPAIGN_BID_COUNTRY
+      - AD_GROUP_ID
+      - AD_GROUP_TITLE
+      - TRAFFIC_LAT
+      - CAMPAIGN_GOAL_TYPE
+      - CREATIVE_GROUP_ID
+      - CREATIVE_GROUP_TITLE
+      - CREATIVE_GROUP_IS_DCA
+      - CREATIVE_ID
+      - CREATIVE_TITLE
+      - CREATIVE_TYPE
+      - CREATIVE_MAIN_ASSET_URL
+      - CREATIVE_FORMAT
+      - CREATIVE_VIDEO_DURATION_SECONDS
+      - CREATIVE_VIDEO_END_CARD_TYPE
+      - CREATIVE_IS_DCA
+      - EXCHANGE_ID
+      - SUB_PUBLISHER_TYPE
+      - INVENTORY_TYPE
+      default: UNKNOWN_GROUP_BY
+      description: "Dimension enumerates available dimensions.\n\n - UNKNOWN_GROUP_BY: This value is not part of the API specification."
+    dspAnalyticsSKAdNetworkAdAccountColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an ad-account.
+        title:
+          type: string
+          description: Descriptive name of an ad-account.
+        currency:
+          $ref: '#/components/schemas/adcloudcommonCurrency'
+          description: Contract currency in ISO-4217.
+      description: AdAccountColumn represents a structured column containing ad-account information.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    dspAnalyticsOverviewAdGroupColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an AdGroup.
+        title:
+          type: string
+          description: Descriptive name of an AdGroup.
+      description: AdGroupColumn represents a structured column containing AdGroup information.
+    dspAnalyticsDetailConversionEventMetricFilterCondition:
+      type: object
+      properties:
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsDetailMetricFilterOperator'
+          description: Operator for the conversion event metric filter.
+        value:
+          type: string
+          description: Value to filter by the conversion event metric.
+      description: Condition for the conversion event metrics.
+    messagesQueryAnalyticsDetailResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsDetailRow'
+          description: Result rows for the requested query.
+        job:
+          $ref: '#/components/schemas/dspAnalyticsDetailJob'
+          description: The job information executed for the detailed analytics query request.
+        num_rows:
+          type: string
+          format: int64
+          description: The number of the rows returned.
+    dspAnalyticsDetailTrafficColumn:
+      type: object
+      properties:
+        lat:
+          type: boolean
+          description: Flag indicating whether LAT option is on or not.
+      description: TrafficColumn represents a structured column containing LAT information.
+    dspAnalyticsDetailConversionEventMetricFilter:
+      type: object
+      properties:
+        conversion_event:
+          type: string
+          description: ConversionEvent to filter on.
+        count_condition:
+          $ref: '#/components/schemas/dspAnalyticsDetailConversionEventMetricFilterCondition'
+          description: Filter condition for the total number of the conversion event.
+      description: AnalyticsDetailConversionEventMetricFilter specifies a filter for the detailed analytics conversion event metrics.
+    dspAnalyticsOverviewDimensionFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_DIMENSION_OPERATOR
+      - IN
+      - NOT_IN
+      default: UNKNOWN_DIMENSION_OPERATOR
+      description: Operator for the dimension filter.
+    dspAnalyticsDetailConversionEventFilter:
+      type: object
+      properties:
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsDetailDimensionFilterOperator'
+          description: Operator for the conversion event filter.
+        values:
+          type: array
+          items:
+            type: string
+          description: Values to filter by the conversion event.
+      description: AnalyticsDetailConversionEventFilter specifies a filter for the detailed analytics conversion events.
+    dspAnalyticsOverviewOrderByFilter:
+      type: object
+      properties:
+        dimension:
+          $ref: '#/components/schemas/dspAnalyticsOverviewDimension'
+          description: Dimension column.
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetric'
+          description: Metric Column.
+        is_descending:
+          type: boolean
+          description: Whether it is descending order.
+      description: AnalyticsOverviewOrderByFilter specifies a filter for the analytics overview order by.
+    messagesQueryAnalyticsDetailRequest:
+      type: object
+      properties:
+        ad_account_id:
+          type: string
+          description: (Required) The ad account id of campaigns to generate the detailed analytics.
+        timezone:
+          type: string
+          description: '(Optional) The timezone to generate the detailed analytics.
+
+            If not specified, UTC timezone will be used.'
+        date_range:
+          $ref: '#/components/schemas/adcloudcommonDateInterval'
+          description: '(Required) Date range for the detailed analytics to generate. Both start and end dates are inclusive.
+
+            The specified timezone in the request will be used.
+
+
+            Note the allowed maximum duration for the date range is 184 days, to cover
+
+            the period of 6 months.'
+        dimensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAnalyticsDetailDimension'
+          description: (Required) A list of dimensions. At least one dimension must be selected.
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAnalyticsDetailMetric'
+          description: (Required) A list of metrics. At least one metric must be selected.
+        dimension_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsDetailDimensionFilter'
+          description: (Optional) A set of filtering conditions of dimensions.
+        metric_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsDetailMetricFilter'
+          description: (Optional) A set of filtering conditions of metrics.
+        conversion_event_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsDetailConversionEventFilter'
+          description: '(Optional) A set of filtering conditions of conversion events.
+
+            If it is empty, ConversionEvent column will not be retrieved.'
+        conversion_event_metric_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsDetailConversionEventMetricFilter'
+          description: (Optional) A set of filtering conditions for conversion event metrics.
+        order_by_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsDetailOrderByFilter'
+          description: '(Optional) A list of sorting order specification. The order of the messages matters as they are
+
+            treated sequentially.'
+        limit:
+          type: string
+          format: int64
+          description: "(Optional) A maximum possible number of rows in the response.\nWhen this field is left empty or equal to 0, it will return the following number of rows:\n  - For the version < 1.7.1: all rows of summary will be sent through the response.\n  - For the version >= 1.7.1: 10000 will be applied as a default.\n  - For the version >= 1.7.1: If the limit value is bigger than 10000, then 10000 will be applied as an upper limit."
+      title: '///////////////////////////////////////////////////////
+
+        Analytics Detail'
+      required:
+      - ad_account_id
+      - date_range
+      - dimensions
+      - metrics
+    dspAnalyticsOverviewMetricColumn:
+      type: object
+      properties:
+        impressions:
+          type: string
+          format: int64
+          description: The total number of impressions.
+        engaged_views:
+          type: string
+          format: int64
+          description: The total number of engaged views.
+        clicks:
+          type: string
+          format: int64
+          description: The total number of clicks.
+        installs:
+          type: string
+          format: int64
+          description: The total number of installs.
+        conversions:
+          type: string
+          format: int64
+          description: The total number of conversions selected by a user.
+        target_actions:
+          type: string
+          format: int64
+          description: The total number of CPA Campaign's target actions.
+        spend:
+          type: number
+          format: double
+          description: The total ads spending for the current row.
+        revenue:
+          type: number
+          format: double
+          description: The total revenue for the current row.
+        ctr:
+          type: number
+          format: double
+          description: The total ads CTR for the current row.
+        ipm:
+          type: number
+          format: double
+          description: The total ads IPM for the current row.
+        cpc:
+          type: number
+          format: double
+          description: The total ads CPC for the current row.
+        cpi:
+          type: number
+          format: double
+          description: The total ads CPI for the current row.
+        cpa:
+          type: number
+          format: double
+          description: The total ads CPA for the current row.
+        cpconv:
+          type: number
+          format: double
+          description: The total ads CPConv for the current row.
+        cohort_kpi_action:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricCount'
+          title: Cohort metrics
+        cohort_kpi_user:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricCount'
+        cohort_purchase:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricCount'
+        cohort_purchaser:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricCount'
+        cohort_revenue:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricRevenue'
+        cohort_roas:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricRatio'
+        cohort_cpa:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricRatio'
+        landing_2h:
+          type: string
+          format: int64
+          title: ReEngagement metrics
+        cpre:
+          type: number
+          format: double
+        page_visits_1d:
+          type: string
+          format: int64
+          description: 'PAGE VISITS COHORT METRICS
+
+            The total number of page visits within 1 day of the corresponding impression.'
+        page_visits_3d:
+          type: string
+          format: int64
+          description: The total number of page visits within 3 days of the corresponding impression.
+        page_visits_7d:
+          type: string
+          format: int64
+          description: The total number of page visits within 7 days of the corresponding impression.
+        page_visits_14d:
+          type: string
+          format: int64
+          description: The total number of page visits within 14 days of the corresponding impression.
+      description: MetricColumn represents a structured column containing metric numbers.
+    adcloudcommonDateInterval:
+      type: object
+      properties:
+        start:
+          type: string
+          description: Start date in the format of YYYY-MM-DD.
+        end:
+          type: string
+          description: End date in the format of YYYY-MM-DD.
+      description: Interval with start and end dates in the format of YYYY-MM-DD.
+    commonDeviceOs:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_OS
+      - ANDROID
+      - IOS
+      - VERSATILE
+      - MOBILE_WEB
+      - MACOS
+      - WINDOWS
+      - NEXT_VERSATILE
+      default: UNKNOWN_DEVICE_OS
+      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
+    messagesQueryAnalyticsSKAdNetworkRequest:
+      type: object
+      properties:
+        ad_account_id:
+          type: string
+          description: (Required) The ad account id of campaigns to generate the SKAdNetwork analytics.
+        timezone:
+          type: string
+          description: '(Optional) The timezone to generate the SKAdNetwork analytics.
+
+            If not specified, UTC timezone will be used.'
+        date_range:
+          $ref: '#/components/schemas/adcloudcommonDateInterval'
+          description: '(Required) Date range for the SKAdNetwork analytics to generate. Both start and end dates are inclusive.
+
+            The specified timezone in the request will be used.
+
+
+            Note the allowed maximum duration for the date range is 184 days, to cover
+
+            the period of 6 months.'
+        dimensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAnalyticsSKAdNetworkDimension'
+          description: (Required) A list of dimensions. At least one dimension must be selected.
+        skan_conversion_dimensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalyticsSKAdNetworkSKANConversionDimension'
+          description: (Required) A list of SKAN conversion dimensions. At least one dimension must be selected.
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAnalyticsSKAdNetworkMetric'
+          description: (Required) A list of metrics. At least one metric must be selected.
+        dimension_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsSKAdNetworkDimensionFilter'
+          description: (Optional) A set of filtering conditions of dimensions for the SKAdNetwork analytics.
+        metric_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsSKAdNetworkMetricFilter'
+          description: (Optional) A set of filtering conditions of metrics for the SKAdNetwork analytics.
+        order_by_filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsSKAdNetworkOrderByFilter'
+          description: '(Optional) A list of sorting order specification for the SKAdNetwork analytics. The order of the messages matters as they are
+
+            treated sequentially.'
+        limit:
+          type: string
+          format: int64
+          description: "(Optional) A maximum possible number of rows in the response.\nWhen this field is left empty or equal to 0, it will return the following number of rows:\n  - For the version < 1.7.1: all rows of summary will be sent through the response.\n  - For the version >= 1.7.1: 10000 will be applied as a default.\n  - For the version >= 1.7.1: If the limit value is bigger than 10000, then 10000 will be applied as an upper limit."
+      title: '///////////////////////////////////////////////////////
+
+        Analytics SKAdNetwork'
+      required:
+      - ad_account_id
+      - date_range
+      - dimensions
+      - skan_conversion_dimensions
+      - metrics
+    dspAnalyticsDetailRow:
+      type: object
+      properties:
+        date:
+          type: string
+          description: The date in the local timezone with 'YYYY-MM-DD' format.
+        hour:
+          type: integer
+          format: int32
+          description: Hour in the local timezone.
+        timezone:
+          type: string
+          description: Timezone.
+        ad_account:
+          $ref: '#/components/schemas/dspAnalyticsDetailAdAccountColumn'
+          description: AdAccount column.
+        app:
+          $ref: '#/components/schemas/dspAnalyticsDetailAppColumn'
+          description: App column.
+        site:
+          $ref: '#/components/schemas/dspAnalyticsDetailSiteColumn'
+          description: Site column.
+        campaign:
+          $ref: '#/components/schemas/dspAnalyticsDetailCampaignColumn'
+          description: Campaign column.
+        ad_group:
+          $ref: '#/components/schemas/dspAnalyticsDetailAdGroupColumn'
+          description: AdGroup column.
+        creative_group:
+          $ref: '#/components/schemas/dspAnalyticsDetailCreativeGroupColumn'
+          description: CreativeGroup column.
+        creative:
+          $ref: '#/components/schemas/dspAnalyticsDetailCreativeColumn'
+          description: Creative column.
+        exchange:
+          $ref: '#/components/schemas/dspAnalyticsDetailExchangeColumn'
+          description: Exchange column.
+        sub_publisher:
+          $ref: '#/components/schemas/dspAnalyticsDetailSubPublisherColumn'
+          description: SubPublisher column.
+        inventory:
+          $ref: '#/components/schemas/dspAnalyticsDetailInventoryColumn'
+          description: Inventory column.
+        traffic:
+          $ref: '#/components/schemas/dspAnalyticsDetailTrafficColumn'
+          description: Traffic column.
+        device:
+          $ref: '#/components/schemas/dspAnalyticsDetailDeviceColumn'
+          description: Device column.
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsDetailMetricColumn'
+          description: Metric column.
+        conversion_events:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAnalyticsDetailConversionEventColumn'
+          description: List of ConversionEvent column.
+      description: Row defines one row of the detailed analytics query result.
+    dspAnalyticsDetailDeviceColumn:
+      type: object
+      description: DeviceColumn represents a structured column containing device information.
+    dspAnalyticsOverviewMetricFilter:
+      type: object
+      properties:
+        metric:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetric'
+          description: Metric to filter on.
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsOverviewMetricFilterOperator'
+        value:
+          type: string
+          description: Value to filter by the metric.
+      description: AnalyticsOverviewMetricFilter specifies a filter for the analytics overview metrics.
+    dspAnalyticsOverviewDimensionFilter:
+      type: object
+      properties:
+        dimension:
+          $ref: '#/components/schemas/dspAnalyticsOverviewDimension'
+          description: Dimension to filter on.
+        operator:
+          $ref: '#/components/schemas/dspAnalyticsOverviewDimensionFilterOperator'
+        values:
+          type: array
+          items:
+            type: string
+          description: Values to filter by the dimension.
+      description: AnalyticsOverviewDimensionFilter specifies a filter for the analytics overview dimensions.
+    dspAnalyticsOverviewInventoryColumn:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of an ad slot inventory.
+      description: InventoryColumn represents a structured column containing inventory information.
+    dspAnalyticsSKAdNetworkDimensionFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_DIMENSION_OPERATOR
+      - IN
+      - NOT_IN
+      default: UNKNOWN_DIMENSION_OPERATOR
+      description: Operator for the dimension filter.
+    dspAnalyticsOverviewMetricRatio:
+      type: object
+      properties:
+        d1:
+          type: number
+          format: double
+          description: Ratio by day 1.
+        d3:
+          type: number
+          format: double
+          description: Ratio by day 3.
+        d7:
+          type: number
+          format: double
+          description: Ratio by day 7.
+        d14:
+          type: number
+          format: double
+          description: Ratio by day 14.
+        d30:
+          type: number
+          format: double
+          description: Ratio by day 30.
+      title: MetricRatio represents a structured column containing ratio metrics ( ROAS and CPA)
+    dspAnalyticsDetailAdGroupColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an ad-group.
+        title:
+          type: string
+          description: Descriptive name of an ad-group.
+      description: AdGroupColumn represents a structured column containing ad-group information.
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

@@ -1,0 +1,1604 @@
+openapi: 3.2.0
+info:
+  title: Moloco Audience Target API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged AudienceTarget across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: AudienceTarget
+paths:
+  /cm/v1/audience-targets:
+    get:
+      summary: List up AudienceTargets.
+      description: List up all AudienceTargets of the AdAccount.
+      operationId: DspApi_ListAudienceTargets
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListAudienceTargetsResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListAudienceTargetsError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID the AudienceTargets belong to.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - AudienceTarget
+    post:
+      summary: Create a new AudienceTarget.
+      description: Create a new AudienceTarget of the AdAccount.
+      operationId: DspApi_CreateAudienceTarget
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateAudienceTargetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateAudienceTargetError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID the AudienceTarget belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspSharedAudienceTarget'
+        description: The AudienceTarget data to be created.
+        required: true
+      tags:
+      - AudienceTarget
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/audience-targets/{audience_target_id}:
+    get:
+      summary: Read an existing AudienceTarget.
+      description: Read an existing AudienceTarget.
+      operationId: DspApi_ReadAudienceTarget
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadAudienceTargetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadAudienceTargetError'
+      parameters:
+      - name: audience_target_id
+        description: The ID of the AudienceTarget to be retrieved.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The AdAccount ID the AudienceTarget belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - AudienceTarget
+    delete:
+      summary: Delete an existing AudienceTarget.
+      description: Delete an existing AudienceTarget.
+      operationId: DspApi_DeleteAudienceTarget
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteAudienceTargetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteAudienceTargetError'
+      parameters:
+      - name: audience_target_id
+        description: The ID of the AudienceTarget to be deleted.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The AdAccount ID the AudienceTarget belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - AudienceTarget
+    put:
+      summary: Update an existing AudienceTarget.
+      description: Update an existing AudienceTarget.
+      operationId: DspApi_UpdateAudienceTarget
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateAudienceTargetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateAudienceTargetError'
+      parameters:
+      - name: audience_target_id
+        description: The ID of the AudienceTarget to be updated.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The AdAccount ID the AudienceTarget belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspSharedAudienceTarget'
+        description: The AudienceTarget data to be updated.
+        required: true
+      tags:
+      - AudienceTarget
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    CustomAudienceSetCustomAudienceCondition:
+      type: object
+      properties:
+        app_events:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CustomAudienceSetAppEvent'
+        user_lists:
+          type: array
+          items:
+            type: string
+          description: 'IDs of pre-defined CustomerSets.
+
+            IP CustomerSet is not included.'
+        apps:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CustomAudienceSetApp'
+          description: Matches users by app engagement regardless of event type.
+    messagesReadAudienceTargetResponse:
+      type: object
+      properties:
+        audience_target:
+          $ref: '#/components/schemas/dspSharedAudienceTarget'
+          description: The retrieved AudienceTarget data.
+    messagesUpdateAudienceTargetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - AUDIENCE_TARGET_NOT_FOUND
+      - AUDIENCE_TARGET_LATITUDE_VALUE_NOT_IN_RANGE
+      - AUDIENCE_TARGET_LONGITUDE_VALUE_NOT_IN_RANGE
+      - AUDIENCE_TARGET_INVALID_AGE_CONDITION
+      - AUDIENCE_TARGET_INVALID_USER_BUCKET_RANGE
+      - AUDIENCE_TARGET_INVALID_PAST_TIME_RANGE
+      - AUDIENCE_TARGET_FAILED_TO_PARSE_CONDITION
+      - AUDIENCE_TARGET_INVALID_KEYWORD
+      - AUDIENCE_TARGET_INVALID_AUCTION_TYPE
+      - AUDIENCE_TARGET_INVALID_THROTTLE_RATE
+      - AUDIENCE_TARGET_CANNOT_USE_WHITESPACE
+      - AUDIENCE_TARGET_AT_LEAST_ID_OR_KEYWORDS_MUST_BE_SET
+      - AUDIENCE_TARGET_CANNOT_SET_BOTH_PAST_TIME_RANGE_AND_RANGE
+      - AUDIENCE_TARGET_CONDITION_RANGE_CANNOT_HAVE_SAME_START_AND_END_VALUE
+      - AUDIENCE_TARGET_CANNOT_UPDATE_PREDEFINED_AUDIENCE_TARGET
+      - AUDIENCE_TARGET_CANNOT_UPDATE_CUSTOM_TARGET_IN_USE
+      - AUDIENCE_TARGET_CANNOT_EXCLUDE_ALL_CONDITION
+      - AUDIENCE_TARGET_CANNOT_HAVE_BOTH_ALL_AND_ANY
+      - AUDIENCE_TARGET_LENGTH_EXCEED_LIMIT
+      default: ERROR_REASON_UNKNOWN
+      description: " - AUDIENCE_TARGET_NOT_FOUND: Cannot find the requested audience.\n - AUDIENCE_TARGET_LATITUDE_VALUE_NOT_IN_RANGE: targeting_condition has an invalid latitude value, which should be between 0 and 90.\n - AUDIENCE_TARGET_LONGITUDE_VALUE_NOT_IN_RANGE: targeting_condition has an invalid longitude value, which should be between -180 and 180.\n - AUDIENCE_TARGET_INVALID_AGE_CONDITION: targeting_condition has an invalid age condition, it should be between 0 and 100.\n - AUDIENCE_TARGET_INVALID_USER_BUCKET_RANGE: user bucket should be a number between 0 and 100.\n - AUDIENCE_TARGET_INVALID_PAST_TIME_RANGE: The absolute time range would be calculated as [now - Start, now - End).\nSo the start value should be larger than the end value, and the end value cannot be negative.\n - AUDIENCE_TARGET_FAILED_TO_PARSE_CONDITION: condition value cannot be parsed.\n - AUDIENCE_TARGET_INVALID_KEYWORD: Keyword cannot be empty or have whitespace characters only.\n - AUDIENCE_TARGET_INVALID_AUCTION_TYPE: auction_type should be FIRST or SECOND.\n - AUDIENCE_TARGET_INVALID_THROTTLE_RATE: throttle_rate should be between 0.0 and 1.0.\n - AUDIENCE_TARGET_CANNOT_USE_WHITESPACE: Cannot use whitespace for given audience target condition field.\n - AUDIENCE_TARGET_AT_LEAST_ID_OR_KEYWORDS_MUST_BE_SET: One of id or keywords of audience target condition field should be set.\n - AUDIENCE_TARGET_CANNOT_SET_BOTH_PAST_TIME_RANGE_AND_RANGE: Audience target condition field cannot have both past time range and range at the same time.\n - AUDIENCE_TARGET_CONDITION_RANGE_CANNOT_HAVE_SAME_START_AND_END_VALUE: Audience target condition range cannot have same start and end value.\n - AUDIENCE_TARGET_CANNOT_UPDATE_PREDEFINED_AUDIENCE_TARGET: Update for predefined audience target is not allowed.\n - AUDIENCE_TARGET_CANNOT_UPDATE_CUSTOM_TARGET_IN_USE: Cannot add or remove custom audience if the custom target is used in Campaigns or AdGroups.\n - AUDIENCE_TARGET_CANNOT_EXCLUDE_ALL_CONDITION: AudienceTarget condition cannot exclude all target conditions in specified field.\n - AUDIENCE_TARGET_CANNOT_HAVE_BOTH_ALL_AND_ANY: targeting_condition must not have both 'all' and 'any' in the same side of custom audience set.\n - AUDIENCE_TARGET_LENGTH_EXCEED_LIMIT: The length of the target condition exceeds the limit."
+    messagesListAudienceTargetsErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListAudienceTargetsErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    commonBannerApi:
+      type: string
+      enum:
+      - UNKNOWN_BANNER_API
+      - MRAID_2
+      default: UNKNOWN_BANNER_API
+      title: Banner API
+    messagesReadAudienceTargetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadAudienceTargetErrorAPIErrorInfo'
+    commonAdExchange:
+      type: string
+      enum:
+      - UNKNOWN_AD_EXCHANGE
+      - MOPUB
+      - ADX
+      - ADMIXER
+      - SMAATO
+      - RUBICON
+      - EXELBID
+      - BRIGHTROLL
+      - CAULYRTB
+      - ADLIB
+      - ORION
+      - MOLOCO
+      - ADOP
+      - APPLOVIN
+      - FYBER
+      - SAMSUNG
+      - ADCOLONY
+      - POLYMORPH
+      - CHARTBOOST
+      - MANPLUS
+      - KAKAO
+      - UNITY
+      - FYBERCORE
+      - ADGENERATION
+      - SAMSUNGPAY
+      - NHN
+      - ADPOPCORN
+      - OPENX
+      - VUNGLE
+      - ADALPHA
+      - BYTEDANCE
+      - NAVER
+      - INMOBI
+      - SIGNALPLAY
+      - ACUITY
+      - IRONSOURCE
+      - PUBMATIC
+      - BAIDU
+      - FLUCT
+      - FIVE
+      - APPODEAL
+      - ADPIE
+      - MOBILITYWARE
+      - TPMN
+      - PUBNATIVE
+      - TAPJOY
+      - MOMENTO
+      - BIDENCE
+      - APS
+      - INDEX
+      - IQZONE
+      - STARTIO
+      - FLOWER
+      - ONESTORE
+      - NIMBUS
+      - AEQUUS
+      - MCTV
+      - MINTEGRAL
+      - MOLOCO_SDK_APPLOVIN
+      - MOLOCO_SDK_IRONSOURCE
+      - PANGLE
+      - MAGNITE
+      - MOLOCO_SDK_X3MADS
+      - FREE_WHEEL
+      - MOLOCO_SDK_ADMOB
+      - ADX_RTB
+      - XIAOMI
+      - MOLOCO_SDK_CREATIVE_TEST
+      - MOLOCO_SDK_MAX
+      - MOLOCO_SDK_LEVELPLAY
+      - NEXXEN
+      - MOLOCO_SDK_ADMOB_MEDIATION
+      - MOLOCO_SDK
+      - MOLOCO_SDK_IN_HOUSE_MEDIATION
+      - TABOOLA
+      - CRITEO
+      - MOLOCO_SDK_DIRECT_AD
+      - APX1
+      - DIRECT_AD
+      - BIGO
+      - CAS
+      - TUBI
+      default: UNKNOWN_AD_EXCHANGE
+      description: "Enumeration of ad exchanges supported by Moloco Ads.\n\n - SIGNALPLAY: MANPLUS == SIGNALPLAY. just added for distinguishing video and banner report\n - MOLOCO_SDK: Used for a consolidated MOLOCO SDK exchange.\n - APX1: APX1 is LINE's anonymized exchange name (renamed from LINE - no production traffic, direct replacement)"
+    adcloudcommonEventType:
+      type: string
+      enum:
+      - UNKNOWN_EVENT_TYPE
+      - BID_MADE
+      - BID_WON
+      - IMPRESSION
+      - IMPRESSION_EXTRA
+      - CLICK
+      - INSTALL
+      - CUSTOM
+      default: UNKNOWN_EVENT_TYPE
+      description: "Enumeration of event types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - BID_MADE: A bid has been made for a bid request.\n - BID_WON: The bid has won the auction.\n - IMPRESSION: The ad impression has been served to the user.\n - IMPRESSION_EXTRA: Extra ad impression tracking info, e.g. 50% of a video ad has been shown.\n - CLICK: The ad has been clicked by the user.\n - INSTALL: The ad impression or click has been attributed with an app install.\n - CUSTOM: Custom actions that happen after install."
+    messagesDeleteAudienceTargetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - AUDIENCE_TARGET_NOT_FOUND
+      - AUDIENCE_TARGET_CANNOT_UPDATE_PREDEFINED_AUDIENCE_TARGET
+      default: ERROR_REASON_UNKNOWN
+      description: " - AUDIENCE_TARGET_NOT_FOUND: Cannot find the requested audience.\n - AUDIENCE_TARGET_CANNOT_UPDATE_PREDEFINED_AUDIENCE_TARGET: Update for predefined audience target is not allowed."
+    adcloudcommonInterval:
+      type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+        end:
+          type: integer
+          format: int32
+      description: Interval represents a contiguous integer range [start, end).
+    adcloudcommonCreativeType:
+      type: string
+      enum:
+      - UNKNOWN_CREATIVE_TYPE
+      - IMAGE_BANNER
+      - IMAGE_INTERSTITIAL
+      - VIDEO_BANNER
+      - VIDEO_INTERSTITIAL
+      - NATIVE_LOGO
+      - NATIVE_VIDEO
+      - NATIVE_IMAGE
+      - CUSTOM_HTML_BANNER
+      - CUSTOM_HTML_INTERSTITIAL
+      - TEMPLATE_HTML_BANNER
+      - TEMPLATE_HTML_INTERSTITIAL
+      - RICH_CUSTOM_HTML_BANNER
+      - RICH_CUSTOM_HTML_INTERSTITIAL
+      - DYNAMIC_HTML_BANNER
+      - DYNAMIC_HTML_INTERSTITIAL
+      default: UNKNOWN_CREATIVE_TYPE
+      description: 'Enumeration of creative types supported by Moloco Ads.
+
+
+        This value is not part of the specification.'
+    messagesListAudienceTargetsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesReadAudienceTargetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadAudienceTargetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    AudienceTargetingConditionWeeklyScheduleFilter:
+      type: object
+      properties:
+        timezone_policy:
+          $ref: '#/components/schemas/adcloudcommonTimezonePolicy'
+          description: Timezone Policy to apply.
+        hour_range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+          description: 'Hour range for each day specified below. It''s required and both start and end values
+
+            must be in the range of [0, 23].'
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/adcloudcommonDayOfWeek'
+          description: Days of week to filter on. At least one is required.
+      description: WeeklyScheduleFilter specifies a time range on certain days of a week.
+      required:
+      - days
+    messagesUpdateAudienceTargetResponse:
+      type: object
+      properties:
+        audience_target:
+          $ref: '#/components/schemas/dspSharedAudienceTarget'
+          description: The updated AudienceTarget data.
+    AudienceTargetingConditionDeviceOsFilter:
+      type: object
+      properties:
+        os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: Device OS.
+        min_version:
+          type: string
+        max_version:
+          type: string
+      description: Device OS and version filter condition.
+      required:
+      - os
+    AudienceTargetingConditionMediaChannelType:
+      type: string
+      enum:
+      - UNKNOWN_MEDIA_CHANNEL_TYPE
+      - APP
+      - WEB
+      default: UNKNOWN_MEDIA_CHANNEL_TYPE
+      description: ' - UNKNOWN_MEDIA_CHANNEL_TYPE: This value is not part of the specification.'
+    messagesDeleteAudienceTargetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteAudienceTargetErrorAPIErrorInfo'
+    CustomAudienceSetAppEvent:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: The ID of the Product of which PostbackIntegration info is used.
+        event:
+          type: string
+          description: A case-sensitive string name of an event. (e.g. install, purchase).
+        sliding_window_duration:
+          $ref: '#/components/schemas/commonTimeDuration'
+          description: The duration of time for which this condition is effective before now.
+    commonCircle:
+      type: object
+      properties:
+        center:
+          $ref: '#/components/schemas/commonLatLng'
+        radius:
+          type: number
+          format: double
+      description: Circle defines a circle with a center geo location and radius in km.
+    messagesCreateAudienceTargetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateAudienceTargetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdateAudienceTargetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateAudienceTargetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    adcloudcommonDayOfWeek:
+      type: string
+      enum:
+      - UNKNOWN_DAY_OF_WEEK
+      - MON
+      - TUE
+      - WED
+      - THU
+      - FRI
+      - SAT
+      - SUN
+      default: UNKNOWN_DAY_OF_WEEK
+      description: 'Enumeration for week days.
+
+
+        This value is not part of the specification.'
+    commonPostbackEventCount:
+      type: object
+      properties:
+        app_bundle:
+          type: string
+        range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+        events:
+          type: array
+          items:
+            type: string
+      description: Postback Event Count. It specifies an interval for a list of events from an app bundle.
+    messagesCreateAudienceTargetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - AUDIENCE_TARGET_NOT_FOUND
+      - AUDIENCE_TARGET_LATITUDE_VALUE_NOT_IN_RANGE
+      - AUDIENCE_TARGET_LONGITUDE_VALUE_NOT_IN_RANGE
+      - AUDIENCE_TARGET_INVALID_AGE_CONDITION
+      - AUDIENCE_TARGET_INVALID_USER_BUCKET_RANGE
+      - AUDIENCE_TARGET_INVALID_PAST_TIME_RANGE
+      - AUDIENCE_TARGET_FAILED_TO_PARSE_CONDITION
+      - AUDIENCE_TARGET_INVALID_KEYWORD
+      - AUDIENCE_TARGET_INVALID_AUCTION_TYPE
+      - AUDIENCE_TARGET_INVALID_THROTTLE_RATE
+      - AUDIENCE_TARGET_CANNOT_USE_WHITESPACE
+      - AUDIENCE_TARGET_AT_LEAST_ID_OR_KEYWORDS_MUST_BE_SET
+      - AUDIENCE_TARGET_CANNOT_SET_BOTH_PAST_TIME_RANGE_AND_RANGE
+      - AUDIENCE_TARGET_CONDITION_RANGE_CANNOT_HAVE_SAME_START_AND_END_VALUE
+      - AUDIENCE_TARGET_CANNOT_EXCLUDE_ALL_CONDITION
+      - AUDIENCE_TARGET_CANNOT_HAVE_BOTH_ALL_AND_ANY
+      - AUDIENCE_TARGET_LENGTH_EXCEED_LIMIT
+      default: ERROR_REASON_UNKNOWN
+      description: " - AUDIENCE_TARGET_NOT_FOUND: Cannot find the requested audience.\n - AUDIENCE_TARGET_LATITUDE_VALUE_NOT_IN_RANGE: targeting_condition has an invalid latitude value, which should be between 0 and 90.\n - AUDIENCE_TARGET_LONGITUDE_VALUE_NOT_IN_RANGE: targeting_condition has an invalid longitude value, which should be between -180 and 180.\n - AUDIENCE_TARGET_INVALID_AGE_CONDITION: targeting_condition has an invalid age condition, it should be between 0 and 100.\n - AUDIENCE_TARGET_INVALID_USER_BUCKET_RANGE: user bucket should be a number between 0 and 100.\n - AUDIENCE_TARGET_INVALID_PAST_TIME_RANGE: The absolute time range would be calculated as [now - Start, now - End).\nSo the start value should be larger than the end value, and the end value cannot be negative.\n - AUDIENCE_TARGET_FAILED_TO_PARSE_CONDITION: condition value cannot be parsed.\n - AUDIENCE_TARGET_INVALID_KEYWORD: Keyword cannot be empty or have whitespace characters only.\n - AUDIENCE_TARGET_INVALID_AUCTION_TYPE: auction_type should be FIRST or SECOND.\n - AUDIENCE_TARGET_INVALID_THROTTLE_RATE: throttle_rate should be between 0.0 and 1.0.\n - AUDIENCE_TARGET_CANNOT_USE_WHITESPACE: Cannot use whitespace for given audience target condition field.\n - AUDIENCE_TARGET_AT_LEAST_ID_OR_KEYWORDS_MUST_BE_SET: One of id or keywords of audience target condition field should be set.\n - AUDIENCE_TARGET_CANNOT_SET_BOTH_PAST_TIME_RANGE_AND_RANGE: Audience target condition field cannot have both past time range and range at the same time.\n - AUDIENCE_TARGET_CONDITION_RANGE_CANNOT_HAVE_SAME_START_AND_END_VALUE: Audience target condition range cannot have same start and end value.\n - AUDIENCE_TARGET_CANNOT_EXCLUDE_ALL_CONDITION: AudienceTarget condition cannot exclude all target conditions in specified field.\n - AUDIENCE_TARGET_CANNOT_HAVE_BOTH_ALL_AND_ANY: targeting_condition must not have both 'all' and 'any' in the same side of custom audience set.\n - AUDIENCE_TARGET_LENGTH_EXCEED_LIMIT: The length of the target condition exceeds the limit."
+    AudienceTargetingConditionCustomAudienceSet:
+      type: object
+      properties:
+        include_having_all:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: 'This will include a customer only if all of the listed conditions are satisfied.
+
+            Note that it is not allowed to set include_having_all and include_having_any at the same time.'
+        include_having_any:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: This will include a customer if at least one condition from the listed conditions is satisfied.
+        exclude_having_all:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: 'This will exclude a customer only if all of the listed conditions are satisfied.
+
+            Note that it is not allowed to set exclude_having_all and exclude_having_any at the same time.'
+        exclude_having_any:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: This will exclude a customer if at least one condition from the listed conditions is satisfied.
+      description: 'CustomAudienceSet represents a group of target users to whom we''re going to show an ad.
+
+        CustomAudienceSet is consist of a dynamic (not pre-determined)
+
+        set of target users based on App-events described in the postback messages
+
+        and pre-defined CustomerSets.'
+    commonTimeDuration:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: int64
+        unit:
+          $ref: '#/components/schemas/commonTimeUnit'
+      description: Represents a time duration with an amount and a unit.
+    LocationSetZipCodeSet:
+      type: object
+      properties:
+        zipcodes:
+          type: array
+          items:
+            type: string
+          description: Zipcodes to represent areas to target.
+        country:
+          type: string
+          description: Uppercase Country code in ISO 3166-1 alpha-2.
+    commonDisplayManagerVersion:
+      type: object
+      properties:
+        min:
+          type: string
+        max:
+          type: string
+      description: Display Manager Version.
+    dspAudienceTargetingCondition:
+      type: object
+      properties:
+        allowed_countries:
+          type: array
+          items:
+            type: string
+          description: Allowed countries in ISO_3166-1_alpha-3 format.
+        blocked_countries:
+          type: array
+          items:
+            type: string
+          description: Blocked countries in ISO_3166-1_alpha-3 format.
+        placement_reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AudienceTargetingConditionPlacementReason'
+        custom_placement_reason:
+          type: string
+          description: The reason of the placement in free-form text.
+        allowed_app_bundles:
+          type: array
+          items:
+            type: string
+          description: "App bundles. A bid-request having a matching publisher app bundle from the list\nwill be accepted.\n\nExample to target com.moloco.game or com.moloco.travel apps:\n\n  \"allowed_app_bundles\": [ \"com.moloco.game\", \"com.moloco.travel\" ]\n\nExample to exclude com.moloco.office app:\n\n  \"blocked_app_bundles\": [ \"com.moloco.office\" ]"
+        blocked_app_bundles:
+          type: array
+          items:
+            type: string
+          description: See the documentation for `allowed_app_bundles`.
+        allowed_content_categories:
+          type: array
+          items:
+            type: string
+          description: "Filter for allowed publisher IAB categories.\n\nValid category values can be found in section \"5.1 Content Categories\" in the \"OpenRTB API Specification\":\n   https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf\n\nFor example: \"allowed_content_categories\": [ \"IAB26-1\" ]"
+        blocked_content_categories:
+          type: array
+          items:
+            type: string
+          description: "Filter for blocked publisher IAB categories.\n\nValid category values can be found in section \"5.1 Content Categories\" in the \"OpenRTB API Specification\":\n   https://github.com/openrtb/OpenRTB/blob/master/OpenRTB-API-Specification-Version-2-3-1-FINAL.pdf\n\nFor example: \"blocked_content_categories\": [ \"IAB26-1\" ]"
+        allowed_cities:
+          type: array
+          items:
+            type: string
+          description: "Allowed cities. A bid-request will be accepted when there is at least one\nmatch from the city list. Note that each element must be in\nthe form of \"city, region\" such as \"Seattle, WA\" in order to disambiguate\nthe same city but different regions. The entry is case-insensitive\nand whitespace will be ignored.\n\nExample to target Seattle or Newyork:\n\n  \"allowed_cities\": [ \"Seattle, WA\", \"Newyork, ny\" ]"
+        blocked_cities:
+          type: array
+          items:
+            type: string
+          description: Blocked cities.
+        allowed_creative_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/adcloudcommonCreativeType'
+          description: Allowed Creative types.
+        blocked_creative_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/adcloudcommonCreativeType'
+          description: Blocked Creative types.
+        allowed_websites:
+          type: array
+          items:
+            type: string
+          description: 'Allowed websites. A glob pattern can be used for matching. Ignored for app inventories.
+
+
+            For example: "allowed_websites": [ "*youtube.com" ].'
+        blocked_websites:
+          type: array
+          items:
+            type: string
+          description: 'Blocked websites. A glob pattern can be used for matching. Ignored for app inventories.
+
+
+            For example: "blocked_websites": [ "*example.com" ].'
+        allowed_geofences:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonCircle'
+          description: Allowed geofences.
+        blocked_geofences:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonCircle'
+          description: Blocked geofences.
+        allowed_exchanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonAdExchange'
+          description: 'Allowed ad exchanges. Restricts targeting to bid only on the listed
+
+            exchanges; an empty list places no restriction.
+
+
+            MOLOCO_SDK is automatically included whenever the list is non-empty:
+
+            submitting a non-empty list that omits MOLOCO_SDK will have it
+
+            appended on the server side.'
+        blocked_exchanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonAdExchange'
+          description: 'Blocked ad exchanges. Excludes the listed exchanges from targeting.
+
+
+            Adding MOLOCO_SDK to this list is rejected with PERMISSION_DENIED.'
+        allowed_idfas:
+          type: array
+          items:
+            type: string
+          description: Allowed user IDFAs. IDFA supports glob; e.g. use "*f" to match all IDFAs ending with "f".
+        blocked_idfas:
+          type: array
+          items:
+            type: string
+          description: Blocked user IDFAs. IDFA supports glob; e.g. use "*f" to match all IDFAs ending with "f".
+        allowed_zipcodes:
+          type: array
+          items:
+            type: string
+          description: Allowed zipcodes.
+        blocked_zipcodes:
+          type: array
+          items:
+            type: string
+          description: Blocked zipcodes.
+        allowed_device_models:
+          type: array
+          items:
+            type: string
+          description: "Allowed device models.\n\nFor example:\n\n   \"allowed_device_models\": [ \"KFFOWI\", \"KFGIWI\", \"KFTT\", \"KFJWA\" ]"
+        blocked_device_models:
+          type: array
+          items:
+            type: string
+          description: Blocked device models.
+        allowed_user_audience_tags:
+          type: array
+          items:
+            type: string
+          description: Allowed user custom audience tags.
+        blocked_user_audience_tags:
+          type: array
+          items:
+            type: string
+          description: Blocked user custom audience tags.
+        allowed_languages:
+          type: array
+          items:
+            type: string
+          description: 'Allowed languages. Languages in use mostly follow ISO 639-1 code(https://www.loc.gov/standards/iso639-2/php/code_list.php),
+
+            e.g. "ko" for Korean and "en" for English.'
+        blocked_languages:
+          type: array
+          items:
+            type: string
+          description: Blocked languages.
+        allowed_device_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonDeviceType'
+          description: 'Allowed device types.
+
+
+            For example: "allowed_device_types": [ "HIGHEND_PHONE", "TABLET" ]'
+        blocked_device_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonDeviceType'
+          description: 'Blocked device types.
+
+
+            For example: "allowed_device_types": [ "SET_TOP_BOX" ]'
+        allowed_mostly_visited_countries:
+          type: array
+          items:
+            type: string
+          description: 'This filter checks user''s history of mostly visited countries against the specified
+
+            countries in the condition, and passes a request if there is at least one common entry
+
+            in both lists.'
+        blocked_mostly_visited_countries:
+          type: array
+          items:
+            type: string
+        allowed_regions:
+          type: array
+          items:
+            type: string
+          description: Regions are to filter a bid-request based on its region information.
+        blocked_regions:
+          type: array
+          items:
+            type: string
+        allowed_recent_campaign_activities:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AudienceTargetingConditionRecentCampaignActivityFilter'
+          description: "Recent Campaign activities filter a bid-request by user's recent activity such as click or install\nin the last n days. The filter is satisfied if there is at least one satisfying condition among the list.\n\nExample to target a user who has a click event for com.moloco.gameapp:\n\n   \"allowed_recent_campaign_activities\": [\n      {\n         \"campaign_id\": \"com.moloco.gameapp\",\n         \"event\": \"CLICK\"\n      }\n   ]\n\nExample to block a user who has a install event for com.moloco.officeapp within the past five days:\n\n   \"blocked_recent_campaign_activities\": [\n      {\n         \"campaign_id\": \"com.moloco.officeapp\",\n         \"event\": \"INSTALL\",\n         \"last_n_days\": 5\n      }\n   ]"
+        blocked_recent_campaign_activities:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AudienceTargetingConditionRecentCampaignActivityFilter'
+        allowed_locations:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AudienceTargetingConditionLocationFilter'
+          description: 'Location filter targets specific geo-locational audience using combined conditions
+
+            of different types such as city, region, zipcode and geofence.'
+        blocked_locations:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AudienceTargetingConditionLocationFilter'
+        genders:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonGender'
+        connection_types:
+          type: array
+          items:
+            type: string
+          description: 'Connection_types include ETHERNET, WIFI, CELL_UNKNOWN, CELL_2G, CELL_3G, CELL_4G.
+
+
+            For example: "connection_types": [ "WIFI", "CELL_4G" ]'
+        allowed_direct_deal_ids:
+          type: array
+          items:
+            type: string
+          description: "IDs of the allowed direct deals. A bid-request is accepted only if there is at least one matching id.\n\nFor example:\n\n   \"allowed_direct_deal_ids\": [\n      \"ip_9161499632014fe8b9ef60673a51b745\",\n      \"ip_e13c0cb23dd54a8ea742b2af61e0712d\",\n      \"ip_0cfeaebb190d47df8b86399232853e23\"\n   ]"
+        blocked_direct_deal_ids:
+          type: array
+          items:
+            type: string
+          description: IDs of the blocked direct deals.
+        device_oses:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AudienceTargetingConditionDeviceOsFilter'
+          description: Device OS requirements if specified.
+        media_channel_type:
+          $ref: '#/components/schemas/AudienceTargetingConditionMediaChannelType'
+          description: Media channel types.
+        new_users:
+          $ref: '#/components/schemas/AudienceTargetingConditionNewUserFilter'
+          description: "Filter to target only new users.\n\nExample to accept a bid-request for new users with earliest known activities within the last 5 days:\n\n   \"new_users\": {\n      \"last_n_days\": 5\n   }"
+        advertiser_id_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonAdvertiserIdType'
+          description: Filter on advising ID types, including "ANDROID_IDFA" or "IOS_IDFA".
+        allowed_video_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAudienceTargetingConditionVideoType'
+          description: Video type filter. Ignored when the bid request is not for video ads.
+        blocked_video_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspAudienceTargetingConditionVideoType'
+        weekly_schedules:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/AudienceTargetingConditionWeeklyScheduleFilter'
+          description: "Weekly schedule specifies more fine-grained time range filtering for days of a week. For example,\nthis list can be used to specify commute time ranges in the morning and evening on workdays.\n\nExample to target 7-9 am and 5-7 pm during week days:\n\n     \"weekly_schedules\": [\n        {\n           \"hour_range\": {\n              \"start\": 7,\n              \"end\": 9\n           },\n           \"days\": [ \"MON\", \"TUE\", \"WED\", \"THU\", \"FRI\" ]\n        },\n        {\n           \"hour_range\": {\n               \"start\": 17,\n               \"end\": 19\n           },\n           \"days\": [ \"MON\", \"TUE\", \"WED\", \"THU\", \"FRI\" ]\n        }\n     ]\n\nExample to target 10pm to 2am on Fridays and Saturdays:\n\n  \"weekly_schedules\": [\n      {\n         \"range\": {\n             \"start\": 22,\n             \"end\": 2\n         },\n         \"days\": [ \"FRI\", \"SAT\" ]\n      }\n  ]"
+        allowed_gender_score:
+          $ref: '#/components/schemas/adcloudcommonFloatingPointRange'
+          description: 'Gender score filter uses approximated gender score probability distribution in
+
+            the range of [0, 1], with 0 indicating a strong probability of male, and 1 indicating
+
+            a strong probability of female.
+
+
+            The filter is specified with a range of [start, end] to filter on user''s gender score.'
+        blocked_gender_score:
+          $ref: '#/components/schemas/adcloudcommonFloatingPointRange'
+        allowed_ages:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/adcloudcommonInterval'
+          description: 'Age is used to filter based on user''s approximate age. A valid value must be in
+
+            the exclusive range of (0, 100).'
+        blocked_ages:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/adcloudcommonInterval'
+        allowed_ip_ranges:
+          type: array
+          items:
+            type: string
+          description: "IP net based condition. The CIDR format must be used for an entry such as\nhttps://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing.\nNote that both of IP v4 and v6 could be used at the same time.\n\nExample to block bid-requests with any IP within 32.76.52.0 - 32.76.52.255 or 127.0.0.0 - 127.255.255.255:\n\n   \"blocked_ip_ranges\": [\n     \"32.76.52.0/24\",\n     \"127.0.0.0/8\"\n   ]"
+        blocked_ip_ranges:
+          type: array
+          items:
+            type: string
+        allowed_device_carriers:
+          type: array
+          items:
+            type: string
+          description: "Device carrier filter.\n\nExample to target SKT:\n\n   \"allowed_device_carriers\": [ \"SKTelecom\" ]\n\n\nExample to exclude T-MOBILE and XFINITY Mobile\n\n   \"blocked_device_carriers\": [ \"T-MOBILE\", \"XFINITY Mobile\" ]"
+        blocked_device_carriers:
+          type: array
+          items:
+            type: string
+        allowed_keywords:
+          type: array
+          items:
+            type: string
+          description: 'Filter regarding ''keywords'' field in a bid request.
+
+
+            If specified, an ad request must have at least one of the allowed keywords
+
+            to satisfy the filter.'
+        blocked_keywords:
+          type: array
+          items:
+            type: string
+          description: 'Filter regarding ''keywords'' field in a bid request.
+
+
+            An ad request must not have any of the blocked keywords to satisfy the filter.'
+        user_buckets:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/adcloudcommonInterval'
+          description: Filter for the user buckets.
+        allowed_ad_units:
+          type: array
+          items:
+            type: string
+          description: '// Target timetree_i_prod or timetree_a_prod ad_units
+
+            "condition": {
+
+            "allowed_ad_units": [ "timetree_i_prod", "timetree_a_prod" ]
+
+            }
+
+
+            // Exclude timetree_i_test ad_unit
+
+            "condition": {
+
+            "blocked_ad_units": [ "timetree_i_test" ]
+
+            }'
+          title: 'Example:'
+        blocked_ad_units:
+          type: array
+          items:
+            type: string
+        allowed_placements:
+          type: array
+          items:
+            type: string
+          description: placement (a group of ad_units) names. It is untied to ad_units, and follow the ad_unit's filtering rule.
+        blocked_placements:
+          type: array
+          items:
+            type: string
+        allowed_banner_apis:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonBannerApi'
+          description: '// Target MRAID_2 banner only
+
+            "condition": {
+
+            "allowed_banner_apis": [ "MRAID_2" ]
+
+            }'
+          title: 'Example:'
+        blocked_banner_apis:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonBannerApi'
+        schedule:
+          $ref: '#/components/schemas/commonTimeInterval'
+          description: "Schedule to allow bid-requests in a absolute time range, where start and end\nare in RFC3339 format. A few example from https://tools.ietf.org/html/rfc3999\nis listed below.\n\n     1985-04-12T23:20:50.52Z\n\n  This represents 20 minutes and 50.52 seconds after the 23rd hour of\n  April 12th, 1985 in UTC.\n\n\n     1996-12-19T16:39:57-08:00\n\n  This represents 39 minutes and 57 seconds after the 16th hour of\n  December 19th, 1996 with an offset of -08:00 from UTC (Pacific\n  Standard Time).  Note that this is equivalent to 1996-12-20T00:39:57Z\n  in UTC.\n\n   Example:\n\n   // Christmas through end of the year\n   \"condition\": {\n       \"schedule\": {\n           \"start\": \"2020-12-24T00:00:00Z\",\n           \"end\": \"2020-12-31T23:59:59Z\"\n       }\n   }"
+        audience_data:
+          $ref: '#/components/schemas/commonAudienceData'
+          description: "Audience data.\n\n   Example:\n   \"condition\": {\n       \"audience_data\": {\n           \"provider\": \"moloco\",\n           \"condition\": \"name == \\\"John\"\\ AND age > 30\"\n       }\n   }"
+        allowed_apps_by_checksum:
+          type: array
+          items:
+            type: string
+          description: Allow apps by their checksum value.
+        blocked_apps_by_checksum:
+          type: array
+          items:
+            type: string
+          description: Block apps by their checksum value.
+        allowed_postback_event_counts:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonPostbackEventCount'
+          description: "PostbackEventCount condition checks the number of specified events and\naccepts if there is one event that falls within given range of [start,\nend). In the example, User's event named \"Transaction confirmation\"\nmust have been appeared 16 times or more to accept for zigbang app.\n\n   Example:\n   \"condition\": {\n       \"allowed_postback_event_counts\": [\n           {\n               \"app_bundle\": \"com.chbreeze.jikbang4a\",\n               \"range\": {\n                   \"start\": 16,\n                   \"end\": 0\n               },\n               \"events\": [\n                   \"Transaction confirmation\"\n               ]\n           }\n       ]\n   }"
+        auction_types:
+          type: array
+          items:
+            type: string
+          description: "Auction types including first price or second price auctions.\n\n   Example:\n   \"condition\": {\n       \"auction_types\": [ \"first\", \"second\" ]\n   }"
+        throttle_apt_tags:
+          $ref: '#/components/schemas/commonTagsThrottleCondition'
+          title: "Allow throttle apps with apt tags with throttle rate. In the example,\nthrottle apps with apt_tags [bad_apptag1, bad_apptag2] with 95% of throttle rate\nare allowed.\nExample:\n\"condition\":{\n   \"throttle_apt_tags\": {\n       \"tags\": [\"badapp_tag1\", \"badapp_tag2\"],\n       \"throttle_rate\": 0.95\n   }\n}"
+        allowed_dev_makes:
+          type: array
+          items:
+            type: string
+          description: "Allowed device make.\n\n   Example:\n   \"condition\":{\n       \"allowed_dev_makes\": [ \"Apple\" ]\n   }"
+        blocked_dev_makes:
+          type: array
+          items:
+            type: string
+          description: Blocked device make. See the example of `allowed_dev_makes`.
+        display_manager_versions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonDisplayManagerVersion'
+          description: "DisplayManager Version.\n\n   Example:\n\n   \"condition\": {\n       \"display_manager_versions\": [\n           {\n               \"min\": \"1.2\",\n               \"max\": \"4.5.6\"\n           }\n       ]\n   }\n\n   // With minimum version requirement:\n   \"condition\": {\n       \"display_manager_versions\": [\n           {\n               \"min\": \"3.0\"\n           }\n       ]\n   }\n\n   // With maximum version requirement:\n   \"condition\": {\n       \"display_manager_versions\": [\n           {\n               \"max\": \"5\"\n           }\n       ]\n   }"
+        allowed_audiences:
+          type: array
+          items:
+            type: string
+          description: Allowed audiences.
+        blocked_audiences:
+          type: array
+          items:
+            type: string
+          description: Blocked audiences.
+        allowed_postback_has_all_events_conditions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonPostbackEventsCondition'
+          description: 'Postback event condition filter a bid-request by user''s postback summary. Note that audience name
+
+            and events are of case-sentitive string types.
+
+            Each entry of allowed_postback_has_all_events_conditions will be satisfied when all listed events
+
+            are found from user''s postback summary.'
+        blocked_postback_has_all_events_conditions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonPostbackEventsCondition'
+          description: 'Each entry of blocked_postback_has_all_events_conditions will be satisfied when all listed events
+
+            are not found from user''s postback summary.'
+        allowed_postback_has_any_events_conditions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonPostbackEventsCondition'
+          title: "Each entry of allowed_postback_has_any_events_conditions will be satisfied when there is at least\none matching event by the condition from user's postback summary.\nThe following example defines in-app events of \"com.moloco.gameapp\" for a user bound to the\nbid-request. The condition must have both of \"adview\" and \"purchase\" events within the\npast 14 days but no \"Open\" or \"Close\" events in the last 7 days.\nExample:\n   \"condition\": {\n       \"allowed_postback_has_all_events_conditions\": [\n           {\n               \"audiences\": [ \"com.moloco.gameapp\" ],\n               \"events\": [ \"adview\", \"purchase\" ],\n               \"past_time_range\": {\n                   \"start\": 14\n               }\n           }\n       ],\n       \"blocked_postback_has_any_events_conditions\": [\n           {\n               \"audiences\": [ \"com.moloco.gameapp\" ],\n               \"events\": [ \"Open\", \"Close\" ],\n               \"past_time_range\": {\n                   \"start\": 7\n               }\n           }\n       ]\n   }"
+        blocked_postback_has_any_events_conditions:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonPostbackEventsCondition'
+          description: 'Each entry of blocked_postback_has_any_events_conditions will be satisfied when there is at least
+
+            one event not matched by the condition from user''s postback summary. See the documentation for
+
+            `allowed_postback_has_any_events_conditions`.'
+        allowed_location_set:
+          $ref: '#/components/schemas/AudienceTargetingConditionLocationSet'
+          description: 'Allowed and blocked location sets. If these fields are set,
+
+            allowed_location_codes and blocked_location_codes are ignored.'
+        blocked_location_set:
+          $ref: '#/components/schemas/AudienceTargetingConditionLocationSet'
+        allowed_apt_tags:
+          type: array
+          items:
+            type: string
+        blocked_apt_tags:
+          type: array
+          items:
+            type: string
+        coppa_acceptance:
+          $ref: '#/components/schemas/AudienceTargetingConditionCoppaAcceptance'
+          description: Whether to bid according to BidRequest.regs.coppa value.
+        skan_traffic:
+          $ref: '#/components/schemas/AudienceTargetingConditionSkanTraffic'
+          description: 'Whether to bid according to bid requests that support SKAN or not.
+
+            Decide based on bidreq.ext.sk_ad_network_request_ext field exists.'
+        contains_custom_audience:
+          type: boolean
+          description: 'Whether it contains a `custom_audience` targeting condition.
+
+            The `custom_audience` targeting condition is legacy, and may contain some internal information.
+
+            Therefore, we do not reveal them by the API but only signals its non-emptiness with this field.'
+        custom_audience_set:
+          $ref: '#/components/schemas/AudienceTargetingConditionCustomAudienceSet'
+          description: 'CustomAudienceSet is a combination of app events and user lists filters.
+
+            The app events filter checks if the targeted user conforms to given app events.
+
+            The CustomerSet filter checks if an entry in the list can be found
+
+            from tags in a user profile. There is an assumption that a CustomerSet
+
+            entity exists for each and every entry in the list.'
+      description: 'AudienceTargetingCondition specifies conditions for AudienceTargeting.
+
+
+        This condition object contains various filters on multiple dimensions of bid-request,
+
+        app, and user. Advertisers can selectively configure desired filters to form a
+
+        meaningful AudienceTarget condition collectively. The configured individual filters
+
+        must be satisfied unanimously in order for the resulting collective condition to be
+
+        satisfied.
+
+
+        Only filters with values will be effective. When a filter condition accepts
+
+        a list of values, i.e., list of countries for "allowed_countries", the filter
+
+        condition will be met when any match is found among the list.
+
+
+        String literals are case insensitive unless specified otherwise; i.e. "USA" and "usa"
+
+        equally represents the United States of America.'
+    commonDeviceOs:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_OS
+      - ANDROID
+      - IOS
+      - VERSATILE
+      - MOBILE_WEB
+      - MACOS
+      - WINDOWS
+      - NEXT_VERSATILE
+      default: UNKNOWN_DEVICE_OS
+      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
+    commonPostbackEventsCondition:
+      type: object
+      properties:
+        audiences:
+          type: array
+          items:
+            type: string
+          description: Audience name. i.e. app bundle.
+        events:
+          type: array
+          items:
+            type: string
+          description: List of events such as install and purchase.
+        past_time_range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+          description: Past time range for a postback event.
+        past_time_range_unit:
+          $ref: '#/components/schemas/commonTimeUnit'
+          description: 'The unit for past_time_range.
+
+            In PostbackEventsCondition, only DAY and MINUTE are used.'
+        range:
+          $ref: '#/components/schemas/commonTimeInterval'
+          description: Range for a postback event.
+        short_term_user_profile:
+          type: boolean
+          description: If set, short-term user profile information is used to evaluate this condition.
+        count_range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+          description: Accepted range of event count.
+      description: Postback Events Condition.
+    commonLatLng:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      description: Point defines a geo location by latitude, longitude.
+    messagesListAudienceTargetsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListAudienceTargetsErrorAPIErrorInfo'
+    messagesListAudienceTargetsResponse:
+      type: object
+      properties:
+        audience_targets:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspSharedAudienceTarget'
+          description: The list of AudienceTarget data.
+    adcloudcommonTimezonePolicy:
+      type: string
+      enum:
+      - UNKNOWN_TIME
+      - DEVICE_TIME
+      - UTC_TIME
+      - AD_ACCOUNT_TIME
+      - ADVERTISER_TIME
+      default: UNKNOWN_TIME
+      description: "TimezonePolicy defines the time configuration.\n\n - DEVICE_TIME: Time object is given in the device's time (depends on user device timezone).\n - UTC_TIME: Time object is given in the fixed UTC time (depends on nothing).\n - AD_ACCOUNT_TIME: Given time is given in fixed ad account time (depends on ad account timezone)."
+    commonTagsThrottleCondition:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+        throttle_rate:
+          type: number
+          format: float
+      description: 'Tags Thrrottle Condition. It specifies a throttle rate for a list of tags.
+
+        All the tags in a list will have same throttle rate.'
+    commonTimeUnit:
+      type: string
+      enum:
+      - UNKNOWN_TIME_UNIT
+      - MINUTE
+      - HOUR
+      - DAY
+      - WEEK
+      default: UNKNOWN_TIME_UNIT
+      description: 'A unit of time, e.g. second, minute, etc.
+
+
+        This value is not part of the specification.'
+    AudienceTargetingConditionCoppaAcceptance:
+      type: string
+      enum:
+      - UNKNOWN_COPPA
+      - ACCEPT_COPPA_ONLY
+      - DENY_COPPA
+      default: UNKNOWN_COPPA
+      description: "Indicates whether to bid according to the COPPA(Children's Online Privacy Protection Act)\nvalue of BidRequest.\n\n - UNKNOWN_COPPA: Doesn't filter BidRequest according to the coppa value.\n - ACCEPT_COPPA_ONLY: Bids to BidRequest with coppa=1.\n - DENY_COPPA: Bids to BidRequest with coppa=0 or empty coppa field."
+    AudienceTargetingConditionNewUserFilter:
+      type: object
+      properties:
+        last_n_days:
+          type: integer
+          format: int32
+          description: Target only new users with earliest known activities falling into the window of last N days.
+      description: Filter to target new users only.
+      required:
+      - last_n_days
+    commonAudienceData:
+      type: object
+      properties:
+        provider:
+          type: string
+          title: Data provider's unique name
+        condition:
+          type: string
+          title: 'SQL like condition statement for filtering powered by qlbridge library.
+
+            Ref. https://github.com/araddon/qlbridge'
+      description: Audience Data. It is a filter based on AudienceData stored in UPT.
+    AudienceTargetingConditionPlacementReason:
+      type: string
+      enum:
+      - UNKNOWN_PLACEMENT_REASON
+      - REASON_BRAND_SAFETY
+      - REASON_PERFORMANCE_IMPROVEMENT
+      - REASON_AGE_RESTRICTION
+      - REASON_FRAUD
+      - REASON_OWN_APP_CROSS_PROMOTION_BLOCKING
+      - REASON_NOT_OPERATING_IN_A_SPECIFIC_LOCATION
+      - REASON_INCREMENTALITY_TESTING
+      - REASON_OTHER
+      default: UNKNOWN_PLACEMENT_REASON
+      description: The reason of the placement. It is used to track the reason why customers set the allowed or blocked app's.
+    messagesUpdateAudienceTargetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateAudienceTargetErrorAPIErrorInfo'
+    adcloudcommonFloatingPointRange:
+      type: object
+      properties:
+        start:
+          type: number
+          format: double
+        end:
+          type: number
+          format: double
+    CustomAudienceSetApp:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: The ID of the Product.
+        sliding_window_duration:
+          $ref: '#/components/schemas/commonTimeDuration'
+          description: The duration of time for which this condition is effective before now.
+      description: 'App matches a user based on app engagement within a time window.
+
+        Use AppEvent when targeting a specific event by name.'
+    AudienceTargetingConditionLocationFilter:
+      type: object
+      properties:
+        cities:
+          type: array
+          items:
+            type: string
+        regions:
+          type: array
+          items:
+            type: string
+        zipcodes:
+          type: array
+          items:
+            type: string
+        geofences:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonCircle'
+      description: 'LocationFilter represents a geolocationcal condition using different related conditions.
+
+        The condition will be met if any of the listed conditions is met.'
+    commonGender:
+      type: string
+      enum:
+      - UNKNOWN_GENDER
+      - FEMALE
+      - MALE
+      default: UNKNOWN_GENDER
+      description: 'Enumeration of gender types.
+
+
+        This value is not part of the specification.'
+    messagesCreateAudienceTargetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateAudienceTargetErrorAPIErrorInfo'
+    commonTimeInterval:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Start time in RFC3339 format, e.g. "2017-04-01T12:34:56+00:00".
+        end:
+          type: string
+          format: date-time
+          description: End time in RFC3339 format, e.g. "2017-05-01-T21:09:08+00:00".
+      description: Interval with start and end timestamps in RFC3339 format.
+    AudienceTargetingConditionLocationSet:
+      type: object
+      properties:
+        osm_ids:
+          type: array
+          items:
+            type: string
+            format: int64
+          description: OpenStreetMap IDs to represent areas to target.
+        zipcodes:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/LocationSetZipCodeSet'
+      description: 'LocationSet represents target areas to allow or block. If multiple fields are set, a union of them is
+
+        used.'
+    dspSharedAudienceTarget:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the SharedAudienceTarget. Automatically set by server on creation.
+        title:
+          type: string
+          description: A descriptive name of the SharedAudienceTarget.
+        targeting_condition:
+          $ref: '#/components/schemas/dspAudienceTargetingCondition'
+        aud_size:
+          type: string
+          format: int64
+          description: Original audience size information.
+          readOnly: true
+        reachable_aud_size:
+          type: string
+          format: int64
+          description: Reachable audience size information.
+          readOnly: true
+        top_n_countries_aud_size_map:
+          type: object
+          additionalProperties:
+            type: string
+            format: int64
+          description: Top N countries audience size information.
+          readOnly: true
+        last_aud_size_computed_at:
+          type: string
+          format: date-time
+          description: Last updated time of the audience size information.
+          readOnly: true
+        auto_delete_at:
+          type: string
+          format: date-time
+          description: 'AudienceTarget used nowhere for specific time will be removed automatically.
+
+            It represents when this will be deleted in UTC.'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+      description: 'SharedAudienceTarget represents a persisted AudienceTargetingCondition that can be
+
+        shared across multiple Campaigns. It can be referenced by ID by other objects,
+
+        e.g. the Audience object.'
+      required:
+      - title
+    commonDeviceType:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_TYPE
+      - MOBILE
+      - PERSONAL_COMPUTER
+      - CONNECTED_TV
+      - HIGHEND_PHONE
+      - TABLET
+      - CONNECTED_DEVICE
+      - SET_TOP_BOX
+      default: UNKNOWN_DEVICE_TYPE
+      description: 'Enumeration of device types supported by Moloco Ads.
+
+
+        This value is not part of the specification.'
+    AudienceTargetingConditionSkanTraffic:
+      type: string
+      enum:
+      - UNKNOWN_SKAN
+      - TARGET_SKAN_ONLY
+      - TARGET_NON_SKAN
+      default: UNKNOWN_SKAN
+      description: "Indicates whether to bid according to bid requests that support SKAN(SKAdNetwork) or not.\n\n - UNKNOWN_SKAN: Doesn't filter BidRequest according to support skan or not in this filter.\n - TARGET_SKAN_ONLY: Bids only for skan support traffic.\n - TARGET_NON_SKAN: Bids only for non-skan traffic."
+    messagesCreateAudienceTargetResponse:
+      type: object
+      properties:
+        audience_target:
+          $ref: '#/components/schemas/dspSharedAudienceTarget'
+          description: The created AudienceTarget data.
+    messagesDeleteAudienceTargetResponse:
+      type: object
+    AudienceTargetingConditionRecentCampaignActivityFilter:
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/adcloudcommonEventType'
+          description: Event type for the Campaign activities to filter on.
+        campaign_id:
+          type: string
+          description: ID of the Campaign to filter on.
+        last_n_days:
+          type: integer
+          format: int32
+          description: Target only new users with earliest known activities falling into the window of last N days.
+      description: Recent Campaign activities for the targeted user.
+      required:
+      - event
+      - campaign_id
+      - last_n_days
+    messagesReadAudienceTargetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesDeleteAudienceTargetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteAudienceTargetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspAudienceTargetingConditionVideoType:
+      type: string
+      enum:
+      - UNKNOWN_VIDEO_TYPE
+      - REWARD_VIDEO
+      - NON_REWARD_VIDEO
+      - NON_VIDEO
+      default: UNKNOWN_VIDEO_TYPE
+      description: This value is not part of the specification.
+    commonAdvertiserIdType:
+      type: string
+      enum:
+      - UNKNOWN_ADVERTISER_ID_TYPE
+      - ANDROID_IDFA
+      - IOS_IDFA
+      - GENERIC_USER_ID
+      - GENERIC_DEVICE_ID
+      - ANDROID_LAT_IDFA
+      - IOS_LAT_IDFA
+      default: UNKNOWN_ADVERTISER_ID_TYPE
+      description: "Enumeration of supported ID types for advertises.\n\nThis value is not part of the specification.\n\n - ANDROID_IDFA: IDFA used in Android.\n - IOS_IDFA: IDFA used in iOS.\n - GENERIC_USER_ID: This is used when IDFA is unavailable and an alternative user id is available.\nFor example, Google's adid is used for mobile web inventories.\n - GENERIC_DEVICE_ID: This is used when IDFA is unavailable and an alternative device id is available.\nFor example, Mopub sends out device id in some apps.\n - ANDROID_LAT_IDFA: infra-generating IDFA used for Android LAT devices\n - IOS_LAT_IDFA: infra-generating IDFA used for iOS LAT devices"
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

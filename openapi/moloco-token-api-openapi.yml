@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  title: Moloco Token API
+  version: '1.0'
+  description: 'Operations tagged Token across 4 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml, moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: Token
+paths:
+  /cm/v1/auth/tokens:
+    post:
+      summary: Issue a new token.
+      description: 'Issues a new token that gives you access to Moloco Ads APIs.
+
+        Tokens are issued by workplace such that you need a unique token for each workplace you would like access to.
+
+        Each token is valid for 16 hours, and you will need a new token after the token has expired.'
+      operationId: DspApi_CreateToken
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateTokenResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateTokenError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesCreateTokenRequest'
+        required: true
+      tags:
+      - Token
+      security: []
+    servers:
+    - url: https://api.moloco.cloud
+  /v1/tokens:
+    put:
+      security:
+      - Bearer: []
+      description: Issue a new token with a previous one. Expired tokens cannot be refreshed.
+      tags:
+      - Token
+      summary: Refresh the existing token.
+      operationId: v1_refresh_token
+      responses:
+        '200':
+          description: The token was successfully refreshed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createTokenResponse'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      description: Create a new token to access MOLOCO APIs. The token is valid for one hour. Therefore, it is recommended to periodically refresh the token before it expires.
+      tags:
+      - Token
+      summary: Create a new token.
+      operationId: v1_create_token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createTokenRequest'
+        description: a request to create a token.
+        required: true
+      responses:
+        '200':
+          description: The token was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createTokenResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized - the given credentials are wrong.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    dspmessagesTokenType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - AUTH_TOKEN
+      - UPDATE_PASSWORD_TOKEN
+      default: UNKNOWN_TYPE
+      description: "TokenType enumerates the type of token.\n\n - AUTH_TOKEN: Token returned on the authentication success.\n - UPDATE_PASSWORD_TOKEN: If user didn't update password for over 12 months, it will return `UPDATE_PASSWORD_TOKEN`.\nThis token can be only used for [UpdatePassword API](https://developer.moloco.cloud/reference/dspapi_updatepassword-1).\nhttps://developer.moloco.cloud/reference/dspapi_updatepassword-1"
+    messagesCreateTokenRequest:
+      type: object
+      properties:
+        api_key:
+          type: string
+          description: Enter the API key generated from Moloco Cloud DSP.
+    messagesCreateTokenErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_INVALID_CREDENTIAL_INFORMATION
+      - USER_ACCOUNT_BLOCKED
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_INVALID_CREDENTIAL_INFORMATION: The given credential information is invalid.\n - USER_ACCOUNT_BLOCKED: The user account is blocked.\nLogin attempt is not allowed when there are 5 failed login attempts."
+    messagesCreateTokenErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Created token.
+        token_type:
+          $ref: '#/components/schemas/dspmessagesTokenType'
+          description: Token type.
+    messagesCreateTokenError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfo'
+    createTokenResponse:
+      description: A response to CreateTokenRequest
+      type: object
+      required:
+      - token
+      - user
+      properties:
+        token:
+          description: The successfully issued Morse token.
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
+    user:
+      description: A user.
+      type: object
+      required:
+      - userspace_id
+      - email
+      - name
+      properties:
+        configuration:
+          description: Per-user configuration (key-value pairs).
+          type: object
+          additionalProperties:
+            type: string
+        created_at:
+          description: The time when the user is created.
+          type: string
+          format: date-time
+          readOnly: true
+        email:
+          description: The email address of the user.
+          type: string
+          format: email
+        id:
+          description: 'The ID of the user. You don''t need to specify this value when creating a user.
+
+            The ID will be automatically determined by Morse.
+
+            '
+          type: string
+        name:
+          description: The name of the user.
+          type: string
+        password:
+          description: The sign-in password of the user.
+          type: string
+        role_grants:
+          description: The list of specific roles granted to the user. Returned only when explicitly asked.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourceToRoleReferences'
+          x-omitempty: true
+          readOnly: true
+        roles:
+          description: The list of roles assigned to the user. Returned only when explicitly asked.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+          x-omitempty: true
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/userStatus'
+        updated_at:
+          description: The time when the user information is updated.
+          type: string
+          format: date-time
+          readOnly: true
+        userspace_id:
+          description: The ID of the user space such as USERSPACE_C.
+          type: string
+    userStatus:
+      description: The set of status values for a user.
+      type: object
+      required:
+      - signed_up
+      properties:
+        signed_up:
+          description: The signed up status of the user.
+          type: boolean
+    createTokenRequest:
+      description: A request to create a token
+      type: object
+      required:
+      - workplace_id
+      - email
+      - password
+      properties:
+        email:
+          description: The email address of the user.
+          type: string
+        password:
+          description: The password of the user.
+          type: string
+        workplace_id:
+          description: The ID of the workplace to which the user belongs.
+          type: string
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
+      type: object
+      required:
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+    roleReference:
+      description: Reference to a role defined in a platform.
+      type: object
+      required:
+      - id
+      - platform_id
+      properties:
+        id:
+          description: The ID of the role.
+          type: string
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

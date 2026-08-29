@@ -1,0 +1,510 @@
+openapi: 3.2.0
+info:
+  title: Moloco Customer Set API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged CustomerSet across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: CustomerSet
+paths:
+  /cm/v1/customer-sets:
+    get:
+      summary: List up CustomerSets.
+      description: List up all CustomerSets of the AdAccount.
+      operationId: DspApi_ListCustomerSets
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListCustomerSetsResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListCustomerSetsError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - CustomerSet
+    post:
+      summary: Create a new CustomerSet.
+      description: Create a new CustomerSet.
+      operationId: DspApi_CreateCustomerSet
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateCustomerSetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateCustomerSetError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/dspCustomerSet'
+      tags:
+      - CustomerSet
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/customer-sets/{customer_set_id}:
+    get:
+      summary: Read an existing CustomerSet.
+      description: Read an existing CustomerSet.
+      operationId: DspApi_ReadCustomerSet
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadCustomerSetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadCustomerSetError'
+      parameters:
+      - name: customer_set_id
+        description: The CustomerSet ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - CustomerSet
+    delete:
+      summary: Delete an existing CustomerSet.
+      description: Delete an existing CustomerSet.
+      operationId: DspApi_DeleteCustomerSet
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteCustomerSetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteCustomerSetError'
+      parameters:
+      - name: customer_set_id
+        description: The CustomerSet ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - CustomerSet
+    put:
+      summary: Update an existing CustomerSet.
+      description: Update an existing CustomerSet.
+      operationId: DspApi_UpdateCustomerSet
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateCustomerSetResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateCustomerSetError'
+      parameters:
+      - name: customer_set_id
+        description: The CustomerSet ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/dspCustomerSet'
+      tags:
+      - CustomerSet
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    CustomerSetStatusDetailConnectionMethod:
+      type: string
+      enum:
+      - UNKNOWN_METHOD
+      - CLOUD_API
+      - MCP_UPLOAD
+      - AF_AUDIENCE_BUILDER
+      - BESPOKE
+      default: UNKNOWN_METHOD
+      description: "Connection method is an indicator of how the customer set file is updated.\n\n - CLOUD_API: Update via cloud API\n - MCP_UPLOAD: MCP Upload\n - AF_AUDIENCE_BUILDER: AF Audience Builder\n - BESPOKE: Bespoke"
+    dspCustomerSetIdType:
+      type: string
+      enum:
+      - UNKNOWN_ID_TYPE
+      - GOOGLE_ADID
+      - APPLE_IDFA
+      default: UNKNOWN_ID_TYPE
+      description: " - UNKNOWN_ID_TYPE: Unknown user ID type.\n - GOOGLE_ADID: Google Android advertising ID type.\n - APPLE_IDFA: Apple iOS advertising ID type."
+    messagesDeleteCustomerSetResponse:
+      type: object
+    messagesReadCustomerSetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesCreateCustomerSetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - CUSTOMER_SET_INVALID_DATA_FILE_PATH
+      - CUSTOMER_SET_DATA_FILE_PATH_AD_ACCOUNT_MISMATCH
+      - CUSTOMER_SET_DATA_FILE_PATH_INVALID_ASSET_KIND
+      - CUSTOMER_SET_DATA_FILE_PATH_MISSING_FILE_NAME
+      - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED
+      default: ERROR_REASON_UNKNOWN
+      description: " - CUSTOMER_SET_INVALID_DATA_FILE_PATH: Data file path cannot be recognized. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_AD_ACCOUNT_MISMATCH: ad_account_id on data path mismatch with request. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_INVALID_ASSET_KIND: asset kind on data path should be 'csv'. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_MISSING_FILE_NAME: file name on asset kind is missing. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED: CustomerSet manipulation (creation, update, deletion) is only allowed when data source is data file path."
+    messagesReadCustomerSetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadCustomerSetErrorAPIErrorInfo'
+    messagesReadCustomerSetResponse:
+      type: object
+      properties:
+        customer_set:
+          $ref: '#/components/schemas/dspCustomerSet'
+          description: The retrieved CustomerSet.
+    messagesUpdateCustomerSetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateCustomerSetErrorAPIErrorInfo'
+    messagesListCustomerSetsErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListCustomerSetsErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspCustomerSet:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the CustomerSet. Automatically set by server on creation.
+        title:
+          type: string
+          description: A descriptive name of the CustomerSet.
+        description:
+          type: string
+          description: An optional description of the CustomerSet.
+        id_type:
+          $ref: '#/components/schemas/dspCustomerSetIdType'
+          description: Type of user identifiers of this CustomerSet.
+        status:
+          $ref: '#/components/schemas/dspCustomerSetStatus'
+        data_file_path:
+          type: string
+          description: "Data source path of users.\nex) gcs path for txt file of specific-type user lists (query result for postback, or journal...).\n\nAPPLE_IDFA user list txt file example: (one idfa per line).\n ______________________________________\n8a05cce7-da5c-4980-8cef-2603ae1742b6\nffffffff-ffff-4fff-8fff-ffffffffffff"
+        is_upper:
+          type: boolean
+          description: A flag indicating that identifiers are upper-cased. False if they are lower-cased.
+        auto_delete_at:
+          type: string
+          format: date-time
+          description: 'CustomerSet used nowhere for specific time will be removed automatically.
+
+            It represents when this will be deleted in UTC.'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+        recent_file_update_info:
+          $ref: '#/components/schemas/CustomerSetFileUpdateInfo'
+          description: Most recent update info.
+          readOnly: true
+        status_detail:
+          $ref: '#/components/schemas/CustomerSetCustomerSetStatusDetail'
+        file_update_histories:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CustomerSetFileUpdateHistory'
+          title: 'Maximum # of histories: 10'
+          readOnly: true
+      description: 'CustomerSet represents a group of user identifiers can be used in Moloco Ads.
+
+        (e.g. Targeting, Audience Lift model generation and so on).'
+      required:
+      - title
+      - id_type
+      - data_file_path
+    messagesReadCustomerSetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadCustomerSetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesListCustomerSetsResponse:
+      type: object
+      properties:
+        customer_sets:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspCustomerSet'
+          description: The list of CustomerSet items.
+    messagesDeleteCustomerSetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteCustomerSetErrorAPIErrorInfo'
+    messagesListCustomerSetsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesUpdateCustomerSetResponse:
+      type: object
+      properties:
+        customer_set:
+          $ref: '#/components/schemas/dspCustomerSet'
+          description: The updated CustomerSet.
+    messagesListCustomerSetsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListCustomerSetsErrorAPIErrorInfo'
+    messagesDeleteCustomerSetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteCustomerSetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateCustomerSetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateCustomerSetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdateCustomerSetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - CUSTOMER_SET_INVALID_DATA_FILE_PATH
+      - CUSTOMER_SET_DATA_FILE_PATH_AD_ACCOUNT_MISMATCH
+      - CUSTOMER_SET_DATA_FILE_PATH_INVALID_ASSET_KIND
+      - CUSTOMER_SET_DATA_FILE_PATH_MISSING_FILE_NAME
+      - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED
+      default: ERROR_REASON_UNKNOWN
+      description: " - CUSTOMER_SET_INVALID_DATA_FILE_PATH: Data file path cannot be recognized. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_AD_ACCOUNT_MISMATCH: ad_account_id on data path mismatch with request. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_INVALID_ASSET_KIND: asset kind on data path should be 'csv'. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_MISSING_FILE_NAME: file name on asset kind is missing. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED: CustomerSet manipulation (creation, update, deletion) is only allowed when data source is data file path."
+    messagesCreateCustomerSetResponse:
+      type: object
+      properties:
+        customer_set:
+          $ref: '#/components/schemas/dspCustomerSet'
+          description: The created CustomerSet.
+    messagesUpdateCustomerSetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateCustomerSetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateCustomerSetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateCustomerSetErrorAPIErrorInfo'
+    CustomerSetFileUpdateInfo:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/FileUpdateInfoUpdateStatus'
+          description: Update status.
+        timestamp:
+          type: string
+          format: date-time
+          description: Update timestamp.
+        file_name:
+          type: string
+          description: Updated file name.
+    CustomerSetStatusDetailErrorId:
+      type: string
+      enum:
+      - UNKNOWN_ERROR_ID
+      - TAGGING_ERROR
+      - REQUEST_ERROR
+      - PREPROCESSING_ERROR
+      - GENERIC_ERROR
+      default: UNKNOWN_ERROR_ID
+      description: Error id is an indicator of the error type.
+    CustomerSetFileUpdateHistory:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/dspCustomerSetStatus'
+        status_detail:
+          $ref: '#/components/schemas/CustomerSetCustomerSetStatusDetail'
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated at is the timestamp when the status is changed.
+    dspCustomerSetStatus:
+      type: string
+      enum:
+      - UNKNOWN_STATUS
+      - PREPARING
+      - READY
+      - FAILED
+      default: UNKNOWN_STATUS
+      description: "Unknown status.\n\n - PREPARING: Premature status.\n - READY: Ready.\n - FAILED: Failed to be ready."
+    CustomerSetCustomerSetStatusDetail:
+      type: object
+      properties:
+        connection_method:
+          $ref: '#/components/schemas/CustomerSetStatusDetailConnectionMethod'
+        error_id:
+          $ref: '#/components/schemas/CustomerSetStatusDetailErrorId'
+        error_description:
+          type: string
+          description: Error description is a detailed description of the error.
+        csv_file_size:
+          type: integer
+          format: int32
+          title: CSV file size is the size of the CSV file in bytes. (Deprecated)
+        aud_size:
+          type: integer
+          format: int32
+          description: Audience size is the size of the audience in bytes.
+    FileUpdateInfoUpdateStatus:
+      type: string
+      enum:
+      - UNKNOWN_STATUS
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+      default: UNKNOWN_STATUS
+      description: " - IN_PROGRESS: Update is in progress.\n - SUCCESS: Update succeed.\n - FAILED: Update failed. Please check the contents format."
+    messagesDeleteCustomerSetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED
+      default: ERROR_REASON_UNKNOWN
+      description: ' - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED: CustomerSet manipulation (creation, update, deletion) is only allowed when data source is data file path.'
+  requestBodies:
+    dspCustomerSet:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/dspCustomerSet'
+      description: The CustomerSet data.
+      required: true
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

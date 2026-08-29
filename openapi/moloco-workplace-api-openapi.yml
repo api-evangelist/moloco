@@ -1,0 +1,624 @@
+openapi: 3.2.0
+info:
+  title: Moloco Workplace API
+  version: '1.0'
+  description: 'Operations tagged Workplace across 4 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml, moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: Workplace
+paths:
+  /cm/v1/auth/workplaces/{workplace_id}:
+    get:
+      summary: Read the workplace
+      description: Read the workplace. The workplace is an API caller's signed workplace. All roles can call this API.
+      operationId: DspApi_ReadWorkplace
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadWorkplaceResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: workplace_id
+        description: The ID of the workplace.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Workplace
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /v1/platforms:
+    post:
+      security:
+      - Bearer: []
+      description: Create a workplace for the campaign management.
+      tags:
+      - Workplace
+      summary: Create a workplace.
+      operationId: v1_create_platform
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createPlatformRequest'
+        description: a request to create a platform.
+        required: true
+      responses:
+        '200':
+          description: The platform is successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createPlatformResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: Conflict - the platform is already there.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/platforms/{platform_id}:
+    get:
+      security:
+      - Bearer: []
+      description: Read a workplace information for the given workplace ID.
+      tags:
+      - Workplace
+      summary: Read a workplace information.
+      operationId: v1_read_platform
+      parameters:
+      - description: The platform ID.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The platform info is successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readPlatformResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      security:
+      - Bearer: []
+      description: Update a workplace information with the given new information.
+      tags:
+      - Workplace
+      summary: Update a workplace information.
+      operationId: v1_update_platform
+      parameters:
+      - description: The platform ID.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updatePlatformRequest'
+        description: a request to update a platform.
+        required: true
+      responses:
+        '200':
+          description: The platform is successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updatePlatformResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      security:
+      - Bearer: []
+      description: Delete a workplace for the given workplace ID.
+      tags:
+      - Workplace
+      summary: Delete a workplace.
+      operationId: v1_delete_platform
+      parameters:
+      - description: The platform ID.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The platform is successfully deleted.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/platforms/{platform_id}/logo:
+    post:
+      security:
+      - Bearer: []
+      description: Upload the workplace logo to the public bucket and update the workplace database record.
+      tags:
+      - Workplace
+      summary: Upload the workplace logo.
+      operationId: v1_upload_platform_logo
+      parameters:
+      - description: The platform ID.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                logo:
+                  description: The logo file to upload.
+                  type: string
+                  format: binary
+              required:
+              - logo
+        required: true
+      responses:
+        '200':
+          description: The workplace logo is successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updatePlatformResponse'
+        '400':
+          description: Bad request including bad content type other than multipart/form-data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - no permission to use this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such workplace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/users/{user_id}/platforms/{platform_id}:
+    post:
+      security:
+      - Bearer: []
+      description: Register a user to a specific workplace.
+      tags:
+      - Workplace
+      summary: Add a user to a workplace.
+      operationId: v1_register_user_to_platform
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform to which the user will be registered.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userRegistrationRequest'
+      responses:
+        '204':
+          description: The registration was successfully finished.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to register a user to a platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: The registration was done already.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      security:
+      - Bearer: []
+      description: Deregister the given user from a specific workplace.
+      tags:
+      - Workplace
+      summary: Remove the user from a workplace.
+      operationId: v1_delete_user_from_platform
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform from which the user will be removed.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The registration was successfully deleted.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to remove the user from the platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/userspaces/{userspace_id}/platforms:
+    post:
+      security:
+      - Bearer: []
+      - {}
+      description: List workplaces for a given userspace.
+      tags:
+      - Workplace
+      summary: List workplaces.
+      operationId: v1_list_userspace_platforms
+      parameters:
+      - description: The ID of the userspace.
+        name: userspace_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/listPlatformsCredential'
+        description: a user credential to list platforms for the user.
+      responses:
+        '200':
+          description: The list of platforms.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listPlatformsResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized - the given user_id/password is not matched.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: No such user found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    messagesReadWorkplaceResponse:
+      type: object
+      properties:
+        workplace:
+          $ref: '#/components/schemas/dspWorkplace'
+          description: The Workplace.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    dspWorkplace:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The workplace ID.
+        title:
+          type: string
+          description: The workplace title.
+        logo_url:
+          type: string
+          description: The URL of the workplace logo image file.
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+          description: The workplace's configuration.
+      description: The workplace.
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    updatePlatformResponse:
+      description: Response to a request to update a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    createPlatformResponse:
+      description: Response to a request to create a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    listPlatformsCredential:
+      description: Credential to list platforms without a Morse token.
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          description: Email address of the user.
+          type: string
+        password:
+          description: Password of the user.
+          type: string
+    createPlatformRequest:
+      description: Request to create a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    userRegistrationRequest:
+      description: The request body for the user registration request.
+      type: object
+      properties:
+        forward_url:
+          description: the URL that will be included in the platform registration (sign-up) email.
+          type: string
+    platform:
+      description: A platform.
+      type: object
+      required:
+      - id
+      - userspace_id
+      - title
+      - logo_url
+      properties:
+        configuration:
+          description: The platform-specific configuration.
+          type: object
+          additionalProperties:
+            type: string
+        id:
+          description: The ID of the platform.
+          type: string
+        logo_url:
+          description: The URL of the logo for the platform.
+          type: string
+        title:
+          description: The user-friendly name of the platform.
+          type: string
+        userspace_id:
+          description: The ID of the userspace to which the platform belongs.
+          type: string
+    readPlatformResponse:
+      description: Response to read a platform information.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    updatePlatformRequest:
+      description: A request to update a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    listPlatformsResponse:
+      description: Response to the list platforms request.
+      type: object
+      required:
+      - platforms
+      properties:
+        platforms:
+          description: List of platforms
+          type: array
+          items:
+            $ref: '#/components/schemas/platform'
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

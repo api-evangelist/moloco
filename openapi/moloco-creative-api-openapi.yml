@@ -1,0 +1,1704 @@
+openapi: 3.2.0
+info:
+  title: Moloco Creative API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged Creative across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: Creative
+paths:
+  /cm/v1/creative-assets:
+    post:
+      summary: Create a new asset upload session.
+      description: 'Create a new asset upload session for the AdAccount. A URL would be returned in a successful response for uploading the actual asset content.
+
+        After asset upload has been successfully completed, see [the campaign creation guide](https://developer.moloco.cloud/docs/campaign-management-api) and follow [Section 4-1 for those using Moloco Ads API v1.7 or later](https://developer.moloco.cloud/docs/campaign-management-api#4-1-upload-a-creative-asset-to-storage-for-those-using-moloco-ads-api-v17-or-later)'
+      operationId: DspApi_CreateAssetUploadSession
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateAssetUploadSessionResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateAssetUploadSessionError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssetUploadSessionRequestAssetUploadSessionInfo'
+        description: The information to upload the asset.
+        required: true
+      tags:
+      - Creative
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/creative-reviews:
+    get:
+      summary: List CreativeReviews.
+      description: List the creative reviews of an AdAccount. Only creatives with UNDER_REVIEW, BLOCKED, or ETC status are returned. Id is provided through the query param ad_account_id.
+      operationId: DspApi_ListCreativeReviews
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListCreativeReviewsResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListCreativeReviewsError'
+      parameters:
+      - name: ad_account_id
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: review_states
+        description: "The CreativeReview status to retrieve.\nRetrieves all status as a default (If it is empty).\nIt should be given by query params in the REST API. (e.g. ?review_states=UNDER_REVIEW&review_states=APPROVED).\n\n - UNDER_REVIEW: Creative is currently under review.\n - APPROVED: Creative has been accepted by the exchange.\n - BLOCKED: Creative has been rejected by the exchange.\n - ETC: Refer to ReviewAction for more details.\n - APPROVED_FOR_ADULTS: Creative has been accepted only for adults by the exchange.\n - GOOGLE_PLATFORM_APPROVED: Creative is rejected by ADX (and ADX_RTB) on network policy but approved on platform policy.\nIn ADX requests, a flag will indicate whether a creative with this status can bid.\nThis status will only be used in ADX reviews."
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - UNKNOWN
+            - UNDER_REVIEW
+            - APPROVED
+            - BLOCKED
+            - ETC
+            - APPROVED_FOR_ADULTS
+            - GOOGLE_PLATFORM_APPROVED
+      - name: campaign_states
+        description: "The Campaign status of the list of CreativeGroups used by.\nRetrieves all status as a default (If it is empty).\nIt should be given by query params in the REST API. (e.g. ?campaign_states=DRAFT&campaign_states=SUBMITTED).\n\n - SUBMITTED: All the required data are entered and passed all the validation. It's eligible\nto be reviewed by Moloco for activation.\n - READY: Campaign is before schedule and internally ready but disabled.\nWill transit to PAUSED when it becomes on schdule.\n - UPCOMING: Campaign is before schedule and internally ready and disabled.\nWill transit to ACTIVE when it becomes on schdule.\n - ACTIVE: Campaign is on schedule and spending the budget.\n - PAUSED: Campaign is paused and not spending the budget.\n - SUSPENDED: Campaign activation is suspended by the system for the following reasons:\n- App has been found to be in violation of Moloco's creative policy.\n - COMPLETED: Campaign is completed but may still get attributions for some time."
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - UNKNOWN_CAMPAIGN_STATE
+            - SUBMITTED
+            - READY
+            - UPCOMING
+            - ACTIVE
+            - PAUSED
+            - SUSPENDED
+            - COMPLETED
+      tags:
+      - Creative
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/creatives:
+    get:
+      summary: List up Creatives.
+      description: List up all creatives of the AdAccount or the Product.
+      operationId: DspApi_ListCreatives
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListCreativesResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListCreativesError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID to which the Creatives belong to.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        description: The Product ID to which the Creatives belong to.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: types
+        description: "The type of the Creatives to be listed.\nIf not specified, all types of Creatives will be listed.\n\n - UNKNOWN_TYPE: This value is not part of the specification.\n - IMAGE: Image Creative. The image Creative source must be specified for this type.\n - VIDEO: Video Creative. The video Creative source must be specified for this type.\n - VAST_VIDEO: Vast video Creative. The vast video Creative source must be specified for this type.\n - NATIVE: Deprecated. v1.5 is the last version supporting this version.\nNative Creative. The native Creative source must be specified for this type.\n - NATIVE_IMAGE: Native image Creative. The native image Creative source must be specified for this type.\n - NATIVE_VIDEO: Native video Creative. The native video Creative source must be specified for this type.\n - CUSTOM_HTML: (Will be supported soon) Custom HTML Creative. The custom HTML Creative source must be specified for this type.\n - TEMPLATE_HTML: (Will be supported soon) Template HTML Creative. The template HTML Creative source must be specified for this type.\n - RICH_CUSTOM_HTML: The rich custom HTML Creative. The rich custom HTML Creative source must be specified for this type.\n - DYNAMIC_HTML: (Will be supported soon) The dynamic HTML Creative. The dynamic HTML Creative source must be specified for this type.\n - AD_TAG: (Will be supported soon) Third-party ad tag Creative with script-based or vast tag-based ad tag."
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - UNKNOWN_TYPE
+            - IMAGE
+            - VIDEO
+            - VAST_VIDEO
+            - NATIVE
+            - NATIVE_IMAGE
+            - NATIVE_VIDEO
+            - CUSTOM_HTML
+            - TEMPLATE_HTML
+            - RICH_CUSTOM_HTML
+            - DYNAMIC_HTML
+            - AD_TAG
+      - name: order_by.key
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - UNKNOWN_ORDER_BY
+          - UPDATED_AT
+          default: UNKNOWN_ORDER_BY
+      - name: order_by.is_descending
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: inquiry_option
+        description: "InquiryOption to specify which information to retrieve.\n\n - INQUIRY_ENTITY: Only the target entity itself is returned in response.\nThis InquiryOption is faster than other options as it reads the single entity from the database.\n - INQUIRY_OVERVIEW: The target entity's overview information is returned in response.\nIn general, the overview information includes the brief content of the target entity and its related entities.\nThis InquiryOption is slower than INQUIRY_ENTITY but the returned data size is usually smaller than that.\n - INQUIRY_ALL: The target entity and its summary information is returned in response.\nThis InquiryOption is equivalent to INQUIRY_ENTITY + INQUIRY_OVERVIEW, and it's slow and big."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - UNKNOWN_INQUIRY_OPTION
+          - INQUIRY_ENTITY
+          - INQUIRY_OVERVIEW
+          - INQUIRY_ALL
+          default: UNKNOWN_INQUIRY_OPTION
+      tags:
+      - Creative
+    delete:
+      summary: Delete existing Creatives.
+      description: Delete existing creatives.
+      operationId: DspApi_DeleteCreativesBulk
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteCreativesBulkResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteCreativesBulkError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: creative_ids
+        description: The ID of the Creatives to be deleted.
+        in: query
+        required: true
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      tags:
+      - Creative
+    post:
+      summary: Create a new Creative.
+      description: 'Create a new creative of the product.
+
+        One and only one of the sources must be specified for the Creative.'
+      operationId: DspApi_CreateCreative
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateCreativeResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateCreativeError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID which the Creative belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        description: The Product ID which the Creative belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspCreative'
+        description: The Creative to create.
+        required: true
+      tags:
+      - Creative
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/creatives/sync-clones:
+    post:
+      summary: Copy Creatives synchronously.
+      description: Copy selected Creatives from one Product to another(or the same)Product within an AdAccount synchronously
+      operationId: DspApi_CopyCreativesSync
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCopyCreativesSyncResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCopyCreativesSyncError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesCopyCreativesSyncRequest'
+        required: true
+      tags:
+      - Creative
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/creatives/{creative_id}:
+    get:
+      summary: Read an existing Creative.
+      description: Read an existing creative.
+      operationId: DspApi_ReadCreative
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadCreativeResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadCreativeError'
+      parameters:
+      - name: creative_id
+        description: The ID of the Creative to be retrieved.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Creative
+    delete:
+      summary: Delete an existing Creative.
+      description: Delete an existing creative.
+      operationId: DspApi_DeleteCreative
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteCreativeResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteCreativeError'
+      parameters:
+      - name: creative_id
+        description: The ID of the Creative to be deleted.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Creative
+    put:
+      summary: Update an existing Creative.
+      description: Update an existing creative. Only 'title', 'custom_key_values', 'enabling_state' could be updated. Exceptionally 'RICH_CUSTOM_HTML' could be updated.
+      operationId: DspApi_UpdateCreative
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateCreativeResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateCreativeError'
+      parameters:
+      - name: creative_id
+        description: The ID of the Creative to be updated.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspCreative'
+        description: 'If the Creative is currently in DRAFT state, the Mololo AdCloud won''t mandate it to have all required data on updates.
+
+          However, any entered data should still pass their individual validation.
+
+
+          The client can switch the Creative from DRAFT to SUBMITTED by specifying SUBMITTED as the new state value,
+
+          in which case full validation will be invoked and all required data must have been entered.
+
+
+          No other state values other than DRAFT and SUBMITTED are allowed when the Creative is in DRAFT state.
+
+          Once the Creative gets out of the DRAFT state, the state value in the update requests will be ignored.'
+        required: true
+      tags:
+      - Creative
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    messagesDeleteCreativeErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteCreativeErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    commonEnablingState:
+      type: string
+      enum:
+      - UNSPECIFIED
+      - ENABLED
+      - DISABLED
+      default: UNSPECIFIED
+      description: Enumeration of the enabling states with a default UNSPECIFIED state.
+    messagesReadCreativeResponse:
+      type: object
+      properties:
+        creative:
+          $ref: '#/components/schemas/dspCreative'
+          description: The retrieved Creative data.
+    commonAssetKind:
+      type: string
+      enum:
+      - UNKNOWN_ASSET_KIND
+      - CREATIVE
+      - CSV
+      - ASSET_DYNAMIC_CREATIVE
+      - FB_PLAYABLE_AD
+      default: UNKNOWN_ASSET_KIND
+      description: "List of asset kinds supported by Moloco Ads.\n\n - UNKNOWN_ASSET_KIND: This value is not part of the specification.\n - CREATIVE: Creative asset type.\n - CSV: text/csv type.\n - ASSET_DYNAMIC_CREATIVE: Asset for Dynamic Creatives.\n - FB_PLAYABLE_AD: Facebook Playable AD."
+    CreativeReviewPerExchangeReasonDetail:
+      type: string
+      enum:
+      - UNKNOWN_DETAIL
+      - CTA_TEXT_INVALID
+      - FILE_SIZE_TOO_LARGE
+      default: UNKNOWN_DETAIL
+      description: "ReasonDetail describes the reason the Creative was DISAPPROVED. It applies to a few, standardized cases.\n\n - CTA_TEXT_INVALID: The CTA text for native Creatives does not belong in a predefined list.\n - FILE_SIZE_TOO_LARGE: The size of the main asset exceeds a predefined limit."
+    dspCreativeReviewPerExchange:
+      type: object
+      properties:
+        reason_detail:
+          $ref: '#/components/schemas/CreativeReviewPerExchangeReasonDetail'
+        status:
+          $ref: '#/components/schemas/dspCreativeReviewPerExchangeStatus'
+          description: Current approval status of the Creative.
+        action_history:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CreativeReviewPerExchangeReviewAction'
+          description: List of actions taken on the current CreativeReview.
+      description: CreativeReviewPerExchange stores review status and review action per exchange.
+    dspCreativeDynamicHtmlSrcPolicy:
+      type: object
+      properties:
+        function:
+          $ref: '#/components/schemas/PolicyPolicyFunction'
+          description: 'Algorithm for selecting CatalogItems or CreativeElements for a game.
+
+            PolicyFunction can be thought of as a function: PolicyFunctionConfig -> Policy -> CatalogItem list.
+
+            In case a PolicyFunction does not need PolicyFunctionConfig, it can be thought of as
+
+            Policy -> CatalogItem/CreativeElement list.'
+        function_config:
+          $ref: '#/components/schemas/PolicyPolicyFunctionConfig'
+        num_items:
+          type: integer
+          format: int32
+          description: Number of items to be selected.
+        catalog:
+          type: string
+          description: Catalog ID. To know the types of catalogs supported, contact customer support.
+        item_capper:
+          $ref: '#/components/schemas/PolicyItemCapper'
+      description: Policy defines how to select CatalogItems.
+    dspCreativeDynamicHtmlSrc:
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: ID of the template used to render this Creative.
+        template_env:
+          type: object
+          additionalProperties:
+            type: string
+          description: Environment used to render this Creative.
+        rendered_entry_html:
+          type: string
+          description: The entry HTML of the rendered Creative.
+        html_requirement_attributes:
+          $ref: '#/components/schemas/dspCreativeHtmlRequirementAttributes'
+          description: 'Requirements of this Creative. Based on this field and inventory''s excludable Creative attributes,
+
+            Moloco can filter out this Creative at serving time.'
+        html_size_attributes:
+          $ref: '#/components/schemas/dspCreativeHtmlSizeAttributes'
+          description: Size-related attributes of this Creative.
+        policy:
+          $ref: '#/components/schemas/dspCreativeDynamicHtmlSrcPolicy'
+          description: Policy defines how to select CatalogItems.
+      description: '(Will be supported soon) Dynamic Creative. An instance of this would be used for Creatives to be rendered when
+
+        the Creative is shown to user, i.e. an impression takes place, unlike bid-time rendering
+
+        for static images.'
+      required:
+      - template_id
+      - rendered_entry_html
+    dspAdvertiserInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the advertiser.
+        title:
+          type: string
+          description: A descriptive name of the advertiser.
+        description:
+          type: string
+          description: A description of the advertiser.
+      description: 'AdvertiserInfo contains some basic information about an advertiser.
+
+        It may be returned to Creative reviewers or other users with other non-advertiser roles
+
+        to perform their duty without leaking any private advertiser information.'
+    dspCreativeVastVideoSrc:
+      type: object
+      properties:
+        vast_tag:
+          type: string
+          description: 'VAST tag to be used in VAST wrapper.
+
+            E.g. [Example here](https://github.com/InteractiveAdvertisingBureau/VAST_Samples/blob/master/VAST%201-2.0%20Samples/Tremor-Video-Samples/vast_wrapper_linear_1.xml).'
+        width:
+          type: integer
+          format: int64
+          description: Width of the Creative.
+          readOnly: true
+        height:
+          type: integer
+          format: int64
+          description: Height of the Creative.
+          readOnly: true
+        length_seconds:
+          type: integer
+          format: int64
+          description: Vast video length in seconds.
+      description: Source of VAST (Video Ad Serving Template) video Creative.
+      required:
+      - vast_tag
+    PolicyFunctionConfigGameConfig:
+      type: object
+      properties:
+        game_id:
+          type: string
+          description: Game id. it should correspond to GameID of dcr/api.proto.
+    messagesUpdateCreativeErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - CREATIVE_SOURCE_TYPE_MISMATCH
+      - CREATIVE_RESTRICTED_UPDATE_FIELDS
+      default: ERROR_REASON_UNKNOWN
+      title: "- CREATIVE_SOURCE_TYPE_MISMATCH: mismatch on creative.type and creative.source type\n - CREATIVE_RESTRICTED_UPDATE_FIELDS: given fields are not updatable;"
+    messagesListCreativesError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListCreativesErrorAPIErrorInfo'
+    dspCreativeRichCustomHtmlSrc:
+      type: object
+      properties:
+        entry_html:
+          type: string
+          description: 'The entry HTML code of the Creative.
+
+
+            This field is read only. For write purposes, use playable_ad_source instead.'
+          readOnly: true
+        html_requirement_attributes:
+          $ref: '#/components/schemas/dspCreativeHtmlRequirementAttributes'
+          description: 'Requirements of this Creative.
+
+
+            Based on this field and inventory''s excludable Creative attributes, Moloco
+
+            can filter out this Creative.'
+        html_size_attributes:
+          $ref: '#/components/schemas/dspCreativeHtmlSizeAttributes'
+          description: Size-related attributes of this Creative.
+        max_video_duration_seconds:
+          type: integer
+          format: int64
+          description: 'Max duration of video sources, in seconds. It will be set to 0 if no video
+
+            source is found in this Creative.'
+        playable_ad_source:
+          $ref: '#/components/schemas/CreativeRichCustomHtmlSrcPlayableADSourceData'
+          description: 'PlayableAD source which is created by the third party like Facbook or Tresensa.
+
+            For non-playableAD rich_custom_html, it can be left as blank but entryHTML should be filled.
+
+            This field is available for only creation.'
+        filename:
+          type: string
+          description: The filename of HTML file.
+      description: 'Creative source based on arbitrary HTML.
+
+        An instance of this is typically used for a playable Creative from AdAccounts.
+
+        You can create RichCustomHtmlSrc by one of two methods:
+
+        1. Upload FB style html file using CreateAssetUploadSession API(PLAYABLE_AD_SOURCE_TYPE_URL)
+
+        2. Use Creative template third parties: tresensa or spaceback(PLAYABLE_AD_SOURCE_TYPE_TAG).'
+      required:
+      - html_requirement_attributes
+    PolicyFunctionConfigModelConfig:
+      type: object
+      properties:
+        sourcer_type:
+          $ref: '#/components/schemas/PolicySourcerType'
+        evaluator_type:
+          $ref: '#/components/schemas/PolicyEvaluatorType'
+        evaluator_suffix:
+          type: string
+        user_signal_window_hours:
+          type: integer
+          format: int32
+    PolicyPolicyFunctionConfig:
+      type: object
+      properties:
+        trend:
+          $ref: '#/components/schemas/PolicyFunctionConfigTrendConfig'
+          description: TREND PolicyFunction's config.
+        model:
+          $ref: '#/components/schemas/PolicyFunctionConfigModelConfig'
+        game:
+          $ref: '#/components/schemas/PolicyFunctionConfigGameConfig'
+        mcm_item_recommendation:
+          $ref: '#/components/schemas/PolicyFunctionConfigMcmItemRecommendationConfig'
+        next_item_selection:
+          $ref: '#/components/schemas/PolicyFunctionConfigNextItemSelectionConfig'
+      description: 'Configuration for PolicyFunction. Some PolicyFunction requires an instance of this message
+
+        to get a function: Policy -> CatalogItem/CreativeElement list.'
+    dspCreativeCustomHtmlSrc:
+      type: object
+      properties:
+        html:
+          type: string
+          description: HTML for the custom HTML ad.
+        width:
+          type: integer
+          format: int64
+          description: Width of the Creative.
+        height:
+          type: integer
+          format: int64
+          description: Height of the Creative.
+        image_url:
+          type: string
+          description: URL of the image.
+      description: (Will be supported soon) Creative source based on custom html.
+      required:
+      - html
+      - width
+      - height
+      - image_url
+    messagesReadCreativeError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadCreativeErrorAPIErrorInfo'
+    messagesCopyCreativesSyncErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCopyCreativesSyncErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateCreativeResponse:
+      type: object
+      properties:
+        creative:
+          $ref: '#/components/schemas/dspCreative'
+          description: The created Creative data.
+    messagesCreateAssetUploadSessionErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    adcloudcommonCreativeFeatureType:
+      type: string
+      enum:
+      - UNKNOWN_CREATIVE_FEATURE_TYPE
+      - GENERAL
+      - DYNAMIC_CREATIVE
+      default: UNKNOWN_CREATIVE_FEATURE_TYPE
+      description: CreativeFeatureType.
+    messagesDeleteCreativesBulkError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteCreativesBulkErrorAPIErrorInfo'
+    messagesDeleteCreativeError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteCreativeErrorAPIErrorInfo'
+    messagesCreateAssetUploadSessionError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateAssetUploadSessionErrorAPIErrorInfo'
+      title: creative related errors
+    messagesCopyCreativesSyncRequest:
+      type: object
+      properties:
+        ad_account_id:
+          type: string
+          description: The ID of the AdAccount.
+        creative_ids:
+          type: array
+          items:
+            type: string
+          description: The list of Creatives to be copied.
+        source_product_id:
+          type: string
+          description: The ID of the source app.
+        target_product_id:
+          type: string
+          description: The ID of the target app.
+        target_ad_account_id:
+          type: string
+          title: The ID of the target AdAccount, Optional
+      required:
+      - ad_account_id
+      - creative_ids
+      - source_product_id
+      - target_product_id
+    dspCreativeType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - IMAGE
+      - VIDEO
+      - VAST_VIDEO
+      - NATIVE
+      - NATIVE_IMAGE
+      - NATIVE_VIDEO
+      - CUSTOM_HTML
+      - TEMPLATE_HTML
+      - RICH_CUSTOM_HTML
+      - DYNAMIC_HTML
+      - AD_TAG
+      default: UNKNOWN_TYPE
+      description: "Type of the Creative. Only one of the Creative source fields matching the type is allowed to be specified.\n\n - UNKNOWN_TYPE: This value is not part of the specification.\n - IMAGE: Image Creative. The image Creative source must be specified for this type.\n - VIDEO: Video Creative. The video Creative source must be specified for this type.\n - VAST_VIDEO: Vast video Creative. The vast video Creative source must be specified for this type.\n - NATIVE: Deprecated. v1.5 is the last version supporting this version.\nNative Creative. The native Creative source must be specified for this type.\n - NATIVE_IMAGE: Native image Creative. The native image Creative source must be specified for this type.\n - NATIVE_VIDEO: Native video Creative. The native video Creative source must be specified for this type.\n - CUSTOM_HTML: (Will be supported soon) Custom HTML Creative. The custom HTML Creative source must be specified for this type.\n - TEMPLATE_HTML: (Will be supported soon) Template HTML Creative. The template HTML Creative source must be specified for this type.\n - RICH_CUSTOM_HTML: The rich custom HTML Creative. The rich custom HTML Creative source must be specified for this type.\n - DYNAMIC_HTML: (Will be supported soon) The dynamic HTML Creative. The dynamic HTML Creative source must be specified for this type.\n - AD_TAG: (Will be supported soon) Third-party ad tag Creative with script-based or vast tag-based ad tag."
+    messagesDeleteCreativesBulkErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesDeleteCreativeErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesDeleteCreativesBulkResponse:
+      type: object
+    dspCreativeHtmlRequirementAttributesFlag:
+      type: string
+      enum:
+      - UNKNOWN_FLAG
+      - MRAID2
+      - IN_BANNER_VIDEO
+      default: UNKNOWN_FLAG
+      description: "This value is not part of the specification.\n\n - MRAID2: AdX: 32 MraidType: MRAID.\n - IN_BANNER_VIDEO: AdX: 95 VideoType: In-Banner Video (Publisher Blockable)."
+      title: "This is similar to AdX' Creative attributes:\n  https://storage.googleapis.com/adx-rtb-dictionaries/buyer-declarable-creative-attributes.txt\nSince the purpose of these flags is filtering, we also take into consideration\nwhat inventories can ban:\n  https://storage.googleapis.com/adx-rtb-dictionaries/publisher-excludable-creative-attributes.txt"
+    CreativeHtmlSizeAttributesFixed:
+      type: object
+      properties:
+        width:
+          type: integer
+          format: int64
+        height:
+          type: integer
+          format: int64
+    PolicyFunctionConfigMcmItemRecommendationConfig:
+      type: object
+      properties:
+        mcm_platform_id:
+          type: string
+          title: Platform identifier for MCM Item Recommendation. (e.g. MOLOCO_PORTAL_DEMO)
+        inventory_id:
+          type: string
+          title: Inventory identifier for MCM Item Recommendation. (e.g. home_recommendation)
+    dspCreativeImageSrc:
+      type: object
+      properties:
+        image_url:
+          type: string
+          description: URL of the image.
+        filename:
+          type: string
+          description: Original filename of the image.
+        width:
+          type: integer
+          format: int64
+          description: Width of the Creative.
+          readOnly: true
+        height:
+          type: integer
+          format: int64
+          description: Height of the Creative.
+          readOnly: true
+        size_in_bytes:
+          type: integer
+          format: int64
+          description: Size of the image in bytes.
+      description: "Source of image Creative.\n\nSupported formats: JPEG, PNG, GIF. Maximum file size: 500KB (5MB for GIF).\n\nBanner dimensions:\n  - 100x21, 300x50, 300x100, 320x48, 320x50, 320x100\n  - 360x56, 375x50, 375x59, 392x61, 411x64, 414x50, 414x65, 468x60\n  - 481x56, 640x100, 640x200, 667x56, 711x88, 800x50\n  - 970x250, 994x250, 1029x258\n\nFull screen dimensions:\n  - 300x600, 320x416, 320x480, 320x568, 360x592, 360x604, 360x640\n  - 360x718, 360x724, 360x728, 375x667, 384x787, 412x790, 414x736\n  - 428x846, 480x320, 640x360\n\nMedium dimensions:\n  - 160x600, 200x200, 250x250, 300x250, 320x240, 320x267, 336x280, 600x500\n\nTablet dimensions:\n  - 728x90, 768x1024, 1024x90, 1024x768, 1280x90"
+    PolicyPolicyFunction:
+      type: string
+      enum:
+      - UNKNOWN_POLICY
+      - RANDOM_SELECTION
+      - MOST_RECENT_VIEW
+      - IN_CART
+      - GLOBAL_TREND
+      - TREND
+      - COMBINED_EVENTS_RECENCY
+      - FREQUENTLY_BOUGHT_TOGETHER
+      - FREQUENTLY_SEEN_TOGETHER
+      - KEYWORD_SEARCH_WITH_CLIENT_RESULT
+      - COMBINED_EVENTS_RECENCY_WITH_KEYWORD_SEARCH
+      - MODEL
+      - GAME
+      - RMP_AUDIENCE_EXTENSION
+      - MCM_ITEM_RECOMMENDATION
+      - NEXT_ITEM_SELECTION
+      default: UNKNOWN_POLICY
+      description: "PolicyFunction defines algorithms for selecting CatalogItems or CreativeElements for a game.\n\n - IN_CART: GLOBAL_TREND will be deprecated and replaced by TREND. During A/B testing, we will keep this not to break the test.\n - MODEL: For model policies, the policy enum is in the form of MODEL_{SOURCER_TYPE}_{EVALUATOR_TYPE}_{EVALUATOR_SUB_TYPE}\n - GAME: GAME policy is used to select Creative elements of game.\n - RMP_AUDIENCE_EXTENSION: Policy for RMP Audience Extension.\n - MCM_ITEM_RECOMMENDATION: Policy for MCM Item Recommendation.\n - NEXT_ITEM_SELECTION: Policy for NEXT Item Selection."
+    messagesListCreativesErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    PolicyItemCapperFrequency:
+      type: object
+      properties:
+        period:
+          type: string
+          description: 'The period is represented in a format {INTEGER}[smhdw].
+
+            For example, "1m" indicates 1 minute. When this field is empty,
+
+            the system default cooling time is used.'
+        max_exposures:
+          type: integer
+          format: int32
+          description: The max number of exposures of a CatalogItem within a period of time.
+      description: "Frequency represents frequency capping. One can specify\n\"at most 3 exposures per 1 hour\" by setting:\n  {\n    \"period\": \"1h\",\n    \"max_exposures\": 3\n  }\nThis means, when a user sees a CatalogItem 3 times, he/she won't\nsee the same CatalogItem again for 1 hour."
+    messagesDeleteCreativesBulkErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteCreativesBulkErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspCreativeNativeSrc:
+      type: object
+      properties:
+        icon_image:
+          $ref: '#/components/schemas/dspCreativeImageSrc'
+          description: 'App icon image for the native Creative. Width and height must be equal. Supported formats: JPEG, PNG, GIF. Maximum file size: 500KB (5MB for GIF).'
+        main_image:
+          $ref: '#/components/schemas/dspCreativeImageSrc'
+          description: 'Main image for the native Creative. Supported formats: JPEG, PNG, GIF. Maximum file size: 500KB (5MB for GIF).
+
+
+            For native image ads, the following dimensions are supported:
+
+            - 720x720, 720x960, 720x1280
+
+            - 1200x222, 1200x600, 1200x628, 1200x844, 1200x1600
+
+
+            For native video ads, the following dimensions are supported:
+
+            - 360x480, 360x640, 480x360, 480x480, 640x360
+
+            - 720x720, 720x960, 720x1280, 800x418, 1200x628, 1280x720'
+        shrunk_main_image:
+          $ref: '#/components/schemas/dspCreativeImageSrc'
+          description: 'Thumbnail image displayed alongside the native video Creative. Supported formats: JPEG, PNG, GIF. Maximum file size: 500KB (5MB for GIF).'
+        title:
+          type: string
+          description: Title of the native ad.
+        text:
+          type: string
+          description: Text message to show.
+        cta_text:
+          type: string
+          description: Call to action text (e.g. "Get a quote").
+        sponsored_by:
+          type: string
+          description: Brand name of the sponsor/advertiser.
+        star_rating:
+          type: number
+          format: float
+          description: Star rating value of the app. Value should be in the range of [0, 5].
+        video:
+          $ref: '#/components/schemas/dspCreativeVideoSrc'
+          description: 'Video asset for native video ads.
+
+
+            Only one of the video and vast_video fields may be specified, not both.'
+        vast_video:
+          $ref: '#/components/schemas/dspCreativeVastVideoSrc'
+          description: 'Vast video for native video ads.
+
+
+            Only one of the video and vast_video fields may be specified, not both.'
+      description: Source of native Creative.
+      required:
+      - icon_image
+      - main_image
+      - title
+      - text
+      - cta_text
+    CreativeHtmlRequirementAttributesCustomCloseType:
+      type: string
+      enum:
+      - UNKNOWN_CUSTOM_CLOSE_TYPE
+      - CUSTOM_CLOSE_TYPE_NONE
+      - CUSTOM_CLOSE_TYPE_ENABLED
+      - CUSTOM_CLOSE_TYPE_CONTROLLABLE
+      default: UNKNOWN_CUSTOM_CLOSE_TYPE
+      description: "The Creative uses useCustomClose() functionally in MRAID. It may not be specified.\n\nIt is NOT SPECIFIED.\n\n - CUSTOM_CLOSE_TYPE_NONE: It does not use useCustomClose().\n - CUSTOM_CLOSE_TYPE_ENABLED: It uses useCustomClose().\n - CUSTOM_CLOSE_TYPE_CONTROLLABLE: It is allowed to be changed with respect to target ad exchange."
+    messagesCopyCreativesSyncErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListCreativeReviewsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - CREATIVE_REVIEW_FAILED_TO_CONSTRUCT_CRID
+      default: ERROR_REASON_UNKNOWN
+      description: ' - CREATIVE_REVIEW_FAILED_TO_CONSTRUCT_CRID: An error occurs while constructing the crid.'
+    dspCreativeReview:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the CreativeReview. Automatically set by server on creation.
+        creative_groups_using_creative:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CreativeReviewCreativeGroupInfo'
+          description: Information of CreativeGroups that are using this Creative.
+        reviews:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/dspCreativeReviewPerExchange'
+          description: Key is the name of the exchange.
+        creative:
+          $ref: '#/components/schemas/dspCreative'
+          description: Creative entity this CreativeReview is based on.
+      description: CreativeReview contains information related to Creatives' review status per exchange.
+    dspCreativeOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the Creative.
+        ad_account_id:
+          type: string
+          description: ID of the AdAccount this Creative belongs to.
+        product_id:
+          type: string
+          description: ID of the Product this Creative belongs to.
+        title:
+          type: string
+          description: A descriptive name of the Creative.
+        type:
+          $ref: '#/components/schemas/dspCreativeType'
+          description: Type of the Creative.
+        original_filename:
+          type: string
+          description: Original Creative filename given by user.
+        image:
+          $ref: '#/components/schemas/dspCreativeImageSrc'
+        video:
+          $ref: '#/components/schemas/dspCreativeVideoSrc'
+        vast_video:
+          $ref: '#/components/schemas/dspCreativeVastVideoSrc'
+        native:
+          $ref: '#/components/schemas/dspCreativeNativeSrc'
+        feature_type:
+          $ref: '#/components/schemas/adcloudcommonCreativeFeatureType'
+          description: CreativeFeatureType.
+        creator_tag:
+          type: string
+          description: Creator tag to identify who is the resource creator.
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+      description: 'CreativeOverview is an overview information of Creative entity.
+
+        It is for the lighter response by omitting some fields and data.
+
+        Also, it has different behavior for the source field depends on the Creative source type.
+
+        It doesn''t return source field for the *_HTML Creative types.'
+    PolicyEvaluatorType:
+      type: string
+      enum:
+      - UNKNOWN_EVALUATOR
+      - EVALUATOR_TEST_CATALOG_DEPENDENT
+      - EVALUATOR_TEST_CATALOG_INDEPENDENT
+      - EVALUATOR_RANDOM
+      - EVALUATOR_LR
+      default: UNKNOWN_EVALUATOR
+      description: EvaluatorType defines the type of evaluator for the model.
+    PolicyFunctionConfigTrendConfig:
+      type: object
+      properties:
+        name:
+          type: string
+      description: TREND PolicyFunction's config.
+    messagesCreateCreativeError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateCreativeErrorAPIErrorInfo'
+    CreativeReviewCreativeGroupInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the CreativeGroup.
+        title:
+          type: string
+          description: A descriptive name of the CreativeGroup.
+      description: Information of CreativeGroup that are using this Creative.
+    messagesUpdateCreativeResponse:
+      type: object
+      properties:
+        creative:
+          $ref: '#/components/schemas/dspCreative'
+          description: The updated Creative data.
+    CreativeVideoSrcTranscodingInfoStatus:
+      type: string
+      enum:
+      - UNKNOWN_STATUS
+      - IN_PROGRESS
+      - SUCCEEDED
+      - FAILED
+      default: UNKNOWN_STATUS
+      description: " - IN_PROGRESS: The transcoding is in progress.\n - SUCCEEDED: The transcoding has succeeded.\n - FAILED: The transcoding has failed.\nDetailed reason can be found from failed_reason."
+    messagesReadCreativeErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadCreativeErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdateCreativeErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateCreativeErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateAssetUploadSessionErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateAssetUploadSessionErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspCreativeTemplateHtmlSrc:
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: ID of the template used to render this Creative.
+        template_env:
+          type: object
+          additionalProperties:
+            type: string
+          description: Environment used to render this Creative.
+        rendered_entry_html:
+          type: string
+          description: The entry HTML of the rendered Creative.
+        html_requirement_attributes:
+          $ref: '#/components/schemas/dspCreativeHtmlRequirementAttributes'
+          description: 'Requirements of this Creative. Based on this field and inventory''s excludable Creative attributes,
+
+            Moloco can filter out this Creative at serving time.'
+        html_size_attributes:
+          $ref: '#/components/schemas/dspCreativeHtmlSizeAttributes'
+          description: Size-related attributes of this Creative.
+        max_video_duration_seconds:
+          type: integer
+          format: int64
+          description: Max duration of video sources. Will be 0 if no video source is found in this Creative.
+      description: (Will be supported soon) Creative source based on MRAID template.
+      required:
+      - template_id
+      - rendered_entry_html
+    messagesListCreativesErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListCreativesErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    CreativeRichCustomHtmlSrcPlayableADSourceData:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/CreativeRichCustomHtmlSrcPlayableADSourceType'
+          description: Type of the source.
+        value:
+          type: string
+          description: 'When type is PLAYABLE_AD_SOURCE_TYPE_URL, then URL of the uploaded HTML file.
+
+            When type is PLAYABLE_AD_SOURCE_TYPE_TAG, then the full tag string.'
+    messagesCreateAssetUploadSessionResponse:
+      type: object
+      properties:
+        asset_url:
+          type: string
+          description: Actual URL to reach to the asset.
+        content_upload_url:
+          type: string
+          description: 'Temporal URL to upload the actual content of the asset. It will be expired in an hour.
+
+
+            To update the asset content, follow [the instruction](https://developer.moloco.cloud/docs/campaign-management-api#4-1-upload-a-creative-asset-to-storage-for-those-using-moloco-ads-api-v17-or-later).'
+      description: Response that contains information for the created asset upload session.
+    dspCreative:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the Creative. Automatically set by server on creation.
+        ad_account_id:
+          type: string
+          description: ID of the AdAccount the Creative belongs to.
+          readOnly: true
+        product_id:
+          type: string
+          description: ID of the Product the Creative belongs to.
+          readOnly: true
+        title:
+          type: string
+          description: A descriptive name of the Creative.
+        enabling_state:
+          $ref: '#/components/schemas/commonEnablingState'
+          description: 'Whether this Creative is enabled by the AdAccount.
+
+
+            If the value of this field is unset or set to UNSPECIFIED in the Creative
+
+            creation request, it will be set to ENABLED by default by the server.
+
+
+            A disabled Creative will still get reviewed, but won''t be served automatically after approval.
+
+
+            An active serving Creative can be paused at any time by setting this field to DISABLED.'
+        advertiser_info:
+          $ref: '#/components/schemas/dspAdvertiserInfo'
+          description: Basic information about the Creative's AdAccount.
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/dspCreativeType'
+          description: Type of the Creative.
+        original_filename:
+          type: string
+          description: Original Creative filename given by user.
+        size_in_bytes:
+          type: integer
+          format: int64
+          description: Estimated size of the Creative in bytes.
+        custom_key_values:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Custom key/values managed by the Moloco Ads client platform. It''s
+
+            up to the client ads platform to define the schema for the values and their
+
+            optionality.
+
+
+            The keys are recommended, but not required, to be prefixed with the reversed
+
+            internet domain of the AdCloud client platform company. For example, keys defined
+
+            by the client ads platform company "example.com" should have "com.example." as
+
+            the prefix.
+
+
+            For complex values, JSON payload is recommended.
+
+
+            Moloco doesn''t interpret these data in any way for ads serving. Upon serving,
+
+            the custom key/values in the AdAccount, Campaign, and Creative models will
+
+            be combined into the serving Creative proto in the order of precedence, with
+
+            Creative''s value having the highest precedence on the same key.'
+        image:
+          $ref: '#/components/schemas/dspCreativeImageSrc'
+        video:
+          $ref: '#/components/schemas/dspCreativeVideoSrc'
+        vast_video:
+          $ref: '#/components/schemas/dspCreativeVastVideoSrc'
+        native:
+          $ref: '#/components/schemas/dspCreativeNativeSrc'
+        custom_html:
+          $ref: '#/components/schemas/dspCreativeCustomHtmlSrc'
+        template_html:
+          $ref: '#/components/schemas/dspCreativeTemplateHtmlSrc'
+        rich_custom_html:
+          $ref: '#/components/schemas/dspCreativeRichCustomHtmlSrc'
+        dynamic_html:
+          $ref: '#/components/schemas/dspCreativeDynamicHtmlSrc'
+        feature_type:
+          $ref: '#/components/schemas/adcloudcommonCreativeFeatureType'
+          description: CreativeFeatureType.
+        creator_tag:
+          type: string
+          description: Creator tag to identify who is the resource creator.
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+      description: 'Creative contains all data and assets required to visually render an ad.
+
+
+        One and only one of the sources must be specified for the Creative.'
+      required:
+      - title
+      - original_filename
+    CopyCreativesSyncResponseCopyCreativesSyncResult:
+      type: object
+      properties:
+        creative_id:
+          type: string
+          description: The ID of Creative to be copied.
+        is_success:
+          type: boolean
+          description: The result of copying the Creative.
+        failed_reason:
+          type: string
+          description: 'The reason of why copying is failed.
+
+            In case of success, this would be empty.'
+      description: The result which contains Creative ID and its detailed result of copying.
+    CreativeVideoSrcTranscodingInfo:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/CreativeVideoSrcTranscodingInfoStatus'
+          description: Status of the transcoding.
+        failed_reason:
+          type: string
+          description: Error message for the FAILED status.
+    dspCreativeHtmlSizeAttributes:
+      type: object
+      properties:
+        interstitial:
+          type: boolean
+          description: Passes as long as the inventory is for an interstitial ad.
+        fixed:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CreativeHtmlSizeAttributesFixed'
+          description: 'Passes as long as the inventory size matches with one of the elements in the list.
+
+            If the Creative can be rotated, then one should specify both configurations.
+
+
+            For non-interstitial ads, at least one dimension is required.'
+      description: 'Size-related attributes for a resizable Creative, such as an HTML-based one.
+
+        This message acts as a filter condition; if an inventory is matched with the condition
+
+        in this message, the enclosing Creative passes; i.e., the Creative is not filtered out.'
+    dspCreativeVideoSrc:
+      type: object
+      properties:
+        video_url:
+          type: string
+          description: URL of the video media. Currently we support only mp4 format.
+        filename:
+          type: string
+          description: Original filename of the video.
+        width:
+          type: integer
+          format: int64
+          description: Width of the Creative.
+        height:
+          type: integer
+          format: int64
+          description: Height of the Creative.
+        length_seconds:
+          type: integer
+          format: int64
+          description: Video length in seconds.
+        fps:
+          type: integer
+          format: int64
+          description: Number of frames per second for the video.
+        size_in_bytes:
+          type: integer
+          format: int64
+          description: Size of the video in bytes. Note it doesn't include the bytes for the companion images.
+        companion_images:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspCreativeImageSrc'
+          description: 'Endcard image shown after video play ends. The orientation must match the video orientation. Supported formats: JPEG, PNG, GIF. Maximum file size: 500KB (5MB for GIF).'
+        auto_endcard:
+          type: boolean
+          description: Whether the endcard is generated automatically by MCP or manually uploaded by the user.
+        playable_endcard:
+          $ref: '#/components/schemas/dspCreativeRichCustomHtmlSrc'
+          description: 'HTML-based playable endcard that is shown after video play is ended.
+
+            Either a playable or an image (via `companion_images`) or a dynamic html (via `dynamic_html_endcard`) must be used.'
+        dynamic_html_endcard:
+          $ref: '#/components/schemas/dspCreativeDynamicHtmlSrc'
+          description: 'HTML-based dynamic html endcard that is shown after video play is ended.
+
+            Either a dynamic html or an image (via `companion_images`) or a playable (via `playable_endcard`) must be used.'
+        transcoding_info:
+          $ref: '#/components/schemas/CreativeVideoSrcTranscodingInfo'
+          description: Transcoding information of the video.
+          readOnly: true
+      description: 'Source of video Creative.
+
+
+        Supported format: MP4. Maximum file size: 300MB (before transcoding).
+
+        At least one of width or height must be ≥ 640px. Duration: 6–180 seconds.'
+      required:
+      - video_url
+      - width
+      - height
+      - length_seconds
+    messagesCopyCreativesSyncError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCopyCreativesSyncErrorAPIErrorInfo'
+    messagesCreateCreativeErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - CREATIVE_MUST_BE_ASSET_URL
+      - CREATIVE_VIDEO_TYPE_SHOULD_HAVE_SINGLE_COMPANION_IMAGE
+      - CREATIVE_VIDEO_TYPE_SHOULD_HAVE_SINGLE_ENDCARD_TYPE
+      - CREATIVE_INVALID_IMAGE_FORMAT
+      - CREATIVE_UNSUPPORTED_IMAGE_FORMAT
+      - CREATIVE_MALFORMED_URL
+      - CREATIVE_AT_LEAST_ONE_FIELD_MUST_BE_FILLED
+      - CREATIVE_TYPE_AUTO_PLAY_AUDIO_ATTRIBUTE_INVALID
+      - CREATIVE_PLAYABLE_AD_INVALID_SOURCE_DATA
+      - CREATIVE_PLAYABLE_AD_SOURCE_URL_INVALID_PREFIX
+      - CREATIVE_NOT_SUPPORTED_IMAGE_DIMENSION
+      - CREATIVE_NO_ALLOWED_IMAGE_SIZE_ON_DSP_CONFIGURATION
+      - CREATIVE_TYPE_NOT_ALLOWED_VALUE_IN_PLAYABLE_AD_SOURCE
+      - CREATIVE_TYPE_MUST_CONTAIN_ON_CTA_CLICK
+      - CREATIVE_ON_CTA_CLICK_CANNOT_HAVE_ARGUMENT
+      - CREATIVE_TWO_VALUES_SHOULD_BE_SAME
+      - CREATIVE_FEATURE_TYPE_DYNAMIC_CREATIVE_NOT_SUPPORTED
+      - CREATIVE_INVALID_CRID_FORMAT
+      - CREATIVE_INVALID_ICON_IMAGE_SHAPE
+      - CREATIVE_ONLY_ONE_SOURCE_ALLOWED
+      - CREATIVE_SRC_SIZE_ATTRS_REQUIRED_FOR_NON_INTERSTITIAL
+      - CREATIVE_INVALID_VIDEO_SRC_EXTENSION
+      - CREATIVE_NO_VALID_COMPANION_IMAGE
+      - CREATIVE_VIDEO_REQUIRED_FOR_CTV
+      - CREATIVE_ENDCARD_NOT_SUPPORTED_FOR_CTV_VIDEO
+      - CREATIVE_TRANSCODED_VIDEO_SRC_SIZE_LIMIT_EXCEEDED
+      - CREATIVE_VIDEO_SRC_INVALID_DIMENSION
+      - CREATIVE_VIDEO_SRC_LENGTH_NOT_IN_LIMIT
+      default: ERROR_REASON_UNKNOWN
+      description: " - CREATIVE_MUST_BE_ASSET_URL: image URL should be asset url but user used wrong url by its prefix.\n - CREATIVE_VIDEO_TYPE_SHOULD_HAVE_SINGLE_COMPANION_IMAGE: video type should have single companion image.\n - CREATIVE_VIDEO_TYPE_SHOULD_HAVE_SINGLE_ENDCARD_TYPE: video type should have a single endcard type.\n - CREATIVE_INVALID_IMAGE_FORMAT: invalid image format.\n - CREATIVE_UNSUPPORTED_IMAGE_FORMAT: unsupported image format.\n - CREATIVE_MALFORMED_URL: URL cannot be parsed.\n - CREATIVE_AT_LEAST_ONE_FIELD_MUST_BE_FILLED: at least one field should be filled.\n - CREATIVE_TYPE_AUTO_PLAY_AUDIO_ATTRIBUTE_INVALID: rich_custom_html with Facebook HTML should specify the auto_play_audio attribute (true/false).\n - CREATIVE_PLAYABLE_AD_INVALID_SOURCE_DATA: playable_ad_source_data has invalid value.\n - CREATIVE_PLAYABLE_AD_SOURCE_URL_INVALID_PREFIX: playable ad source url should be prefixed with domain name.\n - CREATIVE_NOT_SUPPORTED_IMAGE_DIMENSION: Specified image dimension is not supported.\n - CREATIVE_NO_ALLOWED_IMAGE_SIZE_ON_DSP_CONFIGURATION: no allowed image size is defined on dap configuration.\n - CREATIVE_TYPE_NOT_ALLOWED_VALUE_IN_PLAYABLE_AD_SOURCE: Value used in playable ad source is not allowed.\n - CREATIVE_TYPE_MUST_CONTAIN_ON_CTA_CLICK: FbPlayableAd.onCTAClick must be contained.\n - CREATIVE_ON_CTA_CLICK_CANNOT_HAVE_ARGUMENT: FbPlayableAd.onCTAClick must be inserted without an argument.\n - CREATIVE_TWO_VALUES_SHOULD_BE_SAME: two values should be same.\n - CREATIVE_FEATURE_TYPE_DYNAMIC_CREATIVE_NOT_SUPPORTED: Creative feature type is DYNAMIC_CREATIVE type but target app does not support Dynamic Creative Feature.\n - CREATIVE_INVALID_CRID_FORMAT: CRID has invalid format.\n - CREATIVE_INVALID_ICON_IMAGE_SHAPE: Creative icon image should be square.\n - CREATIVE_ONLY_ONE_SOURCE_ALLOWED: Creative can have only one source.\n - CREATIVE_SRC_SIZE_ATTRS_REQUIRED_FOR_NON_INTERSTITIAL: Specified non interstitial source type needs fixed attribute.\n - CREATIVE_INVALID_VIDEO_SRC_EXTENSION: Only mp4 is allowed for video_src extension.\n - CREATIVE_NO_VALID_COMPANION_IMAGE: All companion image has invalid dimensions.\n - CREATIVE_VIDEO_REQUIRED_FOR_CTV: Only Video creative is allowed for CTV product.\n - CREATIVE_ENDCARD_NOT_SUPPORTED_FOR_CTV_VIDEO: Endcard is not supported for CTV product video creative.\n - CREATIVE_TRANSCODED_VIDEO_SRC_SIZE_LIMIT_EXCEEDED: The video size after transcoding exceeds the size limit.\n - CREATIVE_VIDEO_SRC_INVALID_DIMENSION: At least one of the dimensions of the video, either the width or the height, should be greater than or equal to 640 pixels.\n - CREATIVE_VIDEO_SRC_LENGTH_NOT_IN_LIMIT: The video length should be between 6 and 100 seconds, inclusive."
+    messagesListCreativeReviewsResponse:
+      type: object
+      properties:
+        creative_reviews:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspCreativeReview'
+    PolicySourcerType:
+      type: string
+      enum:
+      - UNKNOWN_SOURCER
+      - SOURCER_TEST_CATALOG_DEPENDENT
+      - SOURCER_TEST_CATALOG_INDEPENDENT
+      - SOURCER_DEFAULT
+      - SOURCER_USER_SIGNAL
+      - SOURCER_TRENDS
+      - SOURCER_RELATED_ITEMS
+      - SOURCER_AUCTION_ITEMS
+      default: UNKNOWN_SOURCER
+      description: SourcerType defines the type of sourcer for the model.
+    CreativeHtmlRequirementAttributesAutoPlayAudioType:
+      type: string
+      enum:
+      - UNKNOWN_AUTO_PLAY_AUDIO_TYPE
+      - AUTO_PLAY_AUDIO_TYPE_MUTED
+      - AUTO_PLAY_AUDIO_TYPE_AUTO_PLAY
+      - AUTO_PLAY_AUDIO_TYPE_CONTROLLABLE
+      default: UNKNOWN_AUTO_PLAY_AUDIO_TYPE
+      description: "The Creative plays audio automatically; i.e., it starts muted. It may not be specified.\n\nIt is NOT SPECIFIED.\n\n - AUTO_PLAY_AUDIO_TYPE_MUTED: It does not play audio automatically.\n - AUTO_PLAY_AUDIO_TYPE_AUTO_PLAY: It plays audio automatically.\n - AUTO_PLAY_AUDIO_TYPE_CONTROLLABLE: It is allowed to be changed with respect to target ad exchange."
+    CreativeRichCustomHtmlSrcPlayableADSourceType:
+      type: string
+      enum:
+      - UNKNOWN_PLAYABLE_AD_SOURCE_TYPE
+      - PLAYABLE_AD_SOURCE_TYPE_URL
+      - PLAYABLE_AD_SOURCE_TYPE_TAG
+      default: UNKNOWN_PLAYABLE_AD_SOURCE_TYPE
+      description: " - PLAYABLE_AD_SOURCE_TYPE_URL: Source is a URL of the playable ad html. (facebook style).\n - PLAYABLE_AD_SOURCE_TYPE_TAG: Source is a playable ad html tag generated by the third party. (tresensa, spaceback, luna, playable factory, craftsmanplus)."
+    messagesUpdateCreativeError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateCreativeErrorAPIErrorInfo'
+    messagesListCreativeReviewsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListCreativeReviewsErrorAPIErrorInfo'
+    PolicyFunctionConfigNextItemSelectionConfig:
+      type: object
+      description: 'NEXT_ITEM_SELECTION PolicyFunction''s config.
+
+        NEXT tunes its item selection logic at the Config level rather than the PolicyFunction level.'
+    messagesCopyCreativesSyncResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        results:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CopyCreativesSyncResponseCopyCreativesSyncResult'
+          description: The list of results for copying the Creatives.
+    CreativeReviewPerExchangeReviewAction:
+      type: object
+      properties:
+        assigned_status:
+          $ref: '#/components/schemas/dspCreativeReviewPerExchangeStatus'
+          description: The status assigned as the result of an action.
+        comment:
+          type: string
+          description: Comment for the action.
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        reason_detail:
+          $ref: '#/components/schemas/CreativeReviewPerExchangeReasonDetail'
+          description: The ReasonDetail assigned as the result of an action.
+      description: The details of an action taken on the CreativeReview.
+    dspCreativeHtmlRequirementAttributes:
+      type: object
+      properties:
+        flags:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspCreativeHtmlRequirementAttributesFlag'
+          description: Flags for describing features that the enclosing Creative requires.
+        use_custom_close:
+          $ref: '#/components/schemas/CreativeHtmlRequirementAttributesCustomCloseType'
+        auto_play_audio:
+          $ref: '#/components/schemas/CreativeHtmlRequirementAttributesAutoPlayAudioType'
+      description: 'Requirements for displaying the Creative. During bidding, Moloco ensures only
+
+        Creatives with HTML requirements satisfied by the inventory are served.'
+    messagesDeleteCreativeResponse:
+      type: object
+    messagesListCreativeReviewsErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListCreativeReviewsErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    CreateAssetUploadSessionRequestAssetUploadSessionInfo:
+      type: object
+      properties:
+        asset_kind:
+          $ref: '#/components/schemas/commonAssetKind'
+          description: The kind of asset.
+        mime_type:
+          type: string
+          description: MIME type of the asset to upload.
+      required:
+      - asset_kind
+      - mime_type
+    messagesReadCreativeErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    PolicyItemCapper:
+      type: object
+      properties:
+        frequency:
+          $ref: '#/components/schemas/PolicyItemCapperFrequency'
+      description: "Item-specific capper configurations.\nThe configuration in this message is enforced:\n - across AdAccounts,\n - across Campaigns,\n - across AdGroups,\n - across CreativeGroups, and\n - across Creatives."
+    messagesListCreativesResponse:
+      type: object
+      properties:
+        creatives:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspCreative'
+          description: 'The list of the Creatives.
+
+            This field is valid if the inquiry_option of the request is UNKNOWN_INQUIRY_OPTION or INQUIRY_ENTITY or INQUIRY_ALL.'
+        creative_overviews:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspCreativeOverview'
+          description: 'The list of the Creative overviews.
+
+            This field is valid if the inquiry_option of the request is INQUIRY_OVERVIEW or INQUIRY_ALL.'
+    messagesCreateCreativeErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateCreativeErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspCreativeReviewPerExchangeStatus:
+      type: string
+      enum:
+      - UNKNOWN
+      - UNDER_REVIEW
+      - APPROVED
+      - BLOCKED
+      - ETC
+      - APPROVED_FOR_ADULTS
+      - GOOGLE_PLATFORM_APPROVED
+      default: UNKNOWN
+      description: "Enum of each Creative's approval status.\n\nCreative has not been submitted for review.\n\n - UNDER_REVIEW: Creative is currently under review.\n - APPROVED: Creative has been accepted by the exchange.\n - BLOCKED: Creative has been rejected by the exchange.\n - ETC: Refer to ReviewAction for more details.\n - APPROVED_FOR_ADULTS: Creative has been accepted only for adults by the exchange.\n - GOOGLE_PLATFORM_APPROVED: Creative is rejected by ADX (and ADX_RTB) on network policy but approved on platform policy.\nIn ADX requests, a flag will indicate whether a creative with this status can bid.\nThis status will only be used in ADX reviews."
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

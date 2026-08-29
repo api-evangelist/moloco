@@ -1,0 +1,1279 @@
+openapi: 3.2.0
+info:
+  title: Moloco Ad Account API
+  version: '1.0'
+  description: 'Operations tagged AdAccount across 6 of this provider''s published API definitions: mcm-management-api.json, moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml, moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://<platform>-mgmt.mcm-api.moloco.com
+- url: https://api.moloco.cloud
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: AdAccount
+paths:
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts:
+    get:
+      summary: ListAdAccounts
+      description: List all the ad accounts on the platform.
+      operationId: RmpManagementApi_ListAdAccounts
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicListAdAccountsResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - AdAccount
+      security:
+      - ApiKeyAuth: []
+    post:
+      summary: CreateAdAccount
+      description: Create a new ad account.
+      operationId: RmpManagementApi_CreateAdAccount
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicCreateAdAccountResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ad_account:
+                  $ref: '#/components/schemas/publicCreateAdAccountRequestAdAccountInfo'
+              description: CreateAdAccount request.
+              required:
+              - ad_account
+              additionalProperties: true
+        required: true
+      tags:
+      - AdAccount
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}:
+    get:
+      summary: ReadAdAccount
+      description: Read a ad account.
+      operationId: RmpManagementApi_ReadAdAccount
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadAdAccountResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - AdAccount
+      security:
+      - ApiKeyAuth: []
+    put:
+      summary: UpdateAdAccount
+      description: Update an ad account.
+      operationId: RmpManagementApi_UpdateAdAccount
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicUpdateAdAccountResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ad_account:
+                  $ref: '#/components/schemas/publicUpdateAdAccountRequestAdAccountInfo'
+              description: UpdateAdAccount request.
+              required:
+              - ad_account
+              additionalProperties: true
+        required: true
+      tags:
+      - AdAccount
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/state-info:
+    put:
+      summary: UpdateAdAccountStateInfo
+      description: Update an ad account's state info.
+      operationId: RmpManagementApi_UpdateAdAccountStateInfo
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicUpdateAdAccountStateInfoResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state_info:
+                  $ref: '#/components/schemas/UpdateAdAccountStateInfoRequestAdAccountStateInfoParams'
+              description: UpdateAdAccountStateInfo request.
+              required:
+              - state_info
+              additionalProperties: true
+        required: true
+      tags:
+      - AdAccount
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /cm/v1/ad-accounts:
+    get:
+      summary: List up AdAccounts.
+      description: List all AdAccounts accessible by the current user on the current Workplace.
+      operationId: DspApi_ListAdAccounts
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListAdAccountsResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListAdAccountsError'
+      tags:
+      - AdAccount
+      security:
+      - Bearer: []
+    post:
+      summary: Create a new AdAccount.
+      description: Create a new AdAccount on the Workplace.
+      operationId: DspApi_CreateAdAccount
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateAdAccountResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateAdAccountError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspAdAccount'
+        description: The AdAccount data to be created.
+        required: true
+      tags:
+      - AdAccount
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/ad-accounts/{ad_account_id}:
+    get:
+      summary: Read an existing AdAccount.
+      description: Read an existing AdAccount.
+      operationId: DspApi_ReadAdAccount
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadAdAccountResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadAdAccountError'
+      parameters:
+      - name: ad_account_id
+        description: The ID of the AdAccount to be retrieved.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - AdAccount
+      security:
+      - Bearer: []
+    delete:
+      summary: Delete an existing AdAccount.
+      description: Delete an AdAccount from the current Workplace.
+      operationId: DspApi_DeleteAdAccount
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteAdAccountResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteAdAccountError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID to be deleted.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - AdAccount
+      security:
+      - Bearer: []
+    put:
+      summary: Update an existing AdAccount.
+      description: Update an existing AdAccount.
+      operationId: DspApi_UpdateAdAccount
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateAdAccountResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateAdAccountError'
+      parameters:
+      - name: ad_account_id
+        description: The ID of the AdAccount.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspAdAccount'
+        description: The AdAccount data to be updated.
+        required: true
+      tags:
+      - AdAccount
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /v1/ad-accounts/{ad_account_id}/users:
+    get:
+      security:
+      - Bearer: []
+      description: Get the list of users registered to the given ad account.
+      tags:
+      - AdAccount
+      summary: Get the list of ad account users.
+      operationId: v1_list_ad_account_registrations
+      parameters:
+      - description: The Ad Account ID.
+        name: ad_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Platform ID.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: If given, the result will include the user status info.
+        name: with_status
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The list of users that the advertiser has.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listAdAccountRegistrationsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to list users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      security:
+      - Bearer: []
+      description: Register a user to an ad account in the same workplace.
+      tags:
+      - AdAccount
+      summary: Register a user to an ad account.
+      operationId: v1_create_ad_account_registration
+      parameters:
+      - description: The Ad Account ID.
+        name: ad_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createAdAccountRegistrationRequest'
+        description: The request body
+        required: true
+      responses:
+        '204':
+          description: The user is successfully registered to the advertiser.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: Conflict - the user is already registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/ad-accounts/{ad_account_id}/users/{user_id}:
+    delete:
+      security:
+      - Bearer: []
+      description: Delete the user registration to an a specific ad account.
+      tags:
+      - AdAccount
+      summary: Remove a user from an ad account.
+      operationId: v1_delete_ad_account_registration
+      parameters:
+      - description: The Ad Account to which the user was registered.
+        name: ad_account_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The platform ID to which the user belongs.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The user is successfully removed from the Ad Account.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to delete.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    publicUpdateAdAccountStateInfoResponse:
+      type: object
+      properties:
+        state_info:
+          $ref: '#/components/schemas/v1AdAccountStateInfo'
+      description: UpdateAdAccountStateInfo response.
+      required:
+      - state_info
+      additionalProperties: true
+    publicUpdateAdAccountRequestAdAccountInfo:
+      type: object
+      properties:
+        title:
+          type: string
+          description: A descriptive name of the ad account.
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
+      required:
+      - title
+      - updated_at
+      additionalProperties: true
+    publicListAdAccountsResponse:
+      type: object
+      properties:
+        ad_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/managementv1AdAccount'
+          description: List of AdAccount infos.
+      description: ListAdAccounts response.
+      required:
+      - ad_accounts
+      additionalProperties: true
+    v1AdAccountStateInfoAdAccountState:
+      type: string
+      enum:
+      - UNKNOWN_STATE
+      - ACTIVE
+      - INACTIVE
+      default: UNKNOWN_STATE
+    v1AdAccountStateInfo:
+      type: object
+      properties:
+        ad_account_id:
+          type: string
+          description: The id of the AdAccount.
+        state:
+          $ref: '#/components/schemas/v1AdAccountStateInfoAdAccountState'
+        state_case:
+          $ref: '#/components/schemas/AdAccountStateInfoStateCase'
+        state_updated_at:
+          type: string
+          format: date-time
+          description: Timestamp for when the AdAccount's state was updated.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
+      description: AdAccountStateInfo encloses AdAccount's state information.
+      required:
+      - ad_account_id
+      - state
+      - state_case
+      - state_updated_at
+      - updated_at
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    publicReadAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/managementv1AdAccount'
+      description: ReadAdAccount response.
+      required:
+      - ad_account
+      additionalProperties: true
+    publicCreateAdAccountRequestAdAccountInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the ad account. Must be a string of 1 to 50 characters. Only letters (a–z, A–Z), digits (0–9), hyphens (-), underscores (_), and periods (.) are allowed.
+        title:
+          type: string
+          description: A descriptive name of the ad account.
+        timezone:
+          type: string
+          description: Timezone info of the ad account, Immutable. When there is no timezone info in ad account, Platform's timezone info will be applied. Must be in IANA timezone name format, e.g. Asia/Seoul.
+      required:
+      - id
+      - title
+      additionalProperties: true
+    UpdateAdAccountStateInfoRequestAdAccountStateInfoParams:
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/v1AdAccountStateInfoAdAccountState'
+        state_case:
+          $ref: '#/components/schemas/AdAccountStateInfoStateCase'
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp for the ad account. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
+      description: AdAccountState info.
+      required:
+      - state
+      - state_case
+      - updated_at
+      additionalProperties: true
+    publicCreateAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/managementv1AdAccount'
+      description: CreateAdAccount response.
+      required:
+      - ad_account
+      additionalProperties: true
+    managementv1AdAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the ad account. This is a rmp-side truth. Thus it is always required, even for CreateAdAccountRequest.
+        title:
+          type: string
+          description: A descriptive name of the ad account.
+        timezone:
+          type: string
+          description: Timezone info of the ad account, Immutable. When there is no timezone info in ad account, Platform's timezone info will be applied. Must be in IANA timezone name format, e.g. Asia/Seoul.
+        state_info:
+          $ref: '#/components/schemas/v1AdAccountStateInfo'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
+          readOnly: true
+      description: Definition of a ad account.
+      required:
+      - id
+      - title
+      - timezone
+      - state_info
+      - created_at
+      - updated_at
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    AdAccountStateInfoStateCase:
+      type: string
+      enum:
+      - INIT_BY_PLATFORM
+      - ACTIVATED
+      - OUT_OF_BUDGET
+      - INTERNAL_ISSUE
+      - REACHED_SPENDING_LIMIT
+      default: INIT_BY_PLATFORM
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    publicUpdateAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/managementv1AdAccount'
+      description: UpdateAdAccount response.
+      required:
+      - ad_account
+      additionalProperties: true
+    messagesUpdateAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListAdAccountsResponse:
+      type: object
+      properties:
+        ad_accounts:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAdAccount'
+          description: The list of AdAccount data.
+    messagesCreateAdAccountErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateAdAccountErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdateAdAccountErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateAdAccountErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesListAdAccountsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListAdAccountsErrorAPIErrorInfo'
+    messagesListAdAccountsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    adcloudcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      default: UNKNOWN_CURRENCY
+      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
+    dspAdAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the AdAccount. Automatically set by server on creation.
+        title:
+          type: string
+          description: A descriptive name of the AdAccount.
+        description:
+          type: string
+          description: An optional description of the AdAccount.
+        timezone:
+          type: string
+          description: '[IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) name.
+
+            e.g. America/Los_Angeles.'
+        currency:
+          $ref: '#/components/schemas/adcloudcommonCurrency'
+        custom_key_values:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Custom key/values managed by the Moloco Ads client platform.
+
+            It''s up to the client ads platform to define the schema for the values and their optionality.
+
+
+            The keys are recommended, but not required, to be prefixed with the reversed
+
+            internet domain of the AdCloud client platform company. For example, keys defined
+
+            by the client ads platform company "example.com" should have "com.example." as
+
+            the prefix.
+
+
+            For complex values, JSON payload is recommended.
+
+
+            Moloco doesn''t interpret these data in any way for ads serving.
+
+            Upon serving, the custom key/values in the AdAccount, Campaign,
+
+            and Creative models will be combined into the serving Creative proto in the order of precedence,
+
+            with Creative''s value having the highest precedence on the same key.'
+        billing_account_id:
+          type: string
+          description: BillingAccount to be applied by default.
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+        targets_future_preferences:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AdAccountTargetFuturePreferenceInfo'
+          description: targets_future_preferences maps each target_id to corresponding TargetFuturePreferenceInfo.
+      description: 'AdAccount represents a person or organization
+
+        who owns Products and aims to promote the Products with advertising Campaigns.'
+      required:
+      - title
+    messagesDeleteAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesCreateAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesReadAdAccountErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadAdAccountErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesDeleteAdAccountError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteAdAccountErrorAPIErrorInfo'
+    messagesReadAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/dspAdAccount'
+          description: The retrieved AdAccount data.
+    AdAccountTargetFuturePreferenceInfo:
+      type: object
+      properties:
+        product_scope:
+          $ref: '#/components/schemas/TargetFuturePreferenceInfoProductScope'
+        custom_products:
+          $ref: '#/components/schemas/TargetFuturePreferenceInfoCustomProducts'
+      description: 'TargetFuturePreferenceInfo contains each target''s future preference information.
+
+        If the newly created Campaign satisfies the condition of target future preference info
+
+        the target will be automatically assigned to that Campaign.'
+    messagesUpdateAdAccountError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateAdAccountErrorAPIErrorInfo'
+    messagesUpdateAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/dspAdAccount'
+          description: The updated AdAccount data.
+    messagesDeleteAdAccountErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteAdAccountErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesListAdAccountsErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListAdAccountsErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesDeleteAdAccountResponse:
+      type: object
+    messagesCreateAdAccountError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateAdAccountErrorAPIErrorInfo'
+    messagesCreateAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/dspAdAccount'
+          description: The created AdAccount data.
+    TargetFuturePreferenceInfoCustomProducts:
+      type: object
+      properties:
+        product_ids:
+          type: array
+          items:
+            type: string
+      description: CustomProducts stores Products' ids of which the target prefers.
+    messagesReadAdAccountError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadAdAccountErrorAPIErrorInfo'
+    TargetFuturePreferenceInfoProductScope:
+      type: string
+      enum:
+      - UNKNOWN
+      - ALL
+      - ANDROID
+      - IOS
+      default: UNKNOWN
+      description: ProductScope indicates the scope of Product of which the target prefers.
+    adAccountRegistrationWithUserInfo:
+      description: A user registered to an Ad Account and the roles given to the user for the Ad Account.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/adAccountRegistration'
+      - properties:
+          roles:
+            type: array
+            items:
+              $ref: '#/components/schemas/roleReference'
+          status:
+            $ref: '#/components/schemas/userStatus'
+          user_email:
+            type: string
+          user_name:
+            type: string
+    listAdAccountRegistrationsResponse:
+      description: Lists the user registrations to an Ad Account with roles assigned to each user.
+      type: object
+      required:
+      - registrations
+      properties:
+        registrations:
+          description: The user registrations to an Ad Account with user roles.
+          type: array
+          items:
+            $ref: '#/components/schemas/adAccountRegistrationWithUserInfo'
+    userStatus:
+      description: The set of status values for a user.
+      type: object
+      required:
+      - signed_up
+      properties:
+        signed_up:
+          description: The signed up status of the user.
+          type: boolean
+    createAdAccountRegistrationRequest:
+      description: A request to register a user to an Ad Account.
+      type: object
+      required:
+      - platform_id
+      - registration
+      properties:
+        forward_url:
+          description: The URL that should be included in the invitation email.
+          type: string
+        platform_id:
+          description: The platform ID.
+          type: string
+        registration:
+          $ref: '#/components/schemas/adAccountRegistration'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    adAccountRegistration:
+      description: A user registered to an Ad Account.
+      type: object
+      required:
+      - id
+      - ad_account_id
+      - ad_account_title
+      properties:
+        ad_account_id:
+          description: The Ad Account to which the user is registered.
+          type: string
+        ad_account_title:
+          description: The display name of the Ad Account.
+          type: string
+        id:
+          description: The user ID.
+          type: string
+    roleReference:
+      description: Reference to a role defined in a platform.
+      type: object
+      required:
+      - id
+      - platform_id
+      properties:
+        id:
+          description: The ID of the role.
+          type: string
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
+    Bearer:
+      type: apiKey
+      description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
+      name: Authorization
+      in: header
+x-refined-from:
+- mcm-management-api.json
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+- moloco-commerce-media-management-openapi.yml
+x-readme:
+  explorer-enabled: true

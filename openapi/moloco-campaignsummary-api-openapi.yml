@@ -1,0 +1,171 @@
+openapi: 3.2.0
+info:
+  title: Moloco Campaign Summary API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged CampaignSummary across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: CampaignSummary
+paths:
+  /cm/v1/report-action-events:
+    get:
+      summary: List up report action events.
+      description: List up all available report action events for ad_account.
+      operationId: DspApi_ListReportActionEvents
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListReportActionEventsResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID of Campaigns to fetch the report actions.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: include_moloco_pixel_events
+        in: query
+        required: false
+        schema:
+          type: boolean
+      tags:
+      - CampaignSummary
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/report-filters:
+    get:
+      summary: List up report filter options.
+      description: List up all available report filter options for ad_account.
+      operationId: DspApi_ListReportFilters
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListReportFiltersResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID of Campaigns to generate the report filter.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - CampaignSummary
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    ListReportFiltersResponseReportFilterOption:
+      type: object
+      properties:
+        display_name:
+          type: string
+        value:
+          type: string
+      description: A pair of the value and display_name for each dimension.
+    messagesListReportActionEventsResponse:
+      type: object
+      properties:
+        action_events:
+          type: array
+          items:
+            type: string
+    messagesListReportFiltersResponse:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ListReportFiltersResponseReportFilter'
+    dspReportFilterDimension:
+      type: string
+      enum:
+      - UNKNOWN_REPORT_FILTER_DIMENSION
+      - Product_ID
+      - Campaign_ID
+      - AdGroup_ID
+      - Creative_ID
+      - Creative_Type
+      - SubPublisher_ID
+      - SubPublisher_Type
+      - Inventory_Type
+      - Exchange_ID
+      - Product_OS
+      - Campaign_Country
+      - Campaign_IsLAT
+      - Campaign_Type
+      - CreativeGroup_ID
+      - Campaign_BidCountry
+      - Campaign_GoalType
+      - Creative_VideoEndCardType
+      - Device_RegionCode
+      - Campaign_IsCrossPromo
+      default: UNKNOWN_REPORT_FILTER_DIMENSION
+      description: ReportFilterDimension enumerates available breakdown dimensions.
+    ListReportFiltersResponseReportFilter:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/dspReportFilterDimension'
+          description: Dimension of the report.
+        display_name:
+          type: string
+          description: Display name of the dimension.
+        options:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ListReportFiltersResponseReportFilterOption'
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

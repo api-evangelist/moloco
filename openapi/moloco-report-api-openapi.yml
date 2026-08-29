@@ -1,0 +1,1879 @@
+openapi: 3.2.0
+info:
+  title: Moloco Report API
+  version: '1.0'
+  description: 'Operations tagged Report across 4 of this provider''s published API definitions: mcm-management-api.json, moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://<platform>-mgmt.mcm-api.moloco.com
+- url: https://api.moloco.cloud
+tags:
+- name: Report
+paths:
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/audience-report:
+    post:
+      summary: QueryAudienceSummary
+      description: Read summarized reporting information of campaign with respect to audience targeting.
+      operationId: RmpManagementApi_QueryAudienceSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadAudienceReportSummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date_start:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. The allowed maximum duration for the date range is 30 days.
+                date_end:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. The allowed maximum duration for the date range is 30 days.
+                limit:
+                  type: string
+                  format: int64
+                  description: Maximum number of rows to be returned. Cannot exceed 50,000.
+              description: ReadAudienceReportSummary request.
+              required:
+              - date_start
+              - date_end
+              additionalProperties: true
+        required: true
+      tags:
+      - Report
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/keyword-report:
+    post:
+      summary: QueryKeywordSummary
+      description: Read summarized reporting information of campaigned keywords.
+      operationId: RmpManagementApi_QueryKeywordSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadKeywordReportSummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date_start:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. The allowed maximum duration for the date range is 30 days.
+                date_end:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. The allowed maximum duration for the date range is 30 days.
+                limit:
+                  type: string
+                  format: int64
+                  description: Maximum number of rows to be returned. Cannot exceed 50,000.
+              description: ReadKeywordReportSummary request.
+              required:
+              - date_start
+              - date_end
+              additionalProperties: true
+        required: true
+      tags:
+      - Report
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/placement-report:
+    post:
+      summary: QueryPlacementSummary
+      description: Read summarized reporting information of campaign with respect to placement targeting.
+      operationId: RmpManagementApi_QueryPlacementSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadPlacementReportSummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date_start:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. The allowed maximum duration for the date range is 30 days.
+                date_end:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. The allowed maximum duration for the date range is 30 days.
+                limit:
+                  type: string
+                  format: int64
+                  description: Maximum number of rows to be returned. Cannot exceed 50,000.
+              description: ReadPlacementReportSummary request.
+              required:
+              - date_start
+              - date_end
+              additionalProperties: true
+        required: true
+      tags:
+      - Report
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/report:
+    post:
+      summary: QueryAdAccountSummary
+      description: Read summarized reporting information of an ad account.
+      operationId: RmpManagementApi_QueryAdAccountSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryAdAccountSummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timezone:
+                  type: string
+                  description: Timezone of date_start and date_end. To be deprecated. Only platform timezone is accepted. Must be in IANA timezone name format, e.g. Asia/Seoul.
+                date_start:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+                date_end:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+                group_by:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/v1AdAccountSummaryGroupByColumn'
+                  description: A list of columns to be grouped by. Please note that among the group_by options, ITEM and CREATIVE cannot be used together
+                order_by:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/v1AdAccountSummaryOrderByColumn'
+                  description: A list of columns to be ordered by.
+                filter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/managementv1QueryFilter'
+                  description: Query Filter. Only 1 allowed since we only support CAMPAIGN_FILTER.
+                limit:
+                  type: string
+                  format: int64
+                  description: Maximum number of rows to be returned. Cannot exceed 50,000
+              description: QueryAdAccountSummary request.
+              required:
+              - date_start
+              - date_end
+              additionalProperties: true
+        required: true
+      tags:
+      - Report
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts/{ad_manager_account_id}/report:
+    post:
+      summary: QueryAdManagerAccountSummary
+      description: Read summarized reporting information of an ad manager account.
+      operationId: RmpManagementApi_QueryAdManagerAccountSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadAdManagerAccountReportSummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_manager_account_id
+        description: Identifier of the ad manager account who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timezone:
+                  type: string
+                  description: Timezone of date_start and date_end. If timezone is empty, 'UTC' will be used for the default value. Must be in IANA timezone name format, e.g. Asia/Seoul.
+                date_start:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+                date_end:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+                group_by:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/v1AdManagerAccountReportSummaryGroupByColumn'
+                  description: A list of columns to be grouped by.
+                limit:
+                  type: string
+                  format: int64
+                  description: Maximum number of rows to be returned. Cannot exceed 50,000
+              description: ReadAdManagerAccountReportSummary request.
+              required:
+              - date_start
+              - date_end
+              additionalProperties: true
+        required: true
+      tags:
+      - Report
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/report:
+    post:
+      summary: QueryPlatformSummary
+      description: Read summarized reporting information of a platform.
+      operationId: RmpManagementApi_QueryPlatformSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryPlatformSummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timezone:
+                  type: string
+                  description: Timezone of date_start and date_end. To be deprecated. Only platform timezone is accepted. Must be in IANA timezone name format, e.g. Asia/Seoul.
+                date_start:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+                date_end:
+                  type: string
+                  description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+                group_by:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/v1PlatformSummaryGroupByColumn'
+                  description: A list of columns to be grouped by. Please note that among the group_by options, ITEM and CREATIVE cannot be used together. Furthermore, AD_MANAGER_ACCOUNT can be only used with CURRENCY.
+                order_by:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/v1PlatformSummaryOrderByColumn'
+                  description: A list of columns to be ordered by.
+                filter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/managementv1QueryFilter'
+                  description: Query Filter. Only 1 allowed since we only support CAMPAIGN_FILTER.
+                limit:
+                  type: string
+                  format: int64
+                  description: Maximum number of rows to be returned. Cannot exceed 50,000
+                ad_account_id:
+                  type: string
+                  description: AdAccount id.
+              description: QueryPlatformSummary request.
+              required:
+              - date_start
+              - date_end
+              additionalProperties: true
+        required: true
+      tags:
+      - Report
+      security:
+      - ApiKeyAuth: []
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /cm/v1/reports:
+    get:
+      summary: List up reports.
+      description: List up reports in the given Workplace and AdAccount.
+      operationId: DspApi_ListReports
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListReportsResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListReportsError'
+      parameters:
+      - name: ad_account_id
+        description: ID of the AdAccount to list up reports.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - Report
+      security:
+      - Bearer: []
+    post:
+      summary: Create a new report.
+      description: Create a new report of a specific AdAccount.
+      operationId: DspApi_CreateReport
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateReportResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateReportError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID of Campaigns to create the reports.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspReport'
+        description: The details of the new report specification.
+        required: true
+      tags:
+      - Report
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/reports/{report_id}:
+    get:
+      summary: Read an existing report.
+      description: Read an existing report.
+      operationId: DspApi_ReadReport
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadReportResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadReportError'
+      parameters:
+      - name: report_id
+        description: Report ID to read.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Report
+      security:
+      - Bearer: []
+    delete:
+      summary: Delete an existing report.
+      description: Delete an existing report.
+      operationId: DspApi_DeleteReport
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteReportResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteReportError'
+      parameters:
+      - name: report_id
+        description: Report ID to delete.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Report
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/reports/{report_id}/status:
+    get:
+      summary: Read report status.
+      description: Read the most recent report status. It will also show URLs containing report contents.
+      operationId: DspApi_ReadReportStatus
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadReportStatusResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadReportStatusError'
+      parameters:
+      - name: report_id
+        description: Report ID to read the status.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Report
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    v1ReportSummaryFilterColumn:
+      type: string
+      enum:
+      - UNKNOWN_FILTER_FIELD
+      - CAMPAIGN_FILTER
+      default: UNKNOWN_FILTER_FIELD
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    v1AudienceReportSummaryRow:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+          description: Campaign id.
+        campaign_title:
+          type: string
+          description: Campaign title.
+        audience:
+          type: string
+          description: Audience. It is audience label if the audience_type is 'CUSTOM'.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count.
+        click_count:
+          type: string
+          format: int64
+          description: Click count.
+        ctr:
+          type: number
+          format: double
+          description: CTR. Click divided by Impressions.
+        purchase_count:
+          type: string
+          format: int64
+          description: Purchase count captured by direct and indirect attribution.
+        revenue:
+          type: string
+          format: int64
+          description: Money earned captured by direct and indirect attribution. It is in a micro unit.
+        cpc:
+          type: number
+          format: double
+          description: CPC (Cost Per Click) in a micro unit.
+        money_spent:
+          type: string
+          format: int64
+          description: Money spent. It is in a micro unit.
+        roas:
+          type: number
+          format: double
+          description: ROAS captured by direct and indirect attribution, in percent.
+      description: AudienceReportSummaryRow represents a row of summarized reporting of audiences.
+      additionalProperties: true
+    v1AdAccountSummaryRow:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date in 'YYYY-MM-DD'.
+        timezone:
+          type: string
+          description: Timezone of date in the data.
+        currency:
+          type: string
+          description: Currency.
+        ad_account_id:
+          type: string
+          description: Ad account id.
+        ad_account_title:
+          type: string
+          description: Ad account title.
+        campaign_id:
+          type: string
+          description: Campaign id.
+        campaign_title:
+          type: string
+          description: Campaign title.
+        catalog_item_id:
+          type: string
+          description: Catalog item id.
+        catalog_item_title:
+          type: string
+          description: Catalog item title.
+        creative_id:
+          type: string
+          description: Creative id.
+        creative_title:
+          type: string
+          description: Creative title.
+        asset_id:
+          type: string
+          description: Asset id.
+        inventory_id:
+          type: string
+          description: Inventory id.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count.
+        imp_item_count:
+          type: string
+          format: int64
+          description: Per item impression count. Only populated for item-level group by results with Sponsored Brand campaign.
+        click_count:
+          type: string
+          format: int64
+          description: Click count.
+        money_spent:
+          type: string
+          format: int64
+          description: Money spent. It is in a micro unit.
+        purchase_count:
+          type: string
+          format: int64
+          description: Purchase count.
+        purchase_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricInt'
+        revenue:
+          type: string
+          format: int64
+          description: Money earned. It is in a micro unit.
+        revenue_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricInt'
+        roas:
+          type: number
+          format: double
+          description: ROAS in percent.
+        roas_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricDouble'
+        cr:
+          type: number
+          format: double
+          description: CR. Click to Purchase rate.
+        ctr:
+          type: number
+          format: double
+          description: CTR. Click divided by Impressions.
+        ctr_item:
+          type: number
+          format: double
+          description: CTR per item-level impression. Click divided by imp_item_count, in percent. Only populated for item-level group by results with Sponsored Brand campaign.
+        imp_to_purchase:
+          type: number
+          format: double
+          description: CTR multiplied by CR (CTR x CR).
+        imp_item_to_purchase:
+          type: number
+          format: double
+          description: Purchase rate per item-level impression. Purchase divided by imp_item_count, in percent. Only populated for item-level group by results with Sponsored Brand campaign.
+        num_ad_accounts:
+          type: string
+          format: int64
+          description: Number of active ad accounts during selected time period (platform summary specific).
+        items_per_ad_account:
+          type: number
+          format: double
+          description: Items per ad account (platform summary specific).
+        cpc:
+          type: number
+          format: double
+          description: CPC (Cost Per Click) in a micro unit.
+        acos:
+          type: number
+          format: double
+          description: Advertising cost of sales in percent. Ad Spending / Revenue
+        cpm:
+          type: number
+          format: double
+          description: CPM (Cost Per 1,000 Impressions) in a micro unit.
+        cpm_item:
+          type: number
+          format: double
+          description: CPM per item-level impression in a micro unit. Money spent divided by imp_item_count, multiplied by 1,000. Only populated for item-level group by results with Sponsored Brand campaign.
+      description: AdAccountSummaryRow represents a row of ad-account-level summarized reporting.
+      additionalProperties: true
+    commonHaloMetricInt:
+      type: object
+      properties:
+        direct:
+          type: string
+          format: int64
+          description: Metrics captured by direct attribution.
+        indirect:
+          type: string
+          format: int64
+          description: Metrics captured by indirect attribution.
+        total:
+          type: string
+          format: int64
+          description: Total metrics captured by direct + indirect attribution.
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    v1AdAccountSummaryGroupByColumn:
+      type: string
+      enum:
+      - UNKNOWN_GROUP_BY
+      - DATE
+      - AD_ACCOUNT
+      - CURRENCY
+      - CAMPAIGN
+      - ITEM
+      - INVENTORY_ID
+      - CREATIVE
+      - ASSET
+      default: UNKNOWN_GROUP_BY
+      description: ' - UNKNOWN_GROUP_BY: This value is not part of the API specification.'
+    v1PlatformSummaryGroupByColumn:
+      type: string
+      enum:
+      - UNKNOWN_GROUP_BY
+      - DATE
+      - AD_ACCOUNT
+      - CURRENCY
+      - CAMPAIGN
+      - ITEM
+      - INVENTORY_ID
+      - CREATIVE
+      - AD_MANAGER_ACCOUNT
+      - ASSET
+      default: UNKNOWN_GROUP_BY
+      description: ' - UNKNOWN_GROUP_BY: This value is not part of the API specification.'
+    v1ReportSummaryFilterOperator:
+      type: string
+      enum:
+      - UNKNOWN_FILTER_OPERATOR
+      - EQ
+      - IN
+      default: UNKNOWN_FILTER_OPERATOR
+    v1AdManagerAccountReportSummaryGroupByColumn:
+      type: string
+      enum:
+      - UNKNOWN_GROUP_BY
+      - DATE
+      - AD_ACCOUNT
+      - CURRENCY
+      default: UNKNOWN_GROUP_BY
+    commonHaloMetricDouble:
+      type: object
+      properties:
+        direct:
+          type: number
+          format: double
+          description: Metrics captured by direct attribution.
+        indirect:
+          type: number
+          format: double
+          description: Metrics captured by indirect attribution.
+        total:
+          type: number
+          format: double
+          description: Total metrics captured by direct + indirect attribution.
+      additionalProperties: true
+    v1AdAccountSummaryOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY
+      - TIME_DATE
+      - TIME_DATE_DESC
+      - TIMEZONE
+      - TIMEZONE_DESC
+      - CURRENCY_DIM
+      - CURRENCY_DIM_DESC
+      - AD_ACCOUNT_ID
+      - AD_ACCOUNT_ID_DESC
+      - AD_ACCOUNT_TITLE
+      - AD_ACCOUNT_TITLE_DESC
+      - CATALOG_ITEM_TITLE
+      - CATALOG_ITEM_TITLE_DESC
+      - CAMPAIGN_ID
+      - CAMPAIGN_ID_DESC
+      - CAMPAIGN_TITLE
+      - CAMPAIGN_TITLE_DESC
+      - CATALOG_ITEM_ID
+      - CATALOG_ITEM_ID_DESC
+      - INVENTORY_DIM
+      - INVENTORY_DIM_DESC
+      - CREATIVE_ID
+      - CREATIVE_ID_DESC
+      - CREATIVE_TITLE
+      - CREATIVE_TITLE_DESC
+      - IMP_COUNT
+      - IMP_COUNT_DESC
+      - CLICK_COUNT
+      - CLICK_COUNT_DESC
+      - MONEY_SPENT
+      - MONEY_SPENT_DESC
+      - PURCHASE_COUNT
+      - PURCHASE_COUNT_DESC
+      - REVENUE
+      - REVENUE_DESC
+      - ROAS
+      - ROAS_DESC
+      - CPC
+      - CPC_DESC
+      - CR
+      - CR_DESC
+      - CTR
+      - CTR_DESC
+      - IMP_TO_PURCHASE
+      - IMP_TO_PURCHASE_DESC
+      - NUM_AD_ACCOUNTS
+      - NUM_AD_ACCOUNTS_DESC
+      - ITEMS_PER_AD_ACCOUNT
+      - ITEMS_PER_AD_ACCOUNT_DESC
+      - ACOS
+      - ACOS_DESC
+      - CPM
+      - CPM_DESC
+      default: UNKNOWN_ORDER_BY
+      title: "- UNKNOWN_ORDER_BY: This value is not part of the API specification.\n - IMP_COUNT: Metrics"
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    v1PlatformSummaryRow:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date in 'YYYY-MM-DD'.
+        timezone:
+          type: string
+          description: Timezone of date in the data.
+        currency:
+          type: string
+          description: Currency.
+        ad_account_id:
+          type: string
+          description: Ad account id.
+        ad_account_title:
+          type: string
+          description: Ad account title.
+        campaign_id:
+          type: string
+          description: Campaign id.
+        campaign_title:
+          type: string
+          description: Campaign title.
+        catalog_item_id:
+          type: string
+          description: Catalog item id.
+        catalog_item_title:
+          type: string
+          description: Catalog item title.
+        creative_id:
+          type: string
+          description: Creative id.
+        creative_title:
+          type: string
+          description: Creative title.
+        asset_id:
+          type: string
+          description: Asset id.
+        inventory_id:
+          type: string
+          description: Inventory id.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count.
+        imp_item_count:
+          type: string
+          format: int64
+          description: Per item impression count. Only populated for item-level group by results with Sponsored Brand campaign.
+        click_count:
+          type: string
+          format: int64
+          description: Click count.
+        money_spent:
+          type: string
+          format: int64
+          description: Money spent. It is in a micro unit.
+        purchase_count:
+          type: string
+          format: int64
+          description: Purchase count.
+        purchase_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricInt'
+        revenue:
+          type: string
+          format: int64
+          description: Money earned. It is in a micro unit.
+        revenue_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricInt'
+        roas:
+          type: number
+          format: double
+          description: ROAS in percent.
+        roas_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricDouble'
+        cr:
+          type: number
+          format: double
+          description: CR. Click to Purchase rate.
+        ctr:
+          type: number
+          format: double
+          description: CTR. Click divided by Impressions.
+        ctr_item:
+          type: number
+          format: double
+          description: CTR per item-level impression. Click divided by imp_item_count, in percent. Only populated for item-level group by results with Sponsored Brand campaign.
+        imp_to_purchase:
+          type: number
+          format: double
+          description: CTR multiplied by CR (CTR x CR).
+        imp_item_to_purchase:
+          type: number
+          format: double
+          description: Purchase rate per item-level impression. Purchase divided by imp_item_count, in percent. Only populated for item-level group by results with Sponsored Brand campaign.
+        num_ad_accounts:
+          type: string
+          format: int64
+          description: Number of active ad accounts during selected time period (platform summary specific).
+        items_per_ad_account:
+          type: number
+          format: double
+          description: Items per ad account (platform summary specific).
+        cpc:
+          type: number
+          format: double
+          description: CPC (Cost Per Click) in a micro unit.
+        acos:
+          type: number
+          format: double
+          description: Advertising cost of sales in percent. Ad Spending / Revenue
+        cpm:
+          type: number
+          format: double
+          description: CPM (Cost Per 1,000 Impressions) in a micro unit.
+        cpm_item:
+          type: number
+          format: double
+          description: CPM per item-level impression in a micro unit. Money spent divided by imp_item_count, multiplied by 1,000. Only populated for item-level group by results with Sponsored Brand campaign.
+      description: PlatformSummaryRow represents a row of platform-level summarized reporting.
+      additionalProperties: true
+    managementv1QueryFilter:
+      type: object
+      properties:
+        column:
+          $ref: '#/components/schemas/v1ReportSummaryFilterColumn'
+        filter_operator:
+          $ref: '#/components/schemas/v1ReportSummaryFilterOperator'
+        value:
+          type: string
+          description: ID to be filtered by. To be used with EQ operator.
+        values:
+          type: array
+          items:
+            type: string
+          description: IDs to be filtered by. To be used with IN operator. IN operator is only supported for Campaign Filter column.
+      additionalProperties: true
+    v1AdManagerAccountSummaryRow:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date in 'YYYY-MM-DD'.
+        timezone:
+          type: string
+          description: Timezone of date in the data.
+        currency:
+          type: string
+          description: Currency.
+        ad_account_id:
+          type: string
+          description: Ad account id.
+        ad_account_title:
+          type: string
+          description: Ad account title.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count.
+        click_count:
+          type: string
+          format: int64
+          description: Click count.
+        money_spent:
+          type: string
+          format: int64
+          description: Money spent. It is in a micro unit.
+        purchase_count:
+          type: string
+          format: int64
+          description: Purchase count.
+        purchase_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricInt'
+        revenue:
+          type: string
+          format: int64
+          description: Money earned. It is in a micro unit.
+        revenue_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricInt'
+        roas:
+          type: number
+          format: double
+          description: ROAS in percent.
+        roas_breakdown:
+          $ref: '#/components/schemas/commonHaloMetricDouble'
+        cr:
+          type: number
+          format: double
+          description: CR. Click to Purchase rate.
+        ctr:
+          type: number
+          format: double
+          description: CTR. Click divided by Impressions.
+        cpc:
+          type: number
+          format: double
+          description: CPC (Cost Per Click) in a micro unit.
+        cpm:
+          type: number
+          format: double
+          description: CPM (Cost Per 1,000 Impressions) in a micro unit.
+      description: AdManagerAccountSummaryRow represents a row of summarized reporting of ad manager account.
+      additionalProperties: true
+    publicQueryPlatformSummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1PlatformSummaryRow'
+          description: Rows of platform-level summarized reporting.
+      description: QueryPlatformSummary response
+      required:
+      - rows
+      additionalProperties: true
+    v1PlacementReportSummaryRow:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+          description: Campaign id.
+        campaign_title:
+          type: string
+          description: Campaign title.
+        placement:
+          type: string
+          description: Placement. It can be a placement name, such as HOME, SEARCH, CART, etc.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count.
+        click_count:
+          type: string
+          format: int64
+          description: Click count.
+        ctr:
+          type: number
+          format: double
+          description: CTR. Click divided by Impressions.
+        purchase_count:
+          type: string
+          format: int64
+          description: Purchase counts captured by direct and indirect attribution.
+        revenue:
+          type: string
+          format: int64
+          description: Money earned captured by direct and indirect attribution. It is in a micro unit.
+        cpc:
+          type: number
+          format: double
+          description: CPC (Cost Per Click) in a micro unit.
+        money_spent:
+          type: string
+          format: int64
+          description: Money spent. It is in a micro unit.
+        roas:
+          type: number
+          format: double
+          description: ROAS captured by direct and indirect attribution, in percent.
+      description: PlacementReportSummaryRow represents a row of summarized reporting of placements.
+      additionalProperties: true
+    publicReadAudienceReportSummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1AudienceReportSummaryRow'
+          description: Rows of summarized audience reporting.
+      description: ReadAudienceReportSummary response
+      required:
+      - rows
+      additionalProperties: true
+    publicQueryAdAccountSummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1AdAccountSummaryRow'
+          description: Rows of ad-account-level summarized reporting.
+      description: QueryAdAccountSummary response
+      required:
+      - rows
+      additionalProperties: true
+    v1KeywordReportSummaryRow:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+          description: Campaign id.
+        campaign_title:
+          type: string
+          description: Campaign title.
+        keyword:
+          type: string
+          description: Individual target keyword setup in the campaign.
+        match_type:
+          type: string
+          description: Match type of the keyword.
+        search_term_count_total:
+          type: string
+          format: int64
+          description: Search term total count.
+        opportunity_count:
+          type: string
+          format: int64
+          description: Deprecated. Opportunity Count.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count.
+        click_count:
+          type: string
+          format: int64
+          description: Click count.
+        ctr:
+          type: number
+          format: double
+          description: CTR. Click divided by Impressions.
+        money_spent:
+          type: string
+          format: int64
+          description: Money spent. It is in a micro unit.
+        purchase_count:
+          type: string
+          format: int64
+          description: Purchase count captured by direct and indirect attribution.
+        revenue:
+          type: string
+          format: int64
+          description: Revenue captured by direct and indirect attribution. It is in a micro unit.
+        cpc:
+          type: number
+          format: double
+          description: CPC (Cost Per Click) in a micro unit.
+        roas:
+          type: number
+          format: double
+          description: ROAS captured by direct and indirect attribution, in percent.
+      description: KeywordReportSummaryRow represents a row of summarized reporting of campaigned keywords.
+      additionalProperties: true
+    publicReadKeywordReportSummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1KeywordReportSummaryRow'
+          description: Rows of summarized keyword reporting.
+      description: ReadKeywordReportSummary response
+      required:
+      - rows
+      additionalProperties: true
+    v1PlatformSummaryOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY
+      - TIME_DATE
+      - TIME_DATE_DESC
+      - TIMEZONE
+      - TIMEZONE_DESC
+      - CURRENCY_DIM
+      - CURRENCY_DIM_DESC
+      - AD_MANAGER_ACCOUNT_TITLE
+      - AD_MANAGER_ACCOUNT_TITLE_DESC
+      - AD_ACCOUNT_ID
+      - AD_ACCOUNT_ID_DESC
+      - AD_ACCOUNT_TITLE
+      - AD_ACCOUNT_TITLE_DESC
+      - CATALOG_ITEM_TITLE
+      - CATALOG_ITEM_TITLE_DESC
+      - CAMPAIGN_ID
+      - CAMPAIGN_ID_DESC
+      - CAMPAIGN_TITLE
+      - CAMPAIGN_TITLE_DESC
+      - CATALOG_ITEM_ID
+      - CATALOG_ITEM_ID_DESC
+      - INVENTORY_DIM
+      - INVENTORY_DIM_DESC
+      - CREATIVE_ID
+      - CREATIVE_ID_DESC
+      - CREATIVE_TITLE
+      - CREATIVE_TITLE_DESC
+      - IMP_COUNT
+      - IMP_COUNT_DESC
+      - CLICK_COUNT
+      - CLICK_COUNT_DESC
+      - MONEY_SPENT
+      - MONEY_SPENT_DESC
+      - PURCHASE_COUNT
+      - PURCHASE_COUNT_DESC
+      - REVENUE
+      - REVENUE_DESC
+      - ROAS
+      - ROAS_DESC
+      - CPC
+      - CPC_DESC
+      - CR
+      - CR_DESC
+      - CTR
+      - CTR_DESC
+      - IMP_TO_PURCHASE
+      - IMP_TO_PURCHASE_DESC
+      - NUM_AD_ACCOUNTS
+      - NUM_AD_ACCOUNTS_DESC
+      - ITEMS_PER_AD_ACCOUNT
+      - ITEMS_PER_AD_ACCOUNT_DESC
+      - ACOS
+      - ACOS_DESC
+      - CPM
+      - CPM_DESC
+      default: UNKNOWN_ORDER_BY
+      title: "- UNKNOWN_ORDER_BY: This value is not part of the API specification.\n - IMP_COUNT: Metrics"
+    publicReadPlacementReportSummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1PlacementReportSummaryRow'
+          description: Rows of summarized placement reporting.
+      description: ReadPlacementReportSummary response
+      required:
+      - rows
+      additionalProperties: true
+    publicReadAdManagerAccountReportSummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1AdManagerAccountSummaryRow'
+          description: Rows of summarized ad manager account reporting.
+      description: ReadAdManagerAccountReportSummary response
+      required:
+      - rows
+      additionalProperties: true
+    messagesDeleteReportErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesDeleteReportErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadReportStatusResponse:
+      type: object
+      example:
+        id: anExistingReportId
+        status: READY
+        location_json: https://{WORKPLACE_REPORT_STORAGE}/reports/anExistingReportId.json?token={ONE_TIME_TOKEN}
+        location_csv: https://{WORKPLACE_REPORT_STORAGE}/reports/anExistingReportId.csv?token={ONE_TIME_TOKEN}
+      properties:
+        status:
+          $ref: '#/components/schemas/messagesReadReportStatusResponseStatus'
+          description: Current status of a report.
+        location_json:
+          type: string
+          description: URL of the report contents in JSON form. Will be expired in an hour.
+        location_csv:
+          type: string
+          description: URL of the report contents in CSV form. Will be expired in an hour.
+    dspReport:
+      type: object
+      example:
+        id: sampleReportId
+        ad_account_id: sampleAdAccountId
+        date_range:
+          start: '2020-01-01'
+          end: '2020-01-02'
+        dimensions:
+        - DATE
+        - APP_OR_SITE
+        - CAMPAIGN
+        created_at: '2020-01-03T03:12:50.124101982Z'
+        updated_at: '2020-01-03T03:24:21.109821241Z'
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the Report. Automatically set by server on creation.
+        ad_account_id:
+          type: string
+          description: Ad account ID to which the report associated.
+        product_id:
+          type: string
+          description: Product App or Site ID to which the report associated.
+        date_range:
+          $ref: '#/components/schemas/adcloudcommonDateInterval'
+          description: 'Date range for which the report contains the statistical data.
+
+            Both start and end date are inclusive.'
+        dimensions:
+          type: array
+          items:
+            $ref: '#/components/schemas/dspReportDimension'
+          description: List of interested dimensions by which metric numbers will be broken down.
+        optional_metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportOptionalMetric'
+          description: List of interested optional metrics.
+        expire_at:
+          type: string
+          format: date-time
+          description: The time when a report will be expired.
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+      description: The metadata of a report.
+      required:
+      - date_range
+      - dimensions
+      - ad_account_id
+    messagesReadReportStatusError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadReportStatusErrorAPIErrorInfo'
+    messagesDeleteReportResponse:
+      type: object
+      example: {}
+    messagesReadReportError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadReportErrorAPIErrorInfo'
+    messagesCreateReportErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesCreateReportErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    ReportOptionalMetric:
+      type: string
+      enum:
+      - UNKNOWN_REPORT_METRIC
+      - VIDEO_PLAY_PROGRESS
+      - ENGAGED_VIEWS
+      - ENGAGED_CLICKS
+      default: UNKNOWN_REPORT_METRIC
+      description: Optional Metric enumerates available breakdown metrics.
+    messagesListReportsResponse:
+      type: object
+      example:
+        reports:
+        - id: sampleReportId
+          ad_account_id: sampleAdAccountId
+          date_range:
+            start: '2020-01-01'
+            end: '2020-01-02'
+          dimensions:
+          - DATE
+          - PRODUCT
+          - CAMPAIGN
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+        - id: anothreReportId
+          ad_account_id: sampleAdAccountId
+          date_range:
+            start: '2020-01-03'
+            end: '2020-01-04'
+          dimensions:
+          - DATE
+          - PRODUCT
+          - CAMPAIGN
+          - AD_GROUP
+          created_at: '2020-01-05T03:12:50.124101982Z'
+          updated_at: '2020-01-05T03:24:21.109821241Z'
+      properties:
+        reports:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspReport'
+          description: List of reports in the given Workplace and AdAccount.
+    messagesReadReportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    dspReportDimension:
+      type: string
+      enum:
+      - UNKNOWN_REPORT_DIMENSION
+      - DATE
+      - APP_OR_SITE
+      - CAMPAIGN
+      - AD_GROUP
+      - CREATIVE_GROUP
+      - CREATIVE
+      - EXCHANGE
+      - SUB_PUBLISHER
+      - TRAFFIC
+      - SKAN
+      default: UNKNOWN_REPORT_DIMENSION
+      description: Dimension enumerates available breakdown dimensions.
+    messagesCreateReportResponse:
+      type: object
+      example:
+        id: newlyCreatedReportId
+        href: https://api.moloco.cloud/cm/v1/reports/newlyCreatedReportId
+        status: https://api.moloco.cloud/cm/v1/reports/newlyCreatedReportId/status
+      properties:
+        id:
+          type: string
+          description: Unique ID of the newly created report.
+        href:
+          type: string
+          description: Reference URL that shows the report.
+        status:
+          type: string
+          description: Reference URL that shows the most recent status of the report.
+    messagesCreateReportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListReportsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    adcloudcommonDateInterval:
+      type: object
+      properties:
+        start:
+          type: string
+          description: Start date in the format of YYYY-MM-DD.
+        end:
+          type: string
+          description: End date in the format of YYYY-MM-DD.
+      description: Interval with start and end dates in the format of YYYY-MM-DD.
+    messagesReadReportStatusErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListReportsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListReportsErrorAPIErrorInfo'
+    messagesCreateReportError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateReportErrorAPIErrorInfo'
+    messagesDeleteReportError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteReportErrorAPIErrorInfo'
+    messagesDeleteReportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesReadReportResponse:
+      type: object
+      example:
+        report:
+          id: sampleReportId
+          ad_account_id: sampleAdAccountId
+          date_range:
+            start: '2020-01-01'
+            end: '2020-01-02'
+          dimensions:
+          - DATE
+          - PRODUCT
+          - CAMPAIGN
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+      properties:
+        report:
+          $ref: '#/components/schemas/dspReport'
+          description: The details of a report.
+    messagesReadReportStatusResponseStatus:
+      type: string
+      enum:
+      - UNKNOWN_REPORT_STATUS
+      - ACCEPTED
+      - READY
+      - FAILED
+      default: UNKNOWN_REPORT_STATUS
+      description: "Status enumerates the status of report.\n\n - ACCEPTED: Successfully initiated the report generation request.\n - READY: Successfully generated the report. It's ready to download from the location.\n - FAILED: Failed to generate the report. Reasons of failure can be found at errors."
+    messagesReadReportErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesReadReportErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesListReportsErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesListReportsErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadReportStatusErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesReadReportStatusErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
+    Bearer:
+      type: apiKey
+      description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
+      name: Authorization
+      in: header
+x-refined-from:
+- mcm-management-api.json
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+- moloco-commerce-media-management-openapi.yml
+x-readme:
+  explorer-enabled: true

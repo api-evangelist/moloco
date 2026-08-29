@@ -1,0 +1,2219 @@
+openapi: 3.2.0
+info:
+  title: Moloco User API
+  version: '1.0'
+  description: 'Operations tagged User across 4 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml, moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: User
+paths:
+  /cm/v1/auth/ad-account/{ad_account_id}/users:
+    get:
+      summary: List ad account users
+      description: 'List users under a certain ad account.
+
+        With `include_role` query parameter, response can include roles.
+
+        API callers who have a WORKPLACE_OWNER or AD_ACCOUNT_OWNER or AD_ACCOUNT_MEMBER role can call this API.'
+      operationId: DspApi_ListAdAccountUsers
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListAdAccountUsersResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: ad_account_id
+        description: The ad account ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include_role
+        description: Flag whether response includes user's role.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/password:
+    post:
+      summary: Update user password
+      description: 'Update user password.
+
+        You can call this API with token whose type is AUTH_TOKEN, UPDATE_PASSWORD_TOKEN.'
+      operationId: DspApi_UpdatePassword
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdatePasswordResponse'
+        default:
+          description: 'Error. Detailed cause can be found in the `details` field.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdatePasswordError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesUpdatePasswordRequest'
+        required: true
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users:
+    get:
+      summary: List workplace users
+      description: 'List users under a certain workplace.
+
+        With `include_role` query parameter, response can include roles.
+
+        Only API callers who have a WORKPLACE_OWNER role can call this API.'
+      operationId: DspApi_ListWorkplaceUsers
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListWorkplaceUsersResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: include_role
+        description: Flag whether response includes user's role.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: filter_roles
+        description: "Filter the users who have this role.\nIf multiple roles are given, users who have one of these roles are filtered.\n\n - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - WORKPLACE_OWNER
+            - AD_ACCOUNT_OWNER
+            - AD_ACCOUNT_MEMBER
+            - AD_ACCOUNT_VIEWER
+      - name: match_roles
+        description: "Select the users who have this role.\nIf multiple roles are given, only users who have all of these roles are selected.\n\n - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
+        in: query
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - WORKPLACE_OWNER
+            - AD_ACCOUNT_OWNER
+            - AD_ACCOUNT_MEMBER
+            - AD_ACCOUNT_VIEWER
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users/complete-signup:
+    post:
+      summary: Complete user signup
+      description: 'Complete the user signup with additional info.
+
+        The bearer token should be the password reset token which is achieved from `create password email`.
+
+        Once this API succeeds, the user’s signed_up status becomes true.'
+      operationId: DspApi_CompleteSignup
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCompleteSignupResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCompleteSignupError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesCompleteSignupRequest'
+        required: true
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users/expel:
+    post:
+      summary: Expel the user
+      description: 'Expel the user from an API callers’ workplace.
+
+        Only API callers who have the WORKPLACE_OWNER role can expel users.
+
+        Expelled users will no longer have any roles under the workplace.'
+      operationId: DspApi_ExpelUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesExpelUserResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesExpelUserError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesExpelUserRequest'
+        required: true
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users/forgot-password:
+    post:
+      summary: Forgot user password
+      description: 'If the user forgot the password, use this API to receive `password reset email`.
+
+        The `password reset email` contains password reset token for updating password and user’s email which will be used to call `UpdatePassword` API.
+
+        The token is valid for 7 days.'
+      operationId: DspApi_ForgotPassword
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesForgotPasswordResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesForgotPasswordRequest'
+        required: true
+      tags:
+      - User
+      security: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users/invite:
+    post:
+      summary: Invite the user
+      description: 'Invite the user to an API callers’ workplace.
+
+        The user who has WORKPLACE_OWNER or AD_ACCOUNT_OWNER or AD_ACCOUNT_MEMBER Roles can invite users to a workplace.'
+      operationId: DspApi_InviteUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesInviteUserResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesInviteUserError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesInviteUserRequest'
+        required: true
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users/reset-password:
+    post:
+      summary: Reset the user password
+      description: 'reset the user password.
+
+        The bearer token should be the password reset token which is achieved from `password reset email`.
+
+        Once this API succeeds, the user’s signed_up status becomes true.'
+      operationId: DspApi_ResetPassword
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesResetPasswordResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesResetPasswordError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesResetPasswordRequest'
+        required: true
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users/withdrawal:
+    post:
+      summary: Delete the user
+      description: 'Delete the user.
+
+        '
+      operationId: DspApi_DeleteUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteUserResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteUserError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesDeleteUserRequest'
+        required: true
+      tags:
+      - User
+      security: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/users/{user_id}:
+    get:
+      summary: Read the user
+      description: 'Read the user under API caller''s workplace.
+
+        If include_role specified, response will include roles bound to API caller''s workplace and ad account (if exists).
+
+        The user who has any role except AD_ACCOUNT_VIEWER can call this API.
+
+        A user who has an AD_ACCOUNT_VIEWER role can only read itself.'
+      operationId: DspApi_ReadUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadUserResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadUserError'
+      parameters:
+      - name: user_id
+        description: The user ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include_role
+        description: Flag whether response includes user's role.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      tags:
+      - User
+      security:
+      - Bearer: []
+    put:
+      summary: Update the user
+      description: Update the user's info such as name.
+      operationId: DspApi_UpdateUser
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateUserResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateUserError'
+      parameters:
+      - name: user_id
+        description: The user ID.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/dspUser'
+                  description: The user.
+              required:
+              - user
+        required: true
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/workplaces:
+    get:
+      summary: List API caller's registered workplaces
+      description: List workplaces to which the user has registered.
+      operationId: DspApi_ListWorkplaces
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListWorkplacesResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: show_history
+        description: 'Flag to include creation request histories.
+
+          If true, the response will include Workplace creation request histories.
+
+          If false, the response will not include Workplace creation request histories.'
+        in: query
+        required: false
+        schema:
+          type: boolean
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/workplaces-by-domain:
+    get:
+      summary: List workplaces by domain with invitation status
+      description: List workplaces by domain with the info whether API caller requested an invitation to this workplace or not.
+      operationId: DspApi_ListWorkplacesByDomain
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListWorkplacesByDomainResponse'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      tags:
+      - User
+      security:
+      - Bearer: []
+    servers:
+    - url: https://api.moloco.cloud
+  /v1/users:
+    get:
+      security:
+      - Bearer: []
+      description: List users matching the given condition.
+      tags:
+      - User
+      summary: List users.
+      operationId: v1_list_users
+      parameters:
+      - description: The ID of the platform to search users.
+        name: platform_id
+        in: query
+        schema:
+          type: string
+      - description: The ID of the userspace to search users.
+        name: userspace_id
+        in: query
+        schema:
+          type: string
+      - description: The email address of a user to search.
+        name: email
+        in: query
+        schema:
+          type: string
+      - description: The name of the users to search.
+        name: name
+        in: query
+        schema:
+          type: string
+      - description: Filter the users with this role.
+        name: filter_role
+        in: query
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - description: Select the users with this role.
+        name: match_role
+        in: query
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - description: 'If set to true, the role names granted to each user will be returned as well.
+
+          When this parameter is used, the platform_id should be given as well because
+
+          role grant is done under a specific platform.
+
+          '
+        name: with_roles
+        in: query
+        schema:
+          type: boolean
+      - description: If set to true, the status of each user will be returned as well.
+        name: with_status
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The list of users found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listUsersResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      security:
+      - Bearer: []
+      description: Create a new user in a given userspace.
+      tags:
+      - User
+      summary: Create a new user.
+      operationId: v1_create_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUserRequest'
+        description: a request to create a user.
+        required: true
+      responses:
+        '200':
+          description: The given user is successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createUserResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: Conflict - the user is already there.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/users/{email}/password:
+    put:
+      security:
+      - Bearer: []
+      description: Update the user password with the given password reset token in the header.
+      tags:
+      - User
+      summary: Update the user password.
+      operationId: v1_update_user_password
+      parameters:
+      - description: The email address of the user.
+        name: email
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - password
+              properties:
+                password:
+                  description: Password to update.
+                  type: string
+        required: true
+      responses:
+        '204':
+          description: The password is successfully updated.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - cannot update permission because of lack of permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      description: Reset the user password and issue a password reset token.
+      tags:
+      - User
+      summary: Delete the user password.
+      operationId: v1_delete_user_password
+      parameters:
+      - description: The email address of the user.
+        name: email
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Userspace ID.
+        name: userspace_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: Forward URL that will be included in the password reset email.
+        name: forward_url
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The password reset email is sent to the user.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/users/{user_id}:
+    get:
+      security:
+      - Bearer: []
+      description: Read a user information in the given userspace.
+      tags:
+      - User
+      summary: Read a user.
+      operationId: v1_read_user
+      parameters:
+      - description: The ID of the user, which can be Morse UID or email address.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The userspace ID to which the user belongs.
+        name: userspace_id
+        in: query
+        schema:
+          type: string
+      - description: The platform ID to which the user is registered.
+        name: platform_id
+        in: query
+        schema:
+          type: string
+      - description: 'Get the role names bound to the user as well.
+
+          This param should be used with platform_id.
+
+          '
+        name: with_roles
+        in: query
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The user info was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/readUserResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    put:
+      security:
+      - Bearer: []
+      description: Update an existing user matching the given user ID.
+      tags:
+      - User
+      summary: Update an existing user.
+      operationId: v1_update_user
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateUserRequest'
+        description: a request to update a user.
+        required: true
+      responses:
+        '200':
+          description: The user info was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/updateUserResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized - the given current password is not matching with the database record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      security:
+      - Bearer: []
+      description: Delete a user matching the user ID in a specific userspace.
+      tags:
+      - User
+      summary: Delete a user.
+      operationId: v1_delete_user
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The userspace ID.
+        name: userspace_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No user record found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: Not found - no such user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/users/{user_id}/permissions:
+    get:
+      security:
+      - Bearer: []
+      description: List the permissions given to the user.
+      tags:
+      - User
+      summary: List the user permissions.
+      operationId: v1_list_permissions
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform to which the user belongs.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of permissions are correctly returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listUserPermissionsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/users/{user_id}/platforms/{platform_id}:
+    post:
+      security:
+      - Bearer: []
+      description: Register a user to a specific workplace.
+      tags:
+      - User
+      summary: Add a user to a workplace.
+      operationId: v1_register_user_to_platform
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform to which the user will be registered.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userRegistrationRequest'
+      responses:
+        '204':
+          description: The registration was successfully finished.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to register a user to a platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: The registration was done already.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      security:
+      - Bearer: []
+      description: Deregister the given user from a specific workplace.
+      tags:
+      - User
+      summary: Remove the user from a workplace.
+      operationId: v1_delete_user_from_platform
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform from which the user will be removed.
+        name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The registration was successfully deleted.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to remove the user from the platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+  /v1/users/{user_id}/rolegrants:
+    get:
+      security:
+      - Bearer: []
+      description: Get the list of role grants to the given user.
+      tags:
+      - User
+      summary: Get role grants.
+      operationId: v1_list_role_grants
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Platform ID.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of roles granted to the given user was successfully returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listRoleGrantsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to list roles granted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      security:
+      - Bearer: []
+      description: Create a role grant that attaches roles to a resource and a user.
+      tags:
+      - User
+      summary: Create a role grant.
+      operationId: v1_create_role_grants
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createRoleGrantsRequest'
+        description: The request body
+        required: true
+      responses:
+        '204':
+          description: The roles are successfully granted.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: Conflict - the role grant is already there.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      security:
+      - Bearer: []
+      description: Delete a specific role attached to a specific resource.
+      tags:
+      - User
+      summary: Delete a role grant.
+      operationId: v1_delete_role_grants
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The platform ID to which the user belongs.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The resource to which the role is granted.
+        name: resource_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The actual instance ID of the resource.
+        name: resource_instance_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The ID of the granted role.
+        name: role_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform in which the role is defined.
+        name: role_platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The role grant was successfully deleted.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to list roles granted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    messagesDeleteUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user email.
+        password:
+          type: string
+          description: The user password.
+      required:
+      - email
+      - password
+    messagesCompleteSignupError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCompleteSignupErrorAPIErrorInfo'
+    messagesInviteUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: Invited user information.
+    dspBusinessCategory:
+      type: string
+      enum:
+      - BUSINESS_CATEGORY_UNKNOWN
+      - BUSINESS_CATEGORY_GAME
+      - BUSINESS_CATEGORY_COMMERCE
+      - BUSINESS_CATEGORY_ENTERTAINMENT
+      - BUSINESS_CATEGORY_FINTECH
+      - BUSINESS_CATEGORY_FNB
+      - BUSINESS_CATEGORY_ONDEMAND
+      - BUSINESS_CATEGORY_SOCIAL_NETWORK
+      - BUSINESS_CATEGORY_OTHERS
+      default: BUSINESS_CATEGORY_UNKNOWN
+      description: Category of the business.
+    dspWorkplaceHistory:
+      type: object
+      properties:
+        workplace_creation_requests:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspWorkplaceCreationRequest'
+    messagesListAdAccountUsersResponse:
+      type: object
+      properties:
+        users_with_infos:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUserWithInfo'
+          description: List of users contain roles.
+    messagesCompleteSignupErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_INVALID_PASSWORD
+      - USER_TERMS_AGREEMENT_REQUIRED_TO_SIGN_UP
+      - USER_ALREADY_SIGNUP
+      - USER_ALREADY_SET_PASSWORD_USING_TOKEN
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_TERMS_AGREEMENT_REQUIRED_TO_SIGN_UP: User must agree to terms and privacy policy to sign up.\n - USER_ALREADY_SIGNUP: The user has already signed up.\n - USER_ALREADY_SET_PASSWORD_USING_TOKEN: The user has already set their password using token."
+    messagesUpdateUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspWorkplaceCreationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for request.
+        company_info:
+          $ref: '#/components/schemas/dspCompanyInfo'
+          description: Company info for th requested workplace.
+        status:
+          $ref: '#/components/schemas/dspWorkplaceCreationRequestStatus'
+          description: Status of the request.
+        reject_reason:
+          type: string
+          description: Rejected reason in case request is rejected.
+        requested_at:
+          type: string
+          format: date-time
+          description: Requested time.
+        workplace_id:
+          type: string
+          description: 'Created workplace''s ID after finalized.
+
+            Only visible when request is approved.'
+        workplace_title:
+          type: string
+          description: Title of the workplace.
+        ad_account_info:
+          $ref: '#/components/schemas/dspWorkplaceCreationRequestAdAccountInfo'
+          description: AdAccount information used to create a default AdAccount for the Workplace.
+    messagesListWorkplaceUsersResponse:
+      type: object
+      properties:
+        user_with_infos:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUserWithInfo'
+          description: List of users with additional info.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    messagesExpelUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesExpelUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesExpelUserRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The user ID.
+      required:
+      - user_id
+    messagesUpdatePasswordError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdatePasswordErrorAPIErrorInfo'
+    adcloudcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      default: UNKNOWN_CURRENCY
+      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
+    messagesResetPasswordRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          description: 'The password that user want to change.
+
+            Password must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.'
+        email:
+          type: string
+          description: The user email.
+      required:
+      - password
+      - email
+    dspClientType:
+      type: string
+      enum:
+      - UNKNOWN_CLIENT_TYPE
+      - ADVERTISER
+      - AGENCY
+      default: UNKNOWN_CLIENT_TYPE
+      description: "Enumerates available client types.\n\n - ADVERTISER: The actual advertiser, who owns the advertising apps or web sites.\n - AGENCY: An agency, who usually operates ad campaigns on behalf of the advertiser."
+    messagesDeleteUserResponse:
+      type: object
+    dspUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email of User. Immutable.
+        id:
+          type: string
+          description: ID of User. Immutable.
+        name:
+          type: string
+          description: First name of the User.
+        last_name:
+          type: string
+          description: Last name of the User.
+        company_name:
+          type: string
+          description: Company name of the User.
+        terms_agreed:
+          type: boolean
+          description: Whether the user agreed to terms and privacy policy.
+        marketing_agreed:
+          type: boolean
+          description: Whether the user agreed to receive marketing purpose informations.
+        locale:
+          $ref: '#/components/schemas/commonLocale'
+          description: The locale preference of the user.
+        created_at:
+          type: string
+          format: date-time
+          description: The time when a user was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: The time when a user was updated.
+          readOnly: true
+      description: User represents a single user.
+    dspWorkplace:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The workplace ID.
+        title:
+          type: string
+          description: The workplace title.
+        logo_url:
+          type: string
+          description: The URL of the workplace logo image file.
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+          description: The workplace's configuration.
+      description: The workplace.
+    messagesExpelUserError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesExpelUserErrorAPIErrorInfo'
+    dspWorkplaceCreationRequestStatus:
+      type: string
+      enum:
+      - WORKPLACE_CREATION_REQUEST_UNKNOWN
+      - WORKPLACE_CREATION_REQUEST_PENDING
+      - WORKPLACE_CREATION_REQUEST_APPROVED
+      - WORKPLACE_CREATION_REQUEST_REJECTED
+      - WORKPLACE_CREATION_REQUEST_FAILED
+      default: WORKPLACE_CREATION_REQUEST_UNKNOWN
+    messagesExpelUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
+      - USER_NOT_REGISTERED_TO_WORKPLACE
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_NOT_REGISTERED_TO_WORKPLACE: The user is not registered to workplace."
+    messagesForgotPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user email.
+      required:
+      - email
+    messagesInviteUserError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesInviteUserErrorAPIErrorInfo'
+    messagesUpdatePasswordErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdatePasswordErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspWorkplaceCreationRequestAdAccountInfo:
+      type: object
+      properties:
+        timezone:
+          type: string
+          description: '[IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) name.
+
+            e.g. America/Los_Angeles.'
+        currency:
+          $ref: '#/components/schemas/adcloudcommonCurrency'
+    messagesCompleteSignupRequest:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: The User data to be created.
+        password:
+          type: string
+          description: 'The password that user want to create. Required for password based login users.
+
+            Password must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.'
+      required:
+      - user
+    messagesDeleteUserError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteUserErrorAPIErrorInfo'
+    messagesExpelUserResponse:
+      type: object
+    dspRoleType:
+      type: string
+      enum:
+      - WORKPLACE_OWNER
+      - AD_ACCOUNT_OWNER
+      - AD_ACCOUNT_MEMBER
+      - AD_ACCOUNT_VIEWER
+      default: UNKNOWN_TYPE
+      description: " - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
+    messagesUpdatePasswordResponse:
+      type: object
+    messagesReadUserResponse:
+      type: object
+      properties:
+        user_with_info:
+          $ref: '#/components/schemas/messagesUserWithInfo'
+          description: Invited user information.
+    messagesDeleteUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    commonLocale:
+      type: string
+      enum:
+      - UNKNOWN_LOCALE
+      - EN_US
+      - KO_KR
+      - JA_JP
+      default: UNKNOWN_LOCALE
+      description: "Locale enumerates the supported user locale values.\n\n - EN_US: English (United States)\n - KO_KR: Korean (South Korea)\n - JA_JP: Japanese (Japan)"
+    messagesUpdatePasswordRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          description: The current password.
+        new_password:
+          type: string
+          description: 'The new password.
+
+            Password must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.'
+      required:
+      - current_password
+      - new_password
+    messagesListWorkplacesResponse:
+      type: object
+      properties:
+        workplaces:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspWorkplace'
+          description: The list of workplace.
+        workplace_history:
+          $ref: '#/components/schemas/dspWorkplaceHistory'
+          description: The list of workplace creation request histories.
+    dspWorkplaceWithInvitation:
+      type: object
+      properties:
+        workplace:
+          $ref: '#/components/schemas/dspWorkplace'
+          description: The workplace.
+        requested_invitation:
+          type: boolean
+          description: Whether user requested an invitation to this workplace.
+        requested_at:
+          type: string
+          format: date-time
+          description: Requested time.
+      description: The workplace with invitation status.
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    messagesListWorkplacesByDomainResponse:
+      type: object
+      properties:
+        workplaces:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspWorkplaceWithInvitation'
+          description: The list of workplace with invitation status.
+    messagesResetPasswordErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_INVALID_PASSWORD
+      - USER_ALREADY_SET_PASSWORD_USING_TOKEN
+      - USER_CANNOT_USE_PREVIOUS_PASSWORD
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_ALREADY_SET_PASSWORD_USING_TOKEN: The user has already set their password using token.\n - USER_CANNOT_USE_PREVIOUS_PASSWORD: Users cannot reuse previous password."
+    messagesResetPasswordError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesResetPasswordErrorAPIErrorInfo'
+    dspCompanyInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Company.
+        client_type:
+          $ref: '#/components/schemas/dspClientType'
+          title: Client business type of the company. e.g. Advertiser, Agency
+        category:
+          $ref: '#/components/schemas/dspBusinessCategory'
+          title: Category of the business. e.g. Game
+        finance_email:
+          type: string
+          description: Email account in charge of the finance.
+        address:
+          type: string
+          description: Address of the company.
+        sub_address:
+          type: string
+          description: Sub address of the company.
+        city:
+          type: string
+          description: City of the company.
+        state:
+          type: string
+          description: State of the company.
+        country:
+          type: string
+          description: Country of the company.
+        zipcode:
+          type: string
+          description: Zipcode of the company.
+      description: CompanyInfo holds the company information.
+      required:
+      - client_type
+      - category
+      - name
+      - finance_email
+      - address
+      - city
+      - country
+      - zipcode
+    messagesForgotPasswordResponse:
+      type: object
+    messagesResetPasswordResponse:
+      type: object
+    dspRole:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/dspRoleType'
+          description: The role types users can have.
+        workplace_id:
+          type: string
+          description: The workplace bound to the role.
+        ad_account_id:
+          type: string
+          description: The ad account id bound to role.
+        exchange_id:
+          type: string
+          description: The exchange id bound to role.
+      description: 'Role that user can have.
+
+        Role is bound to resource.'
+    messagesReadUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
+      - USER_AUTH_TOKEN_REQUIRED
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_AUTH_TOKEN_REQUIRED: Token should be auth token."
+    messagesUserWithInfo:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: The user.
+        signed_up:
+          type: boolean
+          description: Signed up status of user.
+        roles:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspRole'
+          description: List of roles the user has.
+    messagesCompleteSignupErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCompleteSignupErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesResetPasswordErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesResetPasswordErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesInviteUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user email.
+        name:
+          type: string
+          description: The user name.
+      required:
+      - email
+      - name
+    messagesInviteUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_WORKPLACE_ALREADY_REGISTERED
+      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_WORKPLACE_ALREADY_REGISTERED: The workplace is already registered.\n - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user."
+    messagesUpdateUserError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateUserErrorAPIErrorInfo'
+    messagesReadUserError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadUserErrorAPIErrorInfo'
+    messagesUpdateUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: The user.
+    messagesReadUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdatePasswordErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_UPDATE_NOT_ALLOWED
+      - USER_INVALID_PASSWORD
+      - USER_CANNOT_USE_PREVIOUS_PASSWORD
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_UPDATE_NOT_ALLOWED: The user can't update other user's name or password.\n - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_CANNOT_USE_PREVIOUS_PASSWORD: Users cannot reuse previous password."
+    messagesUpdateUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_UPDATE_NOT_ALLOWED
+      default: ERROR_REASON_UNKNOWN
+      description: ' - USER_UPDATE_NOT_ALLOWED: The user can''t update other user''s name or password.'
+    messagesCompleteSignupResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: The user.
+    messagesDeleteUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesInviteUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesInviteUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    user:
+      description: A user.
+      type: object
+      required:
+      - userspace_id
+      - email
+      - name
+      properties:
+        configuration:
+          description: Per-user configuration (key-value pairs).
+          type: object
+          additionalProperties:
+            type: string
+        created_at:
+          description: The time when the user is created.
+          type: string
+          format: date-time
+          readOnly: true
+        email:
+          description: The email address of the user.
+          type: string
+          format: email
+        id:
+          description: 'The ID of the user. You don''t need to specify this value when creating a user.
+
+            The ID will be automatically determined by Morse.
+
+            '
+          type: string
+        name:
+          description: The name of the user.
+          type: string
+        password:
+          description: The sign-in password of the user.
+          type: string
+        role_grants:
+          description: The list of specific roles granted to the user. Returned only when explicitly asked.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourceToRoleReferences'
+          x-omitempty: true
+          readOnly: true
+        roles:
+          description: The list of roles assigned to the user. Returned only when explicitly asked.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+          x-omitempty: true
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/userStatus'
+        updated_at:
+          description: The time when the user information is updated.
+          type: string
+          format: date-time
+          readOnly: true
+        userspace_id:
+          description: The ID of the user space such as USERSPACE_C.
+          type: string
+    updateUserResponse:
+      description: A response to an update user request.
+      type: object
+      required:
+      - user
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+    updateUserRequest:
+      description: A request to update a user.
+      type: object
+      required:
+      - userspace_id
+      properties:
+        configuration:
+          description: Per-user configuration to update.
+          type: object
+          additionalProperties:
+            type: string
+        name:
+          description: Name to update.
+          type: string
+        password:
+          $ref: '#/components/schemas/updatePasswordRequest'
+        userspace_id:
+          description: A userspace ID where the user is.
+          type: string
+    resourcePathPermissions:
+      description: A resource path and the permissions given to it.
+      type: object
+      required:
+      - id
+      - instance_id
+      - permissions
+      properties:
+        id:
+          description: Resource ID.
+          type: string
+        instance_id:
+          description: Resource instance ID.
+          type: string
+        permissions:
+          description: Permissions given to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/permission'
+    updatePasswordRequest:
+      description: A request to update a user password.
+      type: object
+      required:
+      - current_password
+      - new_password
+      properties:
+        current_password:
+          description: The current user password.
+          type: string
+        new_password:
+          description: The new user password.
+          type: string
+    listRoleGrantsResponse:
+      description: List of roles granted to a user.
+      type: object
+      required:
+      - role_grants
+      properties:
+        role_grants:
+          description: list of role grants.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourceToRoleReferences'
+    readUserResponse:
+      description: A response to a read user request.
+      type: object
+      required:
+      - user
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+    listUsersResponse:
+      description: A response to list users with the given condition.
+      type: object
+      properties:
+        users:
+          description: Users found
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+    createUserRequest:
+      description: A request to create a user.
+      type: object
+      required:
+      - user
+      properties:
+        forward_url:
+          description: A URL that will be included in the Welcome email.
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
+    userStatus:
+      description: The set of status values for a user.
+      type: object
+      required:
+      - signed_up
+      properties:
+        signed_up:
+          description: The signed up status of the user.
+          type: boolean
+    listUserPermissionsResponse:
+      description: The API response that lists the permissions that the user has.
+      type: object
+      required:
+      - user_id
+      - platform_id
+      - userspace_id
+      - resource_path_permissions
+      properties:
+        platform_id:
+          description: The ID of the platform to which the user belongs to.
+          type: string
+        resource_path_permissions:
+          description: The resource path and the permissions given to the path.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourcePathPermissions'
+        user_id:
+          description: The ID of the user.
+          type: string
+        userspace_id:
+          description: The ID of the userspace to which the platform belongs to.
+          type: string
+    createRoleGrantsRequest:
+      description: Request to attach roles to a resource and a user.
+      type: object
+      required:
+      - platform_id
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        platform_id:
+          description: The ID of the platform in which the role grant is made.
+          type: string
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+    createUserResponse:
+      description: A response to a create user request.
+      type: object
+      required:
+      - user
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+    userRegistrationRequest:
+      description: The request body for the user registration request.
+      type: object
+      properties:
+        forward_url:
+          description: the URL that will be included in the platform registration (sign-up) email.
+          type: string
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    permission:
+      description: Permission.
+      type: object
+      required:
+      - id
+      - platform_id
+      - service
+      - resource_id
+      - verb
+      properties:
+        id:
+          description: The ID of the permission.
+          type: string
+        name:
+          description: The name of the permission.
+          type: string
+        platform_id:
+          description: The platform ID in which the permission is defined.
+          type: string
+        resource_id:
+          description: The resource on which the permission is defined.
+          type: string
+        service:
+          description: The name of the service such as DSP, AUTH.
+          type: string
+        verb:
+          description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
+          type: string
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
+      type: object
+      required:
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+    roleReference:
+      description: Reference to a role defined in a platform.
+      type: object
+      required:
+      - id
+      - platform_id
+      properties:
+        id:
+          description: The ID of the role.
+          type: string
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

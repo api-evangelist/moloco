@@ -1,0 +1,825 @@
+openapi: 3.2.0
+info:
+  title: Moloco Tracking Link API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged TrackingLink across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: TrackingLink
+paths:
+  /cm/v1/tracking-links:
+    get:
+      summary: List up TrackingLinks.
+      description: List up all TrackingLinks of the AdAccount or the Product.
+      operationId: DspApi_ListTrackingLinks
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListTrackingLinksResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesListTrackingLinksError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID which the TrackingLinks belong to.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        description: The Product ID which the TrackingLinks belong to.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: inquiry_option
+        description: "InquiryOption to specify which information to retrieve.\n\n - INQUIRY_ENTITY: Only the target entity itself is returned in response.\nThis InquiryOption is faster than other options as it reads the single entity from the database.\n - INQUIRY_OVERVIEW: The target entity's overview information is returned in response.\nIn general, the overview information includes the brief content of the target entity and its related entities.\nThis InquiryOption is slower than INQUIRY_ENTITY but the returned data size is usually smaller than that.\n - INQUIRY_ALL: The target entity and its summary information is returned in response.\nThis InquiryOption is equivalent to INQUIRY_ENTITY + INQUIRY_OVERVIEW, and it's slow and big."
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - UNKNOWN_INQUIRY_OPTION
+          - INQUIRY_ENTITY
+          - INQUIRY_OVERVIEW
+          - INQUIRY_ALL
+          default: UNKNOWN_INQUIRY_OPTION
+      tags:
+      - TrackingLink
+    post:
+      summary: Create a new TrackingLink.
+      description: Create a new TrackingLink of the Product.
+      operationId: DspApi_CreateTrackingLink
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateTrackingLinkResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesCreateTrackingLinkError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID which the TrackingLink belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: product_id
+        description: The Product ID which the TrackingLink belongs to.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspTrackingLink'
+        description: The TrackingLink data to be created.
+        required: true
+      tags:
+      - TrackingLink
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/tracking-links/validate:
+    post:
+      summary: Validate a TrackingLink.
+      description: Validate a TrackingLink of the product.
+      operationId: DspApi_ValidateTrackingLink
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesValidateTrackingLinkResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesValidateTrackingLinkError'
+      parameters:
+      - name: ad_account_id
+        description: The AdAccount ID.
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspTrackingLink'
+        description: 'The TrackingLink data to be validated.
+
+          It should contain device_os, tracking_company and at least one link from click_through_link and view_through_link.'
+        required: true
+      tags:
+      - TrackingLink
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/tracking-links/{tracking_link_id}:
+    get:
+      summary: Read an existing TrackingLink.
+      description: Read an existing TrackingLink.
+      operationId: DspApi_ReadTrackingLink
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadTrackingLinkResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadTrackingLinkError'
+      parameters:
+      - name: tracking_link_id
+        description: The ID of the TrackingLink to be retrieved.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: include_attempts
+        description: Flag for whether include TrackingLink verification attempts.
+        in: query
+        required: false
+        schema:
+          type: boolean
+      tags:
+      - TrackingLink
+    delete:
+      summary: Delete an existing TrackingLink.
+      description: Delete an existing TrackingLink.
+      operationId: DspApi_DeleteTrackingLink
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteTrackingLinkResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesDeleteTrackingLinkError'
+      parameters:
+      - name: tracking_link_id
+        description: The ID of the TrackingLink to be deleted.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - TrackingLink
+    put:
+      summary: Update an existing TrackingLink.
+      description: Update an existing TrackingLink.
+      operationId: DspApi_UpdateTrackingLink
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateTrackingLinkResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesUpdateTrackingLinkError'
+      parameters:
+      - name: tracking_link_id
+        description: The ID of the TrackingLink to be updated.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dspTrackingLink'
+        description: The updating TrackingLink data.
+        required: true
+      tags:
+      - TrackingLink
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    messagesUpdateTrackingLinkErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateTrackingLinkErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    TrackingLinkValidationErrorErrorCode:
+      type: string
+      enum:
+      - UNKNOWN_VALIDATION_ERROR
+      - INVALID_LINK
+      - INVALID_SCHEME
+      - INVALID_HOST
+      - INVALID_PATH
+      - INVALID_QUERY_PARAM
+      - MISSING_REQUIRED_QUERY_PARAM
+      - NOT_ALLOWED_QUERY_PARAM
+      - INVALID_QUERY_PARAM_ENCODED_MACRO
+      - DUPLICATE_QUERY_PARAM
+      - NOT_SUPPORTED_MACRO
+      - CONTAINS_LEGACY_MACRO
+      - ADJUST_BRANDED_LINK_HOST_MISMATCH
+      - ADJUST_UNIVERSAL_LINK_HOST_MISMATCH
+      - AF_TRACKING_BUNDLE_MISMATCH
+      - ADJUST_UNSEEN_TRACKER_TOKEN
+      - ADJUST_CT_VT_TOKEN_MISMATCH
+      - ADJUST_MISSING_BRANDED_LINK_HOST
+      - ADJUST_MISSING_UNIVERSAL_LINK_HOST
+      - ADJUST_CTV_MULTI_TOKEN
+      - AF_AGENCY_TOKEN_MISMATCH
+      - EMPTY_AF_AGENCY_TOKEN
+      - EMPTY_AF_SITEID
+      default: UNKNOWN_VALIDATION_ERROR
+      description: "Specific code for validation error.\n\n - INVALID_LINK: Link cannot be parsed.\n - INVALID_SCHEME: Link used 'http' instead of 'https'.\n - INVALID_HOST: Link's tracking company doesn't match the TrackingLink.TrackingCompany.\n - INVALID_PATH: Link's path doesn't match the selected app.\n - INVALID_QUERY_PARAM: Link has an invalid query parameter.\n - MISSING_REQUIRED_QUERY_PARAM: Link missed required query parameter(s).\n - NOT_ALLOWED_QUERY_PARAM: Link contains not allowed query parameter(s).\n - INVALID_QUERY_PARAM_ENCODED_MACRO: Link contains invalid encoded macro in query parameter.\n - DUPLICATE_QUERY_PARAM: Link contains duplicate query parameter.\n - NOT_SUPPORTED_MACRO: Unsupported macro is used in the link.\n - CONTAINS_LEGACY_MACRO: Link contains legacy macro.\n - ADJUST_BRANDED_LINK_HOST_MISMATCH: Adjust's BrandedLink host does not match with the one stored in MMP integration.\n - ADJUST_UNIVERSAL_LINK_HOST_MISMATCH: Adjust's UniversalLink host does not match with the one stored in MMP integration.\n - AF_TRACKING_BUNDLE_MISMATCH: AppsFlyer's tracking bundle does not match with the one stored in the product.\n - ADJUST_UNSEEN_TRACKER_TOKEN: Adjust's tracker token does not exist in the ones stored in MMP integration.\n - ADJUST_CT_VT_TOKEN_MISMATCH: Adjust normal link's click through and view through urls have mismatching tracker tokens.\n - ADJUST_MISSING_BRANDED_LINK_HOST: Adjust's BrandedLink host name is not set to MMP integration.\n - ADJUST_MISSING_UNIVERSAL_LINK_HOST: Adjust's UniversalLink host name is not set to MMP integration.\n - ADJUST_CTV_MULTI_TOKEN: Adjust tracking link has multiple tracker tokens.\n - AF_AGENCY_TOKEN_MISMATCH: AppsFlyer's af_prt value mismatch.\n - EMPTY_AF_AGENCY_TOKEN: AppsFlyer's af_prt value is empty.\n - EMPTY_AF_SITEID: AppsFlyer's af_siteid value is empty."
+    messagesListTrackingLinksResponse:
+      type: object
+      properties:
+        tracking_links:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspTrackingLink'
+          description: 'The list of TrackingLinks.
+
+            This field is valid if the inquiry_option of the request is UNKNOWN_INQUIRY_OPTION or INQUIRY_ENTITY or INQUIRY_ALL.'
+        tracking_link_overviews:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspTrackingLinkOverview'
+          description: 'The list of the TrackingLink overview information.
+
+            This field is valid if the inquiry_option of the request is INQUIRY_OVERVIEW or INQUIRY_ALL.'
+    messagesReadTrackingLinkError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadTrackingLinkErrorAPIErrorInfo'
+    messagesReadTrackingLinkErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesValidateTrackingLinkResponseStatus:
+      type: string
+      enum:
+      - UNKNOWN_VALIDATION_STATUS
+      - PASSED
+      - FAILED
+      default: UNKNOWN_VALIDATION_STATUS
+      description: "Status enumerates the status of validation.\n\n - PASSED: No errors found on validation.\n - FAILED: The link has some invalid values. Detailed error can be found at validation_errors."
+    dspTrackingLink:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the TrackingLink. Automatically set by server on creation.
+        ad_account_id:
+          type: string
+          description: The ID of the AdAccount the TrackingLink belongs to.
+          readOnly: true
+        product_id:
+          type: string
+          description: The ID of the Product the TrackingLink belongs to.
+          readOnly: true
+        title:
+          type: string
+          description: A descriptive name of the TrackingLink.
+        description:
+          type: string
+          description: An optional description about the TrackingLink.
+        device_os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: Device OS for which this TrackingLink should be served.
+        click_through_link:
+          $ref: '#/components/schemas/TrackingLinkUrlData'
+          description: Click-through landing page URL. This URL is usually provided by the tracking company.
+        view_through_link:
+          $ref: '#/components/schemas/TrackingLinkUrlData'
+          description: View-through impression tracking URL. This URL is usually provided by the tracking company.
+        ctv_adjust_dual_vt_link:
+          $ref: '#/components/schemas/TrackingLinkUrlData'
+          title: This is used only for DSP CTV with adjust supporting dual link solution in s2s manner
+        tracking_company:
+          $ref: '#/components/schemas/adcloudcommonTrackingCompany'
+          description: Tracking company (e.g., Appsflyer, MAT, and so on).
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+      description: TrackingLink represents an AdAccount's configuration for.
+      required:
+      - device_os
+      - click_through_link
+      - title
+    messagesCreateTrackingLinkError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateTrackingLinkErrorAPIErrorInfo'
+    ValidateTrackingLinkResponseTrackingLinkValidationError:
+      type: object
+      properties:
+        error_code:
+          $ref: '#/components/schemas/TrackingLinkValidationErrorErrorCode'
+        params:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Params are used to make error message.
+
+            This value is internal to AdCloud and used for the troubleshooting or reference purpose.'
+        context:
+          type: string
+          description: 'The context is a field name which the error occurred in.
+
+            It used only in INVALID_QUERY_PARAM error.'
+        error_msg:
+          type: string
+          description: The description for the validation error.
+    TrackingLinkVerificationAttemptUrlDataType:
+      type: string
+      enum:
+      - UNKNOWN_URL_DATA_TYPE
+      - CT_LINK
+      - VT_LINK
+      default: UNKNOWN_URL_DATA_TYPE
+      description: The type of the UrlData that this attempt belongs to.
+    messagesListTrackingLinksError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListTrackingLinksErrorAPIErrorInfo'
+    TrackingLinkUrlDataVerificationStatus:
+      type: string
+      enum:
+      - UNKNOWN_VERIFICATION_STATUS
+      - UNVERIFIED
+      - VERIFYING
+      - VERIFIED
+      default: UNKNOWN_VERIFICATION_STATUS
+      description: "Enumeration of various TrackingLink verification status.\n\nThis value is not part of the specification.\n\n - UNVERIFIED: The TrackingLink is not yet verified.\n - VERIFYING: The TrackingLink is being verified.\n - VERIFIED: The TrackingLink has been verified."
+    messagesValidateTrackingLinkErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - TRACKING_LINK_NO_LINKS_TO_VALIDATE
+      default: ERROR_REASON_UNKNOWN
+      description: ' - TRACKING_LINK_NO_LINKS_TO_VALIDATE: No links to validate. Least one of click_through_link or view_through_link must be set.'
+    UrlDataUnverifiedStatusData:
+      type: object
+      properties:
+        stored_at:
+          type: string
+          format: date-time
+          description: Creation time of this link.
+        user_id:
+          type: string
+          description: The ID of the user who created this link.
+      description: 'UnverifiedStatusData represents the information that the link is statically checked,
+
+        but has not been verified with the MMP integration.'
+    messagesReadTrackingLinkErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadTrackingLinkErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspTrackingLinkOverview:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the TrackingLink.
+        title:
+          type: string
+          description: Descriptive name of the TrackingLink.
+        description:
+          type: string
+          description: An optional description about the TrackingLink.
+        product_id:
+          type: string
+          description: ID of the Product that this TrackingLink belongs to.
+        product_title:
+          type: string
+          description: Title of the Product that this TrackingLink belongs to.
+        tracking_company:
+          $ref: '#/components/schemas/adcloudcommonTrackingCompany'
+          description: Tracking company (e.g., Appsflyer, MAT, and so on).
+        attempts:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspTrackingLinkVerificationAttempt'
+          description: The TrackingLink verification attempts related with the TrackingLink.
+      description: TrackingLinkOverview is a overview information of TrackingLink entity.
+    messagesDeleteTrackingLinkErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    UrlDataVerifyingStatusData:
+      type: object
+      properties:
+        attempt_ids:
+          type: array
+          items:
+            type: string
+          description: Each of ID refers to a TrackingLinkVerificationAttempt.
+      description: 'VerifyingStatusData represents the information that a resolved URL has been sent to the MMP,
+
+        but we have not received any postback yet. We stay at this state indefinitely until receiving a postback.'
+    messagesListTrackingLinksErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListTrackingLinksErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesDeleteTrackingLinkResponse:
+      type: object
+    messagesUpdateTrackingLinkErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - TRACKING_LINK_INVALID_OS_TYPE
+      default: ERROR_REASON_UNKNOWN
+      description: ' - TRACKING_LINK_INVALID_OS_TYPE: The tracking link has invalid OS type.'
+    TrackingLinkUrlData:
+      type: object
+      properties:
+        url:
+          type: string
+          description: URL of the TrackingLink.
+        status:
+          $ref: '#/components/schemas/TrackingLinkUrlDataVerificationStatus'
+          description: 'The verification status of the supplied URL.
+
+            It''s managed by the Moloco servers and is readonly to the client.'
+          readOnly: true
+        unverified_status_data:
+          $ref: '#/components/schemas/UrlDataUnverifiedStatusData'
+        verifying_status_data:
+          $ref: '#/components/schemas/UrlDataVerifyingStatusData'
+        verified_status_data:
+          $ref: '#/components/schemas/UrlDataVerifiedStatusData'
+      required:
+      - url
+    messagesValidateTrackingLinkError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesValidateTrackingLinkErrorAPIErrorInfo'
+    messagesValidateTrackingLinkErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesValidateTrackingLinkErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateTrackingLinkErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateTrackingLinkErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    adcloudcommonTrackingCompany:
+      type: string
+      enum:
+      - UNKNOWN_TRACKING_COMPANY
+      - KOCHAVA
+      - ADJUST
+      - MAT
+      - MOLOCO_PIXEL
+      - APPSFLYER
+      - ADBRIX
+      - WEB
+      - GENERIC
+      - TRACKFNT
+      - AIRBRIDGE
+      - MOLOCO_E2E
+      - APSALAR
+      - BRANCH
+      - TENJIN
+      - SINGULAR
+      - ADBRIX_V2
+      - TRAFFICGUARD
+      - GAMELOFT
+      - SKADNETWORK
+      - MYTRACKER
+      - MOLOCO_RMP
+      - MOLOCO_PIXEL_V2
+      - JUSTTRACK
+      - SHOPEE
+      - KOCHAVA_FOR_PUBLISHER
+      - GAMESIGHT
+      - CAULY
+      - HASOFFER
+      - ADACTION
+      - CURATE
+      default: UNKNOWN_TRACKING_COMPANY
+      description: "Enumeration for tracking companies supported by Moloco Ads.\n\n - WEB: Unnamed trackers\n - AIRBRIDGE: Moloco's e2e tracker (test purpose only)\n - KOCHAVA_FOR_PUBLISHER: Kochava's CTV to web event dedicated tracking company."
+    dspTrackingLinkVerificationAttempt:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the TrackingLinkVerificationAttempt.
+        ad_account_id:
+          type: string
+          description: The AdAccount ID that this attempt belongs to.
+        tracking_link_id:
+          type: string
+          description: The ID of the TrackingLink that this attempt belongs to.
+        url_data_type:
+          $ref: '#/components/schemas/TrackingLinkVerificationAttemptUrlDataType'
+        user_id:
+          type: string
+          description: The ID of the user who is conducting the link verification.
+        user_email:
+          type: string
+          description: The user's email.
+        user_name:
+          type: string
+          description: The user's name.
+        tracking_bundle_id:
+          type: string
+          description: The tracking bundle value appears at the postback event.
+        resolved_url:
+          type: string
+          description: 'The URL sent to the MMP for the verification test.
+
+            This is the macro expansion result of the original link URL.'
+        resolved_idfa:
+          type: string
+          description: The IDFA value used to generate the resolved_url.
+        started_at:
+          type: string
+          format: date-time
+          description: The starting time of the verification.
+        verified_at:
+          type: string
+          format: date-time
+          description: The time when the verification test is completed.
+      description: TrackingLinkVerificationAttempt represents an attempt to verify a TrackingLink.
+    messagesValidateTrackingLinkResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/messagesValidateTrackingLinkResponseStatus'
+          description: Validation status.
+        validation_errors:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ValidateTrackingLinkResponseTrackingLinkValidationError'
+          description: 'List of errors occurred on validation.
+
+            Will be supported until v1.2.'
+        validation_errors_click_through_link:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ValidateTrackingLinkResponseTrackingLinkValidationError'
+          description: List of errors occurred on click_through_link.
+        validation_errors_view_through_link:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ValidateTrackingLinkResponseTrackingLinkValidationError'
+          description: List of errors occurred on view_through_link.
+        validation_warnings_click_through_link:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ValidateTrackingLinkResponseTrackingLinkValidationError'
+          description: List of warnings occurred on click_through_link.
+        validation_warnings_view_through_link:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ValidateTrackingLinkResponseTrackingLinkValidationError'
+          description: List of warnings occurred on view_through_link.
+    commonDeviceOs:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_OS
+      - ANDROID
+      - IOS
+      - VERSATILE
+      - MOBILE_WEB
+      - MACOS
+      - WINDOWS
+      - NEXT_VERSATILE
+      default: UNKNOWN_DEVICE_OS
+      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
+    messagesReadTrackingLinkResponse:
+      type: object
+      properties:
+        tracking_link:
+          $ref: '#/components/schemas/dspTrackingLink'
+          description: The retrieved TrackingLink data.
+        attempts:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspTrackingLinkVerificationAttempt'
+          description: The TrackingLink verification attempts related with the TrackingLink.
+    messagesDeleteTrackingLinkErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteTrackingLinkErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdateTrackingLinkError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateTrackingLinkErrorAPIErrorInfo'
+    messagesDeleteTrackingLinkError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteTrackingLinkErrorAPIErrorInfo'
+    messagesListTrackingLinksErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesUpdateTrackingLinkResponse:
+      type: object
+      properties:
+        tracking_link:
+          $ref: '#/components/schemas/dspTrackingLink'
+          description: The updated TrackingLink data.
+        validation_status:
+          $ref: '#/components/schemas/messagesTrackingLinkValidationStatus'
+          description: 'The validation status of created tracking link.
+
+            If the status is WARNING, the tracking link has created but has not recommended values.
+
+            Please check the details using "Validate a TrackingLink" API.'
+    messagesTrackingLinkValidationStatus:
+      type: string
+      enum:
+      - TRACKING_LINK_VALIDATION_STATUS_UNKNOWN
+      - TRACKING_LINK_VALIDATION_STATUS_SUCCESS
+      - TRACKING_LINK_VALIDATION_STATUS_WARNING
+      default: TRACKING_LINK_VALIDATION_STATUS_UNKNOWN
+      description: " - TRACKING_LINK_VALIDATION_STATUS_SUCCESS: Created TrackingLink does not have any warnings.\n - TRACKING_LINK_VALIDATION_STATUS_WARNING: Created TrackingLink has some warnings."
+    UrlDataVerifiedStatusData:
+      type: object
+      properties:
+        verified_attempt:
+          $ref: '#/components/schemas/dspTrackingLinkVerificationAttempt'
+          description: The attempt that has verified the link.
+      description: VerifiedStatusData represents the information of the completed verification.
+    messagesCreateTrackingLinkResponse:
+      type: object
+      properties:
+        tracking_link:
+          $ref: '#/components/schemas/dspTrackingLink'
+          description: The created TrackingLink data.
+        validation_status:
+          $ref: '#/components/schemas/messagesTrackingLinkValidationStatus'
+          description: 'The validation status of created tracking link.
+
+            If the status is WARNING, the tracking link has created but has not recommended values.
+
+            Please check the details using "Validate a TrackingLink" API.'
+    messagesCreateTrackingLinkErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - TRACKING_LINK_FAILED_TO_CONVERT_LINK
+      - TRACKING_LINK_INVALID_OS_TYPE
+      - TRACKING_LINK_VALIDATION_FAILED
+      default: ERROR_REASON_UNKNOWN
+      description: " - TRACKING_LINK_FAILED_TO_CONVERT_LINK: Failed to convert link url. Use \"Validate a TrackingLink\" API for details.\n - TRACKING_LINK_INVALID_OS_TYPE: The tracking link has invalid OS type.\n - TRACKING_LINK_VALIDATION_FAILED: The tracking link has invalid url. Use \"Validate a TrackingLink\" API for details."
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

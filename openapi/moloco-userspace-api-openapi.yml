@@ -1,0 +1,147 @@
+openapi: 3.2.0
+info:
+  title: Moloco Userspace API
+  version: 1.0.0
+  description: 'Operations tagged Userspace across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: Userspace
+paths:
+  /v1/userspaces/{userspace_id}/platforms:
+    post:
+      security:
+      - Bearer: []
+      - {}
+      description: List workplaces for a given userspace.
+      tags:
+      - Userspace
+      summary: List workplaces.
+      operationId: v1_list_userspace_platforms
+      parameters:
+      - description: The ID of the userspace.
+        name: userspace_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/listPlatformsCredential'
+        description: a user credential to list platforms for the user.
+      responses:
+        '200':
+          description: The list of platforms.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listPlatformsResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '401':
+          description: Unauthorized - the given user_id/password is not matched.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '404':
+          description: No such user found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    listPlatformsCredential:
+      description: Credential to list platforms without a Morse token.
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          description: Email address of the user.
+          type: string
+        password:
+          description: Password of the user.
+          type: string
+    listPlatformsResponse:
+      description: Response to the list platforms request.
+      type: object
+      required:
+      - platforms
+      properties:
+        platforms:
+          description: List of platforms
+          type: array
+          items:
+            $ref: '#/components/schemas/platform'
+    platform:
+      description: A platform.
+      type: object
+      required:
+      - id
+      - userspace_id
+      - title
+      - logo_url
+      properties:
+        configuration:
+          description: The platform-specific configuration.
+          type: object
+          additionalProperties:
+            type: string
+        id:
+          description: The ID of the platform.
+          type: string
+        logo_url:
+          description: The URL of the logo for the platform.
+          type: string
+        title:
+          description: The user-friendly name of the platform.
+          type: string
+        userspace_id:
+          description: The ID of the userspace to which the platform belongs.
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

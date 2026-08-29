@@ -1,0 +1,265 @@
+openapi: 3.2.0
+info:
+  title: Moloco Role Grant API
+  version: 1.0.0
+  description: 'Operations tagged RoleGrant across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: RoleGrant
+paths:
+  /v1/users/{user_id}/rolegrants:
+    get:
+      security:
+      - Bearer: []
+      description: Get the list of role grants to the given user.
+      tags:
+      - RoleGrant
+      summary: Get role grants.
+      operationId: v1_list_role_grants
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Platform ID.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of roles granted to the given user was successfully returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listRoleGrantsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to list roles granted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    post:
+      security:
+      - Bearer: []
+      description: Create a role grant that attaches roles to a resource and a user.
+      tags:
+      - RoleGrant
+      summary: Create a role grant.
+      operationId: v1_create_role_grants
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createRoleGrantsRequest'
+        description: The request body
+        required: true
+      responses:
+        '204':
+          description: The roles are successfully granted.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '409':
+          description: Conflict - the role grant is already there.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    delete:
+      security:
+      - Bearer: []
+      description: Delete a specific role attached to a specific resource.
+      tags:
+      - RoleGrant
+      summary: Delete a role grant.
+      operationId: v1_delete_role_grants
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The platform ID to which the user belongs.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The resource to which the role is granted.
+        name: resource_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The actual instance ID of the resource.
+        name: resource_instance_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The ID of the granted role.
+        name: role_id
+        in: query
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform in which the role is defined.
+        name: role_platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The role grant was successfully deleted.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - not authorized to list roles granted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    listRoleGrantsResponse:
+      description: List of roles granted to a user.
+      type: object
+      required:
+      - role_grants
+      properties:
+        role_grants:
+          description: list of role grants.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourceToRoleReferences'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    createRoleGrantsRequest:
+      description: Request to attach roles to a resource and a user.
+      type: object
+      required:
+      - platform_id
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        platform_id:
+          description: The ID of the platform in which the role grant is made.
+          type: string
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+    roleReference:
+      description: Reference to a role defined in a platform.
+      type: object
+      required:
+      - id
+      - platform_id
+      properties:
+        id:
+          description: The ID of the role.
+          type: string
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
+      type: object
+      required:
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

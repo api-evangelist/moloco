@@ -1,0 +1,876 @@
+openapi: 3.2.0
+info:
+  title: Moloco Custom Targeting API
+  version: '1.0'
+  contact:
+    name: Moloco Inc.
+    url: https://www.molocoads.com
+  description: 'Operations tagged CustomTargeting across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://<platform>-mgmt.mcm-api.moloco.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: CustomTargeting
+paths:
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/custom-target-keys-bulk:
+    post:
+      summary: ReadCustomTargetKeysBulk
+      description: Read custom target keys in bulk.
+      operationId: RmpManagementApi_ReadCustomTargetKeysBulk
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadCustomTargetKeysBulkResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account to query custom target keys. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ad_type:
+                  $ref: '#/components/schemas/rmpcommonAdType'
+                custom_target_key_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Custom target key ids.
+              description: ReadCustomTargetKeysBulk request.
+              required:
+              - ad_type
+              - custom_target_key_ids
+              additionalProperties: true
+        required: true
+      tags:
+      - CustomTargeting
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  ? /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/custom-target-keys/{custom_target_key_id}/custom-target-values-bulk
+  : post:
+      summary: ReadCustomTargetValuesBulk
+      description: Read custom target values in bulk.
+      operationId: RmpManagementApi_ReadCustomTargetValuesBulk
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadCustomTargetValuesBulkResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account to query custom target values. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: custom_target_key_id
+        description: The id of the custom target key. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ad_type:
+                  $ref: '#/components/schemas/rmpcommonAdType'
+                custom_target_value_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: Custom target value ids. Exactly one of custom_target_value_ids or custom_target_value_labels must be provided.
+                custom_target_value_labels:
+                  type: array
+                  items:
+                    type: string
+                  description: Custom target value labels. Exactly one of custom_target_value_ids or custom_target_value_labels must be provided.
+              description: ReadCustomTargetValuesBulk request.
+              required:
+              - ad_type
+              additionalProperties: true
+        required: true
+      tags:
+      - CustomTargeting
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  ? /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}/line-items/{line_item_id}/custom-daily-report
+  : get:
+      summary: QueryCustomTargetDailySummary
+      description: Retrieve the custom targeting daily summary reports for a single line item.
+      operationId: RmpManagementApi_QueryCustomTargetDailySummary2
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryCustomTargetDailySummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: order_id
+        description: The id of the order. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: line_item_id
+        description: The id of the line item. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: date_range.date_start
+        description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: date_range.date_end
+        description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: custom_target_key_id
+        description: Custom target key id to retrieve the report.
+        in: query
+        required: false
+        schema:
+          type: string
+      tags:
+      - CustomTargeting
+    post:
+      summary: QueryCustomTargetDailySummary
+      description: Retrieve the custom targeting daily summary reports for a single line item.
+      operationId: RmpManagementApi_QueryCustomTargetDailySummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryCustomTargetDailySummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: order_id
+        description: The id of the order. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: line_item_id
+        description: The id of the line item. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date_range:
+                  $ref: '#/components/schemas/commonDateRange'
+                custom_target_key_id:
+                  type: string
+                  description: Custom target key id to retrieve the report.
+              description: QueryCustomTargetDailySummary request for fetching custom targeting daily reports of a line item. Maximum date range is 91 days. Default order is DATE_ASC.
+              required:
+              - date_range
+              - custom_target_key_id
+              additionalProperties: true
+        required: true
+      tags:
+      - CustomTargeting
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  ? /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}/line-items/{line_item_id}/custom-target-keys-with-custom-report-bulk
+  : get:
+      summary: ReadCustomTargetKeysWithCustomReportBulk
+      description: Read the keys that have available report data in bulk.
+      operationId: RmpManagementApi_ReadCustomTargetKeysWithCustomReportBulk
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadCustomTargetKeysWithCustomReportBulkResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: order_id
+        description: The id of the order. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: line_item_id
+        description: The id of the line item. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - CustomTargeting
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/custom-target-keys:
+    post:
+      summary: QueryCustomTargetKeys
+      description: Query all available custom target keys for the platform.
+      operationId: RmpManagementApi_QueryCustomTargetKeys
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryCustomTargetKeysResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cursor:
+                  type: string
+                  description: Cursor for pagination. Required after the first request.
+                limit:
+                  type: integer
+                  format: int64
+                  default: '15'
+                  description: 'Number of items to be returned. Default: 15, Maximum value: 50'
+                ad_type:
+                  $ref: '#/components/schemas/rmpcommonAdType'
+              description: QueryCustomTargetKeys public request. Query all available custom target keys for the platform.
+              required:
+              - ad_type
+              additionalProperties: true
+        required: true
+      tags:
+      - CustomTargeting
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/custom-target-keys/{custom_target_key_id}/custom-target-values:
+    post:
+      summary: QueryCustomTargetValues
+      description: Query all available custom target values for a given key.
+      operationId: RmpManagementApi_QueryCustomTargetValues
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryCustomTargetValuesResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: custom_target_key_id
+        description: Identifier of the custom target key. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                search:
+                  type: string
+                  description: Search keyword to filter custom target values by label. If provided, only values whose labels contain this keyword will be returned.
+                cursor:
+                  type: string
+                  description: Cursor for pagination. Required after the first request.
+                limit:
+                  type: integer
+                  format: int64
+                  default: '15'
+                  description: 'Number of items to be returned. Default: 15, Maximum value: 200'
+              description: QueryCustomTargetValues public request. Query all available custom target values for a given key.
+              additionalProperties: true
+        required: true
+      tags:
+      - CustomTargeting
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+components:
+  schemas:
+    publicQueryCustomTargetKeysResponse:
+      type: object
+      properties:
+        custom_target_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CustomTargetKey'
+          description: List of custom target keys matching the query criteria.
+        prev_cursor:
+          type: string
+          description: Cursor for the previous page. Omitted if this is the first page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page. Omitted if this is the last page.
+        total:
+          type: integer
+          format: int64
+          description: Total number of custom target keys matching the query criteria.
+      description: QueryCustomTargetKeys public response.
+      required:
+      - custom_target_keys
+      - total
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    v1CustomTargetValue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the custom target value.
+        custom_target_key_id:
+          type: string
+          description: The id of the custom target key to which this value belongs.
+        label:
+          type: string
+          description: The label of the custom target value.
+        valid:
+          type: boolean
+          description: The validity of the custom target value.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target value.
+          readOnly: true
+      description: Definition of a custom target value.
+      required:
+      - id
+      - custom_target_key_id
+      - label
+      - valid
+      - created_at
+      - updated_at
+      additionalProperties: true
+    publicReadCustomTargetKeysBulkResponse:
+      type: object
+      properties:
+        custom_target_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CustomTargetKey'
+          description: Custom target keys.
+      description: ReadCustomTargetKeysBulk response.
+      required:
+      - custom_target_keys
+      additionalProperties: true
+    publicQueryCustomTargetDailySummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LineItemDailyCustomReportRow'
+          description: List of daily report rows.
+      description: QueryCustomTargetDailySummary response containing daily report rows.
+      required:
+      - rows
+      additionalProperties: true
+    rmpcommonAdType:
+      type: string
+      enum:
+      - UNKNOWN_AD_TYPE
+      - ITEM
+      - BRAND
+      - DISPLAY
+      - RESERVED_DISPLAY
+      default: UNKNOWN_AD_TYPE
+    publicReadCustomTargetKeysWithCustomReportBulkResponse:
+      type: object
+      properties:
+        custom_target_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CustomTargetKey'
+          description: Custom target keys that have available report data. 1. All keys from ad type configuration. 2. All keys from line item configuration. 3. All keys have at least one report record within 60 days.
+      description: ReadCustomTargetKeysWithCustomReportBulk response.
+      required:
+      - custom_target_keys
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    v1LineItemDailyCustomReportRow:
+      type: object
+      properties:
+        custom_target_key_id:
+          type: string
+          description: The id of the custom target key.
+        custom_target_value_id:
+          type: string
+          description: The id of the custom target value.
+        custom_target_value_label:
+          type: string
+          description: The label of the custom target value.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count for the date.
+        ctr:
+          type: number
+          format: double
+          description: Click-through rate for the date.
+      additionalProperties: true
+    v1CustomTargetKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the custom target key.
+        label:
+          type: string
+          description: The label of the custom target key.
+        description:
+          type: string
+          description: The description of the custom target key.
+        is_multi_select:
+          type: boolean
+          description: Whether the custom target key allows multi select.
+        valid:
+          type: boolean
+          description: The validity of the custom target key.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target key.
+          readOnly: true
+      description: Definition of a custom target key.
+      required:
+      - id
+      - label
+      - description
+      - is_multi_select
+      - valid
+      - created_at
+      - updated_at
+      additionalProperties: true
+    publicReadCustomTargetValuesBulkResponse:
+      type: object
+      properties:
+        custom_target_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CustomTargetValue'
+          description: Custom target values.
+      description: ReadCustomTargetValuesBulk response.
+      required:
+      - custom_target_values
+      additionalProperties: true
+    publicQueryCustomTargetValuesResponse:
+      type: object
+      properties:
+        custom_target_values:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CustomTargetValue'
+          description: List of custom target values matching the query criteria.
+        prev_cursor:
+          type: string
+          description: Cursor for the previous page. Omitted if this is the first page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page. Omitted if this is the last page.
+        total:
+          type: integer
+          format: int64
+          description: Total number of custom target values matching the query criteria.
+      description: QueryCustomTargetValues public response.
+      required:
+      - custom_target_values
+      - total
+      additionalProperties: true
+    commonDateRange:
+      type: object
+      properties:
+        date_start:
+          type: string
+          description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+        date_end:
+          type: string
+          description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+      additionalProperties: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
+    Bearer:
+      type: apiKey
+      description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
+      name: Authorization
+      in: header
+x-refined-from:
+- mcm-management-api.json
+- moloco-commerce-media-management-openapi.yml
+x-readme:
+  explorer-enabled: true

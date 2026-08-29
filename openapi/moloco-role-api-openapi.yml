@@ -1,0 +1,205 @@
+openapi: 3.2.0
+info:
+  title: Moloco Role API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged Role across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: Role
+paths:
+  /cm/v1/auth/roles/grant:
+    post:
+      summary: Grant the role to the user
+      description: Grant the Role to the user.
+      operationId: DspApi_GrantRole
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesGrantRoleResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesGrantRoleError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesGrantRoleRequest'
+        required: true
+      tags:
+      - Role
+    servers:
+    - url: https://api.moloco.cloud
+  /cm/v1/auth/roles/revoke:
+    post:
+      summary: Revoke the role from the user
+      description: Revoke the role from the user
+      operationId: DspApi_RevokeRole
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesRevokeRoleResponse'
+        default:
+          description: Error. Detailed cause can be found in the `details` field.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesRevokeRoleError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/messagesRevokeRoleRequest'
+        required: true
+      tags:
+      - Role
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    messagesRevokeRoleErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
+      - USER_NOT_REGISTERED_TO_WORKPLACE
+      - USER_ALREADY_HAS_ROLE
+      - USER_NO_ROLE_TO_REVOKE
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_NOT_REGISTERED_TO_WORKPLACE: The user is not registered to workplace.\n - USER_ALREADY_HAS_ROLE: The user has already role bound to the resource.\n - USER_NO_ROLE_TO_REVOKE: The user doesn't have a role to revoke."
+    messagesRevokeRoleErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesRevokeRoleErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspRole:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/dspRoleType'
+          description: The role types users can have.
+        workplace_id:
+          type: string
+          description: The workplace bound to the role.
+        ad_account_id:
+          type: string
+          description: The ad account id bound to role.
+        exchange_id:
+          type: string
+          description: The exchange id bound to role.
+      description: 'Role that user can have.
+
+        Role is bound to resource.'
+    dspRoleType:
+      type: string
+      enum:
+      - WORKPLACE_OWNER
+      - AD_ACCOUNT_OWNER
+      - AD_ACCOUNT_MEMBER
+      - AD_ACCOUNT_VIEWER
+      default: UNKNOWN_TYPE
+      description: " - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
+    messagesRevokeRoleRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The user ID.
+        role:
+          $ref: '#/components/schemas/dspRole'
+          description: The role which will be revoked from user.
+      required:
+      - user_id
+      - role
+    messagesGrantRoleRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The user ID.
+        role:
+          $ref: '#/components/schemas/dspRole'
+          description: The role which will be granted to user.
+      required:
+      - user_id
+      - role
+    messagesGrantRoleResponse:
+      type: object
+    messagesRevokeRoleError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesRevokeRoleErrorAPIErrorInfo'
+    messagesGrantRoleErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
+      - USER_NOT_REGISTERED_TO_WORKPLACE
+      - USER_ALREADY_HAS_ROLE
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_NOT_REGISTERED_TO_WORKPLACE: The user is not registered to workplace.\n - USER_ALREADY_HAS_ROLE: The user has already role bound to the resource."
+    messagesGrantRoleError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesGrantRoleErrorAPIErrorInfo'
+    messagesRevokeRoleResponse:
+      type: object
+    messagesGrantRoleErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesGrantRoleErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

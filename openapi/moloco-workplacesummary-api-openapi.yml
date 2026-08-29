@@ -1,0 +1,110 @@
+openapi: 3.2.0
+info:
+  title: Moloco Workplace Summary API
+  version: '1.10'
+  contact:
+    name: Moloco Inc.
+    url: https://www.moloco.com
+  description: 'Operations tagged WorkplaceSummary across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.moloco.cloud
+security:
+- Bearer: []
+tags:
+- name: WorkplaceSummary
+paths:
+  /cm/v1/workplace-summary:
+    get:
+      summary: Read a Workplace summary.
+      description: Read a Workplace summary.
+      operationId: DspApi_ReadWorkplaceSummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/messagesReadWorkplaceSummaryError'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/googlerpcStatus'
+      parameters:
+      - name: month_range.start
+        description: Start month in the 'YYYY-MM' format.
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: month_range.end
+        description: End month in the 'YYYY-MM' format.
+        in: query
+        required: true
+        schema:
+          type: string
+      tags:
+      - WorkplaceSummary
+    servers:
+    - url: https://api.moloco.cloud
+components:
+  schemas:
+    messagesReadWorkplaceSummaryErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    messagesReadWorkplaceSummaryErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadWorkplaceSummaryErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    messagesReadWorkplaceSummaryError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadWorkplaceSummaryErrorAPIErrorInfo'
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-ads-campaign-management-api.json
+- moloco-ads-campaign-management-openapi.yml
+x-readme:
+  explorer-enabled: true

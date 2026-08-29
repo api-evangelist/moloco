@@ -1,0 +1,1534 @@
+openapi: 3.2.0
+info:
+  title: Moloco Reserved Display API
+  version: '1.0'
+  contact:
+    name: Moloco Inc.
+    url: https://www.molocoads.com
+  description: 'Operations tagged ReservedDisplay across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://<platform>-mgmt.mcm-api.moloco.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: ReservedDisplay
+paths:
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders-with-line-items:
+    post:
+      summary: UpsertOrderWithLineItems
+      description: Create or update an order along with its associated line items in a single atomic operation.
+      operationId: RmpManagementApi_UpsertOrderWithLineItems
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicUpsertOrderWithLineItemsResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order:
+                  $ref: '#/components/schemas/UpsertOrderWithLineItemsRequestOrderParams'
+                line_items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/publicUpsertOrderWithLineItemsRequestLineItemParams'
+                  description: List of line item parameters for creation or update. Each line item with an id will be updated; those without an id will be created.
+              description: UpsertOrderWithLineItems request. Creates or updates an order along with its associated line items in a single atomic operation.
+              required:
+              - order
+              - line_items
+              additionalProperties: true
+        required: true
+      tags:
+      - ReservedDisplay
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}:
+    get:
+      summary: ReadOrder
+      description: Read order information with line items.
+      operationId: RmpManagementApi_ReadOrder
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicReadOrderResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: order_id
+        description: The id of the order. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - ReservedDisplay
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/orders/{order_id}/line-items/{line_item_id}/daily-report:
+    post:
+      summary: QueryLineItemDailySummary
+      description: Retrieve the daily summary reports for a single line item.
+      operationId: RmpManagementApi_QueryLineItemDailySummary
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryLineItemDailySummaryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The id of the ad account. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: order_id
+        description: The id of the order. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: line_item_id
+        description: The id of the line item. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date_range:
+                  $ref: '#/components/schemas/commonDateRange'
+              description: QueryLineItemDailySummary request. Retrieve the daily summary reports for a single line item.
+              required:
+              - date_range
+              additionalProperties: true
+        required: true
+      tags:
+      - ReservedDisplay
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/reserved-display-inventories:
+    get:
+      summary: ListReservedDisplayInventories
+      description: List all eligible reserved display inventories.
+      operationId: RmpManagementApi_ListReservedDisplayInventories
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicListReservedDisplayInventoriesResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - ReservedDisplay
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/reserved-display-inventories/{inventory_id}/forecast:
+    post:
+      summary: QueryReservedInventoryForecast
+      description: Query forecasted impressions for reserved inventory.
+      operationId: RmpManagementApi_QueryReservedInventoryForecast
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryReservedInventoryForecastResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: inventory_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dayparts:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/rmpcommonDayPart'
+                  description: Optional dayparts specifying the days and hours for forecasting. If omitted, forecast covers all hours of each day in the time interval.
+                time_interval:
+                  $ref: '#/components/schemas/rmpcommonTimeInterval'
+                custom_setting:
+                  $ref: '#/components/schemas/TargetingCustomSetting'
+              required:
+              - time_interval
+              additionalProperties: true
+        required: true
+      tags:
+      - ReservedDisplay
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+components:
+  schemas:
+    SearchSettingKeywordSetting:
+      type: object
+      properties:
+        keyword_type:
+          $ref: '#/components/schemas/commonKeywordType'
+        negative_keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordSettingNegativeKeyword'
+          description: Negative keyword settings.
+        positive_keywords:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordSettingPositiveKeyword'
+          description: Positive keyword settings.
+      description: KeywordSetting describes target keyword targeting settings for the campaign
+      required:
+      - keyword_type
+      additionalProperties: true
+    AudienceSettingEventBasedListCondition:
+      type: object
+      properties:
+        event_type:
+          $ref: '#/components/schemas/AudienceConfigAudienceTargetingEventType'
+        criteria:
+          $ref: '#/components/schemas/AudienceConfigAudienceTargetingCriteria'
+        period_hours:
+          type: integer
+          format: int64
+          description: Event period for targeting audience in hours.
+        selections:
+          type: array
+          items:
+            type: string
+          description: Selections of the target audience. It is required if the criteria is AD_ACCOUNT_ITEM, BRAND, or CATEGORY.
+      description: Condition describes event based audience targeting condition for the campaign
+      required:
+      - event_type
+      - criteria
+      - period_hours
+      additionalProperties: true
+    commonCampaignEnablingState:
+      type: string
+      enum:
+      - UNKNOWN_STATE
+      - ENABLED
+      - DISABLED
+      default: UNKNOWN_STATE
+      description: campaign’s enabling state that the advertiser can enable/disable. It will affect the campaign’s state.
+    v1Order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the order.
+        title:
+          type: string
+          description: A descriptive name of the order.
+        ad_account_id:
+          type: string
+          description: The id of the ad account that owns this order. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
+        schedule:
+          $ref: '#/components/schemas/commonOptionalTimeInterval'
+        budget:
+          $ref: '#/components/schemas/commonOptionalBudget'
+        insertion_order_url:
+          type: string
+          description: URL of the insertion order.
+        state:
+          $ref: '#/components/schemas/OrderOrderState'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. It is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. It is set internally.
+          readOnly: true
+        draft:
+          type: boolean
+          description: Draft indicator. If true - order is in draft state; false - order is actually launched.
+          readOnly: true
+        ad_payer:
+          type: string
+          description: Free-text identifier of the party financially responsible for line items under this order (for compliance reporting). Optional; BE-enforced 200-character limit.
+      description: Definition of an order.
+      required:
+      - id
+      - title
+      - ad_account_id
+      - state
+      - created_at
+      - updated_at
+      additionalProperties: true
+    v1FrequencyCapping:
+      type: object
+      properties:
+        max_impressions:
+          type: integer
+          format: int64
+          description: Maximum number of impressions per user. Must be greater than 0.
+        reset_period:
+          $ref: '#/components/schemas/FrequencyCappingResetPeriod'
+      description: Configuration for frequency capping on a per-user-per-line item basis.
+      required:
+      - max_impressions
+      - reset_period
+      additionalProperties: true
+    rmpcommonBudgetPeriod:
+      type: string
+      enum:
+      - UNKNOWN_PERIOD
+      - DAILY
+      - WEEKLY
+      default: UNKNOWN_PERIOD
+    TargetingPlacementSetting:
+      type: object
+      properties:
+        home_setting:
+          $ref: '#/components/schemas/PlacementSettingHomeSetting'
+        category_setting:
+          $ref: '#/components/schemas/PlacementSettingCategorySetting'
+        search_setting:
+          $ref: '#/components/schemas/PlacementSettingSearchSetting'
+        product_detail_setting:
+          $ref: '#/components/schemas/TargetingPlacementSettingProductDetailSetting'
+        cart_setting:
+          $ref: '#/components/schemas/PlacementSettingCartSetting'
+        checkout_setting:
+          $ref: '#/components/schemas/PlacementSettingCheckoutSetting'
+        ranking_setting:
+          $ref: '#/components/schemas/PlacementSettingRankingSetting'
+      description: PlacementSetting describes target placement targeting settings for the campaign
+      additionalProperties: true
+    CampaignLandingPageProductListSetting:
+      type: object
+      description: Detailed configuration of the product list page.
+      additionalProperties: true
+    AudienceSettingEventBasedList:
+      type: object
+      properties:
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AudienceSettingEventBasedListCondition'
+          description: Event based audience targeting conditions.
+        operator:
+          $ref: '#/components/schemas/AudienceSettingEventBasedListOperator'
+      description: EventBasedList describes event based audience targeting settings for the campaign
+      required:
+      - conditions
+      - operator
+      additionalProperties: true
+    commonCampaignKeywordMatchType:
+      type: string
+      enum:
+      - PHRASE
+      - EXACT
+      - BROAD
+      default: PHRASE
+      description: CampaignKeywordMatchType enumerates available match types for positive keyword targeting.
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    KeywordSettingNegativeKeyword:
+      type: object
+      properties:
+        value:
+          type: string
+      description: NegativeKeyword describes target negative keyword targeting settings for the campaign
+      required:
+      - value
+      additionalProperties: true
+    PlacementSettingCategorySetting:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If set true, the campaign will target the Category Placement.
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Targeting setting of the Category Placement.
+      required:
+      - enabled
+      additionalProperties: true
+    KeywordSettingPositiveKeyword:
+      type: object
+      properties:
+        value:
+          type: string
+        match_type:
+          $ref: '#/components/schemas/commonCampaignKeywordMatchType'
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: PositiveKeyword describes target positive keyword targeting settings for the campaign
+      required:
+      - value
+      - match_type
+      additionalProperties: true
+    TargetingCustomSettingCustomTarget:
+      type: object
+      properties:
+        key_id:
+          type: string
+          description: The id of the custom target key.
+        value_ids:
+          type: array
+          items:
+            type: string
+          description: The ids of the custom target values.
+      description: CustomTarget describes target custom targeting for the campaign
+      required:
+      - key_id
+      - value_ids
+      additionalProperties: true
+    publicUpsertOrderWithLineItemsRequestLineItemParams:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the line item. If present, the line item will be updated; if absent, a new line item will be created.
+        title:
+          type: string
+          description: A descriptive name of the line item.
+        inventory_id:
+          type: string
+          description: The id of the inventory that this line item targets. Immutable.
+        schedule:
+          $ref: '#/components/schemas/commonOptionalTimeInterval'
+        goal:
+          $ref: '#/components/schemas/v1LineItemGoal'
+        enabling_state:
+          $ref: '#/components/schemas/commonCampaignEnablingState'
+        priority:
+          type: integer
+          format: int64
+          description: Priority of the line item. The lower the number, the higher the priority. Valid values are 1-10.
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonAsset'
+          description: Assets associated with the line item. Between 1 and 10 assets are allowed.
+        landing_pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonCampaignLandingPage'
+          description: Landing page associated with the line item. Only single landing page is allowed.
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Required when update request.
+        frequency_cappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1FrequencyCapping'
+          description: Frequency capping configuration to limit impressions per user.
+        ad_schedule:
+          $ref: '#/components/schemas/commonAdSchedule'
+        pacing:
+          $ref: '#/components/schemas/v1Pacing'
+        targeting:
+          $ref: '#/components/schemas/v1Targeting'
+      description: List of params required to upsert a line item.
+      required:
+      - title
+      - enabling_state
+      additionalProperties: true
+    ListReservedDisplayInventoriesResponseReservedDisplayInventory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifier of the inventory.
+        title:
+          type: string
+          description: Title of the inventory.
+      additionalProperties: true
+    commonAssetBanner:
+      type: object
+      properties:
+        creative_id:
+          type: string
+          description: ImageAsset ID referred to set the banner image
+        target_inventory_dimension:
+          $ref: '#/components/schemas/rmpcommonDimension'
+        image_url:
+          type: string
+          description: The banner image URL.
+          readOnly: true
+        width:
+          type: integer
+          format: int64
+          description: The banner width (pixel).
+          readOnly: true
+        height:
+          type: integer
+          format: int64
+          description: The banner height (pixel).
+          readOnly: true
+        media_type:
+          $ref: '#/components/schemas/rmpcommonMediaType'
+        alt_text:
+          type: string
+          description: Alt-text for the banner image for accessibility.
+      additionalProperties: true
+    PlacementSettingRankingSetting:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If set true, the campaign will target the Ranking Placement.
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Targeting setting of the Ranking Placement.
+      required:
+      - enabled
+      additionalProperties: true
+    v1LineItemGoal:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/commonLineItemGoalType'
+        reserved_impressions:
+          $ref: '#/components/schemas/LineItemGoalReservedImpressions'
+        reserved_time:
+          $ref: '#/components/schemas/LineItemGoalReservedTime'
+      additionalProperties: true
+    publicListReservedDisplayInventoriesResponse:
+      type: object
+      properties:
+        inventories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListReservedDisplayInventoriesResponseReservedDisplayInventory'
+          description: List of reserved display inventories.
+      description: ListReservedDisplayInventories response.
+      required:
+      - inventories
+      additionalProperties: true
+    commonReviewStatus:
+      type: string
+      enum:
+      - UNKNOWN_REVIEW_STATUS
+      - IN_REVIEW
+      - APPROVED
+      - REJECTED
+      default: UNKNOWN_REVIEW_STATUS
+    TargetingAudienceSettingPredefinedAudience:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the predefined audience.
+      description: PredefinedAudience describes predefined audience used for the campaign.
+      required:
+      - id
+      additionalProperties: true
+    AudienceConfigAudienceTargetingEventType:
+      type: string
+      enum:
+      - UNKNOWN_EVENT_TYPE
+      - PURCHASE
+      - ITEM_PAGE_VIEW
+      default: UNKNOWN_EVENT_TYPE
+    rmpcommonDayOfWeek:
+      type: string
+      enum:
+      - UNKNOWN_DAY_OF_WEEK
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY
+      - SUNDAY
+      default: UNKNOWN_DAY_OF_WEEK
+      description: "DayOfWeek represents the day of the week.\n\n - MONDAY: Monday\n - TUESDAY: Tuesday\n - WEDNESDAY: Wednesday\n - THURSDAY: Thursday\n - FRIDAY: Friday\n - SATURDAY: Saturday\n - SUNDAY: Sunday"
+    PlacementSettingHomeSetting:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If set true, the campaign will target the Home Placement.
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Targeting setting of the Home Placement.
+      required:
+      - enabled
+      additionalProperties: true
+    commonAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the asset. Must be left unset for the new asset. Must be set for the other requests.
+        banner:
+          $ref: '#/components/schemas/commonAssetBanner'
+        logo:
+          $ref: '#/components/schemas/commonAssetLogo'
+        headline:
+          $ref: '#/components/schemas/commonAssetHeadline'
+        custom_text:
+          $ref: '#/components/schemas/commonAssetCustomText'
+        cta:
+          $ref: '#/components/schemas/commonAssetCallToAction'
+        metadata:
+          $ref: '#/components/schemas/commonAssetMetadata'
+        review_information:
+          $ref: '#/components/schemas/commonReviewInformation'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: This field represents the last time the asset was modified. The system sets this value internally for you when you create or update a asset, so make sure this value matches the latest updated_at you received from the Read API.
+      description: Detailed settings for the asset.
+      additionalProperties: true
+    TargetingAudienceSettingPredefinedAudienceListOperator:
+      type: string
+      enum:
+      - UNKNOWN_OPERATOR
+      - AND
+      - OR
+      default: UNKNOWN_OPERATOR
+    LineItemGoalReservedTime:
+      type: object
+      properties:
+        cost:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Goal setting for a RESERVED_TIME (CPT) line item. The line item owns 100% of the targeted inventory for the fixed schedule window.
+      required:
+      - cost
+      additionalProperties: true
+    TargetingPlacementSettingProductDetailSetting:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If set true, the campaign will target the Product Detail Placement.
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Targeting setting of the Product Detail Placement.
+      required:
+      - enabled
+      additionalProperties: true
+    rmpcommonDayPart:
+      type: object
+      properties:
+        day_of_week:
+          $ref: '#/components/schemas/rmpcommonDayOfWeek'
+        start_time:
+          $ref: '#/components/schemas/rmpcommonTimeOfDay'
+        end_time:
+          $ref: '#/components/schemas/rmpcommonTimeOfDay'
+      description: Timeframe of a specific day of the week.
+      required:
+      - day_of_week
+      - start_time
+      - end_time
+      additionalProperties: true
+    PlacementSettingSearchSetting:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If set true, the campaign will target the Search Placement.
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        keyword_setting:
+          $ref: '#/components/schemas/SearchSettingKeywordSetting'
+      description: Targeting setting of the Search Placement.
+      required:
+      - enabled
+      additionalProperties: true
+    v1LineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the line item.
+        title:
+          type: string
+          description: A descriptive name of the line item.
+        order_id:
+          type: string
+          description: The id of the order that contains this line item.
+        inventory_id:
+          type: string
+          description: The id of the inventory that this line item targets.
+        schedule:
+          $ref: '#/components/schemas/commonOptionalTimeInterval'
+        goal:
+          $ref: '#/components/schemas/v1LineItemGoal'
+        enabling_state:
+          $ref: '#/components/schemas/commonCampaignEnablingState'
+        priority:
+          type: integer
+          format: int64
+          description: Priority of the line item. The lower the number, the higher the priority. Valid values are 1-10.
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonAsset'
+          description: Assets associated with the line item. Only single asset is allowed.
+        landing_pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/commonCampaignLandingPage'
+          description: Landing pages associated with the line item. Only single landing page is allowed.
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. It is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. It is set internally.
+          readOnly: true
+        frequency_cappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1FrequencyCapping'
+          description: Frequency capping configuration to limit impressions per user.
+        pacing:
+          $ref: '#/components/schemas/v1Pacing'
+      description: Definition of a line item.
+      required:
+      - id
+      - title
+      - order_id
+      - enabling_state
+      - assets
+      - landing_pages
+      - created_at
+      - updated_at
+      additionalProperties: true
+    CampaignLandingPageCampaignLandingPageType:
+      type: string
+      enum:
+      - UNKNOWN_LANDING_PAGE_TYPE
+      - CUSTOM_URL
+      - PRODUCT_DETAIL
+      - PRODUCT_LIST
+      - NONE
+      default: UNKNOWN_LANDING_PAGE_TYPE
+    v1LineItemDailyReportRow:
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date of the report in YYYY-MM-DD format.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count for the date.
+        reach:
+          type: string
+          format: int64
+          description: Reach for the date.
+        frequency:
+          type: number
+          format: double
+          description: Frequency for the date.
+        ctr:
+          type: number
+          format: double
+          description: Click-through rate for the date.
+        click_count:
+          type: string
+          format: int64
+          description: Click count for the date.
+      additionalProperties: true
+    publicReadOrderResponse:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/v1Order'
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LineItem'
+          description: Line items associated with the order.
+      description: ReadOrder response containing order details with line items.
+      required:
+      - order
+      additionalProperties: true
+    commonAssetLogo:
+      type: object
+      properties:
+        creative_id:
+          type: string
+          description: ImageAsset ID referred to set the logo image.
+        image_url:
+          type: string
+          description: The logo image URL.
+      additionalProperties: true
+    v1Targeting:
+      type: object
+      properties:
+        placement_setting:
+          $ref: '#/components/schemas/TargetingPlacementSetting'
+        audience_setting:
+          $ref: '#/components/schemas/TargetingAudienceSetting'
+        custom_setting:
+          $ref: '#/components/schemas/TargetingCustomSetting'
+      description: Targeting describes the detailed targeting spec for the campaign.
+      additionalProperties: true
+    PlacementSettingCheckoutSetting:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If set true, the campaign will target the Checkout Placement.
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Targeting setting of the Checkout Placement.
+      required:
+      - enabled
+      additionalProperties: true
+    commonAssetCallToAction:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Call-To-Action text
+      additionalProperties: true
+    AudienceSettingEventBasedListOperator:
+      type: string
+      enum:
+      - UNKNOWN_OPERATOR
+      - AND
+      - OR
+      default: UNKNOWN_OPERATOR
+    publicQueryReservedInventoryForecastResponseStatus:
+      type: string
+      enum:
+      - UNKNOWN
+      - OK
+      - INSUFFICIENT_DATA
+      - TARGETING_FORECAST_UNAVAILABLE
+      default: UNKNOWN
+    rmpcommonTimeOfDay:
+      type: object
+      properties:
+        hours:
+          type: integer
+          format: int32
+          description: 'Hours of day in 24 hour format. Should be from 0 to 24. An API may choose
+
+            to allow the value "24:00:00" for scenarios like business closing time.'
+      description: Specific time of the day.
+      required:
+      - hours
+      additionalProperties: true
+    publicQueryReservedInventoryForecastResponse:
+      type: object
+      properties:
+        imp:
+          type: string
+          format: uint64
+        status:
+          $ref: '#/components/schemas/publicQueryReservedInventoryForecastResponseStatus'
+      additionalProperties: true
+    PlacementSettingCartSetting:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If set true, the campaign will target Cart Placement.
+        cost_price:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Targeting setting of the Cart Placement.
+      required:
+      - enabled
+      additionalProperties: true
+    OrderOrderState:
+      type: string
+      enum:
+      - SCHEDULED
+      - PAUSED
+      - ACTIVE
+      - ENDED
+      - DRAFT
+      default: SCHEDULED
+      description: order's state.
+    UpsertOrderWithLineItemsRequestOrderParams:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the order. If present, the order will be updated; if absent, a new order will be created.
+        title:
+          type: string
+          description: A descriptive name of the order.
+        schedule:
+          $ref: '#/components/schemas/commonOptionalTimeInterval'
+        budget:
+          $ref: '#/components/schemas/commonOptionalBudget'
+        insertion_order_url:
+          type: string
+          description: URL of the insertion order.
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Required when update request.
+        draft:
+          type: boolean
+          description: Draft Save indicator. If true - order will be saved as draft item without actual launch
+        ad_payer:
+          type: string
+          description: Free-text identifier of the party financially responsible for line items under this order (for compliance reporting). Optional; BE-enforced 200-character limit.
+      description: List of params required to upsert an order.
+      required:
+      - title
+      additionalProperties: true
+    PacingPacingType:
+      type: string
+      enum:
+      - UNKNOWN
+      - ASAP
+      - EVEN
+      - ACCELERATED
+      default: UNKNOWN
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    v1Pacing:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/PacingPacingType'
+      additionalProperties: true
+    rmpcommonDimension:
+      type: object
+      properties:
+        width:
+          type: integer
+          format: int64
+          description: The width of the dimension. Required.
+        height:
+          type: integer
+          format: int64
+          description: The height of the dimension. Required.
+      required:
+      - width
+      - height
+      additionalProperties: true
+    commonDateRange:
+      type: object
+      properties:
+        date_start:
+          type: string
+          description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+        date_end:
+          type: string
+          description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+      additionalProperties: true
+    commonOptionalTimeInterval:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Start time in RFC3339 format, e.g. "2017-04-01T12:34:56+00:00"
+        end:
+          type: string
+          format: date-time
+          description: End time in RFC3339 format, e.g. "2017-05-01-T21:09:08+00:00"
+      description: Interval with start and end timestamps where all fields are optional.
+      additionalProperties: true
+    publicUpsertOrderWithLineItemsResponse:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/v1Order'
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LineItem'
+          description: List of created or updated line items associated with the order.
+      description: UpsertOrderWithLineItems response. Returns the created or updated order along with its associated line items.
+      required:
+      - order
+      - line_items
+      additionalProperties: true
+    TargetingAudienceSettingPredefinedAudienceList:
+      type: object
+      properties:
+        audiences:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetingAudienceSettingPredefinedAudience'
+          description: Predefined audiences.
+        operator:
+          $ref: '#/components/schemas/TargetingAudienceSettingPredefinedAudienceListOperator'
+      description: PredefinedAudienceList describes predefined audiences used for the campaign.
+      required:
+      - audiences
+      - operator
+      additionalProperties: true
+    commonKeywordType:
+      type: string
+      enum:
+      - ALL
+      - TARGET
+      default: ALL
+      description: KeywordType enumerates available keyword types for keyword targeting.
+    commonReviewInformation:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/commonReviewStatus'
+        rejection_reason:
+          type: string
+          description: Review rejection reason
+        updated_at:
+          type: string
+          format: date-time
+          description: This field represents the last time the review was modified. The system sets this value internally for you when you create or update a review information, so make sure this value matches the latest updated_at you received from the Read API.
+      additionalProperties: true
+    rmpcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
+    commonAdSchedule:
+      type: object
+      properties:
+        dayparts:
+          type: array
+          items:
+            $ref: '#/components/schemas/rmpcommonDayPart'
+      description: Ad scheduling settings for a campaign or line item.
+      required:
+      - dayparts
+      additionalProperties: true
+    commonAssetHeadline:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Headline text
+        color:
+          type: string
+          description: Hex color for headline text. Use a leading `#` plus 6 hex digits for RGB (e.g. `#FFFFFF`) or 8 hex digits for RGBA (e.g. `#FFFFFF00`).
+        background_color:
+          type: string
+          description: Hex background color for the headline. Use a leading `#` plus 6 hex digits for RGB (e.g. `#FFFFFF`) or 8 hex digits for RGBA (e.g. `#FFFFFF00`).
+      additionalProperties: true
+    rmpcommonMoneyMicro:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/rmpcommonCurrency'
+        amount_micro:
+          type: string
+          format: int64
+          description: Amount in micro unit. (e.g., 1234 means 0.001234)
+      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
+
+        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
+      required:
+      - currency
+      - amount_micro
+      additionalProperties: true
+    commonCampaignLandingPage:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/CampaignLandingPageCampaignLandingPageType'
+        custom_url_setting:
+          $ref: '#/components/schemas/CampaignLandingPageCustomUrlSetting'
+        product_detail_setting:
+          $ref: '#/components/schemas/commonCampaignLandingPageProductDetailSetting'
+        product_list_setting:
+          $ref: '#/components/schemas/CampaignLandingPageProductListSetting'
+        id:
+          type: string
+          description: The id of the landing page. Must be left unset for the new landing page. Must be set for the other requests.
+        review_information:
+          $ref: '#/components/schemas/commonReviewInformation'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: This field represents the last time the landing page was modified. The system sets this value internally for you when you create or update a landing page, so make sure this value matches the latest updated_at you received from the Read API.
+      description: Detailed settings for the landing page.
+      required:
+      - type
+      additionalProperties: true
+    TargetingCustomSetting:
+      type: object
+      properties:
+        custom_targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetingCustomSettingCustomTarget'
+          description: Custom targets.
+      description: CustomSetting describes target custom targeting settings for the campaign
+      required:
+      - custom_targets
+      additionalProperties: true
+    TargetingAudienceSetting:
+      type: object
+      properties:
+        label:
+          type: string
+          description: Label of the audience settings. This can be set only if the event_based_include_list or event_based_exclude_list is set. This label will be used to identify the custom audience settings in the campaign.
+        event_based_include_list:
+          $ref: '#/components/schemas/AudienceSettingEventBasedList'
+        event_based_exclude_list:
+          $ref: '#/components/schemas/AudienceSettingEventBasedList'
+        included_predefined_audience_list:
+          $ref: '#/components/schemas/TargetingAudienceSettingPredefinedAudienceList'
+      description: AudienceSetting describes audience targeting settings for the campaign
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    AudienceConfigAudienceTargetingCriteria:
+      type: string
+      enum:
+      - UNKNOWN_CRITERIA
+      - AD_ACCOUNT
+      - AD_ACCOUNT_ITEM
+      - CATEGORY
+      - BRAND
+      default: UNKNOWN_CRITERIA
+    commonOptionalBudget:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/rmpcommonBudgetPeriod'
+        amount:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Budget where all fields are optional.
+      additionalProperties: true
+    rmpcommonTimeInterval:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Start time in RFC3339 format, e.g. "2017-04-01T12:34:56+00:00"
+        end:
+          type: string
+          format: date-time
+          description: End time in RFC3339 format, e.g. "2017-05-01-T21:09:08+00:00"
+      description: 'Campaign''s interval with start and end timestamps in RFC3339 format.
+
+        The Campaign will conceptually run during [schedule_start, schedule_end] inclusively.
+
+        It is highly recommended that schedule.start is set to UTC corresponding to the beginning of the day (00:00:00), and schedule.end is set to UTC corresponding to the end of the day (23:59:59) both in the ad account''s timezone.
+
+        If you want to set no end date, make sure your platform supports no end date setting and just leave schedule_end blank.'
+      required:
+      - start
+      additionalProperties: true
+    commonLineItemGoalType:
+      type: string
+      enum:
+      - UNKNOWN_LINE_ITEM_GOAL_TYPE
+      - RESERVED_IMPRESSIONS
+      - RESERVED_TIME
+      default: UNKNOWN_LINE_ITEM_GOAL_TYPE
+      description: " - RESERVED_IMPRESSIONS: CPM-based Reserved Display: line item targets a fixed impression count at a set CPM.\n - RESERVED_TIME: CPT-based Reserved Display: line item owns 100% of targeted inventory for a fixed time window at a flat cost."
+    commonAssetMetadata:
+      type: object
+      properties:
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          description: Key-value metadata attributes.
+      additionalProperties: true
+    FrequencyCappingResetPeriod:
+      type: string
+      enum:
+      - UNKNOWN_RESET_PERIOD
+      - HOUR
+      - DAY
+      - WEEK
+      - MONTH
+      - LIFETIME
+      default: UNKNOWN_RESET_PERIOD
+    publicQueryLineItemDailySummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LineItemDailyReportRow'
+          description: List of daily summary rows.
+      description: QueryLineItemDailySummary response containing daily summary rows.
+      required:
+      - rows
+      additionalProperties: true
+    LineItemGoalReservedImpressions:
+      type: object
+      properties:
+        target_cpm:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        target_impressions:
+          type: integer
+          format: int64
+          description: The reserved impressions amount.
+      additionalProperties: true
+    CampaignLandingPageCustomUrlSetting:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The url of the landing page.
+      description: Detailed configuration of a custom url landing page.
+      required:
+      - url
+      additionalProperties: true
+    commonAssetCustomText:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Custom text content.
+        color:
+          type: string
+          description: Hex color for custom text. Use a leading `#` plus 6 hex digits for RGB (e.g. `#FFFFFF`) or 8 hex digits for RGBA (e.g. `#FFFFFF00`).
+        background_color:
+          type: string
+          description: Hex background color for custom text. Use a leading `#` plus 6 hex digits for RGB (e.g. `#FFFFFF`) or 8 hex digits for RGBA (e.g. `#FFFFFF00`).
+      description: Custom text for the asset.
+      additionalProperties: true
+    commonCampaignLandingPageProductDetailSetting:
+      type: object
+      properties:
+        item_id:
+          type: string
+      description: Detailed configuration of the product detail page.
+      required:
+      - item_id
+      additionalProperties: true
+    rmpcommonMediaType:
+      type: string
+      enum:
+      - UNKNOWN_MEDIA_TYPE
+      - IMAGE
+      - VIDEO
+      default: UNKNOWN_MEDIA_TYPE
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
+    Bearer:
+      type: apiKey
+      description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
+      name: Authorization
+      in: header
+x-refined-from:
+- mcm-management-api.json
+- moloco-commerce-media-management-openapi.yml
+x-readme:
+  explorer-enabled: true

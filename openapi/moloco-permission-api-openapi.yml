@@ -1,0 +1,154 @@
+openapi: 3.2.0
+info:
+  title: Moloco Permission API
+  version: 1.0.0
+  description: 'Operations tagged Permission across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: Permission
+paths:
+  /v1/users/{user_id}/permissions:
+    get:
+      security:
+      - Bearer: []
+      description: List the permissions given to the user.
+      tags:
+      - Permission
+      summary: List the user permissions.
+      operationId: v1_list_permissions
+      parameters:
+      - description: The ID of the user.
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: The ID of the platform to which the user belongs.
+        name: platform_id
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of permissions are correctly returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listUserPermissionsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '403':
+          description: Forbidden - the user is not authorized to call this API.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    listUserPermissionsResponse:
+      description: The API response that lists the permissions that the user has.
+      type: object
+      required:
+      - user_id
+      - platform_id
+      - userspace_id
+      - resource_path_permissions
+      properties:
+        platform_id:
+          description: The ID of the platform to which the user belongs to.
+          type: string
+        resource_path_permissions:
+          description: The resource path and the permissions given to the path.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourcePathPermissions'
+        user_id:
+          description: The ID of the user.
+          type: string
+        userspace_id:
+          description: The ID of the userspace to which the platform belongs to.
+          type: string
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    resourcePathPermissions:
+      description: A resource path and the permissions given to it.
+      type: object
+      required:
+      - id
+      - instance_id
+      - permissions
+      properties:
+        id:
+          description: Resource ID.
+          type: string
+        instance_id:
+          description: Resource instance ID.
+          type: string
+        permissions:
+          description: Permissions given to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/permission'
+    permission:
+      description: Permission.
+      type: object
+      required:
+      - id
+      - platform_id
+      - service
+      - resource_id
+      - verb
+      properties:
+        id:
+          description: The ID of the permission.
+          type: string
+        name:
+          description: The name of the permission.
+          type: string
+        platform_id:
+          description: The platform ID in which the permission is defined.
+          type: string
+        resource_id:
+          description: The resource on which the permission is defined.
+          type: string
+        service:
+          description: The name of the service such as DSP, AUTH.
+          type: string
+        verb:
+          description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

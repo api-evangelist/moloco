@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Moloco Health API
+  version: 1.0.0
+  description: 'Operations tagged Health across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://morse-us-prod.adsmoloco.com
+tags:
+- name: Health
+paths:
+  /ready:
+    get:
+      description: Check the health of the MOLOCO Cloud Auth API service.
+      tags:
+      - Health
+      summary: Check the health of the service.
+      operationId: v1_health_check
+      responses:
+        '200':
+          description: The API is working  file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/healthCheckResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+    servers:
+    - url: https://morse-us-prod.adsmoloco.com
+components:
+  schemas:
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    healthCheckResponse:
+      description: A response to a health check request.
+      type: object
+      required:
+      - healthy
+      properties:
+        healthy:
+          description: Indicates whether the server is healthy or not.
+          type: boolean
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- moloco-cloud-auth-api.json
+- moloco-cloud-auth-openapi.yml
+x-readme:
+  explorer-enabled: true

@@ -1,0 +1,780 @@
+openapi: 3.2.0
+info:
+  title: Moloco Wallet API
+  version: '1.0'
+  contact:
+    name: Moloco Inc.
+    url: https://www.molocoads.com
+  description: 'Operations tagged Wallet across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://<platform>-mgmt.mcm-api.moloco.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: Wallet
+paths:
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets:
+    get:
+      summary: ListWallets
+      description: List all wallets of an ad account. Currently, an ad account can have a single wallet.
+      operationId: RmpManagementApi_ListWallets
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicListWalletsResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: The Platform id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Wallet
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/top-up/{request_id}:
+    put:
+      summary: TopUpWallet
+      description: Top up an amount of money (VAT exclusive) for the wallet of the ad account.
+      operationId: RmpManagementApi_TopUpWallet
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicTopUpWalletResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: The Platform id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: wallet_id
+        description: The Wallet id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: request_id
+        description: The TopUp request ID. For retries, the same request_id should be used again to prevent duplicate requests. Only alphanumeric characters, underscores, and hyphens are allowed, and 8-64 characters are required.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                top_up:
+                  $ref: '#/components/schemas/v1AccountUpdateAmount'
+                comment:
+                  type: string
+                  description: A comment for transaction. Optional.
+              description: TopUpWallet request.
+              required:
+              - top_up
+              additionalProperties: true
+        required: true
+      tags:
+      - Wallet
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/transaction-history:
+    post:
+      summary: QueryWalletTransactionHistory
+      description: Query wallet transaction history.
+      operationId: RmpManagementApi_QueryWalletTransactionHistory
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryWalletTransactionHistoryResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: Identifier of the platform who requests management api. It is passed as a path parameter.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: wallet_id
+        description: Wallet id.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_time:
+                  type: string
+                  format: date-time
+                  description: Start time in RFC3339 format, e.g. "2017-04-01T12:34:56+00:00"
+                end_time:
+                  type: string
+                  format: date-time
+                  description: End time in RFC3339 format, e.g. "2017-05-01T21:09:08+00:00"
+                cursor:
+                  type: string
+                  description: Cursor for pagination. If not set, the first page will be returned.
+                limit:
+                  type: integer
+                  format: int64
+                  default: '10'
+                  description: 'Number of items to be returned. The maximum number is 5000. Default: 10'
+                order_by:
+                  $ref: '#/components/schemas/v1ChangeLogOrderBy'
+              description: QueryWalletTransactionHistory request.
+              additionalProperties: true
+        required: true
+      tags:
+      - Wallet
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/withdraw/{request_id}:
+    put:
+      summary: WithdrawWallet
+      description: Withdraw an amount of money (VAT exclusive) from a wallet of the ad account.
+      operationId: RmpManagementApi_WithdrawWallet
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicWithdrawWalletResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: The Platform id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: ad_account_id
+        description: The AdAccount id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: wallet_id
+        description: The Wallet id.
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: request_id
+        description: The Withdraw request ID. For retries, the same request_id should be used again to prevent duplicate requests. Only alphanumeric characters, underscores, and hyphens are allowed, and 8-64 characters are required.
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                withdraw:
+                  $ref: '#/components/schemas/v1AccountUpdateAmount'
+                comment:
+                  type: string
+                  description: A comment for transaction. Optional.
+              description: WithdrawWallet request.
+              required:
+              - withdraw
+              additionalProperties: true
+        required: true
+      tags:
+      - Wallet
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+  /rmp/mgmt/v1/platforms/{platform_id}/wallets-bulk/read:
+    post:
+      summary: QueryWallets
+      description: Query all wallets for the platform.
+      operationId: RmpManagementApi_QueryWallets
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicQueryWalletsResponse'
+        '400':
+          description: Bad request. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '403':
+          description: Permission denied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '404':
+          description: Not found. One or more required resources do not exist.You can see the details in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+        '500':
+          description: Internal server error. Detailed cause can be found in the response message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/publicRepresentedError'
+      parameters:
+      - name: platform_id
+        description: The Platform id.
+        in: path
+        required: true
+        schema:
+          type: string
+      tags:
+      - Wallet
+    servers:
+    - url: https://<platform>-mgmt.mcm-api.moloco.com
+components:
+  schemas:
+    v1WalletTransactionHistoryMetadata:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Comment for the transaction.
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    v1WalletTransactionHistoryMoneyMicroByAccount:
+      type: object
+      properties:
+        credits:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        prepaid:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        total:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    v1AccountUpdateAmount:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/commonAccountType'
+        amount:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
+    publicTopUpWalletResponse:
+      type: object
+      properties:
+        wallet:
+          $ref: '#/components/schemas/v1Wallet'
+      description: TopUpWallet response.
+      additionalProperties: true
+    v1WalletTransactionHistoryType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - FUNDED
+      - REFUNDED
+      - SPENT
+      default: UNKNOWN_TYPE
+    v1Wallet:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the Wallet. Must be left unset for the Wallet creation request. Must be set for the other requests.
+        title:
+          type: string
+          description: A friendly name for the Wallet.
+        ad_account_id:
+          type: string
+          description: The id of the AdAccount that owns this Wallet. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
+        type:
+          $ref: '#/components/schemas/commonWalletType'
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Account'
+          description: List of Accounts that belong to the wallet.
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update.
+      description: Definition of a Wallet.
+      required:
+      - id
+      - ad_account_id
+      - type
+      - accounts
+      - created_at
+      - updated_at
+      additionalProperties: true
+    v1Account:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/commonAccountType'
+        balance:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
+    commonWalletType:
+      type: string
+      enum:
+      - UNKNOWN_WALLET_TYPE
+      - PRE_PAYMENT
+      - POST_PAYMENT
+      default: UNKNOWN_WALLET_TYPE
+      description: "WalletType.\n\n - PRE_PAYMENT: Wallet type for Pre-payment use case\n - POST_PAYMENT: Wallet type for Post-payment use case"
+    publicQueryWalletsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/publicWallets'
+          description: Map of wallets keyed by an ad account id.
+      description: QueryWallets response.
+      required:
+      - result
+      additionalProperties: true
+    commonOrderByDirection:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_DIRECTION
+      - ASC
+      - DESC
+      default: UNKNOWN_ORDER_BY_DIRECTION
+    v1WalletTransactionHistoryTransactionStatus:
+      type: string
+      enum:
+      - UNKNOWN_TRANSACTION_STATUS
+      - PENDING
+      - POSTED
+      default: UNKNOWN_TRANSACTION_STATUS
+    v1ChangeLogOrderByOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_COLUMN
+      - UPDATED_AT
+      default: UNKNOWN_ORDER_BY_COLUMN
+    commonAccountType:
+      type: string
+      enum:
+      - UNKNOWN_ACCOUNT_TYPE
+      - CREDITS
+      - PRE_PAID
+      default: UNKNOWN_ACCOUNT_TYPE
+      description: "AccountType.\n\n - CREDITS: Account Type given as free.\n - PRE_PAID: Account Type pre paid."
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    v1WalletTransactionHistoryChangedBy:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the user who changed the transaction.
+        name:
+          type: string
+          description: The name of the user who changed the transaction.
+        email:
+          type: string
+          description: The email of the user who changed the transaction.
+        role:
+          $ref: '#/components/schemas/v1RoleName'
+      additionalProperties: true
+    v1RoleName:
+      type: string
+      enum:
+      - UNKNOWN_ROLE_NAME
+      - PLATFORM_OWNER
+      - PLATFORM_USER
+      - AD_ACCOUNT_OWNER
+      - AD_ACCOUNT_USER
+      - AD_ACCOUNT_AGENCY
+      - CREATIVE_REVIEWER
+      default: UNKNOWN_ROLE_NAME
+    publicWithdrawWalletResponse:
+      type: object
+      properties:
+        wallet:
+          $ref: '#/components/schemas/v1Wallet'
+      description: WithdrawWallet response.
+      additionalProperties: true
+    rmpcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
+    publicQueryWalletTransactionHistoryResponse:
+      type: object
+      properties:
+        transaction_histories:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1WalletTransactionHistory'
+          description: List of WalletTransactionHistory.
+        prev_cursor:
+          type: string
+          description: Cursor for previous page. If it's the first page, then it will be omitted.
+        next_cursor:
+          type: string
+          description: Cursor for next page. If it's the last page, then it will be omitted.
+        total_count:
+          type: integer
+          format: int64
+          description: Total number of items.
+      description: QueryWalletTransactionHistory response.
+      required:
+      - transaction_histories
+      - total_count
+      additionalProperties: true
+    publicWallets:
+      type: object
+      properties:
+        wallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Wallet'
+          description: List of Wallets.
+      description: QueryWallets response.
+      required:
+      - wallets
+      additionalProperties: true
+    publicListWalletsResponse:
+      type: object
+      properties:
+        wallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Wallet'
+          description: List of Wallets.
+      description: ListWallets response.
+      required:
+      - wallets
+      additionalProperties: true
+    v1ChangeLogOrderBy:
+      type: object
+      properties:
+        column:
+          $ref: '#/components/schemas/v1ChangeLogOrderByOrderByColumn'
+        direction:
+          $ref: '#/components/schemas/commonOrderByDirection'
+      additionalProperties: true
+    rmpcommonMoneyMicro:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/rmpcommonCurrency'
+        amount_micro:
+          type: string
+          format: int64
+          description: Amount in micro unit. (e.g., 1234 means 0.001234)
+      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
+
+        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
+      required:
+      - currency
+      - amount_micro
+      additionalProperties: true
+    v1WalletTransactionHistory:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryType'
+        transaction_status:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryTransactionStatus'
+        budget_change:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryMoneyMicroByAccount'
+        balance:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryMoneyMicroByAccount'
+        posted_at:
+          type: string
+          format: date-time
+          description: The time when the transaction was posted.
+        transaction_date:
+          type: string
+          description: The date of the transaction. e.g. 2006-01-02
+        metadata:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryMetadata'
+        changed_by:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryChangedBy'
+      description: Definition of a Wallet Transaction History.
+      required:
+      - type
+      - transaction_status
+      - budget_change
+      - balance
+      - transaction_date
+      additionalProperties: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
+    Bearer:
+      type: apiKey
+      description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
+      name: Authorization
+      in: header
+x-refined-from:
+- mcm-management-api.json
+- moloco-commerce-media-management-openapi.yml
+x-readme:
+  explorer-enabled: true
