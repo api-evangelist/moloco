@@ -30,15 +30,15 @@ created: '2026-07-31'
 modified: '2026-08-13'
 tags:
 - Advertising
-- AdTech
-- Demand-Side Platform
-- Retail Media
-- Commerce Media
-- Programmatic Advertising
-- Campaign Management
-- Ad Serving
-- Machine-Learning
-- Mobile Marketing
+- adtech
+- demand-side-platform
+- retail-media
+- commerce-media
+- programmatic-advertising
+- campaign-management
+- ad-serving
+- machine-learning
+- mobile-marketing
 - Reporting
 - user-events
 tags_raw:
@@ -61,6 +61,8 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
+  - Ad Account
+  tags_raw:
   - AdAccount
   properties:
   - type: OpenAPI
@@ -301,6 +303,8 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
+  - Change History
+  tags_raw:
   - ChangeHistory
   properties:
   - type: OpenAPI
@@ -481,6 +485,8 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
+  - Data Export
+  tags_raw:
   - DataExport
   properties:
   - type: OpenAPI
@@ -511,6 +517,8 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
+  - Decisions
+  tags_raw:
   - Decision
   properties:
   - type: OpenAPI
@@ -1081,6 +1089,8 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
+  - Tracking Link
+  tags_raw:
   - TrackingLink
   properties:
   - type: OpenAPI
@@ -1202,6 +1212,8 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
+  - Wallets
+  tags_raw:
   - Wallet
   properties:
   - type: OpenAPI
