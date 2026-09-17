@@ -71,68 +71,6 @@ tags_raw:
 - reporting
 - user-events
 apis:
-- aid: moloco:moloco-adaccount-api
-  name: MOLOCO Ad Account API
-  description: The AdAccount API from MOLOCO — 7 operation(s) for adaccount.
-  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
-  baseURL: https://api.moloco.cloud
-  tags:
-  - Ad Account
-  tags_raw:
-  - AdAccount
-  properties:
-  - type: OpenAPI
-    url: openapi/moloco-adaccount-api-openapi.yml
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/campaign-management-api
-  - type: APIReference
-    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/auth
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/campaign-management
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
-  - type: Webhooks
-    url: asyncapi/moloco-commerce-media-webhooks.yml
-- aid: moloco:moloco-adgroup-api
-  name: MOLOCO Ad Group API
-  description: The AdGroup API from MOLOCO — 2 operation(s) for adgroup.
-  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
-  baseURL: https://api.moloco.cloud
-  tags:
-  - AdGroup
-  properties:
-  - type: OpenAPI
-    url: openapi/moloco-adgroup-api-openapi.yml
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/campaign-management-api
-  - type: APIReference
-    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/auth
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/campaign-management
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
-  - type: Webhooks
-    url: asyncapi/moloco-commerce-media-webhooks.yml
 - aid: moloco:moloco-admanageraccount-api
   name: MOLOCO Ad Manager Account API
   description: The AdManagerAccount API from MOLOCO — 2 operation(s) for admanageraccount.
@@ -313,38 +251,6 @@ apis:
     url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
   - type: Webhooks
     url: asyncapi/moloco-commerce-media-webhooks.yml
-- aid: moloco:moloco-changehistory-api
-  name: MOLOCO Change History API
-  description: The ChangeHistory API from MOLOCO — 5 operation(s) for changehistory.
-  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
-  baseURL: https://api.moloco.cloud
-  tags:
-  - Change History
-  tags_raw:
-  - ChangeHistory
-  properties:
-  - type: OpenAPI
-    url: openapi/moloco-changehistory-api-openapi.yml
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/campaign-management-api
-  - type: APIReference
-    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/auth
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/campaign-management
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
-  - type: Webhooks
-    url: asyncapi/moloco-commerce-media-webhooks.yml
 - aid: moloco:moloco-cohortsummary-api
   name: MOLOCO Cohort Summary API
   description: The CohortSummary API from MOLOCO — 1 operation(s) for cohortsummary.
@@ -475,38 +381,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/moloco-customtargeting-api-openapi.yml
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/campaign-management-api
-  - type: APIReference
-    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/auth
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/campaign-management
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
-  - type: Webhooks
-    url: asyncapi/moloco-commerce-media-webhooks.yml
-- aid: moloco:moloco-dataexport-api
-  name: MOLOCO Data Export API
-  description: The DataExport API from MOLOCO — 1 operation(s) for dataexport.
-  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
-  baseURL: https://api.moloco.cloud
-  tags:
-  - Data Export
-  tags_raw:
-  - DataExport
-  properties:
-  - type: OpenAPI
-    url: openapi/moloco-dataexport-api-openapi.yml
   - type: Documentation
     url: https://developer.moloco.cloud/docs/campaign-management-api
   - type: APIReference
@@ -859,36 +733,6 @@ apis:
     url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
   - type: Webhooks
     url: asyncapi/moloco-commerce-media-webhooks.yml
-- aid: moloco:moloco-reportexport-api
-  name: MOLOCO Report Export API
-  description: The ReportExport API from MOLOCO — 2 operation(s) for reportexport.
-  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
-  baseURL: https://api.moloco.cloud
-  tags:
-  - ReportExport
-  properties:
-  - type: OpenAPI
-    url: openapi/moloco-reportexport-api-openapi.yml
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/campaign-management-api
-  - type: APIReference
-    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/auth
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/campaign-management
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
-  - type: Webhooks
-    url: asyncapi/moloco-commerce-media-webhooks.yml
 - aid: moloco:moloco-reserveddisplay-api
   name: MOLOCO Reserved Display API
   description: The ReservedDisplay API from MOLOCO — 5 operation(s) for reserveddisplay.
@@ -1099,38 +943,6 @@ apis:
     url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
   - type: Webhooks
     url: asyncapi/moloco-commerce-media-webhooks.yml
-- aid: moloco:moloco-trackinglink-api
-  name: MOLOCO Tracking Link API
-  description: The TrackingLink API from MOLOCO — 3 operation(s) for trackinglink.
-  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
-  baseURL: https://api.moloco.cloud
-  tags:
-  - Tracking Link
-  tags_raw:
-  - TrackingLink
-  properties:
-  - type: OpenAPI
-    url: openapi/moloco-trackinglink-api-openapi.yml
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/campaign-management-api
-  - type: APIReference
-    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/auth
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/campaign-management
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
-  - type: Webhooks
-    url: asyncapi/moloco-commerce-media-webhooks.yml
 - aid: moloco:moloco-user-api
   name: MOLOCO User API
   description: The User API from MOLOCO — 18 operation(s) for user.
@@ -1172,36 +984,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/moloco-userdatadeletionrequest-api-openapi.yml
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/campaign-management-api
-  - type: APIReference
-    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
-  - type: Documentation
-    url: https://developer.moloco.cloud/docs/auth
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/campaign-management
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
-  - type: Documentation
-    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
-  - type: APIReference
-    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
-  - type: Webhooks
-    url: asyncapi/moloco-commerce-media-webhooks.yml
-- aid: moloco:moloco-userspace-api
-  name: MOLOCO Userspace API
-  description: The Userspace API from MOLOCO — 1 operation(s) for userspace.
-  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
-  baseURL: https://api.moloco.cloud
-  tags:
-  - Userspace
-  properties:
-  - type: OpenAPI
-    url: openapi/moloco-userspace-api-openapi.yml
   - type: Documentation
     url: https://developer.moloco.cloud/docs/campaign-management-api
   - type: APIReference
@@ -1294,6 +1076,216 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/moloco-workplacesummary-api-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+- aid: moloco:moloco-ad-account-api
+  name: MOLOCO Ad Account API
+  description: The Ad Account API from MOLOCO — 7 operation(s) for ad account.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - Ad Account
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-ad-account-api-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+- aid: moloco:moloco-ad-group-api
+  name: MOLOCO Ad Group API
+  description: The Ad Group API from MOLOCO — 2 operation(s) for ad group.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - Ad Group
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-ad-group-api-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+- aid: moloco:moloco-change-history-api
+  name: MOLOCO Change History API
+  description: The Change History API from MOLOCO — 5 operation(s) for change history.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - Change History
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-change-history-api-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+- aid: moloco:moloco-data-export-api
+  name: MOLOCO Data Export API
+  description: The Data Export API from MOLOCO — 1 operation(s) for data export.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - Data Export
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-data-export-api-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+- aid: moloco:moloco-report-export-api
+  name: MOLOCO Report Export API
+  description: The Report Export API from MOLOCO — 2 operation(s) for report export.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - Report Export
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-report-export-api-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+- aid: moloco:moloco-tracking-link-api
+  name: MOLOCO Tracking Link API
+  description: The Tracking Link API from MOLOCO — 3 operation(s) for tracking link.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - Tracking Link
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-tracking-link-api-openapi.yml
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/campaign-management-api
+  - type: APIReference
+    url: https://developer.moloco.cloud/reference/dspapi_listadaccounts-1
+  - type: Documentation
+    url: https://developer.moloco.cloud/docs/auth
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/campaign-management
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpmanagementapi_listadaccounts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/ad-serving-and-tracking
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpdecisionapi_decideadproducts
+  - type: Documentation
+    url: https://mcm-docs.moloco.com/docs/send-user-events-to-moloco-commerce-media
+  - type: APIReference
+    url: https://mcm-docs.moloco.com/reference/rmpeventapi_postuserevent
+  - type: Webhooks
+    url: asyncapi/moloco-commerce-media-webhooks.yml
+- aid: moloco:moloco-user-space-api
+  name: MOLOCO User Space API
+  description: The User Space API from MOLOCO — 1 operation(s) for user space.
+  humanURL: https://developer.moloco.cloud/docs/campaign-management-api
+  baseURL: https://api.moloco.cloud
+  tags:
+  - User Space
+  properties:
+  - type: OpenAPI
+    url: openapi/moloco-user-space-api-openapi.yml
   - type: Documentation
     url: https://developer.moloco.cloud/docs/campaign-management-api
   - type: APIReference
