@@ -34,7 +34,8 @@ edges:
   reason: Role grant lifecycle per user in the Cloud Auth API — access rights administration, mapped to
     IAM.
 - tag: AdGroup
-  spec_file: moloco-adgroup-api-openapi.yml
+  spec_file: moloco-ad-group-api-openapi.yml
+  reanchored_from: moloco-adgroup-api-openapi.yml
   capability_id: BC-400.60
   capability_id_l1: BC-400
   capability_name: Digital Marketing Management
