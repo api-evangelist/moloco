@@ -1,0 +1,157 @@
+slug: moloco
+provider: MOLOCO
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 14
+edges:
+- tag: Role
+  spec_file: moloco-role-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /cm/v1/auth/roles/grant 'Grant the role to the user'; POST /cm/v1/auth/roles/revoke 'Revoke
+    the role from the user'
+  reason: Explicit role grant/revoke under an /auth path is authorisation administration — Identity &
+    Access Management.
+- tag: RoleGrant
+  spec_file: moloco-rolegrant-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /v1/users/{user_id}/rolegrants 'Get role grants.'; POST 'Create a role grant.'; DELETE
+    'Delete a role grant.'
+  reason: Role grant lifecycle per user in the Cloud Auth API — access rights administration, mapped to
+    IAM.
+- tag: AdGroup
+  spec_file: moloco-adgroup-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.8
+  evidence: POST /cm/v1/ad-groups DspApi_CreateAdGroup "Create a new AdGroup"; schemas dspAdGroup, AudienceTargetingCondition...,
+    CampaignGoalOptimizeCpcForAppReMode
+  reason: Ad group creation with audience targeting and CPC/CPA campaign goals is paid-media campaign
+    construction — digital marketing execution.
+- tag: Campaign
+  spec_file: moloco-campaign-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.8
+  evidence: POST /cm/v1/campaigns  DspApi_CreateCampaign  Create a new Campaign; GET /cm/v1/campaign-overviews  Query
+    given Campaigns' setting overview; RmpManagementApi_ListCampaignReviews
+  reason: Full lifecycle management of advertising campaigns (create/read/update/delete, campaign review
+    workflow) on a DSP and retail-media platform — this is paid digital advertising campaign management,
+    a digital marketing capability.
+- tag: User
+  spec_file: moloco-user-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: DspApi_InviteUser 'Invite the user'; DspApi_ExpelUser 'Expel the user'; DspApi_ResetPassword
+    'Reset the user password'; GET /cm/v1/auth/users 'List workplace users'
+  reason: Invite/expel/read/update users, password reset and signup completion under /auth is platform
+    user account and credential lifecycle — IAM, not HR employee records.
+- tag: Permission
+  spec_file: moloco-permission-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: GET /v1/users/{user_id}/permissions  List the user permissions.; schemas resourcePathPermissions,
+    permission, listUserPermissionsResponse
+  reason: Retrieval of a user's authorisation grants per resource path — access management surface of
+    the Auth API.
+- tag: Intelligence
+  spec_file: moloco-intelligence-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.75
+  evidence: ReadCampaignForecast, ReadCampaignGuidance, QuerySuggestedItems on /ad-accounts/{ad_account_id}/campaign-forecast
+  reason: Forecasting and guidance for advertising campaigns (budget, ROAS/CPC goals, item selection)
+    on a retail-media ad platform — paid-media campaign planning and optimisation, i.e. digital marketing
+    management.
+- tag: Password
+  spec_file: moloco-password-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: PUT /v1/users/{email}/password  Update the user password.; "MOLOCO Cloud Auth API provides
+    functionalities to authenticate and authorize the MOLOCO Cloud users"
+  reason: Credential lifecycle for platform user accounts — identity and access management. Mapped to
+    IAM rather than a marketing capability since the operations only manage authentication credentials.
+- tag: Analytics
+  spec_file: moloco-analytics-api-openapi.yml
+  capability_id: BC-400.50
+  capability_id_l1: BC-400
+  capability_name: Marketing Operations Management
+  confidence: 0.7
+  evidence: POST /cm/v1/analytics-overview DspApi_QueryAnalyticsOverview "Provide the overview of ad performance
+    analytics"
+  reason: Querying ad performance metrics and dimensions is marketing measurement/reporting, which sits
+    in Marketing Operations Management; could alternatively be read as digital marketing analytics.
+- tag: AudienceTarget
+  spec_file: moloco-audiencetarget-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.7
+  evidence: POST /cm/v1/audience-targets  DspApi_CreateAudienceTarget  Create a new AudienceTarget; schemas
+    AudienceTargetingConditionLocationFilter, AudienceTargetingConditionCustomAudienceSet
+  reason: CRUD over audience targeting conditions (location, device OS, gender, custom audience sets)
+    used by a demand-side platform to target paid ads — squarely digital/paid-media marketing execution
+    rather than CRM segmentation of owned customers.
+- tag: Creative
+  spec_file: moloco-creative-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.7
+  evidence: POST /cm/v1/creatives  DspApi_CreateCreative  Create a new Creative; GET /cm/v1/creative-reviews  List
+    CreativeReviews; dspCreativeVastVideoSrc
+  reason: Lifecycle management and review of ad creatives (video, HTML, VAST) in a demand-side advertising
+    platform — production and governance of paid digital advertising assets, i.e. digital marketing execution.
+- tag: CreativeGroup
+  spec_file: moloco-creativegroup-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.7
+  evidence: POST /cm/v1/creative-groups  DspApi_CreateCreativeGroup  Create a new CreativeGroup; dspCreativeGroupInactiveReason
+  reason: Grouping and lifecycle management of ad creatives used within advertising campaigns — organisation
+    of paid-media creative, part of digital marketing execution rather than any technical concern.
+- tag: Product
+  spec_file: moloco-product-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.7
+  evidence: DspApi_UpdateProductSKANConversionConfig  Update conversion value configurations.; schemas
+    ProductAppProperties, dspPostbackIntegrationStatus, MmpIntegrationConversionValueConfigurationItem
+  reason: '''Product'' here is the advertised mobile app within Moloco Ads: app properties, MMP integration
+    and SKAdNetwork conversion-value configuration. That is mobile app advertising / attribution setup,
+    i.e. digital marketing management, not product lifecycle engineering.'
+- tag: UserDataDeletionRequest
+  spec_file: moloco-userdatadeletionrequest-api-openapi.yml
+  capability_id: BC-130.50
+  capability_id_l1: BC-130
+  capability_name: Privacy & Data Protection Management
+  confidence: 0.7
+  evidence: POST /rmp/mgmt/v1/platforms/{platform_id}/data-deletion-requests/user-events 'CreateUserDataDeletionRequest';
+    schema UserDataDeletionRequestIdentifier
+  reason: Endpoint submits deletion requests for identified end-user event data — a data-subject erasure
+    mechanism serving privacy/data protection compliance.
