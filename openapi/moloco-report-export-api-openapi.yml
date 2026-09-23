@@ -1,21 +1,21 @@
 openapi: 3.2.0
 info:
-  title: Moloco Report Export API
+  title: Moloco Ads Campaign Management Report Export API
+  description: Moloco Ads Campaign Management API provides functionalities for Moloco Ads Campaigns.
   version: '1.10'
   contact:
     name: Moloco Inc.
     url: https://www.moloco.com
-  description: 'Operations tagged ReportExport across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.moloco.cloud
 security:
 - Bearer: []
 tags:
-- name: ReportExport
+- name: Report Export
 paths:
   /cm/v1/report-exports:
     get:
-      summary: List up report exports.
+      summary: List up report exports
       description: List up report exports in the given Workplace or AdAccount or Product.
       operationId: DspApi_ListReportExports
       responses:
@@ -45,9 +45,9 @@ paths:
         schema:
           type: string
       tags:
-      - ReportExport
+      - Report Export
     post:
-      summary: Create a new report export.
+      summary: Create a new report export
       description: Create a new report export.
       operationId: DspApi_CreateReportExport
       responses:
@@ -84,12 +84,10 @@ paths:
         description: The details of the new report export specification.
         required: true
       tags:
-      - ReportExport
-    servers:
-    - url: https://api.moloco.cloud
+      - Report Export
   /cm/v1/report-exports/{report_export_id}:
     get:
-      summary: Read an existing report export.
+      summary: Read an existing report export
       description: Read an existing report export.
       operationId: DspApi_ReadReportExport
       responses:
@@ -113,9 +111,9 @@ paths:
         schema:
           type: string
       tags:
-      - ReportExport
+      - Report Export
     delete:
-      summary: Delete an existing report export.
+      summary: Delete an existing report export
       description: Delete an existing report export.
       operationId: DspApi_DeleteReportExport
       responses:
@@ -139,11 +137,34 @@ paths:
         schema:
           type: string
       tags:
-      - ReportExport
-    servers:
-    - url: https://api.moloco.cloud
+      - Report Export
 components:
   schemas:
+    messagesListReportExportsResponse:
+      type: object
+      example:
+        report_exports:
+        - id: sampleReportExportId
+          workplace_id: samplePlatformId
+          ad_account_id: sampleAdAccountId
+          product_id: sampleProductId
+          partner: SINGULAR
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+        - id: anotherReportExportId
+          workplace_id: samplePlatformId
+          ad_account_id: anotherAdAccountId
+          product_id: anotherProductId
+          partner: SINGULAR
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+      properties:
+        report_exports:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspReportExport'
+          description: List of report export in the given Workplace or AdAccount or Product.
     messagesReadReportExportErrorAPIErrorInfo:
       type: object
       properties:
@@ -155,6 +176,44 @@ components:
           type: object
           additionalProperties:
             type: string
+    messagesCreateReportExportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesCreateReportExportErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesDeleteReportExportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    ReportExportPartner:
+      type: string
+      enum:
+      - UNKNOWN_PARTNER
+      - SINGULAR
+      - APPSFLYER
+      - TENJIN
+      - BIDALGO
+      - APPANNIE
+      - APPSUMER
+      - ADJUST
+      - KOCHAVA
+      - AIRBRIDGE
+      - BRANCH
+      - JUSTTRACK
+      default: UNKNOWN_PARTNER
+      description: "Partner enumerates the reporting solution partners to whom we've integrated.\n\n - SINGULAR: Singular.\n - APPSFLYER: AppsFlyer.\n - TENJIN: Tenjin.\n - BIDALGO: Bidalgo.\n - APPANNIE: Appannie.\n - APPSUMER: Appsumer.\n - ADJUST: Adjust.\n - KOCHAVA: Kochava.\n - AIRBRIDGE: AirBridge.\n - BRANCH: Branch.\n - JUSTTRACK: JustTrack."
     messagesListReportExportsErrorAPIErrorInfo:
       type: object
       properties:
@@ -166,7 +225,10 @@ components:
           type: object
           additionalProperties:
             type: string
-    messagesCreateReportExportError:
+    messagesDeleteReportExportResponse:
+      type: object
+      example: {}
+    messagesReadReportExportError:
       type: object
       properties:
         code:
@@ -178,12 +240,20 @@ components:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfo'
-    messagesListReportExportsErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
+            $ref: '#/components/schemas/messagesReadReportExportErrorAPIErrorInfo'
+    messagesListReportExportsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListReportExportsErrorAPIErrorInfo'
     messagesReadReportExportResponse:
       type: object
       example:
@@ -199,6 +269,27 @@ components:
         report_export:
           $ref: '#/components/schemas/dspReportExport'
           description: The details of a report export.
+    messagesDeleteReportExportErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesListReportExportsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesReadReportExportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
     dspReportExport:
       type: object
       example:
@@ -245,109 +336,6 @@ components:
       - workplace_id
       - ad_account_id
       - product_id
-    messagesReadReportExportErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesDeleteReportExportError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfo'
-    messagesCreateReportExportErrorAPIErrorInfo:
-      type: object
-      properties:
-        error_log_id:
-          type: string
-        reason:
-          $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfoErrorReason'
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesListReportExportsError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesListReportExportsErrorAPIErrorInfo'
-    messagesListReportExportsResponse:
-      type: object
-      example:
-        report_exports:
-        - id: sampleReportExportId
-          workplace_id: samplePlatformId
-          ad_account_id: sampleAdAccountId
-          product_id: sampleProductId
-          partner: SINGULAR
-          created_at: '2020-01-03T03:12:50.124101982Z'
-          updated_at: '2020-01-03T03:24:21.109821241Z'
-        - id: anotherReportExportId
-          workplace_id: samplePlatformId
-          ad_account_id: anotherAdAccountId
-          product_id: anotherProductId
-          partner: SINGULAR
-          created_at: '2020-01-03T03:12:50.124101982Z'
-          updated_at: '2020-01-03T03:24:21.109821241Z'
-      properties:
-        report_exports:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspReportExport'
-          description: List of report export in the given Workplace or AdAccount or Product.
-    messagesDeleteReportExportErrorAPIErrorInfo:
-      type: object
-      properties:
-        error_log_id:
-          type: string
-        reason:
-          $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfoErrorReason'
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    ReportExportPartner:
-      type: string
-      enum:
-      - UNKNOWN_PARTNER
-      - SINGULAR
-      - APPSFLYER
-      - TENJIN
-      - BIDALGO
-      - APPANNIE
-      - APPSUMER
-      - ADJUST
-      - KOCHAVA
-      - AIRBRIDGE
-      - BRANCH
-      - JUSTTRACK
-      default: UNKNOWN_PARTNER
-      description: "Partner enumerates the reporting solution partners to whom we've integrated.\n\n - SINGULAR: Singular.\n - APPSFLYER: AppsFlyer.\n - TENJIN: Tenjin.\n - BIDALGO: Bidalgo.\n - APPANNIE: Appannie.\n - APPSUMER: Appsumer.\n - ADJUST: Adjust.\n - KOCHAVA: Kochava.\n - AIRBRIDGE: AirBridge.\n - BRANCH: Branch.\n - JUSTTRACK: JustTrack."
-    messagesCreateReportExportErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesDeleteReportExportResponse:
-      type: object
-      example: {}
     messagesCreateReportExportResponse:
       type: object
       example:
@@ -363,12 +351,7 @@ components:
         report_export:
           $ref: '#/components/schemas/dspReportExport'
           description: The details of a created report export.
-    messagesDeleteReportExportErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesReadReportExportError:
+    messagesDeleteReportExportError:
       type: object
       properties:
         code:
@@ -380,14 +363,22 @@ components:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/messagesReadReportExportErrorAPIErrorInfo'
+            $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfo'
+    messagesCreateReportExportError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfo'
   securitySchemes:
     Bearer:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-ads-campaign-management-api.json
-- moloco-ads-campaign-management-openapi.yml
-x-readme:
-  explorer-enabled: true

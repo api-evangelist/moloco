@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Moloco Workplace API
   version: '1.0'
-  description: 'Operations tagged Workplace across 4 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml, moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Workplace across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-cloud-auth-api.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.moloco.cloud
 - url: https://morse-us-prod.adsmoloco.com
@@ -47,7 +47,7 @@ paths:
       description: Create a workplace for the campaign management.
       tags:
       - Workplace
-      summary: Create a workplace.
+      summary: Create a workplace
       operationId: v1_create_platform
       requestBody:
         content:
@@ -96,7 +96,7 @@ paths:
       description: Read a workplace information for the given workplace ID.
       tags:
       - Workplace
-      summary: Read a workplace information.
+      summary: Read a workplace information
       operationId: v1_read_platform
       parameters:
       - description: The platform ID.
@@ -142,7 +142,7 @@ paths:
       description: Update a workplace information with the given new information.
       tags:
       - Workplace
-      summary: Update a workplace information.
+      summary: Update a workplace information
       operationId: v1_update_platform
       parameters:
       - description: The platform ID.
@@ -195,7 +195,7 @@ paths:
       description: Delete a workplace for the given workplace ID.
       tags:
       - Workplace
-      summary: Delete a workplace.
+      summary: Delete a workplace
       operationId: v1_delete_platform
       parameters:
       - description: The platform ID.
@@ -240,7 +240,7 @@ paths:
       description: Upload the workplace logo to the public bucket and update the workplace database record.
       tags:
       - Workplace
-      summary: Upload the workplace logo.
+      summary: Upload the workplace logo
       operationId: v1_upload_platform_logo
       parameters:
       - description: The platform ID.
@@ -302,7 +302,7 @@ paths:
       description: Register a user to a specific workplace.
       tags:
       - Workplace
-      summary: Add a user to a workplace.
+      summary: Add a user to a workplace
       operationId: v1_register_user_to_platform
       parameters:
       - description: The ID of the user.
@@ -355,7 +355,7 @@ paths:
       description: Deregister the given user from a specific workplace.
       tags:
       - Workplace
-      summary: Remove the user from a workplace.
+      summary: Remove the user from a workplace
       operationId: v1_delete_user_from_platform
       parameters:
       - description: The ID of the user.
@@ -401,7 +401,7 @@ paths:
       description: List workplaces for a given userspace.
       tags:
       - Workplace
-      summary: List workplaces.
+      summary: List workplaces
       operationId: v1_list_userspace_platforms
       parameters:
       - description: The ID of the userspace.
@@ -463,12 +463,6 @@ components:
         workplace:
           $ref: '#/components/schemas/dspWorkplace'
           description: The Workplace.
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
     dspWorkplace:
       type: object
       properties:
@@ -487,6 +481,12 @@ components:
             type: string
           description: The workplace's configuration.
       description: The workplace.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
     googlerpcStatus:
       type: object
       properties:
@@ -500,16 +500,8 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
-    updatePlatformResponse:
-      description: Response to a request to update a platform.
-      type: object
-      required:
-      - platform
-      properties:
-        platform:
-          $ref: '#/components/schemas/platform'
-    createPlatformResponse:
-      description: Response to a request to create a platform.
+    readPlatformResponse:
+      description: Response to read a platform information.
       type: object
       required:
       - platform
@@ -529,14 +521,6 @@ components:
         password:
           description: Password of the user.
           type: string
-    createPlatformRequest:
-      description: Request to create a platform.
-      type: object
-      required:
-      - platform
-      properties:
-        platform:
-          $ref: '#/components/schemas/platform'
     error:
       description: Error response with detailed reason.
       type: object
@@ -550,13 +534,6 @@ components:
         status:
           description: The error status code.
           type: integer
-    userRegistrationRequest:
-      description: The request body for the user registration request.
-      type: object
-      properties:
-        forward_url:
-          description: the URL that will be included in the platform registration (sign-up) email.
-          type: string
     platform:
       description: A platform.
       type: object
@@ -583,8 +560,42 @@ components:
         userspace_id:
           description: The ID of the userspace to which the platform belongs.
           type: string
-    readPlatformResponse:
-      description: Response to read a platform information.
+    userRegistrationRequest:
+      description: The request body for the user registration request.
+      type: object
+      properties:
+        forward_url:
+          description: the URL that will be included in the platform registration (sign-up) email.
+          type: string
+    listPlatformsResponse:
+      description: Response to the list platforms request.
+      type: object
+      required:
+      - platforms
+      properties:
+        platforms:
+          description: List of platforms
+          type: array
+          items:
+            $ref: '#/components/schemas/platform'
+    createPlatformResponse:
+      description: Response to a request to create a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    updatePlatformResponse:
+      description: Response to a request to update a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    createPlatformRequest:
+      description: Request to create a platform.
       type: object
       required:
       - platform
@@ -599,17 +610,6 @@ components:
       properties:
         platform:
           $ref: '#/components/schemas/platform'
-    listPlatformsResponse:
-      description: Response to the list platforms request.
-      type: object
-      required:
-      - platforms
-      properties:
-        platforms:
-          description: List of platforms
-          type: array
-          items:
-            $ref: '#/components/schemas/platform'
   securitySchemes:
     Bearer:
       type: apiKey
@@ -617,8 +617,6 @@ components:
       in: header
 x-refined-from:
 - moloco-ads-campaign-management-api.json
-- moloco-ads-campaign-management-openapi.yml
 - moloco-cloud-auth-api.json
-- moloco-cloud-auth-openapi.yml
 x-readme:
   explorer-enabled: true

@@ -1,17 +1,17 @@
 openapi: 3.2.0
 info:
-  title: Moloco Change History API
+  title: Management Change History API
+  description: MOLOCO RMP Management API provides functionalities for MOLOCO RMP systems.
   version: '1.0'
   contact:
     name: Moloco Inc.
     url: https://www.molocoads.com
-  description: 'Operations tagged ChangeHistory across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://<platform>-mgmt.mcm-api.moloco.com
 security:
 - ApiKeyAuth: []
 tags:
-- name: ChangeHistory
+- name: Change History
 paths:
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns/{campaign_id}/change-log-items:
     post:
@@ -106,9 +106,7 @@ paths:
               additionalProperties: true
         required: true
       tags:
-      - ChangeHistory
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
+      - Change History
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/campaigns/{campaign_id}/change-logs:
     post:
       summary: QueryCampaignHistory
@@ -203,9 +201,7 @@ paths:
               additionalProperties: true
         required: true
       tags:
-      - ChangeHistory
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
+      - Change History
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/account-history:
     post:
       summary: QueryCreditsHistory
@@ -295,10 +291,8 @@ paths:
               additionalProperties: true
         required: true
       tags:
-      - ChangeHistory
+      - Change History
       deprecated: true
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/wallets/{wallet_id}/account-history:
     post:
       summary: QueryWalletHistory
@@ -388,10 +382,8 @@ paths:
               additionalProperties: true
         required: true
       tags:
-      - ChangeHistory
+      - Change History
       deprecated: true
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-manager-accounts/{ad_manager_account_id}/change-logs:
     post:
       summary: QueryAdManagerAccountHistory
@@ -480,11 +472,96 @@ paths:
               additionalProperties: true
         required: true
       tags:
-      - ChangeHistory
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
+      - Change History
 components:
   schemas:
+    v1CreditAccountHistoryLog:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/v1CreditAccountHistoryLogType'
+        budget_change:
+          $ref: '#/components/schemas/v1CreditAccountHistoryLogMoneyMicroByAccount'
+        balance:
+          $ref: '#/components/schemas/v1CreditAccountHistoryLogMoneyMicroByAccount'
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp of wallet.
+        metadata:
+          $ref: '#/components/schemas/v1CreditAccountHistoryLogMetadata'
+        changed_by:
+          $ref: '#/components/schemas/v1CreditAccountHistoryLogChangedBy'
+      description: Definition of a WalletAccountHistoryLog.
+      required:
+      - type
+      - budget_change
+      - balance
+      - updated_at
+      additionalProperties: true
+    v1CreditAccountHistoryLogMoneyMicroByAccount:
+      type: object
+      properties:
+        credits:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
+    EntityChangeLogFieldType:
+      type: string
+      enum:
+      - UNKNOWN_Field_TYPE
+      - STRING
+      - ARRAY
+      - OBJECT
+      default: UNKNOWN_Field_TYPE
+    v1ChangeLogItemsOrderByOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_COLUMN
+      - ID
+      - TITLE
+      - UPDATED_AT
+      default: UNKNOWN_ORDER_BY_COLUMN
+    publicQueryWalletAccountHistoryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1WalletAccountHistoryLog'
+          description: List of WalletAccountHistoryLogs.
+        page_info:
+          $ref: '#/components/schemas/commonPageInfo'
+      description: QueryWalletAccountHistory response.
+      required:
+      - rows
+      - page_info
+      additionalProperties: true
+    v1ChangeLogOrderByOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_COLUMN
+      - UPDATED_AT
+      default: UNKNOWN_ORDER_BY_COLUMN
+    v1CreditAccountHistoryLogChangedBy:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: '#/components/schemas/v1RoleName'
+      additionalProperties: true
+    EntityChangeLogEntityChangeMethod:
+      type: string
+      enum:
+      - UNKNOWN_ENTITY_CHANGE_METHOD
+      - CREATE
+      - UPDATE
+      - DELETE
+      default: UNKNOWN_ENTITY_CHANGE_METHOD
     publicQueryAdManagerAccountChangeLogsResponse:
       type: object
       properties:
@@ -499,30 +576,6 @@ components:
       required:
       - rows
       - page_info
-      additionalProperties: true
-    EntityChangeLogFieldType:
-      type: string
-      enum:
-      - UNKNOWN_Field_TYPE
-      - STRING
-      - ARRAY
-      - OBJECT
-      default: UNKNOWN_Field_TYPE
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
-      required:
-      - type
-      - category
       additionalProperties: true
     v1EntityChangeLog:
       type: object
@@ -559,6 +612,125 @@ components:
       - field_after
       - updated_at
       additionalProperties: true
+    v1CampaignChangeLogItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the CampaignChangeLogItem.
+        title:
+          type: string
+          description: The title of the CampaignChangeLogItem.
+      description: Definition of a CampaignChangeLogItem.
+      required:
+      - id
+      - title
+      additionalProperties: true
+    v1WalletAccountHistoryLogMoneyMicroByAccount:
+      type: object
+      properties:
+        credits:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        prepaid:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        total:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
+    publicQueryCreditHistoryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CreditAccountHistoryLog'
+          description: List of WalletAccountHistoryLogs.
+        page_info:
+          $ref: '#/components/schemas/commonPageInfo'
+      description: QueryCreditHistory response.
+      required:
+      - rows
+      - page_info
+      additionalProperties: true
+    v1ChangeLogItemsType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - REMOVED
+      - ADDED
+      default: UNKNOWN_TYPE
+    v1ChangeLogItemsOrderBy:
+      type: object
+      properties:
+        column:
+          $ref: '#/components/schemas/v1ChangeLogItemsOrderByOrderByColumn'
+        direction:
+          $ref: '#/components/schemas/commonOrderByDirection'
+      additionalProperties: true
+    v1WalletAccountHistoryLogChangedBy:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: '#/components/schemas/v1RoleName'
+      additionalProperties: true
+    v1WalletAccountHistoryLogMetadata:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: A comment for transaction. Optional.
+      additionalProperties: true
+    publicQueryCampaignChangeLogItemsResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CampaignChangeLogItem'
+          description: List of campaigned item history.
+        page_info:
+          $ref: '#/components/schemas/commonPageInfo'
+      description: Response message of QueryCampaignItemsHistory.
+      required:
+      - rows
+      - page_info
+      additionalProperties: true
+    rmpcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
     commonErrorCategory:
       type: string
       enum:
@@ -594,49 +766,30 @@ components:
       - INVALID_CUSTOM_TARGETING
       default: DEFAULT_ERROR_CATEGORY
       title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    v1CreditAccountHistoryLog:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/v1CreditAccountHistoryLogType'
-        budget_change:
-          $ref: '#/components/schemas/v1CreditAccountHistoryLogMoneyMicroByAccount'
-        balance:
-          $ref: '#/components/schemas/v1CreditAccountHistoryLogMoneyMicroByAccount'
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp of wallet.
-        metadata:
-          $ref: '#/components/schemas/v1CreditAccountHistoryLogMetadata'
-        changed_by:
-          $ref: '#/components/schemas/v1CreditAccountHistoryLogChangedBy'
-      description: Definition of a WalletAccountHistoryLog.
-      required:
-      - type
-      - budget_change
-      - balance
-      - updated_at
-      additionalProperties: true
-    v1CreditAccountHistoryLogChangedBy:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
-          type: string
-        role:
-          $ref: '#/components/schemas/v1RoleName'
-      additionalProperties: true
-    commonOrderByDirection:
+    v1CreditAccountHistoryLogType:
       type: string
       enum:
-      - UNKNOWN_ORDER_BY_DIRECTION
-      - ASC
-      - DESC
-      default: UNKNOWN_ORDER_BY_DIRECTION
+      - UNKNOWN_TYPE
+      - FUNDED
+      - REFUNDED
+      - SPENT
+      default: UNKNOWN_TYPE
+    rmpcommonMoneyMicro:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/rmpcommonCurrency'
+        amount_micro:
+          type: string
+          format: int64
+          description: Amount in micro unit. (e.g., 1234 means 0.001234)
+      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
+
+        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
+      required:
+      - currency
+      - amount_micro
+      additionalProperties: true
     publicRepresentedError:
       type: object
       properties:
@@ -658,33 +811,67 @@ components:
       - message
       - details
       additionalProperties: true
-    v1ChangeLogOrderByOrderByColumn:
+    commonOrderByDirection:
       type: string
       enum:
-      - UNKNOWN_ORDER_BY_COLUMN
-      - UPDATED_AT
-      default: UNKNOWN_ORDER_BY_COLUMN
-    publicQueryCreditHistoryResponse:
-      type: object
-      properties:
-        rows:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1CreditAccountHistoryLog'
-          description: List of WalletAccountHistoryLogs.
-        page_info:
-          $ref: '#/components/schemas/commonPageInfo'
-      description: QueryCreditHistory response.
-      required:
-      - rows
-      - page_info
-      additionalProperties: true
-    v1WalletAccountHistoryLogMetadata:
+      - UNKNOWN_ORDER_BY_DIRECTION
+      - ASC
+      - DESC
+      default: UNKNOWN_ORDER_BY_DIRECTION
+    v1CreditAccountHistoryLogMetadata:
       type: object
       properties:
         comment:
           type: string
           description: A comment for transaction. Optional.
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    v1WalletAccountHistoryLogType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - FUNDED
+      - REFUNDED
+      - SPENT
+      default: UNKNOWN_TYPE
+    v1WalletAccountHistoryLog:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/v1WalletAccountHistoryLogType'
+        budget_change:
+          $ref: '#/components/schemas/v1WalletAccountHistoryLogMoneyMicroByAccount'
+        balance:
+          $ref: '#/components/schemas/v1WalletAccountHistoryLogMoneyMicroByAccount'
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp of wallet.
+        metadata:
+          $ref: '#/components/schemas/v1WalletAccountHistoryLogMetadata'
+        changed_by:
+          $ref: '#/components/schemas/v1WalletAccountHistoryLogChangedBy'
+      description: Definition of a WalletAccountHistoryLog.
+      required:
+      - type
+      - budget_change
+      - balance
+      - updated_at
       additionalProperties: true
     v1RoleName:
       type: string
@@ -697,61 +884,71 @@ components:
       - AD_ACCOUNT_AGENCY
       - CREATIVE_REVIEWER
       default: UNKNOWN_ROLE_NAME
-    v1ChangeLogItemsOrderByOrderByColumn:
-      type: string
-      enum:
-      - UNKNOWN_ORDER_BY_COLUMN
-      - ID
-      - TITLE
-      - UPDATED_AT
-      default: UNKNOWN_ORDER_BY_COLUMN
-    v1CampaignChangeLogItem:
+    v1ChangeLogUser:
       type: object
       properties:
         id:
           type: string
-          description: The id of the CampaignChangeLogItem.
-        title:
-          type: string
-          description: The title of the CampaignChangeLogItem.
-      description: Definition of a CampaignChangeLogItem.
-      required:
-      - id
-      - title
-      additionalProperties: true
-    v1CreditAccountHistoryLogMoneyMicroByAccount:
-      type: object
-      properties:
-        credits:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-      additionalProperties: true
-    v1ChangeLogItemsType:
-      type: string
-      enum:
-      - UNKNOWN_TYPE
-      - REMOVED
-      - ADDED
-      default: UNKNOWN_TYPE
-    v1WalletAccountHistoryLogChangedBy:
-      type: object
-      properties:
-        id:
-          type: string
+          description: The id of the Change Log User.
         name:
           type: string
+          description: The name of the Change Log User.
         email:
           type: string
+          description: The email of the Change Log User.
         role:
           $ref: '#/components/schemas/v1RoleName'
+      description: Definition of a ChangeLogUser.
       additionalProperties: true
-    EntityChangeLogEntityChangeMethod:
-      type: string
-      enum:
-      - UNKNOWN_ENTITY_CHANGE_METHOD
-      - CREATE
-      - UPDATE
-      - DELETE
-      default: UNKNOWN_ENTITY_CHANGE_METHOD
+    publicQueryCampaignChangeLogsResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CampaignEntityChangeLog'
+          description: List of campaign history.
+        page_info:
+          $ref: '#/components/schemas/commonPageInfo'
+      description: Response message of QueryCampaignChangeHistory.
+      required:
+      - rows
+      - page_info
+      additionalProperties: true
+    v1ChangeLogOrderBy:
+      type: object
+      properties:
+        column:
+          $ref: '#/components/schemas/v1ChangeLogOrderByOrderByColumn'
+        direction:
+          $ref: '#/components/schemas/commonOrderByDirection'
+      additionalProperties: true
+    commonPageInfo:
+      type: object
+      properties:
+        page_index:
+          type: integer
+          format: int32
+          description: Current page we are at.
+        page_size:
+          type: integer
+          format: int32
+          description: Number of items per page.
+        pages_total:
+          type: integer
+          format: int32
+          description: Total number of pages.
+        rows_total:
+          type: integer
+          format: int32
+          description: Total number of rows.
+      description: Page information.
+      required:
+      - page_index
+      - page_size
+      - pages_total
+      - rows_total
+      additionalProperties: true
     v1CampaignEntityChangeLog:
       type: object
       properties:
@@ -793,37 +990,6 @@ components:
       - field_name
       - updated_at
       additionalProperties: true
-    rmpcommonCurrency:
-      type: string
-      enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      - SEK
-      - INR
-      - THB
-      - IDR
-      - CNY
-      - CAD
-      - RUB
-      - BRL
-      - SGD
-      - HKD
-      - AUD
-      - PLN
-      - DKK
-      - VND
-      - MYR
-      - PHP
-      - TRY
-      - VES
-      - AED
-      - CHF
-      default: UNKNOWN_CURRENCY
-      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
     v1EntityChangeLogFilter:
       type: object
       properties:
@@ -833,182 +999,6 @@ components:
           type: string
           description: The name of the changed field.
       description: Definition of a ChangeLogFilter. The fields in the message compose AND condition filter.
-      additionalProperties: true
-    v1CreditAccountHistoryLogMetadata:
-      type: object
-      properties:
-        comment:
-          type: string
-          description: A comment for transaction. Optional.
-      additionalProperties: true
-    publicQueryWalletAccountHistoryResponse:
-      type: object
-      properties:
-        rows:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1WalletAccountHistoryLog'
-          description: List of WalletAccountHistoryLogs.
-        page_info:
-          $ref: '#/components/schemas/commonPageInfo'
-      description: QueryWalletAccountHistory response.
-      required:
-      - rows
-      - page_info
-      additionalProperties: true
-    publicQueryCampaignChangeLogsResponse:
-      type: object
-      properties:
-        rows:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1CampaignEntityChangeLog'
-          description: List of campaign history.
-        page_info:
-          $ref: '#/components/schemas/commonPageInfo'
-      description: Response message of QueryCampaignChangeHistory.
-      required:
-      - rows
-      - page_info
-      additionalProperties: true
-    v1WalletAccountHistoryLog:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/v1WalletAccountHistoryLogType'
-        budget_change:
-          $ref: '#/components/schemas/v1WalletAccountHistoryLogMoneyMicroByAccount'
-        balance:
-          $ref: '#/components/schemas/v1WalletAccountHistoryLogMoneyMicroByAccount'
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp of wallet.
-        metadata:
-          $ref: '#/components/schemas/v1WalletAccountHistoryLogMetadata'
-        changed_by:
-          $ref: '#/components/schemas/v1WalletAccountHistoryLogChangedBy'
-      description: Definition of a WalletAccountHistoryLog.
-      required:
-      - type
-      - budget_change
-      - balance
-      - updated_at
-      additionalProperties: true
-    publicQueryCampaignChangeLogItemsResponse:
-      type: object
-      properties:
-        rows:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1CampaignChangeLogItem'
-          description: List of campaigned item history.
-        page_info:
-          $ref: '#/components/schemas/commonPageInfo'
-      description: Response message of QueryCampaignItemsHistory.
-      required:
-      - rows
-      - page_info
-      additionalProperties: true
-    v1CreditAccountHistoryLogType:
-      type: string
-      enum:
-      - UNKNOWN_TYPE
-      - FUNDED
-      - REFUNDED
-      - SPENT
-      default: UNKNOWN_TYPE
-    v1WalletAccountHistoryLogType:
-      type: string
-      enum:
-      - UNKNOWN_TYPE
-      - FUNDED
-      - REFUNDED
-      - SPENT
-      default: UNKNOWN_TYPE
-    v1ChangeLogOrderBy:
-      type: object
-      properties:
-        column:
-          $ref: '#/components/schemas/v1ChangeLogOrderByOrderByColumn'
-        direction:
-          $ref: '#/components/schemas/commonOrderByDirection'
-      additionalProperties: true
-    commonPageInfo:
-      type: object
-      properties:
-        page_index:
-          type: integer
-          format: int32
-          description: Current page we are at.
-        page_size:
-          type: integer
-          format: int32
-          description: Number of items per page.
-        pages_total:
-          type: integer
-          format: int32
-          description: Total number of pages.
-        rows_total:
-          type: integer
-          format: int32
-          description: Total number of rows.
-      description: Page information.
-      required:
-      - page_index
-      - page_size
-      - pages_total
-      - rows_total
-      additionalProperties: true
-    v1ChangeLogUser:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the Change Log User.
-        name:
-          type: string
-          description: The name of the Change Log User.
-        email:
-          type: string
-          description: The email of the Change Log User.
-        role:
-          $ref: '#/components/schemas/v1RoleName'
-      description: Definition of a ChangeLogUser.
-      additionalProperties: true
-    rmpcommonMoneyMicro:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/rmpcommonCurrency'
-        amount_micro:
-          type: string
-          format: int64
-          description: Amount in micro unit. (e.g., 1234 means 0.001234)
-      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
-
-        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
-      required:
-      - currency
-      - amount_micro
-      additionalProperties: true
-    v1WalletAccountHistoryLogMoneyMicroByAccount:
-      type: object
-      properties:
-        credits:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-        prepaid:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-        total:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-      additionalProperties: true
-    v1ChangeLogItemsOrderBy:
-      type: object
-      properties:
-        column:
-          $ref: '#/components/schemas/v1ChangeLogItemsOrderByOrderByColumn'
-        direction:
-          $ref: '#/components/schemas/commonOrderByDirection'
       additionalProperties: true
   securitySchemes:
     ApiKeyAuth:
@@ -1020,8 +1010,5 @@ components:
       description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
       name: Authorization
       in: header
-x-refined-from:
-- mcm-management-api.json
-- moloco-commerce-media-management-openapi.yml
 x-readme:
-  explorer-enabled: true
+  explorer-enabled: false

@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Moloco Campaign Summary API
+  title: Moloco Ads Campaign Management Campaign Summary API
+  description: Moloco Ads Campaign Management API provides functionalities for Moloco Ads Campaigns.
   version: '1.10'
   contact:
     name: Moloco Inc.
     url: https://www.moloco.com
-  description: 'Operations tagged CampaignSummary across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.moloco.cloud
 security:
@@ -15,7 +15,7 @@ tags:
 paths:
   /cm/v1/report-action-events:
     get:
-      summary: List up report action events.
+      summary: List up report action events
       description: List up all available report action events for ad_account.
       operationId: DspApi_ListReportActionEvents
       responses:
@@ -45,11 +45,9 @@ paths:
           type: boolean
       tags:
       - CampaignSummary
-    servers:
-    - url: https://api.moloco.cloud
   /cm/v1/report-filters:
     get:
-      summary: List up report filter options.
+      summary: List up report filter options
       description: List up all available report filter options for ad_account.
       operationId: DspApi_ListReportFilters
       responses:
@@ -74,33 +72,8 @@ paths:
           type: string
       tags:
       - CampaignSummary
-    servers:
-    - url: https://api.moloco.cloud
 components:
   schemas:
-    ListReportFiltersResponseReportFilterOption:
-      type: object
-      properties:
-        display_name:
-          type: string
-        value:
-          type: string
-      description: A pair of the value and display_name for each dimension.
-    messagesListReportActionEventsResponse:
-      type: object
-      properties:
-        action_events:
-          type: array
-          items:
-            type: string
-    messagesListReportFiltersResponse:
-      type: object
-      properties:
-        filters:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/ListReportFiltersResponseReportFilter'
     dspReportFilterDimension:
       type: string
       enum:
@@ -140,6 +113,14 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/ListReportFiltersResponseReportFilterOption'
+    ListReportFiltersResponseReportFilterOption:
+      type: object
+      properties:
+        display_name:
+          type: string
+        value:
+          type: string
+      description: A pair of the value and display_name for each dimension.
     googlerpcStatus:
       type: object
       properties:
@@ -153,6 +134,21 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
+    messagesListReportActionEventsResponse:
+      type: object
+      properties:
+        action_events:
+          type: array
+          items:
+            type: string
+    messagesListReportFiltersResponse:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ListReportFiltersResponseReportFilter'
     protobufAny:
       type: object
       properties:
@@ -164,8 +160,3 @@ components:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-ads-campaign-management-api.json
-- moloco-ads-campaign-management-openapi.yml
-x-readme:
-  explorer-enabled: true

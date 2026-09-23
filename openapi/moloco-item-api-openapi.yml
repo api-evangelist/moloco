@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Moloco Item API
+  title: Management Item API
+  description: MOLOCO RMP Management API provides functionalities for MOLOCO RMP systems.
   version: '1.0'
   contact:
     name: Moloco Inc.
     url: https://www.molocoads.com
-  description: 'Operations tagged Item across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://<platform>-mgmt.mcm-api.moloco.com
 security:
@@ -80,82 +80,8 @@ paths:
         required: true
       tags:
       - Item
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
 components:
   schemas:
-    v1UpdateItemFailureInfo:
-      type: object
-      properties:
-        item_id:
-          type: string
-          description: The id of the item.
-        seller_id:
-          type: string
-          description: The id of the seller.
-        message:
-          type: string
-          description: The error message of failure.
-      description: Information of the item that failed to update.
-      required:
-      - item_id
-      - message
-      additionalProperties: true
-    v1ItemStatus:
-      type: object
-      properties:
-        item_id:
-          type: string
-          description: The id of the item.
-        seller_id:
-          type: string
-          description: The id of the seller. Only applicable for MSPI catalogs. If this value is provided, only the item associated with the specified seller ID will be removed from ad serving. If not provided, the specified item will be removed for all sellers in MSPI.
-        updated_time:
-          type: string
-          format: date-time
-          description: The time when the item was updated. The Catalog feed batch Ingestion and Kill Switch API can operate simultaneously. When multiple data sources are available, the most recent information is retrieved based on the item's updated_time.
-        blocked:
-          type: string
-          description: The reason the item is blocked (e.g., “out_of_stock”). This field is required and cannot be left empty.
-      description: The status of the item to be updated.
-      required:
-      - item_id
-      - updated_time
-      - blocked
-      additionalProperties: true
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
-      required:
-      - type
-      - category
-      additionalProperties: true
-    publicUpdateItemStatusBulkResponse:
-      type: object
-      properties:
-        success_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1UpdateItemSuccessInfo'
-          description: List of items with updated status.
-        failure_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1UpdateItemFailureInfo'
-          description: List of failure information that are failed.
-      description: UpdateItemStatusBulk response.
-      required:
-      - success_items
-      additionalProperties: true
     commonErrorCategory:
       type: string
       enum:
@@ -212,6 +138,40 @@ components:
       - message
       - details
       additionalProperties: true
+    publicUpdateItemStatusBulkResponse:
+      type: object
+      properties:
+        success_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1UpdateItemSuccessInfo'
+          description: List of items with updated status.
+        failure_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1UpdateItemFailureInfo'
+          description: List of failure information that are failed.
+      description: UpdateItemStatusBulk response.
+      required:
+      - success_items
+      additionalProperties: true
+    v1UpdateItemFailureInfo:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The id of the item.
+        seller_id:
+          type: string
+          description: The id of the seller.
+        message:
+          type: string
+          description: The error message of failure.
+      description: Information of the item that failed to update.
+      required:
+      - item_id
+      - message
+      additionalProperties: true
     v1UpdateItemSuccessInfo:
       type: object
       properties:
@@ -225,6 +185,44 @@ components:
       required:
       - item_id
       additionalProperties: true
+    v1ItemStatus:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The id of the item.
+        seller_id:
+          type: string
+          description: The id of the seller. Only applicable for MSPI catalogs. If this value is provided, only the item associated with the specified seller ID will be removed from ad serving. If not provided, the specified item will be removed for all sellers in MSPI.
+        updated_time:
+          type: string
+          format: date-time
+          description: The time when the item was updated. The Catalog feed batch Ingestion and Kill Switch API can operate simultaneously. When multiple data sources are available, the most recent information is retrieved based on the item's updated_time.
+        blocked:
+          type: string
+          description: The reason the item is blocked (e.g., “out_of_stock”). This field is required and cannot be left empty.
+      description: The status of the item to be updated.
+      required:
+      - item_id
+      - updated_time
+      - blocked
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
@@ -235,8 +233,5 @@ components:
       description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
       name: Authorization
       in: header
-x-refined-from:
-- mcm-management-api.json
-- moloco-commerce-media-management-openapi.yml
 x-readme:
-  explorer-enabled: true
+  explorer-enabled: false

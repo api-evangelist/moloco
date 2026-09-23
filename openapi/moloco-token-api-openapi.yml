@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Moloco Token API
   version: '1.0'
-  description: 'Operations tagged Token across 4 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml, moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Token across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-cloud-auth-api.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.moloco.cloud
 - url: https://morse-us-prod.adsmoloco.com
@@ -11,7 +11,7 @@ tags:
 paths:
   /cm/v1/auth/tokens:
     post:
-      summary: Issue a new token.
+      summary: Issue a new token
       description: 'Issues a new token that gives you access to Moloco Ads APIs.
 
         Tokens are issued by workplace such that you need a unique token for each workplace you would like access to.
@@ -49,7 +49,7 @@ paths:
       description: Issue a new token with a previous one. Expired tokens cannot be refreshed.
       tags:
       - Token
-      summary: Refresh the existing token.
+      summary: Refresh the existing token
       operationId: v1_refresh_token
       responses:
         '200':
@@ -80,7 +80,7 @@ paths:
       description: Create a new token to access MOLOCO APIs. The token is valid for one hour. Therefore, it is recommended to periodically refresh the token before it expires.
       tags:
       - Token
-      summary: Create a new token.
+      summary: Create a new token
       operationId: v1_create_token
       requestBody:
         content:
@@ -124,14 +124,26 @@ paths:
     - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    dspmessagesTokenType:
-      type: string
-      enum:
-      - UNKNOWN_TYPE
-      - AUTH_TOKEN
-      - UPDATE_PASSWORD_TOKEN
-      default: UNKNOWN_TYPE
-      description: "TokenType enumerates the type of token.\n\n - AUTH_TOKEN: Token returned on the authentication success.\n - UPDATE_PASSWORD_TOKEN: If user didn't update password for over 12 months, it will return `UPDATE_PASSWORD_TOKEN`.\nThis token can be only used for [UpdatePassword API](https://developer.moloco.cloud/reference/dspapi_updatepassword-1).\nhttps://developer.moloco.cloud/reference/dspapi_updatepassword-1"
+    messagesCreateTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Created token.
+        token_type:
+          $ref: '#/components/schemas/dspmessagesTokenType'
+          description: Token type.
+    messagesCreateTokenErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
     messagesCreateTokenRequest:
       type: object
       properties:
@@ -146,26 +158,6 @@ components:
       - USER_ACCOUNT_BLOCKED
       default: ERROR_REASON_UNKNOWN
       description: " - USER_INVALID_CREDENTIAL_INFORMATION: The given credential information is invalid.\n - USER_ACCOUNT_BLOCKED: The user account is blocked.\nLogin attempt is not allowed when there are 5 failed login attempts."
-    messagesCreateTokenErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesCreateTokenResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: Created token.
-        token_type:
-          $ref: '#/components/schemas/dspmessagesTokenType'
-          description: Token type.
     messagesCreateTokenError:
       type: object
       properties:
@@ -179,18 +171,40 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfo'
-    createTokenResponse:
-      description: A response to CreateTokenRequest
+    dspmessagesTokenType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - AUTH_TOKEN
+      - UPDATE_PASSWORD_TOKEN
+      default: UNKNOWN_TYPE
+      description: "TokenType enumerates the type of token.\n\n - AUTH_TOKEN: Token returned on the authentication success.\n - UPDATE_PASSWORD_TOKEN: If user didn't update password for over 12 months, it will return `UPDATE_PASSWORD_TOKEN`.\nThis token can be only used for [UpdatePassword API](https://developer.moloco.cloud/reference/dspapi_updatepassword-1).\nhttps://developer.moloco.cloud/reference/dspapi_updatepassword-1"
+    roleReference:
+      description: Reference to a role defined in a platform.
       type: object
       required:
-      - token
-      - user
+      - id
+      - platform_id
       properties:
-        token:
-          description: The successfully issued Morse token.
+        id:
+          description: The ID of the role.
           type: string
-        user:
-          $ref: '#/components/schemas/user'
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
     user:
       description: A user.
       type: object
@@ -250,15 +264,6 @@ components:
         userspace_id:
           description: The ID of the user space such as USERSPACE_C.
           type: string
-    userStatus:
-      description: The set of status values for a user.
-      type: object
-      required:
-      - signed_up
-      properties:
-        signed_up:
-          description: The signed up status of the user.
-          type: boolean
     createTokenRequest:
       description: A request to create a token
       type: object
@@ -276,19 +281,6 @@ components:
         workplace_id:
           description: The ID of the workplace to which the user belongs.
           type: string
-    error:
-      description: Error response with detailed reason.
-      type: object
-      required:
-      - reason
-      - status
-      properties:
-        reason:
-          description: More detailed reason about why the error was returned.
-          type: string
-        status:
-          description: The error status code.
-          type: integer
     resourceToRoleReferences:
       description: Relationship between a resource and a list of roles.
       type: object
@@ -308,19 +300,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/roleReference'
-    roleReference:
-      description: Reference to a role defined in a platform.
+    createTokenResponse:
+      description: A response to CreateTokenRequest
       type: object
       required:
-      - id
-      - platform_id
+      - token
+      - user
       properties:
-        id:
-          description: The ID of the role.
+        token:
+          description: The successfully issued Morse token.
           type: string
-        platform_id:
-          description: The platofrm ID where the role is defined.
-          type: string
+        user:
+          $ref: '#/components/schemas/user'
+    userStatus:
+      description: The set of status values for a user.
+      type: object
+      required:
+      - signed_up
+      properties:
+        signed_up:
+          description: The signed up status of the user.
+          type: boolean
   securitySchemes:
     Bearer:
       type: apiKey
@@ -328,8 +328,6 @@ components:
       in: header
 x-refined-from:
 - moloco-ads-campaign-management-api.json
-- moloco-ads-campaign-management-openapi.yml
 - moloco-cloud-auth-api.json
-- moloco-cloud-auth-openapi.yml
 x-readme:
   explorer-enabled: true

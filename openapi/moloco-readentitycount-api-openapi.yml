@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Moloco Read Entity Count API
+  title: Moloco Ads Campaign Management Read Entity Count API
+  description: Moloco Ads Campaign Management API provides functionalities for Moloco Ads Campaigns.
   version: '1.10'
   contact:
     name: Moloco Inc.
     url: https://www.moloco.com
-  description: 'Operations tagged ReadEntityCount across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.moloco.cloud
 security:
@@ -18,7 +18,7 @@ paths:
       summary: Read entity counts
       description: 'Retrieve the current number of entities and the limits under each ancestor types.
 
-        Visit the [guide document](https://developer.moloco.cloud/docs/entity-quota) for more details.'
+        Visit the guide document for more details.'
       operationId: DspApi_ReadEntityCount
       responses:
         '200':
@@ -80,8 +80,6 @@ paths:
           default: UNKNOWN_ENTITY_TYPE
       tags:
       - ReadEntityCount
-    servers:
-    - url: https://api.moloco.cloud
 components:
   schemas:
     dspEntityCount:
@@ -103,6 +101,28 @@ components:
           format: int64
           description: The number of entities created so far.
       description: EntityCount contains the limit and the number of the entities under the particular scope.
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    messagesReadEntityCountResponse:
+      type: object
+      properties:
+        entity_counts:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspEntityCount'
+          description: Entity counts of the given entity type under for each parent scope.
     commonEntityType:
       type: string
       enum:
@@ -120,41 +140,14 @@ components:
       - ENTITY_TYPE_CUSTOMER_ACTIVITY
       default: UNKNOWN_ENTITY_TYPE
       description: List of entity types supported in DSP API.
-    googlerpcStatus:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/protobufAny'
     protobufAny:
       type: object
       properties:
         '@type':
           type: string
       additionalProperties: {}
-    messagesReadEntityCountResponse:
-      type: object
-      properties:
-        entity_counts:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspEntityCount'
-          description: Entity counts of the given entity type under for each parent scope.
   securitySchemes:
     Bearer:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-ads-campaign-management-api.json
-- moloco-ads-campaign-management-openapi.yml
-x-readme:
-  explorer-enabled: true

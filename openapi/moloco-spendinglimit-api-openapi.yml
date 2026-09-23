@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Moloco Spending Limit API
+  title: Management Spending Limit API
+  description: MOLOCO RMP Management API provides functionalities for MOLOCO RMP systems.
   version: '1.0'
   contact:
     name: Moloco Inc.
     url: https://www.molocoads.com
-  description: 'Operations tagged SpendingLimit across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://<platform>-mgmt.mcm-api.moloco.com
 security:
@@ -16,7 +16,7 @@ paths:
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits:
     get:
       summary: ListCredits
-      description: ' List credits of the ad account that has spending limit.'
+      description: List credits of the ad account that has spending limit.
       operationId: RmpManagementApi_ListCredits
       responses:
         '200':
@@ -70,8 +70,6 @@ paths:
           type: string
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/top-up/{request_id}:
     put:
       summary: TopUpCredits
@@ -157,8 +155,6 @@ paths:
         required: true
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/transaction-history:
     post:
       summary: QuerySpendingLimitCreditHistory
@@ -248,8 +244,6 @@ paths:
         required: true
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/credits/{credit_id}/withdraw/{request_id}:
     put:
       summary: WithdrawCredits
@@ -335,8 +329,6 @@ paths:
         required: true
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spending-limits:
     get:
       summary: ListSpendingLimits
@@ -394,8 +386,6 @@ paths:
           type: string
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/spending-limits/{spending_limit_id}:
     get:
       summary: ReadSpendingLimit
@@ -532,8 +522,6 @@ paths:
         required: true
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/credits-bulk/read:
     post:
       summary: QueryCredits
@@ -585,8 +573,6 @@ paths:
           type: string
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/spending-limits-bulk/read:
     post:
       summary: QuerySpendingLimits
@@ -638,15 +624,157 @@ paths:
           type: string
       tags:
       - SpendingLimit
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
 components:
   schemas:
+    v1Credit:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the Credit. Must be left unset for the Credit creation request. Must be set for the other requests.
+        title:
+          type: string
+          description: A friendly name for the credit.
+        ad_account_id:
+          type: string
+          description: The id of the AdAccount for this credit.
+        balance:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update.
+      description: Definition of a Credit.
+      required:
+      - id
+      - ad_account_id
+      - balance
+      - created_at
+      - updated_at
+      additionalProperties: true
     v1SpendingLimitCreditHistoryMoneyMicroByAccount:
       type: object
       properties:
         credits:
           $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
+    publicListCreditsResponse:
+      type: object
+      properties:
+        credits:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Credit'
+          description: List of Credits info.
+      description: ListCredits Response.
+      required:
+      - credits
+      additionalProperties: true
+    publicTopUpCreditResponse:
+      type: object
+      properties:
+        credit:
+          $ref: '#/components/schemas/v1Credit'
+      description: TopUpCredit response.
+      additionalProperties: true
+    publicCredits:
+      type: object
+      properties:
+        credits:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Credit'
+          description: List of Credits.
+      description: QueryCredits response.
+      required:
+      - credits
+      additionalProperties: true
+    v1ChangeLogOrderByOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_COLUMN
+      - UPDATED_AT
+      default: UNKNOWN_ORDER_BY_COLUMN
+    publicUpdateSpendingLimitResponse:
+      type: object
+      properties:
+        spending_limit:
+          $ref: '#/components/schemas/v1SpendingLimit'
+      description: UpdateSpendingLimit response.
+      required:
+      - spending_limit
+      additionalProperties: true
+    v1SpendingLimitCreditHistoryType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - FUNDED
+      - REFUNDED
+      - SPENT
+      default: UNKNOWN_TYPE
+    v1SpendingLimitCreditHistoryTransactionStatus:
+      type: string
+      enum:
+      - UNKNOWN_TRANSACTION_STATUS
+      - PENDING
+      - POSTED
+      default: UNKNOWN_TRANSACTION_STATUS
+    v1SpendingLimitCreditHistoryMetadata:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: A comment for transaction. Optional.
+      additionalProperties: true
+    publicQuerySpendingLimitsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/publicSpendingLimits'
+          description: Map of spending limits keyed by an ad account id.
+      description: QuerySpendingLimits response.
+      required:
+      - result
+      additionalProperties: true
+    publicReadSpendingLimitResponse:
+      type: object
+      properties:
+        spending_limit:
+          $ref: '#/components/schemas/v1SpendingLimit'
+      description: ReadSpendingLimit response.
+      required:
+      - spending_limit
+      additionalProperties: true
+    v1SpendingLimitMicro:
+      type: object
+      properties:
+        last_spending_limit:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        next_spending_limit:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      description: Definition of a SpendingLimitMicro.
+      required:
+      - last_spending_limit
+      - next_spending_limit
+      additionalProperties: true
+    publicListSpendingLimitsResponse:
+      type: object
+      properties:
+        spending_limits:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1SpendingLimit'
+          description: List of spending limits.
+      description: ListSpendingLimits response.
+      required:
+      - spending_limits
       additionalProperties: true
     v1SpendingLimit:
       type: object
@@ -688,53 +816,37 @@ components:
       - created_at
       - updated_at
       additionalProperties: true
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
-      required:
-      - type
-      - category
-      additionalProperties: true
-    v1SpendingLimitCreditHistoryMetadata:
-      type: object
-      properties:
-        comment:
-          type: string
-          description: A comment for transaction. Optional.
-      additionalProperties: true
-    publicQuerySpendingLimitsResponse:
-      type: object
-      properties:
-        result:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/publicSpendingLimits'
-          description: Map of spending limits keyed by an ad account id.
-      description: QuerySpendingLimits response.
-      required:
-      - result
-      additionalProperties: true
-    publicListSpendingLimitsResponse:
-      type: object
-      properties:
-        spending_limits:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1SpendingLimit'
-          description: List of spending limits.
-      description: ListSpendingLimits response.
-      required:
-      - spending_limits
-      additionalProperties: true
+    rmpcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
     commonErrorCategory:
       type: string
       enum:
@@ -770,20 +882,69 @@ components:
       - INVALID_CUSTOM_TARGETING
       default: DEFAULT_ERROR_CATEGORY
       title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    v1SpendingLimitCreditHistoryType:
+    rmpcommonMoneyMicro:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/rmpcommonCurrency'
+        amount_micro:
+          type: string
+          format: int64
+          description: Amount in micro unit. (e.g., 1234 means 0.001234)
+      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
+
+        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
+      required:
+      - currency
+      - amount_micro
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    v1SpendingLimitResetTimestamps:
+      type: object
+      properties:
+        last_reset_at:
+          type: string
+          format: date-time
+        next_reset_at:
+          type: string
+          format: date-time
+      required:
+      - last_reset_at
+      - next_reset_at
+      additionalProperties: true
+    commonOrderByDirection:
       type: string
       enum:
-      - UNKNOWN_TYPE
-      - FUNDED
-      - REFUNDED
-      - SPENT
-      default: UNKNOWN_TYPE
-    publicTopUpCreditResponse:
+      - UNKNOWN_ORDER_BY_DIRECTION
+      - ASC
+      - DESC
+      default: UNKNOWN_ORDER_BY_DIRECTION
+    publicWithdrawCreditResponse:
       type: object
       properties:
         credit:
           $ref: '#/components/schemas/v1Credit'
-      description: TopUpCredit response.
+      description: WithdrawCredit response.
       additionalProperties: true
     v1SpendingLimitCreditHistory:
       type: object
@@ -815,133 +976,21 @@ components:
       - posted_at
       - transaction_date
       additionalProperties: true
-    v1SpendingLimitCreditHistoryTransactionStatus:
-      type: string
-      enum:
-      - UNKNOWN_TRANSACTION_STATUS
-      - PENDING
-      - POSTED
-      default: UNKNOWN_TRANSACTION_STATUS
-    v1SpendingLimitCreditHistoryChangedBy:
+    RepresentedErrorDetail:
       type: object
       properties:
-        id:
+        type:
           type: string
-        name:
-          type: string
-        email:
-          type: string
-        role:
-          $ref: '#/components/schemas/v1RoleName'
-      additionalProperties: true
-    publicListCreditsResponse:
-      type: object
-      properties:
-        credits:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1Credit'
-          description: List of Credits info.
-      description: ListCredits Response.
-      required:
-      - credits
-      additionalProperties: true
-    publicQueryCreditsResponse:
-      type: object
-      properties:
-        result:
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
           type: object
-          additionalProperties:
-            $ref: '#/components/schemas/publicCredits'
-          description: Map of credits keyed by an ad account id.
-      description: QueryCreditsResponse Response.
+          description: The metadata of the responded error.
+          additionalProperties: true
       required:
-      - result
-      additionalProperties: true
-    commonOrderByDirection:
-      type: string
-      enum:
-      - UNKNOWN_ORDER_BY_DIRECTION
-      - ASC
-      - DESC
-      default: UNKNOWN_ORDER_BY_DIRECTION
-    v1ChangeLogOrderByOrderByColumn:
-      type: string
-      enum:
-      - UNKNOWN_ORDER_BY_COLUMN
-      - UPDATED_AT
-      default: UNKNOWN_ORDER_BY_COLUMN
-    publicRepresentedError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
-          type: string
-          description: The detailed message of responded error.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
-      required:
-      - code
-      - message
-      - details
-      additionalProperties: true
-    v1SpendingLimitMicro:
-      type: object
-      properties:
-        last_spending_limit:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-        next_spending_limit:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-      description: Definition of a SpendingLimitMicro.
-      required:
-      - last_spending_limit
-      - next_spending_limit
-      additionalProperties: true
-    publicCredits:
-      type: object
-      properties:
-        credits:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1Credit'
-          description: List of Credits.
-      description: QueryCredits response.
-      required:
-      - credits
-      additionalProperties: true
-    publicWithdrawCreditResponse:
-      type: object
-      properties:
-        credit:
-          $ref: '#/components/schemas/v1Credit'
-      description: WithdrawCredit response.
-      additionalProperties: true
-    v1RoleName:
-      type: string
-      enum:
-      - UNKNOWN_ROLE_NAME
-      - PLATFORM_OWNER
-      - PLATFORM_USER
-      - AD_ACCOUNT_OWNER
-      - AD_ACCOUNT_USER
-      - AD_ACCOUNT_AGENCY
-      - CREATIVE_REVIEWER
-      default: UNKNOWN_ROLE_NAME
-    publicReadSpendingLimitResponse:
-      type: object
-      properties:
-        spending_limit:
-          $ref: '#/components/schemas/v1SpendingLimit'
-      description: ReadSpendingLimit response.
-      required:
-      - spending_limit
+      - type
+      - category
       additionalProperties: true
     publicSpendingLimits:
       type: object
@@ -955,81 +1004,17 @@ components:
       required:
       - spending_limits
       additionalProperties: true
-    v1SpendingLimitResetTimestamps:
-      type: object
-      properties:
-        last_reset_at:
-          type: string
-          format: date-time
-        next_reset_at:
-          type: string
-          format: date-time
-      required:
-      - last_reset_at
-      - next_reset_at
-      additionalProperties: true
-    v1Credit:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the Credit. Must be left unset for the Credit creation request. Must be set for the other requests.
-        title:
-          type: string
-          description: A friendly name for the credit.
-        ad_account_id:
-          type: string
-          description: The id of the AdAccount for this credit.
-        balance:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-        created_at:
-          type: string
-          format: date-time
-          description: Created timestamp. API user should not touch this field; it is set internally.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp. Set internally during creation, but required during update.
-      description: Definition of a Credit.
-      required:
-      - id
-      - ad_account_id
-      - balance
-      - created_at
-      - updated_at
-      additionalProperties: true
-    rmpcommonCurrency:
+    v1RoleName:
       type: string
       enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      - SEK
-      - INR
-      - THB
-      - IDR
-      - CNY
-      - CAD
-      - RUB
-      - BRL
-      - SGD
-      - HKD
-      - AUD
-      - PLN
-      - DKK
-      - VND
-      - MYR
-      - PHP
-      - TRY
-      - VES
-      - AED
-      - CHF
-      default: UNKNOWN_CURRENCY
-      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
+      - UNKNOWN_ROLE_NAME
+      - PLATFORM_OWNER
+      - PLATFORM_USER
+      - AD_ACCOUNT_OWNER
+      - AD_ACCOUNT_USER
+      - AD_ACCOUNT_AGENCY
+      - CREATIVE_REVIEWER
+      default: UNKNOWN_ROLE_NAME
     publicQuerySpendingLimitCreditHistoryResponse:
       type: object
       properties:
@@ -1048,6 +1033,30 @@ components:
       - transaction_histories
       - total_count
       additionalProperties: true
+    v1SpendingLimitCreditHistoryChangedBy:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: '#/components/schemas/v1RoleName'
+      additionalProperties: true
+    publicQueryCreditsResponse:
+      type: object
+      properties:
+        result:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/publicCredits'
+          description: Map of credits keyed by an ad account id.
+      description: QueryCreditsResponse Response.
+      required:
+      - result
+      additionalProperties: true
     v1ChangeLogOrderBy:
       type: object
       properties:
@@ -1055,31 +1064,6 @@ components:
           $ref: '#/components/schemas/v1ChangeLogOrderByOrderByColumn'
         direction:
           $ref: '#/components/schemas/commonOrderByDirection'
-      additionalProperties: true
-    rmpcommonMoneyMicro:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/rmpcommonCurrency'
-        amount_micro:
-          type: string
-          format: int64
-          description: Amount in micro unit. (e.g., 1234 means 0.001234)
-      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
-
-        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
-      required:
-      - currency
-      - amount_micro
-      additionalProperties: true
-    publicUpdateSpendingLimitResponse:
-      type: object
-      properties:
-        spending_limit:
-          $ref: '#/components/schemas/v1SpendingLimit'
-      description: UpdateSpendingLimit response.
-      required:
-      - spending_limit
       additionalProperties: true
   securitySchemes:
     ApiKeyAuth:
@@ -1091,8 +1075,5 @@ components:
       description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
       name: Authorization
       in: header
-x-refined-from:
-- mcm-management-api.json
-- moloco-commerce-media-management-openapi.yml
 x-readme:
-  explorer-enabled: true
+  explorer-enabled: false

@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Moloco Asset API
+  title: Management Asset API
+  description: MOLOCO RMP Management API provides functionalities for MOLOCO RMP systems.
   version: '1.0'
   contact:
     name: Moloco Inc.
     url: https://www.molocoads.com
-  description: 'Operations tagged Asset across 2 of this provider''s published API definitions: mcm-management-api.json, moloco-commerce-media-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://<platform>-mgmt.mcm-api.moloco.com
 security:
@@ -164,8 +164,6 @@ paths:
         required: true
       tags:
       - Asset
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets/upload-session:
     post:
       summary: CreateBulkImageUploadSession
@@ -239,8 +237,6 @@ paths:
         required: true
       tags:
       - Asset
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/image-assets/{image_asset_id}:
     get:
       summary: ReadImageAsset
@@ -304,8 +300,6 @@ paths:
           type: string
       tags:
       - Asset
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets:
     get:
       summary: ListVideoAssets
@@ -452,8 +446,6 @@ paths:
                   type: string
       tags:
       - Asset
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets/upload-session:
     post:
       summary: CreateBulkVideoUploadSession
@@ -527,8 +519,6 @@ paths:
         required: true
       tags:
       - Asset
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
   /rmp/mgmt/v1/platforms/{platform_id}/ad-accounts/{ad_account_id}/video-assets/{video_asset_id}:
     get:
       summary: ReadVideoAsset
@@ -592,157 +582,16 @@ paths:
           type: string
       tags:
       - Asset
-    servers:
-    - url: https://<platform>-mgmt.mcm-api.moloco.com
 components:
   schemas:
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
-      required:
-      - type
-      - category
-      additionalProperties: true
-    publicCreateImageAssetResponse:
-      type: object
-      properties:
-        image_asset:
-          $ref: '#/components/schemas/v1ImageAsset'
-      description: CreateImageAsset response.
-      required:
-      - image_asset
-      additionalProperties: true
-    publicCreateBulkImageUploadSessionResponse:
-      type: object
-      properties:
-        sessions:
-          type: array
-          items:
-            $ref: '#/components/schemas/publicCreateBulkImageUploadSessionResponseSession'
-          description: List of upload sessions with URLs and object keys.
-        expires_at:
-          type: string
-          format: date-time
-          description: Expiration time of session URL.
-      description: Response containing upload session details.
-      required:
-      - sessions
-      - expires_at
-      additionalProperties: true
-    commonErrorCategory:
+    v1VideoSourceStatus:
       type: string
       enum:
-      - DEFAULT_ERROR_CATEGORY
-      - INPUT_VALIDATION
-      - CHARACTER_LIMIT_EXCEEDED
-      - TIMESTAMP_MISMATCH
-      - FEATURE_NOT_ALLOWED
-      - REINVITE_NOT_ALLOWED
-      - LAST_OWNER_REVOKE_NOT_ALLOWED
-      - LAST_OWNER_DELETE_NOT_ALLOWED
-      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
-      - MFA_VERIFICATION_FAILED
-      - INSUFFICIENT_SPENDING_LIMIT
-      - AD_ACCOUNT_ALREADY_OWNED
-      - INSUFFICIENT_WALLET_BALANCE
-      - INSUFFICIENT_SPEND_CAP_BUDGET
-      - MAX_SPEND_CAP_COUNT_REACHED
-      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
-      - MAX_CAMPAIGN_COUNT_REACHED
-      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
-      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
-      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
-      - INACTIVE_AD_ACCOUNT
-      - DUPLICATE_AUDIENCE
-      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
-      - EXCEED_MAX_IMAGE_SIZE
-      - MAX_LABEL_COUNT_REACHED
-      - MAX_LABEL_VALUE_COUNT_REACHED
-      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
-      - PLATFORM_INSIGHT_UNAVAILABLE
-      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
-      - INVALID_CUSTOM_TARGETING
-      default: DEFAULT_ERROR_CATEGORY
-      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    publicReadVideoAssetResponse:
-      type: object
-      properties:
-        video_asset:
-          $ref: '#/components/schemas/v1VideoAsset'
-      description: ReadVideoAsset response.
-      required:
-      - video_asset
-      additionalProperties: true
-    v1VideoAsset:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the video asset. Must be left unset for the video asset creation request. Must be set for the other requests.
-          readOnly: true
-        ad_account_id:
-          type: string
-          description: The id of the ad account that owns this video asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
-          readOnly: true
-        video_source:
-          $ref: '#/components/schemas/v1VideoSource'
-        created_at:
-          type: string
-          format: date-time
-          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
-          readOnly: true
-      description: VideoAsset that could be used for the campaign's asset.
-      additionalProperties: true
-    publicCreateBulkVideoUploadSessionRequestFileInfo:
-      type: object
-      properties:
-        file_name:
-          type: string
-          description: Original file name.
-        mime_type:
-          type: string
-          description: MIME type of the file (e.g., video/mp4).
-      additionalProperties: true
-    publicListImageAssetsResponse:
-      type: object
-      properties:
-        image_assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1ImageAsset'
-          description: Image assets information.
-      description: ListImageAssets response.
-      required:
-      - image_assets
-      additionalProperties: true
-    publicCreateBulkImageUploadSessionRequestFileInfo:
-      type: object
-      properties:
-        file_name:
-          type: string
-          description: Original file name.
-        mime_type:
-          type: string
-          description: MIME type of the file (e.g., image/png, image/jpeg).
-      additionalProperties: true
-    publicCreateVideoAssetResponse:
-      type: object
-      properties:
-        video_asset:
-          $ref: '#/components/schemas/v1VideoAsset'
-      description: CreateVideoAsset response.
-      required:
-      - video_asset
-      additionalProperties: true
+      - UNKNOWN_STATUS
+      - PENDING
+      - READY
+      default: UNKNOWN_STATUS
+      description: " - PENDING: The video asset isn't ready to use yet.\n - READY: The video asset is ready to use."
     v1ImageSource:
       type: object
       properties:
@@ -785,6 +634,106 @@ components:
           type: string
           description: The object key where the image file will be stored.
       additionalProperties: true
+    publicCreateBulkImageUploadSessionResponse:
+      type: object
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/publicCreateBulkImageUploadSessionResponseSession'
+          description: List of upload sessions with URLs and object keys.
+        expires_at:
+          type: string
+          format: date-time
+          description: Expiration time of session URL.
+      description: Response containing upload session details.
+      required:
+      - sessions
+      - expires_at
+      additionalProperties: true
+    publicCreateBulkVideoUploadSessionResponseSession:
+      type: object
+      properties:
+        upload_url:
+          type: string
+          description: Session URL for uploading the video file.
+        object_key:
+          type: string
+          description: The object key where the video file will be stored.
+      additionalProperties: true
+    publicCreateImageAssetResponse:
+      type: object
+      properties:
+        image_asset:
+          $ref: '#/components/schemas/v1ImageAsset'
+      description: CreateImageAsset response.
+      required:
+      - image_asset
+      additionalProperties: true
+    publicCreateVideoAssetResponse:
+      type: object
+      properties:
+        video_asset:
+          $ref: '#/components/schemas/v1VideoAsset'
+      description: CreateVideoAsset response.
+      required:
+      - video_asset
+      additionalProperties: true
+    publicCreateBulkImageUploadSessionRequestFileInfo:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Original file name.
+        mime_type:
+          type: string
+          description: MIME type of the file (e.g., image/png, image/jpeg).
+      additionalProperties: true
+    commonErrorCategory:
+      type: string
+      enum:
+      - DEFAULT_ERROR_CATEGORY
+      - INPUT_VALIDATION
+      - CHARACTER_LIMIT_EXCEEDED
+      - TIMESTAMP_MISMATCH
+      - FEATURE_NOT_ALLOWED
+      - REINVITE_NOT_ALLOWED
+      - LAST_OWNER_REVOKE_NOT_ALLOWED
+      - LAST_OWNER_DELETE_NOT_ALLOWED
+      - SSO_USER_JOIN_REQUEST_NOT_ALLOWED
+      - MFA_VERIFICATION_FAILED
+      - INSUFFICIENT_SPENDING_LIMIT
+      - AD_ACCOUNT_ALREADY_OWNED
+      - INSUFFICIENT_WALLET_BALANCE
+      - INSUFFICIENT_SPEND_CAP_BUDGET
+      - MAX_SPEND_CAP_COUNT_REACHED
+      - MAX_CAMPAIGNS_COUNT_PER_SPEND_CAP_REACHED
+      - MAX_CAMPAIGN_COUNT_REACHED
+      - MODIFY_ARCHIVED_CAMPAIGN_NOT_ALLOWED
+      - INVALID_CAMPAIGN_STATUS_FOR_ARCHIVE
+      - INVALID_MANAGED_CPT_CAMPAIGN_SCHEDULE
+      - INACTIVE_AD_ACCOUNT
+      - DUPLICATE_AUDIENCE
+      - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE
+      - EXCEED_MAX_IMAGE_SIZE
+      - MAX_LABEL_COUNT_REACHED
+      - MAX_LABEL_VALUE_COUNT_REACHED
+      - MAX_LABEL_VALUE_RELATIONSHIP_COUNT_REACHED
+      - PLATFORM_INSIGHT_UNAVAILABLE
+      - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED
+      - INVALID_CUSTOM_TARGETING
+      default: DEFAULT_ERROR_CATEGORY
+      title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
+    publicCreateBulkVideoUploadSessionRequestFileInfo:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Original file name.
+        mime_type:
+          type: string
+          description: MIME type of the file (e.g., video/mp4).
+      additionalProperties: true
     publicRepresentedError:
       type: object
       properties:
@@ -805,6 +754,135 @@ components:
       - code
       - message
       - details
+      additionalProperties: true
+    rmpcommonImageAssetType:
+      type: string
+      enum:
+      - UNKNOWN_IMAGE_ASSET_TYPE
+      - BANNER
+      - LOGO
+      default: UNKNOWN_IMAGE_ASSET_TYPE
+      description: ImageAssetType enumerates available image asset types.
+    v1VideoAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the video asset. Must be left unset for the video asset creation request. Must be set for the other requests.
+          readOnly: true
+        ad_account_id:
+          type: string
+          description: The id of the ad account that owns this video asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
+          readOnly: true
+        video_source:
+          $ref: '#/components/schemas/v1VideoSource'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
+          readOnly: true
+      description: VideoAsset that could be used for the campaign's asset.
+      additionalProperties: true
+    v1ImageAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the image asset. Must be left unset for the image asset creation request. Must be set for the other requests.
+        ad_account_id:
+          type: string
+          description: The id of the ad account that owns this image asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
+        image_asset_type:
+          $ref: '#/components/schemas/rmpcommonImageAssetType'
+        title:
+          type: string
+          description: A descriptive name of the image asset.
+        image_source:
+          $ref: '#/components/schemas/v1ImageSource'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
+          readOnly: true
+      description: ImageAsset that could be used for the campaign's asset.
+      required:
+      - ad_account_id
+      - image_asset_type
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    publicCreateBulkVideoUploadSessionResponse:
+      type: object
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/publicCreateBulkVideoUploadSessionResponseSession'
+          description: List of upload sessions with URLs and object keys.
+        expires_at:
+          type: string
+          format: date-time
+          description: Expiration time of session URL.
+      description: CreateBulkVideoUploadSession response.
+      required:
+      - sessions
+      - expires_at
+      additionalProperties: true
+    publicReadImageAssetResponse:
+      type: object
+      properties:
+        image_asset:
+          $ref: '#/components/schemas/v1ImageAsset'
+      description: ReadImageAsset response.
+      required:
+      - image_asset
+      additionalProperties: true
+    publicListVideoAssetsResponse:
+      type: object
+      properties:
+        video_assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1VideoAsset'
+          description: Video assets information.
+      description: ListVideoAssets response.
+      required:
+      - video_assets
+      additionalProperties: true
+    publicReadVideoAssetResponse:
+      type: object
+      properties:
+        video_asset:
+          $ref: '#/components/schemas/v1VideoAsset'
+      description: ReadVideoAsset response.
+      required:
+      - video_asset
+      additionalProperties: true
+    publicListImageAssetsResponse:
+      type: object
+      properties:
+        image_assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ImageAsset'
+          description: Image assets information.
+      description: ListImageAssets response.
+      required:
+      - image_assets
       additionalProperties: true
     v1VideoSource:
       type: object
@@ -841,96 +919,6 @@ components:
           $ref: '#/components/schemas/v1VideoSourceStatus'
       description: Detailed information of a video.
       additionalProperties: true
-    publicCreateBulkVideoUploadSessionResponse:
-      type: object
-      properties:
-        sessions:
-          type: array
-          items:
-            $ref: '#/components/schemas/publicCreateBulkVideoUploadSessionResponseSession'
-          description: List of upload sessions with URLs and object keys.
-        expires_at:
-          type: string
-          format: date-time
-          description: Expiration time of session URL.
-      description: CreateBulkVideoUploadSession response.
-      required:
-      - sessions
-      - expires_at
-      additionalProperties: true
-    publicListVideoAssetsResponse:
-      type: object
-      properties:
-        video_assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1VideoAsset'
-          description: Video assets information.
-      description: ListVideoAssets response.
-      required:
-      - video_assets
-      additionalProperties: true
-    publicReadImageAssetResponse:
-      type: object
-      properties:
-        image_asset:
-          $ref: '#/components/schemas/v1ImageAsset'
-      description: ReadImageAsset response.
-      required:
-      - image_asset
-      additionalProperties: true
-    v1VideoSourceStatus:
-      type: string
-      enum:
-      - UNKNOWN_STATUS
-      - PENDING
-      - READY
-      default: UNKNOWN_STATUS
-      description: " - PENDING: The video asset isn't ready to use yet.\n - READY: The video asset is ready to use."
-    publicCreateBulkVideoUploadSessionResponseSession:
-      type: object
-      properties:
-        upload_url:
-          type: string
-          description: Session URL for uploading the video file.
-        object_key:
-          type: string
-          description: The object key where the video file will be stored.
-      additionalProperties: true
-    v1ImageAsset:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the image asset. Must be left unset for the image asset creation request. Must be set for the other requests.
-        ad_account_id:
-          type: string
-          description: The id of the ad account that owns this image asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
-        image_asset_type:
-          $ref: '#/components/schemas/rmpcommonImageAssetType'
-        title:
-          type: string
-          description: A descriptive name of the image asset.
-        image_source:
-          $ref: '#/components/schemas/v1ImageSource'
-        created_at:
-          type: string
-          format: date-time
-          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
-          readOnly: true
-      description: ImageAsset that could be used for the campaign's asset.
-      required:
-      - ad_account_id
-      - image_asset_type
-      additionalProperties: true
-    rmpcommonImageAssetType:
-      type: string
-      enum:
-      - UNKNOWN_IMAGE_ASSET_TYPE
-      - BANNER
-      - LOGO
-      default: UNKNOWN_IMAGE_ASSET_TYPE
-      description: ImageAssetType enumerates available image asset types.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
@@ -941,8 +929,5 @@ components:
       description: Note that the bearer authentication has been deprecated. Please refer [API and SSO Credential Management](https://mcm-docs.moloco.com/docs/api-key-and-sso-secret-generation) section to use API-key instead.
       name: Authorization
       in: header
-x-refined-from:
-- mcm-management-api.json
-- moloco-commerce-media-management-openapi.yml
 x-readme:
-  explorer-enabled: true
+  explorer-enabled: false

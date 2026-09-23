@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Moloco Permission API
+  description: MOLOCO Cloud Auth API provides functionalities to authenticate and authorize the MOLOCO Cloud users.
+  title: MOLOCO Cloud Auth Permission API
   version: 1.0.0
-  description: 'Operations tagged Permission across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://morse-us-prod.adsmoloco.com
 tags:
@@ -15,7 +15,7 @@ paths:
       description: List the permissions given to the user.
       tags:
       - Permission
-      summary: List the user permissions.
+      summary: List the user permissions
       operationId: v1_list_permissions
       parameters:
       - description: The ID of the user.
@@ -55,8 +55,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    servers:
-    - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
     listUserPermissionsResponse:
@@ -95,25 +93,6 @@ components:
         status:
           description: The error status code.
           type: integer
-    resourcePathPermissions:
-      description: A resource path and the permissions given to it.
-      type: object
-      required:
-      - id
-      - instance_id
-      - permissions
-      properties:
-        id:
-          description: Resource ID.
-          type: string
-        instance_id:
-          description: Resource instance ID.
-          type: string
-        permissions:
-          description: Permissions given to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/permission'
     permission:
       description: Permission.
       type: object
@@ -142,13 +121,29 @@ components:
         verb:
           description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
           type: string
+    resourcePathPermissions:
+      description: A resource path and the permissions given to it.
+      type: object
+      required:
+      - id
+      - instance_id
+      - permissions
+      properties:
+        id:
+          description: Resource ID.
+          type: string
+        instance_id:
+          description: Resource instance ID.
+          type: string
+        permissions:
+          description: Permissions given to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/permission'
   securitySchemes:
     Bearer:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-cloud-auth-api.json
-- moloco-cloud-auth-openapi.yml
-x-readme:
-  explorer-enabled: true
+x-google-backend:
+  address: https://morse-us-prod.adsmoloco.com

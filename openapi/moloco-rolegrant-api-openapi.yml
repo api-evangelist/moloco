@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Moloco Role Grant API
+  description: MOLOCO Cloud Auth API provides functionalities to authenticate and authorize the MOLOCO Cloud users.
+  title: MOLOCO Cloud Auth Role Grant API
   version: 1.0.0
-  description: 'Operations tagged RoleGrant across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://morse-us-prod.adsmoloco.com
 tags:
@@ -15,7 +15,7 @@ paths:
       description: Get the list of role grants to the given user.
       tags:
       - RoleGrant
-      summary: Get role grants.
+      summary: Get role grants
       operationId: v1_list_role_grants
       parameters:
       - description: The ID of the user.
@@ -61,7 +61,7 @@ paths:
       description: Create a role grant that attaches roles to a resource and a user.
       tags:
       - RoleGrant
-      summary: Create a role grant.
+      summary: Create a role grant
       operationId: v1_create_role_grants
       parameters:
       - description: The ID of the user.
@@ -110,7 +110,7 @@ paths:
       description: Delete a specific role attached to a specific resource.
       tags:
       - RoleGrant
-      summary: Delete a role grant.
+      summary: Delete a role grant
       operationId: v1_delete_role_grants
       parameters:
       - description: The ID of the user.
@@ -170,21 +170,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    servers:
-    - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    listRoleGrantsResponse:
-      description: List of roles granted to a user.
-      type: object
-      required:
-      - role_grants
-      properties:
-        role_grants:
-          description: list of role grants.
-          type: array
-          items:
-            $ref: '#/components/schemas/resourceToRoleReferences'
     error:
       description: Error response with detailed reason.
       type: object
@@ -198,6 +185,19 @@ components:
         status:
           description: The error status code.
           type: integer
+    roleReference:
+      description: Reference to a role defined in a platform.
+      type: object
+      required:
+      - id
+      - platform_id
+      properties:
+        id:
+          description: The ID of the role.
+          type: string
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
     createRoleGrantsRequest:
       description: Request to attach roles to a resource and a user.
       type: object
@@ -221,19 +221,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/roleReference'
-    roleReference:
-      description: Reference to a role defined in a platform.
+    listRoleGrantsResponse:
+      description: List of roles granted to a user.
       type: object
       required:
-      - id
-      - platform_id
+      - role_grants
       properties:
-        id:
-          description: The ID of the role.
-          type: string
-        platform_id:
-          description: The platofrm ID where the role is defined.
-          type: string
+        role_grants:
+          description: list of role grants.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourceToRoleReferences'
     resourceToRoleReferences:
       description: Relationship between a resource and a list of roles.
       type: object
@@ -258,8 +256,5 @@ components:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-cloud-auth-api.json
-- moloco-cloud-auth-openapi.yml
-x-readme:
-  explorer-enabled: true
+x-google-backend:
+  address: https://morse-us-prod.adsmoloco.com

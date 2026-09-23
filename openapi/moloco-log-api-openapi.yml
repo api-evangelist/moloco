@@ -1,11 +1,11 @@
 openapi: 3.2.0
 info:
-  title: Moloco Log API
+  title: Moloco Ads Campaign Management Log API
+  description: Moloco Ads Campaign Management API provides functionalities for Moloco Ads Campaigns.
   version: '1.10'
   contact:
     name: Moloco Inc.
     url: https://www.moloco.com
-  description: 'Operations tagged Log across 2 of this provider''s published API definitions: moloco-ads-campaign-management-api.json, moloco-ads-campaign-management-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.moloco.cloud
 security:
@@ -15,7 +15,7 @@ tags:
 paths:
   /cm/v1/logs:
     get:
-      summary: List up logs.
+      summary: List up logs
       description: List up logs in the given Workplace.
       operationId: DspApi_ListLogs
       responses:
@@ -53,7 +53,7 @@ paths:
       tags:
       - Log
     post:
-      summary: Create a new log.
+      summary: Create a new log
       description: Create a new log.
       operationId: DspApi_CreateLog
       responses:
@@ -91,11 +91,9 @@ paths:
         required: true
       tags:
       - Log
-    servers:
-    - url: https://api.moloco.cloud
   /cm/v1/logs/{log_id}:
     get:
-      summary: Read an existing log.
+      summary: Read an existing log
       description: Read an existing log.
       operationId: DspApi_ReadLog
       responses:
@@ -121,7 +119,7 @@ paths:
       tags:
       - Log
     delete:
-      summary: Delete an existing log.
+      summary: Delete an existing log
       description: Delete an existing log.
       operationId: DspApi_DeleteLog
       responses:
@@ -146,11 +144,9 @@ paths:
           type: string
       tags:
       - Log
-    servers:
-    - url: https://api.moloco.cloud
   /cm/v1/logs/{log_id}/status:
     get:
-      summary: Read log status.
+      summary: Read log status
       description: Read the most recent log status. It will also show URLs containing log contents.
       operationId: DspApi_ReadLogStatus
       responses:
@@ -175,44 +171,8 @@ paths:
           type: string
       tags:
       - Log
-    servers:
-    - url: https://api.moloco.cloud
 components:
   schemas:
-    messagesReadLogStatusResponse:
-      type: object
-      example:
-        status: READY
-        location_csv: https://{PLATFORM_LOG_STORAGE}/logs/anExistingLogId.csv?token={ONE_TIME_TOKEN}
-      properties:
-        status:
-          $ref: '#/components/schemas/dspLogStatus'
-          description: Current status of a log.
-        location_csv:
-          type: array
-          items:
-            type: string
-          description: URL of the log contents in CSV form. Will be expired in an hour.
-        location_avro:
-          type: array
-          items:
-            type: string
-          description: URL of the log contents in Avro form. Will be expired in an hour.
-    messagesReadLogResponse:
-      type: object
-      example:
-        log:
-          id: sampleLogId
-          ad_account_id: sampleAdAccountId
-          type: IMP
-          format: CSV
-          date: '2020-01-01'
-          created_at: '2020-01-01T03:12:50.124101982Z'
-          updated_at: '2020-01-01T03:24:21.109821241Z'
-      properties:
-        log:
-          $ref: '#/components/schemas/dspLog'
-          description: The details of a log.
     dspLogType:
       type: string
       enum:
@@ -270,6 +230,63 @@ components:
             type: object
             $ref: '#/components/schemas/dspLog'
           description: List of logs in the given Workplace.
+    messagesReadLogResponse:
+      type: object
+      example:
+        log:
+          id: sampleLogId
+          ad_account_id: sampleAdAccountId
+          type: IMP
+          format: CSV
+          date: '2020-01-01'
+          created_at: '2020-01-01T03:12:50.124101982Z'
+          updated_at: '2020-01-01T03:24:21.109821241Z'
+      properties:
+        log:
+          $ref: '#/components/schemas/dspLog'
+          description: The details of a log.
+    messagesReadLogStatusResponse:
+      type: object
+      example:
+        status: READY
+        location_csv: https://{PLATFORM_LOG_STORAGE}/logs/anExistingLogId.csv?token={ONE_TIME_TOKEN}
+      properties:
+        status:
+          $ref: '#/components/schemas/dspLogStatus'
+          description: Current status of a log.
+        location_csv:
+          type: array
+          items:
+            type: string
+          description: URL of the log contents in CSV form. Will be expired in an hour.
+        location_avro:
+          type: array
+          items:
+            type: string
+          description: URL of the log contents in Avro form. Will be expired in an hour.
+    messagesCreateLogResponse:
+      type: object
+      example:
+        log:
+          id: newlyCreatedLogId
+          ad_account_id: sampleAdAccountId
+          type: IMP
+          format: CSV
+          date: '2020-01-01'
+          created_at: '2020-01-01T03:12:50.124101982Z'
+          updated_at: '2020-01-01T03:12:50.124101982Z'
+        href: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId
+        status: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId/status
+      properties:
+        log:
+          $ref: '#/components/schemas/dspLog'
+          description: The details of a created log.
+        href:
+          type: string
+          description: Reference URL that shows the log.
+        status:
+          type: string
+          description: Reference URL that shows the most recent status of the log.
     messagesDeleteLogResponse:
       type: object
       example: {}
@@ -286,12 +303,6 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
     dspLog:
       type: object
       example:
@@ -344,36 +355,14 @@ components:
       - type
       - date
       - ad_account_id
-    messagesCreateLogResponse:
+    protobufAny:
       type: object
-      example:
-        log:
-          id: newlyCreatedLogId
-          ad_account_id: sampleAdAccountId
-          type: IMP
-          format: CSV
-          date: '2020-01-01'
-          created_at: '2020-01-01T03:12:50.124101982Z'
-          updated_at: '2020-01-01T03:12:50.124101982Z'
-        href: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId
-        status: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId/status
       properties:
-        log:
-          $ref: '#/components/schemas/dspLog'
-          description: The details of a created log.
-        href:
+        '@type':
           type: string
-          description: Reference URL that shows the log.
-        status:
-          type: string
-          description: Reference URL that shows the most recent status of the log.
+      additionalProperties: {}
   securitySchemes:
     Bearer:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-ads-campaign-management-api.json
-- moloco-ads-campaign-management-openapi.yml
-x-readme:
-  explorer-enabled: true

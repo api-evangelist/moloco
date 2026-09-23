@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: Moloco Userspace API
+  description: MOLOCO Cloud Auth API provides functionalities to authenticate and authorize the MOLOCO Cloud users.
+  title: MOLOCO Cloud Auth Userspace API
   version: 1.0.0
-  description: 'Operations tagged Userspace across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://morse-us-prod.adsmoloco.com
 tags:
-- name: Userspace
+- name: User Space
 paths:
   /v1/userspaces/{userspace_id}/platforms:
     post:
@@ -15,8 +15,8 @@ paths:
       - {}
       description: List workplaces for a given userspace.
       tags:
-      - Userspace
-      summary: List workplaces.
+      - User Space
+      summary: List workplaces
       operationId: v1_list_userspace_platforms
       parameters:
       - description: The ID of the userspace.
@@ -68,8 +68,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    servers:
-    - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
     error:
@@ -140,8 +138,5 @@ components:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-cloud-auth-api.json
-- moloco-cloud-auth-openapi.yml
-x-readme:
-  explorer-enabled: true
+x-google-backend:
+  address: https://morse-us-prod.adsmoloco.com

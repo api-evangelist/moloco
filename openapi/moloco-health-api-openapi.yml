@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
-  title: Moloco Health API
+  description: MOLOCO Cloud Auth API provides functionalities to authenticate and authorize the MOLOCO Cloud users.
+  title: MOLOCO Cloud Auth Health API
   version: 1.0.0
-  description: 'Operations tagged Health across 2 of this provider''s published API definitions: moloco-cloud-auth-api.json, moloco-cloud-auth-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://morse-us-prod.adsmoloco.com
 tags:
@@ -13,7 +13,7 @@ paths:
       description: Check the health of the MOLOCO Cloud Auth API service.
       tags:
       - Health
-      summary: Check the health of the service.
+      summary: Check the health of the service
       operationId: v1_health_check
       responses:
         '200':
@@ -28,8 +28,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/error'
-    servers:
-    - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
     error:
@@ -59,8 +57,5 @@ components:
       type: apiKey
       name: Authorization
       in: header
-x-refined-from:
-- moloco-cloud-auth-api.json
-- moloco-cloud-auth-openapi.yml
-x-readme:
-  explorer-enabled: true
+x-google-backend:
+  address: https://morse-us-prod.adsmoloco.com
