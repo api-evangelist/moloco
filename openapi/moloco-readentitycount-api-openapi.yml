@@ -82,25 +82,6 @@ paths:
       - ReadEntityCount
 components:
   schemas:
-    dspEntityCount:
-      type: object
-      properties:
-        scope_type:
-          $ref: '#/components/schemas/commonEntityType'
-          description: Scope of the EntityCount.
-        limit:
-          type: string
-          format: int64
-          description: 'The total number of entities allowed under the scope type.
-
-            ''limit'' for the entity is different for each scope type.
-
-            Visit the [guide document](https://developer.moloco.cloud/docs/entity-quota) for more details.'
-        current:
-          type: string
-          format: int64
-          description: The number of entities created so far.
-      description: EntityCount contains the limit and the number of the entities under the particular scope.
     googlerpcStatus:
       type: object
       properties:
@@ -140,6 +121,25 @@ components:
       - ENTITY_TYPE_CUSTOMER_ACTIVITY
       default: UNKNOWN_ENTITY_TYPE
       description: List of entity types supported in DSP API.
+    dspEntityCount:
+      type: object
+      properties:
+        scope_type:
+          $ref: '#/components/schemas/commonEntityType'
+          description: Scope of the EntityCount.
+        limit:
+          type: string
+          format: int64
+          description: 'The total number of entities allowed under the scope type.
+
+            ''limit'' for the entity is different for each scope type.
+
+            Visit the [guide document](https://developer.moloco.cloud/docs/entity-quota) for more details.'
+        current:
+          type: string
+          format: int64
+          description: The number of entities created so far.
+      description: EntityCount contains the limit and the number of the entities under the particular scope.
     protobufAny:
       type: object
       properties:

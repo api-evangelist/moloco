@@ -59,24 +59,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    messagesReadWorkplaceSummaryError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesReadWorkplaceSummaryErrorAPIErrorInfo'
-    messagesReadWorkplaceSummaryErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
     googlerpcStatus:
       type: object
       properties:
@@ -90,6 +72,24 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
+    messagesReadWorkplaceSummaryErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesReadWorkplaceSummaryError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadWorkplaceSummaryErrorAPIErrorInfo'
     protobufAny:
       type: object
       properties:

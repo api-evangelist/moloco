@@ -124,15 +124,6 @@ paths:
     - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    messagesCreateTokenResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: Created token.
-        token_type:
-          $ref: '#/components/schemas/dspmessagesTokenType'
-          description: Token type.
     messagesCreateTokenErrorAPIErrorInfo:
       type: object
       properties:
@@ -144,20 +135,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    messagesCreateTokenRequest:
-      type: object
-      properties:
-        api_key:
-          type: string
-          description: Enter the API key generated from Moloco Cloud DSP.
-    messagesCreateTokenErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - USER_INVALID_CREDENTIAL_INFORMATION
-      - USER_ACCOUNT_BLOCKED
-      default: ERROR_REASON_UNKNOWN
-      description: " - USER_INVALID_CREDENTIAL_INFORMATION: The given credential information is invalid.\n - USER_ACCOUNT_BLOCKED: The user account is blocked.\nLogin attempt is not allowed when there are 5 failed login attempts."
     messagesCreateTokenError:
       type: object
       properties:
@@ -179,6 +156,48 @@ components:
       - UPDATE_PASSWORD_TOKEN
       default: UNKNOWN_TYPE
       description: "TokenType enumerates the type of token.\n\n - AUTH_TOKEN: Token returned on the authentication success.\n - UPDATE_PASSWORD_TOKEN: If user didn't update password for over 12 months, it will return `UPDATE_PASSWORD_TOKEN`.\nThis token can be only used for [UpdatePassword API](https://developer.moloco.cloud/reference/dspapi_updatepassword-1).\nhttps://developer.moloco.cloud/reference/dspapi_updatepassword-1"
+    messagesCreateTokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Created token.
+        token_type:
+          $ref: '#/components/schemas/dspmessagesTokenType'
+          description: Token type.
+    messagesCreateTokenErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_INVALID_CREDENTIAL_INFORMATION
+      - USER_ACCOUNT_BLOCKED
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_INVALID_CREDENTIAL_INFORMATION: The given credential information is invalid.\n - USER_ACCOUNT_BLOCKED: The user account is blocked.\nLogin attempt is not allowed when there are 5 failed login attempts."
+    messagesCreateTokenRequest:
+      type: object
+      properties:
+        api_key:
+          type: string
+          description: Enter the API key generated from Moloco Cloud DSP.
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
+      type: object
+      required:
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
     roleReference:
       description: Reference to a role defined in a platform.
       type: object
@@ -205,6 +224,44 @@ components:
         status:
           description: The error status code.
           type: integer
+    createTokenRequest:
+      description: A request to create a token
+      type: object
+      required:
+      - workplace_id
+      - email
+      - password
+      properties:
+        email:
+          description: The email address of the user.
+          type: string
+        password:
+          description: The password of the user.
+          type: string
+        workplace_id:
+          description: The ID of the workplace to which the user belongs.
+          type: string
+    userStatus:
+      description: The set of status values for a user.
+      type: object
+      required:
+      - signed_up
+      properties:
+        signed_up:
+          description: The signed up status of the user.
+          type: boolean
+    createTokenResponse:
+      description: A response to CreateTokenRequest
+      type: object
+      required:
+      - token
+      - user
+      properties:
+        token:
+          description: The successfully issued Morse token.
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
     user:
       description: A user.
       type: object
@@ -264,63 +321,6 @@ components:
         userspace_id:
           description: The ID of the user space such as USERSPACE_C.
           type: string
-    createTokenRequest:
-      description: A request to create a token
-      type: object
-      required:
-      - workplace_id
-      - email
-      - password
-      properties:
-        email:
-          description: The email address of the user.
-          type: string
-        password:
-          description: The password of the user.
-          type: string
-        workplace_id:
-          description: The ID of the workplace to which the user belongs.
-          type: string
-    resourceToRoleReferences:
-      description: Relationship between a resource and a list of roles.
-      type: object
-      required:
-      - resource_id
-      - resource_instance_id
-      - roles
-      properties:
-        resource_id:
-          description: Resource ID to which the roles are granted.
-          type: string
-        resource_instance_id:
-          description: The actual instance ID of the resource to which the roles are granted.
-          type: string
-        roles:
-          description: The list of roles granted to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/roleReference'
-    createTokenResponse:
-      description: A response to CreateTokenRequest
-      type: object
-      required:
-      - token
-      - user
-      properties:
-        token:
-          description: The successfully issued Morse token.
-          type: string
-        user:
-          $ref: '#/components/schemas/user'
-    userStatus:
-      description: The set of status values for a user.
-      type: object
-      required:
-      - signed_up
-      properties:
-        signed_up:
-          description: The signed up status of the user.
-          type: boolean
   securitySchemes:
     Bearer:
       type: apiKey

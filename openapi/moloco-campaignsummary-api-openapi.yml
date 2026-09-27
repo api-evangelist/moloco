@@ -74,6 +74,54 @@ paths:
       - CampaignSummary
 components:
   schemas:
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    ListReportFiltersResponseReportFilterOption:
+      type: object
+      properties:
+        display_name:
+          type: string
+        value:
+          type: string
+      description: A pair of the value and display_name for each dimension.
+    messagesListReportActionEventsResponse:
+      type: object
+      properties:
+        action_events:
+          type: array
+          items:
+            type: string
+    ListReportFiltersResponseReportFilter:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/dspReportFilterDimension'
+          description: Dimension of the report.
+        display_name:
+          type: string
+          description: Display name of the dimension.
+        options:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/ListReportFiltersResponseReportFilterOption'
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
     dspReportFilterDimension:
       type: string
       enum:
@@ -99,48 +147,6 @@ components:
       - Campaign_IsCrossPromo
       default: UNKNOWN_REPORT_FILTER_DIMENSION
       description: ReportFilterDimension enumerates available breakdown dimensions.
-    ListReportFiltersResponseReportFilter:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/dspReportFilterDimension'
-          description: Dimension of the report.
-        display_name:
-          type: string
-          description: Display name of the dimension.
-        options:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/ListReportFiltersResponseReportFilterOption'
-    ListReportFiltersResponseReportFilterOption:
-      type: object
-      properties:
-        display_name:
-          type: string
-        value:
-          type: string
-      description: A pair of the value and display_name for each dimension.
-    googlerpcStatus:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/protobufAny'
-    messagesListReportActionEventsResponse:
-      type: object
-      properties:
-        action_events:
-          type: array
-          items:
-            type: string
     messagesListReportFiltersResponse:
       type: object
       properties:
@@ -149,12 +155,6 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/ListReportFiltersResponseReportFilter'
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
   securitySchemes:
     Bearer:
       type: apiKey

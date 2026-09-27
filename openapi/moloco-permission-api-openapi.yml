@@ -57,6 +57,38 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    resourcePathPermissions:
+      description: A resource path and the permissions given to it.
+      type: object
+      required:
+      - id
+      - instance_id
+      - permissions
+      properties:
+        id:
+          description: Resource ID.
+          type: string
+        instance_id:
+          description: Resource instance ID.
+          type: string
+        permissions:
+          description: Permissions given to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/permission'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
     listUserPermissionsResponse:
       description: The API response that lists the permissions that the user has.
       type: object
@@ -80,19 +112,6 @@ components:
         userspace_id:
           description: The ID of the userspace to which the platform belongs to.
           type: string
-    error:
-      description: Error response with detailed reason.
-      type: object
-      required:
-      - reason
-      - status
-      properties:
-        reason:
-          description: More detailed reason about why the error was returned.
-          type: string
-        status:
-          description: The error status code.
-          type: integer
     permission:
       description: Permission.
       type: object
@@ -121,25 +140,6 @@ components:
         verb:
           description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
           type: string
-    resourcePathPermissions:
-      description: A resource path and the permissions given to it.
-      type: object
-      required:
-      - id
-      - instance_id
-      - permissions
-      properties:
-        id:
-          description: Resource ID.
-          type: string
-        instance_id:
-          description: Resource instance ID.
-          type: string
-        permissions:
-          description: Permissions given to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/permission'
   securitySchemes:
     Bearer:
       type: apiKey

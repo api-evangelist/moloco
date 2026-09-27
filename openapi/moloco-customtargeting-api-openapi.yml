@@ -567,44 +567,54 @@ paths:
       - CustomTargeting
 components:
   schemas:
-    v1CustomTargetKey:
+    RepresentedErrorDetail:
       type: object
       properties:
-        id:
+        type:
           type: string
-          description: The id of the custom target key.
-        label:
-          type: string
-          description: The label of the custom target key.
-        description:
-          type: string
-          description: The description of the custom target key.
-        is_multi_select:
-          type: boolean
-          description: Whether the custom target key allows multi select.
-        valid:
-          type: boolean
-          description: The validity of the custom target key.
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          description: Created timestamp. API user should not touch this field; it is set internally.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target key.
-          readOnly: true
-      description: Definition of a custom target key.
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
       required:
-      - id
-      - label
-      - description
-      - is_multi_select
-      - valid
-      - created_at
-      - updated_at
+      - type
+      - category
+      additionalProperties: true
+    publicReadCustomTargetKeysWithCustomReportBulkResponse:
+      type: object
+      properties:
+        custom_target_keys:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1CustomTargetKey'
+          description: Custom target keys that have available report data. 1. All keys from ad type configuration. 2. All keys from line item configuration. 3. All keys have at least one report record within 60 days.
+      description: ReadCustomTargetKeysWithCustomReportBulk response.
+      required:
+      - custom_target_keys
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
       additionalProperties: true
     publicReadCustomTargetValuesBulkResponse:
       type: object
@@ -653,49 +663,27 @@ components:
       - INVALID_CUSTOM_TARGETING
       default: DEFAULT_ERROR_CATEGORY
       title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    rmpcommonAdType:
-      type: string
-      enum:
-      - UNKNOWN_AD_TYPE
-      - ITEM
-      - BRAND
-      - DISPLAY
-      - RESERVED_DISPLAY
-      default: UNKNOWN_AD_TYPE
-    publicReadCustomTargetKeysBulkResponse:
+    publicQueryCustomTargetDailySummaryResponse:
       type: object
       properties:
-        custom_target_keys:
+        rows:
           type: array
           items:
-            $ref: '#/components/schemas/v1CustomTargetKey'
-          description: Custom target keys.
-      description: ReadCustomTargetKeysBulk response.
+            $ref: '#/components/schemas/v1LineItemDailyCustomReportRow'
+          description: List of daily report rows.
+      description: QueryCustomTargetDailySummary response containing daily report rows.
       required:
-      - custom_target_keys
+      - rows
       additionalProperties: true
-    publicQueryCustomTargetKeysResponse:
+    commonDateRange:
       type: object
       properties:
-        custom_target_keys:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1CustomTargetKey'
-          description: List of custom target keys matching the query criteria.
-        prev_cursor:
+        date_start:
           type: string
-          description: Cursor for the previous page. Omitted if this is the first page.
-        next_cursor:
+          description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+        date_end:
           type: string
-          description: Cursor for the next page. Omitted if this is the last page.
-        total:
-          type: integer
-          format: int64
-          description: Total number of custom target keys matching the query criteria.
-      description: QueryCustomTargetKeys public response.
-      required:
-      - custom_target_keys
-      - total
+          description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
       additionalProperties: true
     v1LineItemDailyCustomReportRow:
       type: object
@@ -718,27 +706,27 @@ components:
           format: double
           description: Click-through rate for the date.
       additionalProperties: true
-    publicRepresentedError:
+    publicReadCustomTargetKeysBulkResponse:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
-          type: string
-          description: The detailed message of responded error.
-        details:
+        custom_target_keys:
           type: array
           items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+            $ref: '#/components/schemas/v1CustomTargetKey'
+          description: Custom target keys.
+      description: ReadCustomTargetKeysBulk response.
       required:
-      - code
-      - message
-      - details
+      - custom_target_keys
       additionalProperties: true
+    rmpcommonAdType:
+      type: string
+      enum:
+      - UNKNOWN_AD_TYPE
+      - ITEM
+      - BRAND
+      - DISPLAY
+      - RESERVED_DISPLAY
+      default: UNKNOWN_AD_TYPE
     v1CustomTargetValue:
       type: object
       properties:
@@ -774,27 +762,44 @@ components:
       - created_at
       - updated_at
       additionalProperties: true
-    commonDateRange:
+    v1CustomTargetKey:
       type: object
       properties:
-        date_start:
+        id:
           type: string
-          description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
-        date_end:
+          description: The id of the custom target key.
+        label:
           type: string
-          description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
-      additionalProperties: true
-    publicReadCustomTargetKeysWithCustomReportBulkResponse:
-      type: object
-      properties:
-        custom_target_keys:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1CustomTargetKey'
-          description: Custom target keys that have available report data. 1. All keys from ad type configuration. 2. All keys from line item configuration. 3. All keys have at least one report record within 60 days.
-      description: ReadCustomTargetKeysWithCustomReportBulk response.
+          description: The label of the custom target key.
+        description:
+          type: string
+          description: The description of the custom target key.
+        is_multi_select:
+          type: boolean
+          description: Whether the custom target key allows multi select.
+        valid:
+          type: boolean
+          description: The validity of the custom target key.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target key.
+          readOnly: true
+      description: Definition of a custom target key.
       required:
-      - custom_target_keys
+      - id
+      - label
+      - description
+      - is_multi_select
+      - valid
+      - created_at
+      - updated_at
       additionalProperties: true
     publicQueryCustomTargetValuesResponse:
       type: object
@@ -819,33 +824,28 @@ components:
       - custom_target_values
       - total
       additionalProperties: true
-    publicQueryCustomTargetDailySummaryResponse:
+    publicQueryCustomTargetKeysResponse:
       type: object
       properties:
-        rows:
+        custom_target_keys:
           type: array
           items:
-            $ref: '#/components/schemas/v1LineItemDailyCustomReportRow'
-          description: List of daily report rows.
-      description: QueryCustomTargetDailySummary response containing daily report rows.
-      required:
-      - rows
-      additionalProperties: true
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
+            $ref: '#/components/schemas/v1CustomTargetKey'
+          description: List of custom target keys matching the query criteria.
+        prev_cursor:
           type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
+          description: Cursor for the previous page. Omitted if this is the first page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page. Omitted if this is the last page.
+        total:
+          type: integer
+          format: int64
+          description: Total number of custom target keys matching the query criteria.
+      description: QueryCustomTargetKeys public response.
       required:
-      - type
-      - category
+      - custom_target_keys
+      - total
       additionalProperties: true
   securitySchemes:
     ApiKeyAuth:

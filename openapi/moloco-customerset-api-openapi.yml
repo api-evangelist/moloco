@@ -151,56 +151,44 @@ paths:
       - CustomerSet
 components:
   schemas:
-    messagesCreateCustomerSetError:
+    messagesReadCustomerSetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListCustomerSetsResponse:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
+        customer_sets:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/messagesCreateCustomerSetErrorAPIErrorInfo'
-    CustomerSetFileUpdateHistory:
+            $ref: '#/components/schemas/dspCustomerSet'
+          description: The list of CustomerSet items.
+    dspCustomerSetIdType:
+      type: string
+      enum:
+      - UNKNOWN_ID_TYPE
+      - GOOGLE_ADID
+      - APPLE_IDFA
+      default: UNKNOWN_ID_TYPE
+      description: " - UNKNOWN_ID_TYPE: Unknown user ID type.\n - GOOGLE_ADID: Google Android advertising ID type.\n - APPLE_IDFA: Apple iOS advertising ID type."
+    CustomerSetStatusDetailErrorId:
+      type: string
+      enum:
+      - UNKNOWN_ERROR_ID
+      - TAGGING_ERROR
+      - REQUEST_ERROR
+      - PREPROCESSING_ERROR
+      - GENERIC_ERROR
+      default: UNKNOWN_ERROR_ID
+      description: Error id is an indicator of the error type.
+    messagesReadCustomerSetResponse:
       type: object
       properties:
-        status:
-          $ref: '#/components/schemas/dspCustomerSetStatus'
-        status_detail:
-          $ref: '#/components/schemas/CustomerSetCustomerSetStatusDetail'
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated at is the timestamp when the status is changed.
-    messagesUpdateCustomerSetError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesUpdateCustomerSetErrorAPIErrorInfo'
-    messagesDeleteCustomerSetError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesDeleteCustomerSetErrorAPIErrorInfo'
+        customer_set:
+          $ref: '#/components/schemas/dspCustomerSet'
+          description: The retrieved CustomerSet.
     dspCustomerSet:
       type: object
       properties:
@@ -260,48 +248,6 @@ components:
       - title
       - id_type
       - data_file_path
-    messagesCreateCustomerSetErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesCreateCustomerSetErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    CustomerSetStatusDetailErrorId:
-      type: string
-      enum:
-      - UNKNOWN_ERROR_ID
-      - TAGGING_ERROR
-      - REQUEST_ERROR
-      - PREPROCESSING_ERROR
-      - GENERIC_ERROR
-      default: UNKNOWN_ERROR_ID
-      description: Error id is an indicator of the error type.
-    messagesReadCustomerSetResponse:
-      type: object
-      properties:
-        customer_set:
-          $ref: '#/components/schemas/dspCustomerSet'
-          description: The retrieved CustomerSet.
-    CustomerSetStatusDetailConnectionMethod:
-      type: string
-      enum:
-      - UNKNOWN_METHOD
-      - CLOUD_API
-      - MCP_UPLOAD
-      - AF_AUDIENCE_BUILDER
-      - BESPOKE
-      default: UNKNOWN_METHOD
-      description: "Connection method is an indicator of how the customer set file is updated.\n\n - CLOUD_API: Update via cloud API\n - MCP_UPLOAD: MCP Upload\n - AF_AUDIENCE_BUILDER: AF Audience Builder\n - BESPOKE: Bespoke"
-    messagesReadCustomerSetErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
     messagesUpdateCustomerSetErrorAPIErrorInfoErrorReason:
       type: string
       enum:
@@ -313,97 +259,47 @@ components:
       - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED
       default: ERROR_REASON_UNKNOWN
       description: " - CUSTOMER_SET_INVALID_DATA_FILE_PATH: Data file path cannot be recognized. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_AD_ACCOUNT_MISMATCH: ad_account_id on data path mismatch with request. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_INVALID_ASSET_KIND: asset kind on data path should be 'csv'. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_MISSING_FILE_NAME: file name on asset kind is missing. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED: CustomerSet manipulation (creation, update, deletion) is only allowed when data source is data file path."
-    FileUpdateInfoUpdateStatus:
-      type: string
-      enum:
-      - UNKNOWN_STATUS
-      - IN_PROGRESS
-      - SUCCESS
-      - FAILED
-      default: UNKNOWN_STATUS
-      description: " - IN_PROGRESS: Update is in progress.\n - SUCCESS: Update succeed.\n - FAILED: Update failed. Please check the contents format."
-    messagesUpdateCustomerSetErrorAPIErrorInfo:
+    messagesUpdateCustomerSetError:
       type: object
       properties:
-        reason:
-          $ref: '#/components/schemas/messagesUpdateCustomerSetErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    CustomerSetCustomerSetStatusDetail:
-      type: object
-      properties:
-        connection_method:
-          $ref: '#/components/schemas/CustomerSetStatusDetailConnectionMethod'
-        error_id:
-          $ref: '#/components/schemas/CustomerSetStatusDetailErrorId'
-        error_description:
-          type: string
-          description: Error description is a detailed description of the error.
-        csv_file_size:
+        code:
           type: integer
           format: int32
-          title: CSV file size is the size of the CSV file in bytes. (Deprecated)
-        aud_size:
-          type: integer
-          format: int32
-          description: Audience size is the size of the audience in bytes.
-    dspCustomerSetStatus:
-      type: string
-      enum:
-      - UNKNOWN_STATUS
-      - PREPARING
-      - READY
-      - FAILED
-      default: UNKNOWN_STATUS
-      description: "Unknown status.\n\n - PREPARING: Premature status.\n - READY: Ready.\n - FAILED: Failed to be ready."
-    messagesDeleteCustomerSetErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED
-      default: ERROR_REASON_UNKNOWN
-      description: ' - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED: CustomerSet manipulation (creation, update, deletion) is only allowed when data source is data file path.'
-    messagesListCustomerSetsErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesListCustomerSetsErrorAPIErrorInfo:
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateCustomerSetErrorAPIErrorInfo'
+    CustomerSetFileUpdateHistory:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/dspCustomerSetStatus'
+        status_detail:
+          $ref: '#/components/schemas/CustomerSetCustomerSetStatusDetail'
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated at is the timestamp when the status is changed.
+    messagesCreateCustomerSetResponse:
+      type: object
+      properties:
+        customer_set:
+          $ref: '#/components/schemas/dspCustomerSet'
+          description: The created CustomerSet.
+    messagesDeleteCustomerSetErrorAPIErrorInfo:
       type: object
       properties:
         reason:
-          $ref: '#/components/schemas/messagesListCustomerSetsErrorAPIErrorInfoErrorReason'
+          $ref: '#/components/schemas/messagesDeleteCustomerSetErrorAPIErrorInfoErrorReason'
         error_log_id:
           type: string
         context:
           type: object
           additionalProperties:
             type: string
-    messagesDeleteCustomerSetResponse:
-      type: object
-    messagesReadCustomerSetErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesReadCustomerSetErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    dspCustomerSetIdType:
-      type: string
-      enum:
-      - UNKNOWN_ID_TYPE
-      - GOOGLE_ADID
-      - APPLE_IDFA
-      default: UNKNOWN_ID_TYPE
-      description: " - UNKNOWN_ID_TYPE: Unknown user ID type.\n - GOOGLE_ADID: Google Android advertising ID type.\n - APPLE_IDFA: Apple iOS advertising ID type."
     messagesReadCustomerSetError:
       type: object
       properties:
@@ -417,19 +313,57 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesReadCustomerSetErrorAPIErrorInfo'
-    CustomerSetFileUpdateInfo:
+    messagesReadCustomerSetErrorAPIErrorInfo:
       type: object
       properties:
-        status:
-          $ref: '#/components/schemas/FileUpdateInfoUpdateStatus'
-          description: Update status.
-        timestamp:
+        reason:
+          $ref: '#/components/schemas/messagesReadCustomerSetErrorAPIErrorInfoErrorReason'
+        error_log_id:
           type: string
-          format: date-time
-          description: Update timestamp.
-        file_name:
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspCustomerSetStatus:
+      type: string
+      enum:
+      - UNKNOWN_STATUS
+      - PREPARING
+      - READY
+      - FAILED
+      default: UNKNOWN_STATUS
+      description: "Unknown status.\n\n - PREPARING: Premature status.\n - READY: Ready.\n - FAILED: Failed to be ready."
+    messagesUpdateCustomerSetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateCustomerSetErrorAPIErrorInfoErrorReason'
+        error_log_id:
           type: string
-          description: Updated file name.
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesDeleteCustomerSetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteCustomerSetErrorAPIErrorInfo'
+    messagesListCustomerSetsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesDeleteCustomerSetResponse:
+      type: object
     messagesListCustomerSetsError:
       type: object
       properties:
@@ -454,38 +388,104 @@ components:
       - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED
       default: ERROR_REASON_UNKNOWN
       description: " - CUSTOMER_SET_INVALID_DATA_FILE_PATH: Data file path cannot be recognized. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_AD_ACCOUNT_MISMATCH: ad_account_id on data path mismatch with request. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_INVALID_ASSET_KIND: asset kind on data path should be 'csv'. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_DATA_FILE_PATH_MISSING_FILE_NAME: file name on asset kind is missing. It should be in format https://cdn-f.adsmoloco.com/{ad_account_id}/csv/{filename}\n - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED: CustomerSet manipulation (creation, update, deletion) is only allowed when data source is data file path."
-    messagesDeleteCustomerSetErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesDeleteCustomerSetErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
     messagesUpdateCustomerSetResponse:
       type: object
       properties:
         customer_set:
           $ref: '#/components/schemas/dspCustomerSet'
           description: The updated CustomerSet.
-    messagesCreateCustomerSetResponse:
+    messagesDeleteCustomerSetErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED
+      default: ERROR_REASON_UNKNOWN
+      description: ' - CUSTOMER_SET_MANIPULATION_NOT_ALLOWED: CustomerSet manipulation (creation, update, deletion) is only allowed when data source is data file path.'
+    CustomerSetCustomerSetStatusDetail:
       type: object
       properties:
-        customer_set:
-          $ref: '#/components/schemas/dspCustomerSet'
-          description: The created CustomerSet.
-    messagesListCustomerSetsResponse:
+        connection_method:
+          $ref: '#/components/schemas/CustomerSetStatusDetailConnectionMethod'
+        error_id:
+          $ref: '#/components/schemas/CustomerSetStatusDetailErrorId'
+        error_description:
+          type: string
+          description: Error description is a detailed description of the error.
+        csv_file_size:
+          type: integer
+          format: int32
+          title: CSV file size is the size of the CSV file in bytes. (Deprecated)
+        aud_size:
+          type: integer
+          format: int32
+          description: Audience size is the size of the audience in bytes.
+    CustomerSetFileUpdateInfo:
       type: object
       properties:
-        customer_sets:
+        status:
+          $ref: '#/components/schemas/FileUpdateInfoUpdateStatus'
+          description: Update status.
+        timestamp:
+          type: string
+          format: date-time
+          description: Update timestamp.
+        file_name:
+          type: string
+          description: Updated file name.
+    messagesListCustomerSetsErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListCustomerSetsErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateCustomerSetError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/dspCustomerSet'
-          description: The list of CustomerSet items.
+            $ref: '#/components/schemas/messagesCreateCustomerSetErrorAPIErrorInfo'
+    FileUpdateInfoUpdateStatus:
+      type: string
+      enum:
+      - UNKNOWN_STATUS
+      - IN_PROGRESS
+      - SUCCESS
+      - FAILED
+      default: UNKNOWN_STATUS
+      description: " - IN_PROGRESS: Update is in progress.\n - SUCCESS: Update succeed.\n - FAILED: Update failed. Please check the contents format."
+    messagesCreateCustomerSetErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateCustomerSetErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    CustomerSetStatusDetailConnectionMethod:
+      type: string
+      enum:
+      - UNKNOWN_METHOD
+      - CLOUD_API
+      - MCP_UPLOAD
+      - AF_AUDIENCE_BUILDER
+      - BESPOKE
+      default: UNKNOWN_METHOD
+      description: "Connection method is an indicator of how the customer set file is updated.\n\n - CLOUD_API: Update via cloud API\n - MCP_UPLOAD: MCP Upload\n - AF_AUDIENCE_BUILDER: AF Audience Builder\n - BESPOKE: Bespoke"
   requestBodies:
     dspCustomerSet:
       content:

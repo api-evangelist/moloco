@@ -173,26 +173,6 @@ paths:
       - Log
 components:
   schemas:
-    dspLogType:
-      type: string
-      enum:
-      - UNKNOWN_LOG_TYPE
-      - IMP
-      - CLICK
-      - CONVERSION
-      - SKAN_CONVERSION
-      - ENGAGED_VIEW
-      default: UNKNOWN_LOG_TYPE
-      description: "Type enumerates available log types.\n\nUnknown log type.\n\n - IMP: Log type which includes every impression log.\n - CLICK: Log type which includes every click log.\n - CONVERSION: Log type which includes every conversion event log.\n - SKAN_CONVERSION: Log type which includes SKAdNetwork attributed conversion event log.\n - ENGAGED_VIEW: Log type which includes every engaged view log."
-    dspLogFormat:
-      type: string
-      enum:
-      - UNKNOWN_LOG_FORMAT
-      - CSV
-      - AVRO
-      - PARQUET
-      default: UNKNOWN_LOG_FORMAT
-      description: "Format enumerates the format of log. Default is CSV.\n\n - CSV: CSV format.\n - AVRO: Avro format.\n - PARQUET: Parquet format."
     dspLogStatus:
       type: string
       enum:
@@ -202,34 +182,19 @@ components:
       - FAILED
       default: UNKNOWN_LOG_STATUS
       description: "Status enumerates the status of log.\n\n - ACCEPTED: Successfully initiated the log generation request.\n - READY: Successfully generated the log. It's ready to download from the location.\n - FAILED: Failed to generate the log. Reasons of failure can be found at errors."
-    messagesListLogsResponse:
+    googlerpcStatus:
       type: object
-      example:
-        logs:
-        - id: sampleLogId
-          ad_account_id: sampleAdAccountId
-          type: IMP
-          format: CSV
-          date: '2020-01-01'
-          status: ACCEPTED
-          created_at: '2020-01-01T03:12:50.124101982Z'
-          updated_at: '2020-01-01T03:24:21.109821241Z'
-        - id: anotherLogId
-          ad_account_id: sampleAdAccountId
-          type: CLICK
-          format: CSV
-          date: '2020-01-01'
-          status: READY
-          expire_at: '2020-01-01T06:24:21.109821241Z'
-          created_at: '2020-01-01T05:12:50.124101982Z'
-          updated_at: '2020-01-01T05:24:21.109821241Z'
       properties:
-        logs:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/dspLog'
-          description: List of logs in the given Workplace.
+            $ref: '#/components/schemas/protobufAny'
     messagesReadLogResponse:
       type: object
       example:
@@ -245,64 +210,6 @@ components:
         log:
           $ref: '#/components/schemas/dspLog'
           description: The details of a log.
-    messagesReadLogStatusResponse:
-      type: object
-      example:
-        status: READY
-        location_csv: https://{PLATFORM_LOG_STORAGE}/logs/anExistingLogId.csv?token={ONE_TIME_TOKEN}
-      properties:
-        status:
-          $ref: '#/components/schemas/dspLogStatus'
-          description: Current status of a log.
-        location_csv:
-          type: array
-          items:
-            type: string
-          description: URL of the log contents in CSV form. Will be expired in an hour.
-        location_avro:
-          type: array
-          items:
-            type: string
-          description: URL of the log contents in Avro form. Will be expired in an hour.
-    messagesCreateLogResponse:
-      type: object
-      example:
-        log:
-          id: newlyCreatedLogId
-          ad_account_id: sampleAdAccountId
-          type: IMP
-          format: CSV
-          date: '2020-01-01'
-          created_at: '2020-01-01T03:12:50.124101982Z'
-          updated_at: '2020-01-01T03:12:50.124101982Z'
-        href: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId
-        status: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId/status
-      properties:
-        log:
-          $ref: '#/components/schemas/dspLog'
-          description: The details of a created log.
-        href:
-          type: string
-          description: Reference URL that shows the log.
-        status:
-          type: string
-          description: Reference URL that shows the most recent status of the log.
-    messagesDeleteLogResponse:
-      type: object
-      example: {}
-    googlerpcStatus:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/protobufAny'
     dspLog:
       type: object
       example:
@@ -355,12 +262,105 @@ components:
       - type
       - date
       - ad_account_id
+    dspLogFormat:
+      type: string
+      enum:
+      - UNKNOWN_LOG_FORMAT
+      - CSV
+      - AVRO
+      - PARQUET
+      default: UNKNOWN_LOG_FORMAT
+      description: "Format enumerates the format of log. Default is CSV.\n\n - CSV: CSV format.\n - AVRO: Avro format.\n - PARQUET: Parquet format."
+    messagesReadLogStatusResponse:
+      type: object
+      example:
+        status: READY
+        location_csv: https://{PLATFORM_LOG_STORAGE}/logs/anExistingLogId.csv?token={ONE_TIME_TOKEN}
+      properties:
+        status:
+          $ref: '#/components/schemas/dspLogStatus'
+          description: Current status of a log.
+        location_csv:
+          type: array
+          items:
+            type: string
+          description: URL of the log contents in CSV form. Will be expired in an hour.
+        location_avro:
+          type: array
+          items:
+            type: string
+          description: URL of the log contents in Avro form. Will be expired in an hour.
+    messagesDeleteLogResponse:
+      type: object
+      example: {}
+    messagesCreateLogResponse:
+      type: object
+      example:
+        log:
+          id: newlyCreatedLogId
+          ad_account_id: sampleAdAccountId
+          type: IMP
+          format: CSV
+          date: '2020-01-01'
+          created_at: '2020-01-01T03:12:50.124101982Z'
+          updated_at: '2020-01-01T03:12:50.124101982Z'
+        href: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId
+        status: https://managefnt.adsmoloco.com/cm/v1/logs/newlyCreatedLogId/status
+      properties:
+        log:
+          $ref: '#/components/schemas/dspLog'
+          description: The details of a created log.
+        href:
+          type: string
+          description: Reference URL that shows the log.
+        status:
+          type: string
+          description: Reference URL that shows the most recent status of the log.
     protobufAny:
       type: object
       properties:
         '@type':
           type: string
       additionalProperties: {}
+    dspLogType:
+      type: string
+      enum:
+      - UNKNOWN_LOG_TYPE
+      - IMP
+      - CLICK
+      - CONVERSION
+      - SKAN_CONVERSION
+      - ENGAGED_VIEW
+      default: UNKNOWN_LOG_TYPE
+      description: "Type enumerates available log types.\n\nUnknown log type.\n\n - IMP: Log type which includes every impression log.\n - CLICK: Log type which includes every click log.\n - CONVERSION: Log type which includes every conversion event log.\n - SKAN_CONVERSION: Log type which includes SKAdNetwork attributed conversion event log.\n - ENGAGED_VIEW: Log type which includes every engaged view log."
+    messagesListLogsResponse:
+      type: object
+      example:
+        logs:
+        - id: sampleLogId
+          ad_account_id: sampleAdAccountId
+          type: IMP
+          format: CSV
+          date: '2020-01-01'
+          status: ACCEPTED
+          created_at: '2020-01-01T03:12:50.124101982Z'
+          updated_at: '2020-01-01T03:24:21.109821241Z'
+        - id: anotherLogId
+          ad_account_id: sampleAdAccountId
+          type: CLICK
+          format: CSV
+          date: '2020-01-01'
+          status: READY
+          expire_at: '2020-01-01T06:24:21.109821241Z'
+          created_at: '2020-01-01T05:12:50.124101982Z'
+          updated_at: '2020-01-01T05:24:21.109821241Z'
+      properties:
+        logs:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspLog'
+          description: List of logs in the given Workplace.
   securitySchemes:
     Bearer:
       type: apiKey

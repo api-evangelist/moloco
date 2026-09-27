@@ -83,19 +83,6 @@ components:
         status:
           description: The error status code.
           type: integer
-    listPlatformsCredential:
-      description: Credential to list platforms without a Morse token.
-      type: object
-      required:
-      - email
-      - password
-      properties:
-        email:
-          description: Email address of the user.
-          type: string
-        password:
-          description: Password of the user.
-          type: string
     listPlatformsResponse:
       description: Response to the list platforms request.
       type: object
@@ -132,6 +119,19 @@ components:
           type: string
         userspace_id:
           description: The ID of the userspace to which the platform belongs.
+          type: string
+    listPlatformsCredential:
+      description: Credential to list platforms without a Morse token.
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          description: Email address of the user.
+          type: string
+        password:
+          description: Password of the user.
           type: string
   securitySchemes:
     Bearer:

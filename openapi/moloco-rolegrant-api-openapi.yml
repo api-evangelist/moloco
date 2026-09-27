@@ -172,32 +172,36 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    error:
-      description: Error response with detailed reason.
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
       type: object
       required:
-      - reason
-      - status
+      - resource_id
+      - resource_instance_id
+      - roles
       properties:
-        reason:
-          description: More detailed reason about why the error was returned.
+        resource_id:
+          description: Resource ID to which the roles are granted.
           type: string
-        status:
-          description: The error status code.
-          type: integer
-    roleReference:
-      description: Reference to a role defined in a platform.
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+    listRoleGrantsResponse:
+      description: List of roles granted to a user.
       type: object
       required:
-      - id
-      - platform_id
+      - role_grants
       properties:
-        id:
-          description: The ID of the role.
-          type: string
-        platform_id:
-          description: The platofrm ID where the role is defined.
-          type: string
+        role_grants:
+          description: list of role grants.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourceToRoleReferences'
     createRoleGrantsRequest:
       description: Request to attach roles to a resource and a user.
       type: object
@@ -221,36 +225,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/roleReference'
-    listRoleGrantsResponse:
-      description: List of roles granted to a user.
+    roleReference:
+      description: Reference to a role defined in a platform.
       type: object
       required:
-      - role_grants
+      - id
+      - platform_id
       properties:
-        role_grants:
-          description: list of role grants.
-          type: array
-          items:
-            $ref: '#/components/schemas/resourceToRoleReferences'
-    resourceToRoleReferences:
-      description: Relationship between a resource and a list of roles.
+        id:
+          description: The ID of the role.
+          type: string
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+    error:
+      description: Error response with detailed reason.
       type: object
       required:
-      - resource_id
-      - resource_instance_id
-      - roles
+      - reason
+      - status
       properties:
-        resource_id:
-          description: Resource ID to which the roles are granted.
+        reason:
+          description: More detailed reason about why the error was returned.
           type: string
-        resource_instance_id:
-          description: The actual instance ID of the resource to which the roles are granted.
-          type: string
-        roles:
-          description: The list of roles granted to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/roleReference'
+        status:
+          description: The error status code.
+          type: integer
   securitySchemes:
     Bearer:
       type: apiKey

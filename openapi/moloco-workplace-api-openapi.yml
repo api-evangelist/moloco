@@ -457,12 +457,6 @@ paths:
     - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    messagesReadWorkplaceResponse:
-      type: object
-      properties:
-        workplace:
-          $ref: '#/components/schemas/dspWorkplace'
-          description: The Workplace.
     dspWorkplace:
       type: object
       properties:
@@ -481,12 +475,6 @@ components:
             type: string
           description: The workplace's configuration.
       description: The workplace.
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
     googlerpcStatus:
       type: object
       properties:
@@ -500,8 +488,28 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
-    readPlatformResponse:
-      description: Response to read a platform information.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    messagesReadWorkplaceResponse:
+      type: object
+      properties:
+        workplace:
+          $ref: '#/components/schemas/dspWorkplace'
+          description: The Workplace.
+    updatePlatformRequest:
+      description: A request to update a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
+    updatePlatformResponse:
+      description: Response to a request to update a platform.
       type: object
       required:
       - platform
@@ -534,6 +542,14 @@ components:
         status:
           description: The error status code.
           type: integer
+    createPlatformRequest:
+      description: Request to create a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
     platform:
       description: A platform.
       type: object
@@ -578,32 +594,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/platform'
+    readPlatformResponse:
+      description: Response to read a platform information.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
     createPlatformResponse:
       description: Response to a request to create a platform.
-      type: object
-      required:
-      - platform
-      properties:
-        platform:
-          $ref: '#/components/schemas/platform'
-    updatePlatformResponse:
-      description: Response to a request to update a platform.
-      type: object
-      required:
-      - platform
-      properties:
-        platform:
-          $ref: '#/components/schemas/platform'
-    createPlatformRequest:
-      description: Request to create a platform.
-      type: object
-      required:
-      - platform
-      properties:
-        platform:
-          $ref: '#/components/schemas/platform'
-    updatePlatformRequest:
-      description: A request to update a platform.
       type: object
       required:
       - platform
