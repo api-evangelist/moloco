@@ -584,96 +584,43 @@ paths:
       - Asset
 components:
   schemas:
-    RepresentedErrorDetail:
+    v1ImageAsset:
       type: object
       properties:
-        type:
+        id:
           type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
+          description: The id of the image asset. Must be left unset for the image asset creation request. Must be set for the other requests.
+        ad_account_id:
+          type: string
+          description: The id of the ad account that owns this image asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
+        image_asset_type:
+          $ref: '#/components/schemas/rmpcommonImageAssetType'
+        title:
+          type: string
+          description: A descriptive name of the image asset.
+        image_source:
+          $ref: '#/components/schemas/v1ImageSource'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
+          readOnly: true
+      description: ImageAsset that could be used for the campaign's asset.
       required:
-      - type
-      - category
+      - ad_account_id
+      - image_asset_type
       additionalProperties: true
-    publicCreateBulkVideoUploadSessionRequestFileInfo:
+    publicListVideoAssetsResponse:
       type: object
       properties:
-        file_name:
-          type: string
-          description: Original file name.
-        mime_type:
-          type: string
-          description: MIME type of the file (e.g., video/mp4).
-      additionalProperties: true
-    v1VideoSource:
-      type: object
-      properties:
-        url:
-          type: string
-          description: The URL of the video.
-          readOnly: true
-        file_name:
-          type: string
-          description: The file name of the video.
-          readOnly: true
-        width:
-          type: integer
-          format: int64
-          description: The width of the video.
-          readOnly: true
-        height:
-          type: integer
-          format: int64
-          description: The height of the video.
-          readOnly: true
-        size_bytes:
-          type: integer
-          format: int64
-          description: The file size in bytes of the video.
-          readOnly: true
-        duration_sec:
-          type: integer
-          format: int64
-          description: The duration of the video in seconds.
-          readOnly: true
-        status:
-          $ref: '#/components/schemas/v1VideoSourceStatus'
-      description: Detailed information of a video.
-      additionalProperties: true
-    publicReadImageAssetResponse:
-      type: object
-      properties:
-        image_asset:
-          $ref: '#/components/schemas/v1ImageAsset'
-      description: ReadImageAsset response.
-      required:
-      - image_asset
-      additionalProperties: true
-    publicRepresentedError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
-          type: string
-          description: The detailed message of responded error.
-        details:
+        video_assets:
           type: array
           items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+            $ref: '#/components/schemas/v1VideoAsset'
+          description: Video assets information.
+      description: ListVideoAssets response.
       required:
-      - code
-      - message
-      - details
+      - video_assets
       additionalProperties: true
     v1VideoAsset:
       type: object
@@ -727,6 +674,15 @@ components:
       - size
       - file_name
       additionalProperties: true
+    publicReadVideoAssetResponse:
+      type: object
+      properties:
+        video_asset:
+          $ref: '#/components/schemas/v1VideoAsset'
+      description: ReadVideoAsset response.
+      required:
+      - video_asset
+      additionalProperties: true
     publicCreateBulkImageUploadSessionRequestFileInfo:
       type: object
       properties:
@@ -736,6 +692,41 @@ components:
         mime_type:
           type: string
           description: MIME type of the file (e.g., image/png, image/jpeg).
+      additionalProperties: true
+    v1VideoSource:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL of the video.
+          readOnly: true
+        file_name:
+          type: string
+          description: The file name of the video.
+          readOnly: true
+        width:
+          type: integer
+          format: int64
+          description: The width of the video.
+          readOnly: true
+        height:
+          type: integer
+          format: int64
+          description: The height of the video.
+          readOnly: true
+        size_bytes:
+          type: integer
+          format: int64
+          description: The file size in bytes of the video.
+          readOnly: true
+        duration_sec:
+          type: integer
+          format: int64
+          description: The duration of the video in seconds.
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/v1VideoSourceStatus'
+      description: Detailed information of a video.
       additionalProperties: true
     publicCreateBulkImageUploadSessionResponse:
       type: object
@@ -754,26 +745,110 @@ components:
       - sessions
       - expires_at
       additionalProperties: true
-    publicReadVideoAssetResponse:
+    publicRepresentedError:
       type: object
       properties:
-        video_asset:
-          $ref: '#/components/schemas/v1VideoAsset'
-      description: ReadVideoAsset response.
-      required:
-      - video_asset
-      additionalProperties: true
-    publicListVideoAssetsResponse:
-      type: object
-      properties:
-        video_assets:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
           type: array
           items:
-            $ref: '#/components/schemas/v1VideoAsset'
-          description: Video assets information.
-      description: ListVideoAssets response.
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
       required:
-      - video_assets
+      - code
+      - message
+      - details
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    publicCreateBulkVideoUploadSessionResponseSession:
+      type: object
+      properties:
+        upload_url:
+          type: string
+          description: Session URL for uploading the video file.
+        object_key:
+          type: string
+          description: The object key where the video file will be stored.
+      additionalProperties: true
+    publicCreateBulkVideoUploadSessionResponse:
+      type: object
+      properties:
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/publicCreateBulkVideoUploadSessionResponseSession'
+          description: List of upload sessions with URLs and object keys.
+        expires_at:
+          type: string
+          format: date-time
+          description: Expiration time of session URL.
+      description: CreateBulkVideoUploadSession response.
+      required:
+      - sessions
+      - expires_at
+      additionalProperties: true
+    publicCreateBulkImageUploadSessionResponseSession:
+      type: object
+      properties:
+        upload_url:
+          type: string
+          description: Session URL for uploading the image file.
+        object_key:
+          type: string
+          description: The object key where the image file will be stored.
+      additionalProperties: true
+    publicListImageAssetsResponse:
+      type: object
+      properties:
+        image_assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1ImageAsset'
+          description: Image assets information.
+      description: ListImageAssets response.
+      required:
+      - image_assets
+      additionalProperties: true
+    publicCreateBulkVideoUploadSessionRequestFileInfo:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Original file name.
+        mime_type:
+          type: string
+          description: MIME type of the file (e.g., video/mp4).
+      additionalProperties: true
+    publicCreateImageAssetResponse:
+      type: object
+      properties:
+        image_asset:
+          $ref: '#/components/schemas/v1ImageAsset'
+      description: CreateImageAsset response.
+      required:
+      - image_asset
       additionalProperties: true
     commonErrorCategory:
       type: string
@@ -810,44 +885,14 @@ components:
       - INVALID_CUSTOM_TARGETING
       default: DEFAULT_ERROR_CATEGORY
       title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    v1ImageAsset:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the image asset. Must be left unset for the image asset creation request. Must be set for the other requests.
-        ad_account_id:
-          type: string
-          description: The id of the ad account that owns this image asset. It is platform-specific ad_account_id. Value and format can vary according to each Platform.
-        image_asset_type:
-          $ref: '#/components/schemas/rmpcommonImageAssetType'
-        title:
-          type: string
-          description: A descriptive name of the image asset.
-        image_source:
-          $ref: '#/components/schemas/v1ImageSource'
-        created_at:
-          type: string
-          format: date-time
-          description: Created timestamp. API user should not touch this field; it is set internally in creation process.
-          readOnly: true
-      description: ImageAsset that could be used for the campaign's asset.
-      required:
-      - ad_account_id
-      - image_asset_type
-      additionalProperties: true
-    publicListImageAssetsResponse:
-      type: object
-      properties:
-        image_assets:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1ImageAsset'
-          description: Image assets information.
-      description: ListImageAssets response.
-      required:
-      - image_assets
-      additionalProperties: true
+    rmpcommonImageAssetType:
+      type: string
+      enum:
+      - UNKNOWN_IMAGE_ASSET_TYPE
+      - BANNER
+      - LOGO
+      default: UNKNOWN_IMAGE_ASSET_TYPE
+      description: ImageAssetType enumerates available image asset types.
     publicCreateVideoAssetResponse:
       type: object
       properties:
@@ -857,40 +902,14 @@ components:
       required:
       - video_asset
       additionalProperties: true
-    publicCreateBulkVideoUploadSessionResponseSession:
+    publicReadImageAssetResponse:
       type: object
       properties:
-        upload_url:
-          type: string
-          description: Session URL for uploading the video file.
-        object_key:
-          type: string
-          description: The object key where the video file will be stored.
-      additionalProperties: true
-    rmpcommonImageAssetType:
-      type: string
-      enum:
-      - UNKNOWN_IMAGE_ASSET_TYPE
-      - BANNER
-      - LOGO
-      default: UNKNOWN_IMAGE_ASSET_TYPE
-      description: ImageAssetType enumerates available image asset types.
-    publicCreateBulkVideoUploadSessionResponse:
-      type: object
-      properties:
-        sessions:
-          type: array
-          items:
-            $ref: '#/components/schemas/publicCreateBulkVideoUploadSessionResponseSession'
-          description: List of upload sessions with URLs and object keys.
-        expires_at:
-          type: string
-          format: date-time
-          description: Expiration time of session URL.
-      description: CreateBulkVideoUploadSession response.
+        image_asset:
+          $ref: '#/components/schemas/v1ImageAsset'
+      description: ReadImageAsset response.
       required:
-      - sessions
-      - expires_at
+      - image_asset
       additionalProperties: true
     v1VideoSourceStatus:
       type: string
@@ -900,25 +919,6 @@ components:
       - READY
       default: UNKNOWN_STATUS
       description: " - PENDING: The video asset isn't ready to use yet.\n - READY: The video asset is ready to use."
-    publicCreateBulkImageUploadSessionResponseSession:
-      type: object
-      properties:
-        upload_url:
-          type: string
-          description: Session URL for uploading the image file.
-        object_key:
-          type: string
-          description: The object key where the image file will be stored.
-      additionalProperties: true
-    publicCreateImageAssetResponse:
-      type: object
-      properties:
-        image_asset:
-          $ref: '#/components/schemas/v1ImageAsset'
-      description: CreateImageAsset response.
-      required:
-      - image_asset
-      additionalProperties: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

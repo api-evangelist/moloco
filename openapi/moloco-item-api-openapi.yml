@@ -82,42 +82,44 @@ paths:
       - Item
 components:
   schemas:
-    RepresentedErrorDetail:
+    v1ItemStatus:
       type: object
       properties:
-        type:
+        item_id:
           type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
+          description: The id of the item.
+        seller_id:
+          type: string
+          description: The id of the seller. Only applicable for MSPI catalogs. If this value is provided, only the item associated with the specified seller ID will be removed from ad serving. If not provided, the specified item will be removed for all sellers in MSPI.
+        updated_time:
+          type: string
+          format: date-time
+          description: The time when the item was updated. The Catalog feed batch Ingestion and Kill Switch API can operate simultaneously. When multiple data sources are available, the most recent information is retrieved based on the item's updated_time.
+        blocked:
+          type: string
+          description: The reason the item is blocked (e.g., “out_of_stock”). This field is required and cannot be left empty.
+      description: The status of the item to be updated.
       required:
-      - type
-      - category
+      - item_id
+      - updated_time
+      - blocked
       additionalProperties: true
-    publicRepresentedError:
+    v1UpdateItemFailureInfo:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        item_id:
+          type: string
+          description: The id of the item.
+        seller_id:
+          type: string
+          description: The id of the seller.
         message:
           type: string
-          description: The detailed message of responded error.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+          description: The error message of failure.
+      description: Information of the item that failed to update.
       required:
-      - code
+      - item_id
       - message
-      - details
       additionalProperties: true
     commonErrorCategory:
       type: string
@@ -184,44 +186,42 @@ components:
       required:
       - item_id
       additionalProperties: true
-    v1UpdateItemFailureInfo:
+    RepresentedErrorDetail:
       type: object
       properties:
-        item_id:
+        type:
           type: string
-          description: The id of the item.
-        seller_id:
-          type: string
-          description: The id of the seller.
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
         message:
           type: string
-          description: The error message of failure.
-      description: Information of the item that failed to update.
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
       required:
-      - item_id
+      - code
       - message
-      additionalProperties: true
-    v1ItemStatus:
-      type: object
-      properties:
-        item_id:
-          type: string
-          description: The id of the item.
-        seller_id:
-          type: string
-          description: The id of the seller. Only applicable for MSPI catalogs. If this value is provided, only the item associated with the specified seller ID will be removed from ad serving. If not provided, the specified item will be removed for all sellers in MSPI.
-        updated_time:
-          type: string
-          format: date-time
-          description: The time when the item was updated. The Catalog feed batch Ingestion and Kill Switch API can operate simultaneously. When multiple data sources are available, the most recent information is retrieved based on the item's updated_time.
-        blocked:
-          type: string
-          description: The reason the item is blocked (e.g., “out_of_stock”). This field is required and cannot be left empty.
-      description: The status of the item to be updated.
-      required:
-      - item_id
-      - updated_time
-      - blocked
+      - details
       additionalProperties: true
   securitySchemes:
     ApiKeyAuth:

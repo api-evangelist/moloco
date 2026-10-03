@@ -70,30 +70,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    error:
-      description: Error response with detailed reason.
-      type: object
-      required:
-      - reason
-      - status
-      properties:
-        reason:
-          description: More detailed reason about why the error was returned.
-          type: string
-        status:
-          description: The error status code.
-          type: integer
-    listPlatformsResponse:
-      description: Response to the list platforms request.
-      type: object
-      required:
-      - platforms
-      properties:
-        platforms:
-          description: List of platforms
-          type: array
-          items:
-            $ref: '#/components/schemas/platform'
     platform:
       description: A platform.
       type: object
@@ -133,6 +109,30 @@ components:
         password:
           description: Password of the user.
           type: string
+    listPlatformsResponse:
+      description: Response to the list platforms request.
+      type: object
+      required:
+      - platforms
+      properties:
+        platforms:
+          description: List of platforms
+          type: array
+          items:
+            $ref: '#/components/schemas/platform'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
   securitySchemes:
     Bearer:
       type: apiKey

@@ -161,36 +161,6 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
-    resourceToRoleReferences:
-      description: Relationship between a resource and a list of roles.
-      type: object
-      required:
-      - resource_id
-      - resource_instance_id
-      - roles
-      properties:
-        resource_id:
-          description: Resource ID to which the roles are granted.
-          type: string
-        resource_instance_id:
-          description: The actual instance ID of the resource to which the roles are granted.
-          type: string
-        roles:
-          description: The list of roles granted to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/roleReference'
-    listRmpAdAccountRegistrationsResponse:
-      description: Lists the user registrations to an Ad Account with roles assigned to each user.
-      type: object
-      required:
-      - registrations
-      properties:
-        registrations:
-          description: The user registrations to an Ad Account with user roles.
-          type: array
-          items:
-            $ref: '#/components/schemas/rmpAdAccountRegistrationWithUserInfo'
     rmpAdAccountRegistrationWithUserInfo:
       description: A user registered to an Ad Account and the roles given to the user for the Ad Account.
       type: object
@@ -220,31 +190,6 @@ components:
         platform_id:
           description: The platofrm ID where the role is defined.
           type: string
-    error:
-      description: Error response with detailed reason.
-      type: object
-      required:
-      - reason
-      - status
-      properties:
-        reason:
-          description: More detailed reason about why the error was returned.
-          type: string
-        status:
-          description: The error status code.
-          type: integer
-    createRmpAdAccountRegistrationRequest:
-      description: A request to register a user to an Ad Account.
-      type: object
-      required:
-      - platform_id
-      - registration
-      properties:
-        platform_id:
-          description: The platform ID.
-          type: string
-        registration:
-          $ref: '#/components/schemas/rmpAdAccountRegistration'
     userStatus:
       description: The set of status values for a user.
       type: object
@@ -271,6 +216,61 @@ components:
         id:
           description: The user ID.
           type: string
+    listRmpAdAccountRegistrationsResponse:
+      description: Lists the user registrations to an Ad Account with roles assigned to each user.
+      type: object
+      required:
+      - registrations
+      properties:
+        registrations:
+          description: The user registrations to an Ad Account with user roles.
+          type: array
+          items:
+            $ref: '#/components/schemas/rmpAdAccountRegistrationWithUserInfo'
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
+      type: object
+      required:
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+    createRmpAdAccountRegistrationRequest:
+      description: A request to register a user to an Ad Account.
+      type: object
+      required:
+      - platform_id
+      - registration
+      properties:
+        platform_id:
+          description: The platform ID.
+          type: string
+        registration:
+          $ref: '#/components/schemas/rmpAdAccountRegistration'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
   securitySchemes:
     Bearer:
       type: apiKey

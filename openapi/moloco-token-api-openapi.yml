@@ -124,30 +124,6 @@ paths:
     - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    messagesCreateTokenErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesCreateTokenError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfo'
     dspmessagesTokenType:
       type: string
       enum:
@@ -165,6 +141,25 @@ components:
         token_type:
           $ref: '#/components/schemas/dspmessagesTokenType'
           description: Token type.
+    messagesCreateTokenRequest:
+      type: object
+      properties:
+        api_key:
+          type: string
+          description: Enter the API key generated from Moloco Cloud DSP.
+    messagesCreateTokenError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfo'
     messagesCreateTokenErrorAPIErrorInfoErrorReason:
       type: string
       enum:
@@ -173,31 +168,17 @@ components:
       - USER_ACCOUNT_BLOCKED
       default: ERROR_REASON_UNKNOWN
       description: " - USER_INVALID_CREDENTIAL_INFORMATION: The given credential information is invalid.\n - USER_ACCOUNT_BLOCKED: The user account is blocked.\nLogin attempt is not allowed when there are 5 failed login attempts."
-    messagesCreateTokenRequest:
+    messagesCreateTokenErrorAPIErrorInfo:
       type: object
       properties:
-        api_key:
+        reason:
+          $ref: '#/components/schemas/messagesCreateTokenErrorAPIErrorInfoErrorReason'
+        error_log_id:
           type: string
-          description: Enter the API key generated from Moloco Cloud DSP.
-    resourceToRoleReferences:
-      description: Relationship between a resource and a list of roles.
-      type: object
-      required:
-      - resource_id
-      - resource_instance_id
-      - roles
-      properties:
-        resource_id:
-          description: Resource ID to which the roles are granted.
-          type: string
-        resource_instance_id:
-          description: The actual instance ID of the resource to which the roles are granted.
-          type: string
-        roles:
-          description: The list of roles granted to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/roleReference'
+        context:
+          type: object
+          additionalProperties:
+            type: string
     roleReference:
       description: Reference to a role defined in a platform.
       type: object
@@ -210,36 +191,6 @@ components:
           type: string
         platform_id:
           description: The platofrm ID where the role is defined.
-          type: string
-    error:
-      description: Error response with detailed reason.
-      type: object
-      required:
-      - reason
-      - status
-      properties:
-        reason:
-          description: More detailed reason about why the error was returned.
-          type: string
-        status:
-          description: The error status code.
-          type: integer
-    createTokenRequest:
-      description: A request to create a token
-      type: object
-      required:
-      - workplace_id
-      - email
-      - password
-      properties:
-        email:
-          description: The email address of the user.
-          type: string
-        password:
-          description: The password of the user.
-          type: string
-        workplace_id:
-          description: The ID of the workplace to which the user belongs.
           type: string
     userStatus:
       description: The set of status values for a user.
@@ -262,6 +213,23 @@ components:
           type: string
         user:
           $ref: '#/components/schemas/user'
+    createTokenRequest:
+      description: A request to create a token
+      type: object
+      required:
+      - workplace_id
+      - email
+      - password
+      properties:
+        email:
+          description: The email address of the user.
+          type: string
+        password:
+          description: The password of the user.
+          type: string
+        workplace_id:
+          description: The ID of the workplace to which the user belongs.
+          type: string
     user:
       description: A user.
       type: object
@@ -321,6 +289,38 @@ components:
         userspace_id:
           description: The ID of the user space such as USERSPACE_C.
           type: string
+    resourceToRoleReferences:
+      description: Relationship between a resource and a list of roles.
+      type: object
+      required:
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/roleReference'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
   securitySchemes:
     Bearer:
       type: apiKey

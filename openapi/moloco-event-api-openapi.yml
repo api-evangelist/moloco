@@ -77,20 +77,6 @@ paths:
       - Event
 components:
   schemas:
-    commonMoney:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/commonCurrency'
-        amount:
-          type: number
-          format: double
-          description: Amount of money. (e.g., 12.34)
-      description: "A monetary amount in a specific currency.\nFor example, `{currency: \"USD\", amount: 12.34}` means $12.34. \nPrice of the single item."
-      required:
-      - currency
-      - amount
-      additionalProperties: true
     rpcStatus:
       type: object
       properties:
@@ -104,94 +90,30 @@ components:
           items:
             $ref: '#/components/schemas/protobufAny'
       additionalProperties: true
-    v1PostUserEventResponse:
-      type: object
-      additionalProperties: true
-    EventDevice:
+    EventItem:
       type: object
       properties:
-        os:
+        id:
           type: string
-          description: OS of the device. "ios" or "android" must be included for the App channel type.
-        os_version:
+          description: Unique identifier of the Item.
+        price:
+          $ref: '#/components/schemas/commonMoney'
+        quantity:
+          type: integer
+          format: int32
+          description: Quantity of the item. Recommended.
+        item_group_id:
           type: string
-          description: Device OS version, which is taken from the device without manipulation or normalization. (e.g., "14.4.1")
-        advertising_id:
+          description: Unique identifier of the Item Group. id and/or item_group_id must be provided.
+        seller_id:
           type: string
-          description: 'Deprecated. For app traffic, IDFA of iOS or ADID of android should be filled in this field. (e.g., 7acefbed-d1f6-4e4e-aa26-74e93dd017e4). Note that "00000000-0000-0000-0000-000000000000" is not allowed (reference: https://developer.apple.com/documentation/adsupport/asidentifiermanager/advertisingidentifier#discussion).'
-        unique_device_id:
-          type: string
-          description: Deprecated. Please use persistent_id as alternative. For app traffic, a unique identifier for the device being used should be provided in this field. Clients can issue identifiers for their user devices or use their IDFV values if using iOS apps. The length of this id should not exceed 128 characters.
-          maxLength: 128
-        persistent_id:
-          type: string
-          description: 'Alternative ID to track users regardless of sign-in status. This can typically be an ID associated with the device that the user is on, and is highly recommended to be hashed prior to being sent to Moloco. Please provide this value in addition to the user_id whenever available to achieve optimal performance. If the value is unknown for any reason, please leave empty and do not fill in a default or random value. For further information, please refer to this guide: https://mcm-docs.moloco.com/docs/generating-persistent-identifiers'
-          maxLength: 128
-        model:
-          type: string
-          description: Device model, which is taken from the device without manipulation or normalization. (e.g., "iPhone 11 Pro")
-        ua:
-          type: string
-          description: User Agent. (e.g., "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/111FFF")
-        language:
-          type: string
-          description: ISO-639-1 alpha-2 language code. (e.g., "en")
+          description: Unique identifier of the seller of the item. This field is required for MSPI integration unless the seller cannot be associated with that item for the specific event.
+        price_seller:
+          $ref: '#/components/schemas/commonMoney'
+      description: Item object
+      required:
+      - id
       additionalProperties: true
-    EventEventType:
-      type: string
-      enum:
-      - UNKNOWN_EVENT_TYPE
-      - SEARCH
-      - ITEM_PAGE_VIEW
-      - ADD_TO_CART
-      - PURCHASE
-      - ADD_TO_WISHLIST
-      - HOME
-      - LAND
-      - PAGE_VIEW
-      default: UNKNOWN_EVENT_TYPE
-      description: Supported EventTypes.
-    commonChannelType:
-      type: string
-      enum:
-      - UNKNOWN_CHANNEL_TYPE
-      - APP
-      - SITE
-      - DESKTOP_SITE
-      - MOBILE_SITE
-      default: UNKNOWN_CHANNEL_TYPE
-      description: "ChannelType enumerates available channel types. Simply using APP and SITE is fine, but you can also further distinguish DESKTOP_SITE and MOBILE_SITE for web users.\n\n - APP: Mobile App (iOS or Android)\n - SITE: Site (e.g. Website)\n - DESKTOP_SITE: Desktop Site (e.g. Desktop Website)\n - MOBILE_SITE: Mobile Site (e.g. Mobile Website)"
-    commonCurrency:
-      type: string
-      enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      - SEK
-      - INR
-      - THB
-      - IDR
-      - CNY
-      - CAD
-      - RUB
-      - BRL
-      - SGD
-      - HKD
-      - AUD
-      - PLN
-      - DKK
-      - VND
-      - MYR
-      - PHP
-      - TRY
-      - VES
-      - AED
-      - CHF
-      default: UNKNOWN_CURRENCY
-      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
     v1Event:
       type: object
       properties:
@@ -253,12 +175,114 @@ components:
       - timestamp
       - channel_type
       additionalProperties: true
+    commonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
+    EventEventType:
+      type: string
+      enum:
+      - UNKNOWN_EVENT_TYPE
+      - SEARCH
+      - ITEM_PAGE_VIEW
+      - ADD_TO_CART
+      - PURCHASE
+      - ADD_TO_WISHLIST
+      - HOME
+      - LAND
+      - PAGE_VIEW
+      default: UNKNOWN_EVENT_TYPE
+      description: Supported EventTypes.
     protobufAny:
       type: object
       properties:
         '@type':
           type: string
       additionalProperties: {}
+    v1PostUserEventResponse:
+      type: object
+      additionalProperties: true
+    commonMoney:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/commonCurrency'
+        amount:
+          type: number
+          format: double
+          description: Amount of money. (e.g., 12.34)
+      description: "A monetary amount in a specific currency.\nFor example, `{currency: \"USD\", amount: 12.34}` means $12.34. \nPrice of the single item."
+      required:
+      - currency
+      - amount
+      additionalProperties: true
+    commonChannelType:
+      type: string
+      enum:
+      - UNKNOWN_CHANNEL_TYPE
+      - APP
+      - SITE
+      - DESKTOP_SITE
+      - MOBILE_SITE
+      default: UNKNOWN_CHANNEL_TYPE
+      description: "ChannelType enumerates available channel types. Simply using APP and SITE is fine, but you can also further distinguish DESKTOP_SITE and MOBILE_SITE for web users.\n\n - APP: Mobile App (iOS or Android)\n - SITE: Site (e.g. Website)\n - DESKTOP_SITE: Desktop Site (e.g. Desktop Website)\n - MOBILE_SITE: Mobile Site (e.g. Mobile Website)"
+    EventDevice:
+      type: object
+      properties:
+        os:
+          type: string
+          description: OS of the device. "ios" or "android" must be included for the App channel type.
+        os_version:
+          type: string
+          description: Device OS version, which is taken from the device without manipulation or normalization. (e.g., "14.4.1")
+        advertising_id:
+          type: string
+          description: 'Deprecated. For app traffic, IDFA of iOS or ADID of android should be filled in this field. (e.g., 7acefbed-d1f6-4e4e-aa26-74e93dd017e4). Note that "00000000-0000-0000-0000-000000000000" is not allowed (reference: https://developer.apple.com/documentation/adsupport/asidentifiermanager/advertisingidentifier#discussion).'
+        unique_device_id:
+          type: string
+          description: Deprecated. Please use persistent_id as alternative. For app traffic, a unique identifier for the device being used should be provided in this field. Clients can issue identifiers for their user devices or use their IDFV values if using iOS apps. The length of this id should not exceed 128 characters.
+          maxLength: 128
+        persistent_id:
+          type: string
+          description: 'Alternative ID to track users regardless of sign-in status. This can typically be an ID associated with the device that the user is on, and is highly recommended to be hashed prior to being sent to Moloco. Please provide this value in addition to the user_id whenever available to achieve optimal performance. If the value is unknown for any reason, please leave empty and do not fill in a default or random value. For further information, please refer to this guide: https://mcm-docs.moloco.com/docs/generating-persistent-identifiers'
+          maxLength: 128
+        model:
+          type: string
+          description: Device model, which is taken from the device without manipulation or normalization. (e.g., "iPhone 11 Pro")
+        ua:
+          type: string
+          description: User Agent. (e.g., "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/111FFF")
+        language:
+          type: string
+          description: ISO-639-1 alpha-2 language code. (e.g., "en")
+      additionalProperties: true
     commonPersonalizationMode:
       type: string
       enum:
@@ -268,30 +292,6 @@ components:
       - ID_LESS
       default: UNKNOWN_PERSONALIZATION_MODE
       description: "PersonalizationMode determines how user identification is handled in decision and event processing.\n\n - STANDARD: STANDARD means standard user processing with full user identification.\n - METRIC_ONLY: METRIC_ONLY means user data is used for metric collection only, not for personalization.\n - ID_LESS: ID_LESS means no user identification is used."
-    EventItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the Item.
-        price:
-          $ref: '#/components/schemas/commonMoney'
-        quantity:
-          type: integer
-          format: int32
-          description: Quantity of the item. Recommended.
-        item_group_id:
-          type: string
-          description: Unique identifier of the Item Group. id and/or item_group_id must be provided.
-        seller_id:
-          type: string
-          description: Unique identifier of the seller of the item. This field is required for MSPI integration unless the seller cannot be associated with that item for the specific event.
-        price_seller:
-          $ref: '#/components/schemas/commonMoney'
-      description: Item object
-      required:
-      - id
-      additionalProperties: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

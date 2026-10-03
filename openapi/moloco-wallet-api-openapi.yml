@@ -383,66 +383,6 @@ paths:
       - Wallet
 components:
   schemas:
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
-      required:
-      - type
-      - category
-      additionalProperties: true
-    publicWithdrawWalletResponse:
-      type: object
-      properties:
-        wallet:
-          $ref: '#/components/schemas/v1Wallet'
-      description: WithdrawWallet response.
-      additionalProperties: true
-    v1RoleName:
-      type: string
-      enum:
-      - UNKNOWN_ROLE_NAME
-      - PLATFORM_OWNER
-      - PLATFORM_USER
-      - AD_ACCOUNT_OWNER
-      - AD_ACCOUNT_USER
-      - AD_ACCOUNT_AGENCY
-      - CREATIVE_REVIEWER
-      default: UNKNOWN_ROLE_NAME
-    v1WalletTransactionHistoryMoneyMicroByAccount:
-      type: object
-      properties:
-        credits:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-        prepaid:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-        total:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
-      additionalProperties: true
-    rmpcommonMoneyMicro:
-      type: object
-      properties:
-        currency:
-          $ref: '#/components/schemas/rmpcommonCurrency'
-        amount_micro:
-          type: string
-          format: int64
-          description: Amount in micro unit. (e.g., 1234 means 0.001234)
-      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
-
-        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
-      required:
-      - currency
-      - amount_micro
-      additionalProperties: true
     publicQueryWalletTransactionHistoryResponse:
       type: object
       properties:
@@ -466,22 +406,79 @@ components:
       - transaction_histories
       - total_count
       additionalProperties: true
-    v1AccountUpdateAmount:
+    v1WalletTransactionHistoryMetadata:
       type: object
       properties:
-        type:
-          $ref: '#/components/schemas/commonAccountType'
-        amount:
-          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        comment:
+          type: string
+          description: Comment for the transaction.
       additionalProperties: true
-    v1ChangeLogOrderBy:
+    commonOrderByDirection:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_DIRECTION
+      - ASC
+      - DESC
+      default: UNKNOWN_ORDER_BY_DIRECTION
+    publicQueryWalletsResponse:
       type: object
       properties:
-        column:
-          $ref: '#/components/schemas/v1ChangeLogOrderByOrderByColumn'
-        direction:
-          $ref: '#/components/schemas/commonOrderByDirection'
+        result:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/publicWallets'
+          description: Map of wallets keyed by an ad account id.
+      description: QueryWallets response.
+      required:
+      - result
       additionalProperties: true
+    rmpcommonMoneyMicro:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/rmpcommonCurrency'
+        amount_micro:
+          type: string
+          format: int64
+          description: Amount in micro unit. (e.g., 1234 means 0.001234)
+      description: 'A monetary amount in a specific currency; the unit is micro at fixed point value for accurate accumulation operation.
+
+        For example, `{"currency": "USD", "amount_micro": "1234"}` means $0.001234.'
+      required:
+      - currency
+      - amount_micro
+      additionalProperties: true
+    rmpcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
     v1WalletTransactionHistoryTransactionStatus:
       type: string
       enum:
@@ -497,6 +494,18 @@ components:
       - PRE_PAID
       default: UNKNOWN_ACCOUNT_TYPE
       description: "AccountType.\n\n - CREDITS: Account Type given as free.\n - PRE_PAID: Account Type pre paid."
+    publicWallets:
+      type: object
+      properties:
+        wallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Wallet'
+          description: List of Wallets.
+      description: QueryWallets response.
+      required:
+      - wallets
+      additionalProperties: true
     publicRepresentedError:
       type: object
       properties:
@@ -518,12 +527,21 @@ components:
       - message
       - details
       additionalProperties: true
-    publicTopUpWalletResponse:
+    RepresentedErrorDetail:
       type: object
       properties:
-        wallet:
-          $ref: '#/components/schemas/v1Wallet'
-      description: TopUpWallet response.
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
       additionalProperties: true
     v1WalletTransactionHistoryChangedBy:
       type: object
@@ -540,51 +558,6 @@ components:
         role:
           $ref: '#/components/schemas/v1RoleName'
       additionalProperties: true
-    commonOrderByDirection:
-      type: string
-      enum:
-      - UNKNOWN_ORDER_BY_DIRECTION
-      - ASC
-      - DESC
-      default: UNKNOWN_ORDER_BY_DIRECTION
-    v1WalletTransactionHistory:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/v1WalletTransactionHistoryType'
-        transaction_status:
-          $ref: '#/components/schemas/v1WalletTransactionHistoryTransactionStatus'
-        budget_change:
-          $ref: '#/components/schemas/v1WalletTransactionHistoryMoneyMicroByAccount'
-        balance:
-          $ref: '#/components/schemas/v1WalletTransactionHistoryMoneyMicroByAccount'
-        posted_at:
-          type: string
-          format: date-time
-          description: The time when the transaction was posted.
-        transaction_date:
-          type: string
-          description: The date of the transaction. e.g. 2006-01-02
-        metadata:
-          $ref: '#/components/schemas/v1WalletTransactionHistoryMetadata'
-        changed_by:
-          $ref: '#/components/schemas/v1WalletTransactionHistoryChangedBy'
-      description: Definition of a Wallet Transaction History.
-      required:
-      - type
-      - transaction_status
-      - budget_change
-      - balance
-      - transaction_date
-      additionalProperties: true
-    v1WalletTransactionHistoryType:
-      type: string
-      enum:
-      - UNKNOWN_TYPE
-      - FUNDED
-      - REFUNDED
-      - SPENT
-      default: UNKNOWN_TYPE
     v1Wallet:
       type: object
       properties:
@@ -622,6 +595,96 @@ components:
       - created_at
       - updated_at
       additionalProperties: true
+    v1RoleName:
+      type: string
+      enum:
+      - UNKNOWN_ROLE_NAME
+      - PLATFORM_OWNER
+      - PLATFORM_USER
+      - AD_ACCOUNT_OWNER
+      - AD_ACCOUNT_USER
+      - AD_ACCOUNT_AGENCY
+      - CREATIVE_REVIEWER
+      default: UNKNOWN_ROLE_NAME
+    v1ChangeLogOrderBy:
+      type: object
+      properties:
+        column:
+          $ref: '#/components/schemas/v1ChangeLogOrderByOrderByColumn'
+        direction:
+          $ref: '#/components/schemas/commonOrderByDirection'
+      additionalProperties: true
+    commonWalletType:
+      type: string
+      enum:
+      - UNKNOWN_WALLET_TYPE
+      - PRE_PAYMENT
+      - POST_PAYMENT
+      default: UNKNOWN_WALLET_TYPE
+      description: "WalletType.\n\n - PRE_PAYMENT: Wallet type for Pre-payment use case\n - POST_PAYMENT: Wallet type for Post-payment use case"
+    v1WalletTransactionHistory:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryType'
+        transaction_status:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryTransactionStatus'
+        budget_change:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryMoneyMicroByAccount'
+        balance:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryMoneyMicroByAccount'
+        posted_at:
+          type: string
+          format: date-time
+          description: The time when the transaction was posted.
+        transaction_date:
+          type: string
+          description: The date of the transaction. e.g. 2006-01-02
+        metadata:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryMetadata'
+        changed_by:
+          $ref: '#/components/schemas/v1WalletTransactionHistoryChangedBy'
+      description: Definition of a Wallet Transaction History.
+      required:
+      - type
+      - transaction_status
+      - budget_change
+      - balance
+      - transaction_date
+      additionalProperties: true
+    publicListWalletsResponse:
+      type: object
+      properties:
+        wallets:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1Wallet'
+          description: List of Wallets.
+      description: ListWallets response.
+      required:
+      - wallets
+      additionalProperties: true
+    v1ChangeLogOrderByOrderByColumn:
+      type: string
+      enum:
+      - UNKNOWN_ORDER_BY_COLUMN
+      - UPDATED_AT
+      default: UNKNOWN_ORDER_BY_COLUMN
+    publicTopUpWalletResponse:
+      type: object
+      properties:
+        wallet:
+          $ref: '#/components/schemas/v1Wallet'
+      description: TopUpWallet response.
+      additionalProperties: true
+    v1AccountUpdateAmount:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/commonAccountType'
+        amount:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
     commonErrorCategory:
       type: string
       enum:
@@ -657,87 +720,30 @@ components:
       - INVALID_CUSTOM_TARGETING
       default: DEFAULT_ERROR_CATEGORY
       title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    commonWalletType:
+    v1WalletTransactionHistoryMoneyMicroByAccount:
+      type: object
+      properties:
+        credits:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        prepaid:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+        total:
+          $ref: '#/components/schemas/rmpcommonMoneyMicro'
+      additionalProperties: true
+    v1WalletTransactionHistoryType:
       type: string
       enum:
-      - UNKNOWN_WALLET_TYPE
-      - PRE_PAYMENT
-      - POST_PAYMENT
-      default: UNKNOWN_WALLET_TYPE
-      description: "WalletType.\n\n - PRE_PAYMENT: Wallet type for Pre-payment use case\n - POST_PAYMENT: Wallet type for Post-payment use case"
-    rmpcommonCurrency:
-      type: string
-      enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      - SEK
-      - INR
-      - THB
-      - IDR
-      - CNY
-      - CAD
-      - RUB
-      - BRL
-      - SGD
-      - HKD
-      - AUD
-      - PLN
-      - DKK
-      - VND
-      - MYR
-      - PHP
-      - TRY
-      - VES
-      - AED
-      - CHF
-      default: UNKNOWN_CURRENCY
-      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
-    publicListWalletsResponse:
+      - UNKNOWN_TYPE
+      - FUNDED
+      - REFUNDED
+      - SPENT
+      default: UNKNOWN_TYPE
+    publicWithdrawWalletResponse:
       type: object
       properties:
-        wallets:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1Wallet'
-          description: List of Wallets.
-      description: ListWallets response.
-      required:
-      - wallets
-      additionalProperties: true
-    publicWallets:
-      type: object
-      properties:
-        wallets:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1Wallet'
-          description: List of Wallets.
-      description: QueryWallets response.
-      required:
-      - wallets
-      additionalProperties: true
-    v1WalletTransactionHistoryMetadata:
-      type: object
-      properties:
-        comment:
-          type: string
-          description: Comment for the transaction.
-      additionalProperties: true
-    publicQueryWalletsResponse:
-      type: object
-      properties:
-        result:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/publicWallets'
-          description: Map of wallets keyed by an ad account id.
-      description: QueryWallets response.
-      required:
-      - result
+        wallet:
+          $ref: '#/components/schemas/v1Wallet'
+      description: WithdrawWallet response.
       additionalProperties: true
     v1Account:
       type: object
@@ -747,12 +753,6 @@ components:
         balance:
           $ref: '#/components/schemas/rmpcommonMoneyMicro'
       additionalProperties: true
-    v1ChangeLogOrderByOrderByColumn:
-      type: string
-      enum:
-      - UNKNOWN_ORDER_BY_COLUMN
-      - UPDATED_AT
-      default: UNKNOWN_ORDER_BY_COLUMN
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

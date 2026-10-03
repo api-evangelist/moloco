@@ -638,21 +638,31 @@ paths:
     - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    RepresentedErrorDetail:
+    AdAccountStateInfoStateCase:
+      type: string
+      enum:
+      - INIT_BY_PLATFORM
+      - ACTIVATED
+      - OUT_OF_BUDGET
+      - INTERNAL_ISSUE
+      - REACHED_SPENDING_LIMIT
+      default: INIT_BY_PLATFORM
+    UpdateAdAccountStateInfoRequestAdAccountStateInfoParams:
       type: object
       properties:
-        type:
+        state:
+          $ref: '#/components/schemas/v1AdAccountStateInfoAdAccountState'
+        state_case:
+          $ref: '#/components/schemas/AdAccountStateInfoStateCase'
+        updated_at:
           type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
+          format: date-time
+          description: Updated timestamp for the ad account. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
+      description: AdAccountState info.
       required:
-      - type
-      - category
+      - state
+      - state_case
+      - updated_at
       additionalProperties: true
     v1AdAccountStateInfo:
       type: object
@@ -681,84 +691,42 @@ components:
       - state_updated_at
       - updated_at
       additionalProperties: true
-    publicReadAdAccountResponse:
+    publicListAdAccountsResponse:
       type: object
       properties:
-        ad_account:
-          $ref: '#/components/schemas/managementv1AdAccount'
-      description: ReadAdAccount response.
-      required:
-      - ad_account
-      additionalProperties: true
-    publicRepresentedError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
-          type: string
-          description: The detailed message of responded error.
-        details:
+        ad_accounts:
           type: array
           items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+            $ref: '#/components/schemas/managementv1AdAccount'
+          description: List of AdAccount infos.
+      description: ListAdAccounts response.
       required:
-      - code
-      - message
-      - details
+      - ad_accounts
       additionalProperties: true
-    publicCreateAdAccountResponse:
-      type: object
-      properties:
-        ad_account:
-          $ref: '#/components/schemas/managementv1AdAccount'
-      description: CreateAdAccount response.
-      required:
-      - ad_account
-      additionalProperties: true
-    v1AdAccountStateInfoAdAccountState:
-      type: string
-      enum:
-      - UNKNOWN_STATE
-      - ACTIVE
-      - INACTIVE
-      default: UNKNOWN_STATE
-    managementv1AdAccount:
+    publicCreateAdAccountRequestAdAccountInfo:
       type: object
       properties:
         id:
           type: string
-          description: The id of the ad account. This is a rmp-side truth. Thus it is always required, even for CreateAdAccountRequest.
+          description: The id of the ad account. Must be a string of 1 to 50 characters. Only letters (a–z, A–Z), digits (0–9), hyphens (-), underscores (_), and periods (.) are allowed.
         title:
           type: string
           description: A descriptive name of the ad account.
         timezone:
           type: string
           description: Timezone info of the ad account, Immutable. When there is no timezone info in ad account, Platform's timezone info will be applied. Must be in IANA timezone name format, e.g. Asia/Seoul.
-        state_info:
-          $ref: '#/components/schemas/v1AdAccountStateInfo'
-        created_at:
-          type: string
-          format: date-time
-          description: Created timestamp. API user should not touch this field; it is set internally.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
-          readOnly: true
-      description: Definition of a ad account.
       required:
       - id
       - title
-      - timezone
+      additionalProperties: true
+    publicUpdateAdAccountStateInfoResponse:
+      type: object
+      properties:
+        state_info:
+          $ref: '#/components/schemas/v1AdAccountStateInfo'
+      description: UpdateAdAccountStateInfo response.
+      required:
       - state_info
-      - created_at
-      - updated_at
       additionalProperties: true
     publicUpdateAdAccountResponse:
       type: object
@@ -804,69 +772,6 @@ components:
       - INVALID_CUSTOM_TARGETING
       default: DEFAULT_ERROR_CATEGORY
       title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    publicUpdateAdAccountStateInfoResponse:
-      type: object
-      properties:
-        state_info:
-          $ref: '#/components/schemas/v1AdAccountStateInfo'
-      description: UpdateAdAccountStateInfo response.
-      required:
-      - state_info
-      additionalProperties: true
-    AdAccountStateInfoStateCase:
-      type: string
-      enum:
-      - INIT_BY_PLATFORM
-      - ACTIVATED
-      - OUT_OF_BUDGET
-      - INTERNAL_ISSUE
-      - REACHED_SPENDING_LIMIT
-      default: INIT_BY_PLATFORM
-    publicCreateAdAccountRequestAdAccountInfo:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the ad account. Must be a string of 1 to 50 characters. Only letters (a–z, A–Z), digits (0–9), hyphens (-), underscores (_), and periods (.) are allowed.
-        title:
-          type: string
-          description: A descriptive name of the ad account.
-        timezone:
-          type: string
-          description: Timezone info of the ad account, Immutable. When there is no timezone info in ad account, Platform's timezone info will be applied. Must be in IANA timezone name format, e.g. Asia/Seoul.
-      required:
-      - id
-      - title
-      additionalProperties: true
-    publicListAdAccountsResponse:
-      type: object
-      properties:
-        ad_accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/managementv1AdAccount'
-          description: List of AdAccount infos.
-      description: ListAdAccounts response.
-      required:
-      - ad_accounts
-      additionalProperties: true
-    UpdateAdAccountStateInfoRequestAdAccountStateInfoParams:
-      type: object
-      properties:
-        state:
-          $ref: '#/components/schemas/v1AdAccountStateInfoAdAccountState'
-        state_case:
-          $ref: '#/components/schemas/AdAccountStateInfoStateCase'
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp for the ad account. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
-      description: AdAccountState info.
-      required:
-      - state
-      - state_case
-      - updated_at
-      additionalProperties: true
     publicUpdateAdAccountRequestAdAccountInfo:
       type: object
       properties:
@@ -881,121 +786,122 @@ components:
       - title
       - updated_at
       additionalProperties: true
-    messagesCreateAdAccountErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesListAdAccountsResponse:
+    publicCreateAdAccountResponse:
       type: object
       properties:
-        ad_accounts:
+        ad_account:
+          $ref: '#/components/schemas/managementv1AdAccount'
+      description: CreateAdAccount response.
+      required:
+      - ad_account
+      additionalProperties: true
+    publicReadAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/managementv1AdAccount'
+      description: ReadAdAccount response.
+      required:
+      - ad_account
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    managementv1AdAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the ad account. This is a rmp-side truth. Thus it is always required, even for CreateAdAccountRequest.
+        title:
+          type: string
+          description: A descriptive name of the ad account.
+        timezone:
+          type: string
+          description: Timezone info of the ad account, Immutable. When there is no timezone info in ad account, Platform's timezone info will be applied. Must be in IANA timezone name format, e.g. Asia/Seoul.
+        state_info:
+          $ref: '#/components/schemas/v1AdAccountStateInfo'
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the ad account, which is able to check with ReadAdAccount API.
+          readOnly: true
+      description: Definition of a ad account.
+      required:
+      - id
+      - title
+      - timezone
+      - state_info
+      - created_at
+      - updated_at
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    v1AdAccountStateInfoAdAccountState:
+      type: string
+      enum:
+      - UNKNOWN_STATE
+      - ACTIVE
+      - INACTIVE
+      default: UNKNOWN_STATE
+    messagesUpdateAdAccountError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/dspAdAccount'
-          description: The list of AdAccount data.
-    adcloudcommonCurrency:
-      type: string
-      enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      default: UNKNOWN_CURRENCY
-      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
-    messagesListAdAccountsErrorAPIErrorInfo:
+            $ref: '#/components/schemas/messagesUpdateAdAccountErrorAPIErrorInfo'
+    messagesDeleteAdAccountResponse:
       type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesListAdAccountsErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesUpdateAdAccountErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
     messagesReadAdAccountResponse:
       type: object
       properties:
         ad_account:
           $ref: '#/components/schemas/dspAdAccount'
           description: The retrieved AdAccount data.
-    messagesListAdAccountsErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesDeleteAdAccountResponse:
-      type: object
-    messagesReadAdAccountErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesReadAdAccountError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesReadAdAccountErrorAPIErrorInfo'
-    messagesUpdateAdAccountErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesUpdateAdAccountErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesCreateAdAccountErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesCreateAdAccountErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    TargetFuturePreferenceInfoCustomProducts:
-      type: object
-      properties:
-        product_ids:
-          type: array
-          items:
-            type: string
-      description: CustomProducts stores Products' ids of which the target prefers.
-    messagesListAdAccountsError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesListAdAccountsErrorAPIErrorInfo'
     messagesCreateAdAccountError:
       type: object
       properties:
@@ -1009,24 +915,106 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesCreateAdAccountErrorAPIErrorInfo'
-    messagesCreateAdAccountResponse:
+    TargetFuturePreferenceInfoProductScope:
+      type: string
+      enum:
+      - UNKNOWN
+      - ALL
+      - ANDROID
+      - IOS
+      default: UNKNOWN
+      description: ProductScope indicates the scope of Product of which the target prefers.
+    messagesReadAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListAdAccountsResponse:
+      type: object
+      properties:
+        ad_accounts:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAdAccount'
+          description: The list of AdAccount data.
+    messagesDeleteAdAccountErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteAdAccountErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesDeleteAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesCreateAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListAdAccountsErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesListAdAccountsErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdateAdAccountResponse:
       type: object
       properties:
         ad_account:
           $ref: '#/components/schemas/dspAdAccount'
-          description: The created AdAccount data.
-    AdAccountTargetFuturePreferenceInfo:
+          description: The updated AdAccount data.
+    TargetFuturePreferenceInfoCustomProducts:
       type: object
       properties:
-        product_scope:
-          $ref: '#/components/schemas/TargetFuturePreferenceInfoProductScope'
-        custom_products:
-          $ref: '#/components/schemas/TargetFuturePreferenceInfoCustomProducts'
-      description: 'TargetFuturePreferenceInfo contains each target''s future preference information.
-
-        If the newly created Campaign satisfies the condition of target future preference info
-
-        the target will be automatically assigned to that Campaign.'
+        product_ids:
+          type: array
+          items:
+            type: string
+      description: CustomProducts stores Products' ids of which the target prefers.
+    messagesDeleteAdAccountError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteAdAccountErrorAPIErrorInfo'
+    messagesReadAdAccountError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadAdAccountErrorAPIErrorInfo'
+    messagesUpdateAdAccountErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
     dspAdAccount:
       type: object
       properties:
@@ -1096,57 +1084,75 @@ components:
         who owns Products and aims to promote the Products with advertising Campaigns.'
       required:
       - title
-    messagesDeleteAdAccountErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesDeleteAdAccountErrorAPIErrorInfo:
+    messagesUpdateAdAccountErrorAPIErrorInfo:
       type: object
       properties:
         reason:
-          $ref: '#/components/schemas/messagesDeleteAdAccountErrorAPIErrorInfoErrorReason'
+          $ref: '#/components/schemas/messagesUpdateAdAccountErrorAPIErrorInfoErrorReason'
         error_log_id:
           type: string
         context:
           type: object
           additionalProperties:
             type: string
-    messagesDeleteAdAccountError:
+    AdAccountTargetFuturePreferenceInfo:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesDeleteAdAccountErrorAPIErrorInfo'
-    messagesUpdateAdAccountError:
+        product_scope:
+          $ref: '#/components/schemas/TargetFuturePreferenceInfoProductScope'
+        custom_products:
+          $ref: '#/components/schemas/TargetFuturePreferenceInfoCustomProducts'
+      description: 'TargetFuturePreferenceInfo contains each target''s future preference information.
+
+        If the newly created Campaign satisfies the condition of target future preference info
+
+        the target will be automatically assigned to that Campaign.'
+    messagesCreateAdAccountErrorAPIErrorInfo:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        reason:
+          $ref: '#/components/schemas/messagesCreateAdAccountErrorAPIErrorInfoErrorReason'
+        error_log_id:
           type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesUpdateAdAccountErrorAPIErrorInfo'
-    TargetFuturePreferenceInfoProductScope:
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesListAdAccountsErrorAPIErrorInfoErrorReason:
       type: string
       enum:
-      - UNKNOWN
-      - ALL
-      - ANDROID
-      - IOS
-      default: UNKNOWN
-      description: ProductScope indicates the scope of Product of which the target prefers.
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesListAdAccountsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListAdAccountsErrorAPIErrorInfo'
+    adcloudcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      default: UNKNOWN_CURRENCY
+      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
+    messagesCreateAdAccountResponse:
+      type: object
+      properties:
+        ad_account:
+          $ref: '#/components/schemas/dspAdAccount'
+          description: The created AdAccount data.
     messagesReadAdAccountErrorAPIErrorInfo:
       type: object
       properties:
@@ -1158,51 +1164,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    messagesUpdateAdAccountResponse:
-      type: object
-      properties:
-        ad_account:
-          $ref: '#/components/schemas/dspAdAccount'
-          description: The updated AdAccount data.
-    createAdAccountRegistrationRequest:
-      description: A request to register a user to an Ad Account.
-      type: object
-      required:
-      - platform_id
-      - registration
-      properties:
-        forward_url:
-          description: The URL that should be included in the invitation email.
-          type: string
-        platform_id:
-          description: The platform ID.
-          type: string
-        registration:
-          $ref: '#/components/schemas/adAccountRegistration'
-    listAdAccountRegistrationsResponse:
-      description: Lists the user registrations to an Ad Account with roles assigned to each user.
-      type: object
-      required:
-      - registrations
-      properties:
-        registrations:
-          description: The user registrations to an Ad Account with user roles.
-          type: array
-          items:
-            $ref: '#/components/schemas/adAccountRegistrationWithUserInfo'
-    roleReference:
-      description: Reference to a role defined in a platform.
-      type: object
-      required:
-      - id
-      - platform_id
-      properties:
-        id:
-          description: The ID of the role.
-          type: string
-        platform_id:
-          description: The platofrm ID where the role is defined.
-          type: string
     adAccountRegistrationWithUserInfo:
       description: A user registered to an Ad Account and the roles given to the user for the Ad Account.
       type: object
@@ -1219,19 +1180,43 @@ components:
             type: string
           user_name:
             type: string
-    error:
-      description: Error response with detailed reason.
+    roleReference:
+      description: Reference to a role defined in a platform.
       type: object
       required:
-      - reason
-      - status
+      - id
+      - platform_id
       properties:
-        reason:
-          description: More detailed reason about why the error was returned.
+        id:
+          description: The ID of the role.
           type: string
-        status:
-          description: The error status code.
-          type: integer
+        platform_id:
+          description: The platofrm ID where the role is defined.
+          type: string
+    createAdAccountRegistrationRequest:
+      description: A request to register a user to an Ad Account.
+      type: object
+      required:
+      - platform_id
+      - registration
+      properties:
+        forward_url:
+          description: The URL that should be included in the invitation email.
+          type: string
+        platform_id:
+          description: The platform ID.
+          type: string
+        registration:
+          $ref: '#/components/schemas/adAccountRegistration'
+    userStatus:
+      description: The set of status values for a user.
+      type: object
+      required:
+      - signed_up
+      properties:
+        signed_up:
+          description: The signed up status of the user.
+          type: boolean
     adAccountRegistration:
       description: A user registered to an Ad Account.
       type: object
@@ -1249,15 +1234,30 @@ components:
         id:
           description: The user ID.
           type: string
-    userStatus:
-      description: The set of status values for a user.
+    listAdAccountRegistrationsResponse:
+      description: Lists the user registrations to an Ad Account with roles assigned to each user.
       type: object
       required:
-      - signed_up
+      - registrations
       properties:
-        signed_up:
-          description: The signed up status of the user.
-          type: boolean
+        registrations:
+          description: The user registrations to an Ad Account with user roles.
+          type: array
+          items:
+            $ref: '#/components/schemas/adAccountRegistrationWithUserInfo'
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

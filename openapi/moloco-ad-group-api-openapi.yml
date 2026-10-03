@@ -205,30 +205,566 @@ paths:
       - Ad Group
 components:
   schemas:
-    adcloudcommonCreativeType:
+    messagesUpdateAdGroupError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateAdGroupErrorAPIErrorInfo'
+    AudienceTargetingConditionCustomAudienceSet:
+      type: object
+      properties:
+        include_having_all:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: 'This will include a customer only if all of the listed conditions are satisfied.
+
+            Note that it is not allowed to set include_having_all and include_having_any at the same time.'
+        include_having_any:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: This will include a customer if at least one condition from the listed conditions is satisfied.
+        exclude_having_all:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: 'This will exclude a customer only if all of the listed conditions are satisfied.
+
+            Note that it is not allowed to set exclude_having_all and exclude_having_any at the same time.'
+        exclude_having_any:
+          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
+          description: This will exclude a customer if at least one condition from the listed conditions is satisfied.
+      description: 'CustomAudienceSet represents a group of target users to whom we''re going to show an ad.
+
+        CustomAudienceSet is consist of a dynamic (not pre-determined)
+
+        set of target users based on App-events described in the postback messages
+
+        and pre-defined CustomerSets.'
+    CampaignGoalOptimizeCpaRepeatedForAppUa:
+      type: object
+      properties:
+        action:
+          type: string
+          description: 'In-app action events the AdAccount wants to optimize.
+
+            Remarkable notes:
+
+            - Case-sensitive as specified in the post-back from MMP.'
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeCpaRepeatedForAppUaMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend.
+
+            Required when the mode is BUDGET_CENTRIC.
+
+            The rate should be in (0, 2].'
+      description: Detailed configuration of OPTIMIZE_CPA_REPEATED_FOR_APP_UA goal.
+      required:
+      - action
+    CampaignGoalOptimizeAppInstallsMode:
       type: string
       enum:
-      - UNKNOWN_CREATIVE_TYPE
-      - IMAGE_BANNER
-      - IMAGE_INTERSTITIAL
-      - VIDEO_BANNER
-      - VIDEO_INTERSTITIAL
-      - NATIVE_LOGO
-      - NATIVE_VIDEO
-      - NATIVE_IMAGE
-      - CUSTOM_HTML_BANNER
-      - CUSTOM_HTML_INTERSTITIAL
-      - TEMPLATE_HTML_BANNER
-      - TEMPLATE_HTML_INTERSTITIAL
-      - RICH_CUSTOM_HTML_BANNER
-      - RICH_CUSTOM_HTML_INTERSTITIAL
-      - DYNAMIC_HTML_BANNER
-      - DYNAMIC_HTML_INTERSTITIAL
-      default: UNKNOWN_CREATIVE_TYPE
-      description: 'Enumeration of creative types supported by Moloco Ads.
+      - UNKNOWN_MODE
+      - TARGET_CPI_CENTRIC
+      - BUDGET_CENTRIC
+      - MARGIN_CENTRIC
+      - FIXED
+      default: UNKNOWN_MODE
+      description: ' - FIXED: Read-only for AdCloud.'
+    commonTimeDuration:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: int64
+        unit:
+          $ref: '#/components/schemas/commonTimeUnit'
+      description: Represents a time duration with an amount and a unit.
+    CampaignGoalOptimizeClicksToWeb:
+      type: object
+      properties:
+        target_cpc:
+          $ref: '#/components/schemas/adcloudcommonMoney'
+          description: 'Target cost per click in AdAccount-wide currency.
+
+            Required when the mode is TARGET_CPC_CENTRIC.'
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeClicksToWebMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'Budget-centric uses one ratio of daily budget for the autopilot to spend. It''s only for DCPM.
+
+            Required when the mode is BUDGET_CENTRIC.
+
+            Its rate should be in (0, 2].'
+      description: Detailed configuration of OPTIMIZE_CPC_FOR_WEB_VISIT goal.
+    CampaignGoalOptimizeCpaForAppUa:
+      type: object
+      properties:
+        action:
+          type: string
+          description: 'In-app action events having revenue value the AdAccount wants to achieve.
+
+
+            Remarkable notes:
+
+            - Case-sensitive as specified in the post-back from MMP.'
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeCpaForAppUaMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend.
+
+            Required when the mode is BUDGET_CENTRIC.
+
+            The rate should be in (0, 2].'
+        margin:
+          type: number
+          format: double
+          description: 'The ratio of the margin for the autopilot to spend.
+
+            Required when the mode is MARGIN_CENTRIC.
+
+            The rate should be in [-1.0, 1.0].'
+        target_kpi:
+          $ref: '#/components/schemas/adcloudcommonMoney'
+          description: 'Read-only. Operational target KPI value set by System.
+
+            Populated when the mode is TARGET_PRIMARY_KPI_CENTRIC.'
+          readOnly: true
+      description: Detailed configuration of OPTIMIZE_CPA_FOR_APP_UA goal.
+      required:
+      - action
+    CampaignGoalOptimizeAppReattributionMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      default: UNKNOWN_MODE
+    AudienceTargetingConditionLocationFilter:
+      type: object
+      properties:
+        cities:
+          type: array
+          items:
+            type: string
+        regions:
+          type: array
+          items:
+            type: string
+        zipcodes:
+          type: array
+          items:
+            type: string
+        geofences:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/commonCircle'
+      description: 'LocationFilter represents a geolocationcal condition using different related conditions.
+
+        The condition will be met if any of the listed conditions is met.'
+    AudienceTargetingConditionDeviceOsFilter:
+      type: object
+      properties:
+        os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: Device OS.
+        min_version:
+          type: string
+        max_version:
+          type: string
+      description: Device OS and version filter condition.
+      required:
+      - os
+    dspCampaignType:
+      type: string
+      enum:
+      - UNKNOWN_CAMPAIGN_TYPE
+      - GENERIC
+      - APP_USER_ACQUISITION
+      - APP_REENGAGEMENT
+      - WEBSITE_VISIT
+      - CTV_GENERIC
+      - CTV_APP_USER_ACQUISITION
+      - WEB_USER_ACQUISITION
+      - CTV_WEBSITE_VISIT
+      - WEB_RETARGETING
+      default: UNKNOWN_CAMPAIGN_TYPE
+      description: "CampaignType represents the type of a Campaign.\nIt captures the goal of the Campaign at a high level.\n\nThis value is not part of the specification.\n\n - GENERIC: Campaign is for generic purpose (only for legacy Campaigns).\n - APP_USER_ACQUISITION: The goal of the Campaign is to drive app user acquisitions.\n - APP_REENGAGEMENT: The goal of the Campaign is to drive app reengagement.\n - WEBSITE_VISIT: The goal of the Campaign is to drive website visits.\n - CTV_GENERIC: Campaign is for the general CTV ad.\n - CTV_APP_USER_ACQUISITION: Campaign is for the mobile app install CTV ad.\n - WEB_USER_ACQUISITION: The goal of the Campaign is to drive web user acquisitions.\nOriginally, this was used for APP to WEB user acquisition. However,\nit is now also used for WEB to WEB user acquisition.\n - CTV_WEBSITE_VISIT: Campaign is for the website visit CTV ad.\n - WEB_RETARGETING: The goal of the Campaign is to drive web retargeting.\nCurrently, this is used for WEB to WEB retargeting."
+    AudienceTargetingConditionPlacementReason:
+      type: string
+      enum:
+      - UNKNOWN_PLACEMENT_REASON
+      - REASON_BRAND_SAFETY
+      - REASON_PERFORMANCE_IMPROVEMENT
+      - REASON_AGE_RESTRICTION
+      - REASON_FRAUD
+      - REASON_OWN_APP_CROSS_PROMOTION_BLOCKING
+      - REASON_NOT_OPERATING_IN_A_SPECIFIC_LOCATION
+      - REASON_INCREMENTALITY_TESTING
+      - REASON_OTHER
+      default: UNKNOWN_PLACEMENT_REASON
+      description: The reason of the placement. It is used to track the reason why customers set the allowed or blocked app's.
+    adcloudcommonTimezonePolicy:
+      type: string
+      enum:
+      - UNKNOWN_TIME
+      - DEVICE_TIME
+      - UTC_TIME
+      - AD_ACCOUNT_TIME
+      - ADVERTISER_TIME
+      default: UNKNOWN_TIME
+      description: "TimezonePolicy defines the time configuration.\n\n - DEVICE_TIME: Time object is given in the device's time (depends on user device timezone).\n - UTC_TIME: Time object is given in the fixed UTC time (depends on nothing).\n - AD_ACCOUNT_TIME: Given time is given in fixed ad account time (depends on ad account timezone)."
+    commonTimeUnit:
+      type: string
+      enum:
+      - UNKNOWN_TIME_UNIT
+      - MINUTE
+      - HOUR
+      - DAY
+      - WEEK
+      default: UNKNOWN_TIME_UNIT
+      description: 'A unit of time, e.g. second, minute, etc.
 
 
         This value is not part of the specification.'
+    messagesReadAdGroupErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadAdGroupErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    commonAdvertiserIdType:
+      type: string
+      enum:
+      - UNKNOWN_ADVERTISER_ID_TYPE
+      - ANDROID_IDFA
+      - IOS_IDFA
+      - GENERIC_USER_ID
+      - GENERIC_DEVICE_ID
+      - ANDROID_LAT_IDFA
+      - IOS_LAT_IDFA
+      default: UNKNOWN_ADVERTISER_ID_TYPE
+      description: "Enumeration of supported ID types for advertises.\n\nThis value is not part of the specification.\n\n - ANDROID_IDFA: IDFA used in Android.\n - IOS_IDFA: IDFA used in iOS.\n - GENERIC_USER_ID: This is used when IDFA is unavailable and an alternative user id is available.\nFor example, Google's adid is used for mobile web inventories.\n - GENERIC_DEVICE_ID: This is used when IDFA is unavailable and an alternative device id is available.\nFor example, Mopub sends out device id in some apps.\n - ANDROID_LAT_IDFA: infra-generating IDFA used for Android LAT devices\n - IOS_LAT_IDFA: infra-generating IDFA used for iOS LAT devices"
+    commonDeviceOs:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_OS
+      - ANDROID
+      - IOS
+      - VERSATILE
+      - MOBILE_WEB
+      - MACOS
+      - WINDOWS
+      - NEXT_VERSATILE
+      default: UNKNOWN_DEVICE_OS
+      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
+    commonDisplayManagerVersion:
+      type: object
+      properties:
+        min:
+          type: string
+        max:
+          type: string
+      description: Display Manager Version.
+    CampaignGoalOptimizeCpcForAppRe:
+      type: object
+      properties:
+        target_cpc:
+          $ref: '#/components/schemas/adcloudcommonMoney'
+          description: 'Target cost per click in AdAccount-wide currency.
+
+            Required when the mode is TARGET_CPC_CENTRIC.'
+        reengagement_action:
+          type: string
+          description: 'Re-engagement action to measure re-engaging a user. This action is
+
+            also used as a cohort base action.'
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeCpcForAppReMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend.
+
+            The rate should be in (0, 2].
+
+            Required when the mode is BUDGET_CENTRIC.'
+      description: Detailed configuration of OPTIMIZE_CPC_FOR_APP_RE goal.
+    commonBannerApi:
+      type: string
+      enum:
+      - UNKNOWN_BANNER_API
+      - MRAID_2
+      default: UNKNOWN_BANNER_API
+      title: Banner API
+    dspCampaignGoalType:
+      type: string
+      enum:
+      - UNKNOWN_TYPE
+      - OPTIMIZE_NONE
+      - FIXED_CPM_FOR_APP_UA
+      - FIXED_CPM_FOR_APP_RE
+      - OPTIMIZE_CPI_FOR_APP_UA
+      - OPTIMIZE_CPA_FOR_APP_UA
+      - OPTIMIZE_CPC_FOR_APP_UA
+      - OPTIMIZE_ROAS_FOR_APP_UA
+      - OPTIMIZE_ROAS_FOR_APP_RE
+      - OPTIMIZE_CPC_FOR_APP_RE
+      - OPTIMIZE_CPC_FOR_WEB_VISIT
+      - OPTIMIZE_APP_INSTALLS
+      - OPTIMIZE_APP_ROAS
+      - OPTIMIZE_CLICKS_TO_WEB
+      - OPTIMIZE_CLICKS_TO_APP
+      - OPTIMIZE_CPA_FOR_APP_RE
+      - OPTIMIZE_RETENTION_FOR_APP_UA
+      - OPTIMIZE_REATTRIBUTION_FOR_APP
+      - OPTIMIZE_CPA_REPEATED_FOR_APP_UA
+      - FIXED_CPM_GENERIC
+      - FIXED_CPM_FOR_CTV
+      - FIXED_CPM_FOR_WEB_VISIT
+      - OPTIMIZE_LANDING_FOR_WEB_UA
+      - OPTIMIZE_CPA_FOR_WEB_UA
+      default: UNKNOWN_TYPE
+      description: "Type enumerates available Campaign goal types.\nCorresponding details to the type must be specified.\n\n - OPTIMIZE_NONE: Goal type for the Campaigns which do not use any of pricing engines.\n - FIXED_CPM_FOR_APP_UA: Goal type for the UA Campaigns which do not use any of pricing engines.\n - FIXED_CPM_FOR_APP_RE: Goal type for the RE Campaigns which do not use any of pricing engines.\n - OPTIMIZE_CPI_FOR_APP_UA: Aim to drive app installs while satisfying the long-term cost per install.\n - OPTIMIZE_CPA_FOR_APP_UA: Aim to drive app installs while satisfying long-term cost per (certain) action.\n - OPTIMIZE_CPC_FOR_APP_UA: Aim to drive app installs while satisfying long-term cost per click.\n - OPTIMIZE_ROAS_FOR_APP_UA: Aim to drive app installs while satisfying long-term return on advertising spend (ROAS).\n - OPTIMIZE_ROAS_FOR_APP_RE: Aim to drive the user re-engagements while satisfying long-term return on advertising spend (ROAS).\n - OPTIMIZE_CPC_FOR_APP_RE: Aim to drive the user re-engagements while satisfying long-term cost per click.\n - OPTIMIZE_CPC_FOR_WEB_VISIT: Aim to drive the web-site visit while satisfying long-term cost per click.\n - OPTIMIZE_APP_INSTALLS: Deprecated. Aim to drive app installs while satisfying long-term cost per install.\n - OPTIMIZE_APP_ROAS: Deprecated. Aim to drive certain in-app actions while satisfying long-term return on advertising spend (ROAS).\n - OPTIMIZE_CLICKS_TO_WEB: Deprecated. Aim to drive clicks for web-site Product while satisfying long-term cost per click.\n - OPTIMIZE_CLICKS_TO_APP: Deprecated. Aim to drive clicks for web-site Product while satisfying long-term cost per click.\n - OPTIMIZE_CPA_FOR_APP_RE: Aim to drive the user re-engagements while satisfying long-term cost per (certain) action.\n - OPTIMIZE_RETENTION_FOR_APP_UA: Aim to drive the user retention.\n - OPTIMIZE_REATTRIBUTION_FOR_APP: Aim to drive user's app reattribution.\n - OPTIMIZE_CPA_REPEATED_FOR_APP_UA: Aim to drive app installs while satisfying long-term cost per (certain) action - repeated count.\n - FIXED_CPM_GENERIC: Default goal type for generic fixed-cpm. Fixed cpm with budget-pacing option is given.\n - FIXED_CPM_FOR_CTV: Default goal type for CTV. Fixed cpm with budget-pacing option is given.\n - FIXED_CPM_FOR_WEB_VISIT: Goal type for the WEB_VISIT Campaigns which do not use any of pricing engines.\n - OPTIMIZE_LANDING_FOR_WEB_UA: Goal type for optimizing landing event for web user acquisition campaign.\n - OPTIMIZE_CPA_FOR_WEB_UA: Goal type for optimizing cost per action for web user acquisition campaign."
+    CampaignGoalOptimizeFixedCpmPacing:
+      type: object
+      properties:
+        target_cpm:
+          $ref: '#/components/schemas/adcloudcommonMoney'
+          description: Target cpm in USD currency (Not in AdAccount currency).
+        pacing_mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeFixedCpmPacingPacingMode'
+        rate:
+          type: number
+          format: double
+          description: 'Budget consume rate.
+
+            The rate should be in (0, 2].'
+      description: 'General fixed-cpm goal with pacing option.
+
+        Currently for FIXED_CPM_FOR_CTV and FIXED_CPM_GENERIC.'
+      required:
+      - target_cpm
+    CampaignGoalOptimizeCpcForAppReMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      - TARGET_CPC_CENTRIC
+      default: UNKNOWN_MODE
+    messagesListAdGroupsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesListAdGroupsErrorAPIErrorInfo'
+    LocationSetZipCodeSet:
+      type: object
+      properties:
+        zipcodes:
+          type: array
+          items:
+            type: string
+          description: Zipcodes to represent areas to target.
+        country:
+          type: string
+          description: Uppercase Country code in ISO 3166-1 alpha-2.
+    dspCampaignState:
+      type: string
+      enum:
+      - UNKNOWN_CAMPAIGN_STATE
+      - SUBMITTED
+      - READY
+      - UPCOMING
+      - ACTIVE
+      - PAUSED
+      - SUSPENDED
+      - COMPLETED
+      default: UNKNOWN_CAMPAIGN_STATE
+      description: "CampaignState represents various states of a Campaign.\n\nThis value is not part of the specification.\n\n - SUBMITTED: All the required data are entered and passed all the validation. It's eligible\nto be reviewed by Moloco for activation.\n - READY: Campaign is before schedule and internally ready but disabled.\nWill transit to PAUSED when it becomes on schdule.\n - UPCOMING: Campaign is before schedule and internally ready and disabled.\nWill transit to ACTIVE when it becomes on schdule.\n - ACTIVE: Campaign is on schedule and spending the budget.\n - PAUSED: Campaign is paused and not spending the budget.\n - SUSPENDED: Campaign activation is suspended by the system for the following reasons:\n- App has been found to be in violation of Moloco's creative policy.\n - COMPLETED: Campaign is completed but may still get attributions for some time."
+    AudienceTargetingConditionNewUserFilter:
+      type: object
+      properties:
+        last_n_days:
+          type: integer
+          format: int32
+          description: Target only new users with earliest known activities falling into the window of last N days.
+      description: Filter to target new users only.
+      required:
+      - last_n_days
+    CampaignGoalOptimizeLandingForWebUa:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeLandingForWebUaMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend.
+
+            The rate should be in (0, 2].'
+    CustomAudienceSetCustomAudienceCondition:
+      type: object
+      properties:
+        app_events:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CustomAudienceSetAppEvent'
+        user_lists:
+          type: array
+          items:
+            type: string
+          description: 'IDs of pre-defined CustomerSets.
+
+            IP CustomerSet is not included.'
+        apps:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/CustomAudienceSetApp'
+          description: Matches users by app engagement regardless of event type.
+    messagesDeleteAdGroupErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - AD_GROUP_CANNOT_DELETE_ONLY_CHILD
+      default: ERROR_REASON_UNKNOWN
+      description: ' - AD_GROUP_CANNOT_DELETE_ONLY_CHILD: Cannot delete the specified AdGroup, which is the only child of the Campaign.'
+    messagesDeleteAdGroupError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteAdGroupErrorAPIErrorInfo'
+    commonGender:
+      type: string
+      enum:
+      - UNKNOWN_GENDER
+      - FEMALE
+      - MALE
+      default: UNKNOWN_GENDER
+      description: 'Enumeration of gender types.
+
+
+        This value is not part of the specification.'
+    messagesReadAdGroupErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    AudienceTargetingConditionCoppaAcceptance:
+      type: string
+      enum:
+      - UNKNOWN_COPPA
+      - ACCEPT_COPPA_ONLY
+      - DENY_COPPA
+      default: UNKNOWN_COPPA
+      description: "Indicates whether to bid according to the COPPA(Children's Online Privacy Protection Act)\nvalue of BidRequest.\n\n - UNKNOWN_COPPA: Doesn't filter BidRequest according to the coppa value.\n - ACCEPT_COPPA_ONLY: Bids to BidRequest with coppa=1.\n - DENY_COPPA: Bids to BidRequest with coppa=0 or empty coppa field."
+    commonPostbackEventsCondition:
+      type: object
+      properties:
+        audiences:
+          type: array
+          items:
+            type: string
+          description: Audience name. i.e. app bundle.
+        events:
+          type: array
+          items:
+            type: string
+          description: List of events such as install and purchase.
+        past_time_range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+          description: Past time range for a postback event.
+        past_time_range_unit:
+          $ref: '#/components/schemas/commonTimeUnit'
+          description: 'The unit for past_time_range.
+
+            In PostbackEventsCondition, only DAY and MINUTE are used.'
+        range:
+          $ref: '#/components/schemas/commonTimeInterval'
+          description: Range for a postback event.
+        short_term_user_profile:
+          type: boolean
+          description: If set, short-term user profile information is used to evaluate this condition.
+        count_range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+          description: Accepted range of event count.
+      description: Postback Events Condition.
+    AudienceTargetingConditionMediaChannelType:
+      type: string
+      enum:
+      - UNKNOWN_MEDIA_CHANNEL_TYPE
+      - APP
+      - WEB
+      default: UNKNOWN_MEDIA_CHANNEL_TYPE
+      description: ' - UNKNOWN_MEDIA_CHANNEL_TYPE: This value is not part of the specification.'
+    commonAudienceData:
+      type: object
+      properties:
+        provider:
+          type: string
+          title: Data provider's unique name
+        condition:
+          type: string
+          title: 'SQL like condition statement for filtering powered by qlbridge library.
+
+            Ref. https://github.com/araddon/qlbridge'
+      description: Audience Data. It is a filter based on AudienceData stored in UPT.
+    adclouddspAudience:
+      type: object
+      properties:
+        shared_audience_target_ids:
+          type: array
+          items:
+            type: string
+          description: A list of IDs for the named AudienceTargets referenced by this audience specification.
+        targeting_condition:
+          $ref: '#/components/schemas/dspAudienceTargetingCondition'
+          description: Ad-hoc AudienceTargeting condition constructed for this audience specification only.
+      description: 'Audience is a final form of AudienceTargeting specification.
+
+        It is represented by a list of IDs of SharedAudienceTargets and an ad-hoc target condition.
+
+        All conditions in the audience specification must be met to accept a bid-request.
+
+
+        IDs of the SharedAudienceTargets can be either at global or AdAccount level.'
     dspCampaignGoal:
       type: object
       properties:
@@ -273,186 +809,220 @@ components:
       description: CampaignGoal describes the details of goal of a Campaign.
       required:
       - type
-    messagesDeleteAdGroupErrorAPIErrorInfoErrorReason:
+    commonLatLng:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      description: Point defines a geo location by latitude, longitude.
+    CampaignGoalOptimizeLandingForWebUaMode:
       type: string
       enum:
-      - ERROR_REASON_UNKNOWN
-      - AD_GROUP_CANNOT_DELETE_ONLY_CHILD
-      default: ERROR_REASON_UNKNOWN
-      description: ' - AD_GROUP_CANNOT_DELETE_ONLY_CHILD: Cannot delete the specified AdGroup, which is the only child of the Campaign.'
-    AudienceTargetingConditionLocationFilter:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      default: UNKNOWN_MODE
+    CampaignGoalOptimizeAppInstalls:
       type: object
       properties:
-        cities:
-          type: array
-          items:
-            type: string
-        regions:
-          type: array
-          items:
-            type: string
-        zipcodes:
-          type: array
-          items:
-            type: string
-        geofences:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/commonCircle'
-      description: 'LocationFilter represents a geolocationcal condition using different related conditions.
-
-        The condition will be met if any of the listed conditions is met.'
-    dspAdGroup:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the AdGroup. Automatically set by server on creation.
-        title:
-          type: string
-          description: A descriptive name of the AdGroup.
-        campaign_id:
-          type: string
-          description: ID of the Campaign the AdGroup belongs to.
-          readOnly: true
-        product_id:
-          type: string
-          description: ID of the Product the AdGroup belongs to.
-          readOnly: true
-        ad_account_id:
-          type: string
-          description: ID of the AdAccount the AdGroup belongs to.
-          readOnly: true
-        experiment_id:
-          type: string
-          description: ID of the Experiment the AdGroup is involved in.
-          readOnly: true
-        enabling_state:
-          $ref: '#/components/schemas/commonEnablingState'
-          description: 'Whether this AdGroup is enabled. If the value of this field is unset or set to UNSPECIFIED
-
-            in the AdGroup creation request, it will be set to ENABLED by default by the server.
-
-
-            An active AdGroup can be paused any time by setting this field to DISABLED.'
-        audience:
-          $ref: '#/components/schemas/adclouddspAudience'
-          description: If specified, audience describes AdGroup-level targeting conditions.
-        capper:
-          $ref: '#/components/schemas/adclouddspAdCapper'
-          description: AdGroup wide capper.
-        pricing_model_id:
-          type: string
-          description: PricingModel id.
-          readOnly: true
-        creative_group_ids:
-          type: array
-          items:
-            type: string
-          description: 'CreativeGroup IDs.
-
-            These CreativeGroups'' Product IDs must match the Product ID of the current Campaign.
-
-            A Campaign eligible for serving must have at least one enabled CreativeGroup
-
-            with enabled Creatives.'
-        user_buckets:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/adcloudcommonInterval'
-          description: User buckets for traffic control.
-        audience_extension:
-          $ref: '#/components/schemas/dspAdGroupAudienceExtension'
-          description: AudienceExtension settings for AdGroup.
-        created_at:
-          type: string
-          format: date-time
-          description: Created time.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Last updated time. Should not modify on the client side.
-        aud_size:
-          type: string
-          format: int64
-          description: Original audience size information.
-          readOnly: true
-        matchable_aud_size:
-          type: string
-          format: int64
-          description: Matchable audience size information.
-          readOnly: true
-        last_aud_size_computed_at:
-          type: string
-          format: date-time
-          description: Last updated time of the audience size information.
-          readOnly: true
-      description: AdGroup represents the seed information for a full AdGroup used by bidders.
-      required:
-      - title
-    LocationSetZipCodeSet:
-      type: object
-      properties:
-        zipcodes:
-          type: array
-          items:
-            type: string
-          description: Zipcodes to represent areas to target.
-        country:
-          type: string
-          description: Uppercase Country code in ISO 3166-1 alpha-2.
-    CampaignGoalOptimizeFixedCpm:
-      type: object
-      properties:
-        target_cpm:
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeAppInstallsMode'
+          description: Optimization mode.
+        target_cpi:
           $ref: '#/components/schemas/adcloudcommonMoney'
-          description: Target cost per click in AdAccount-wide currency.
-      description: Detailed configuration of FIXED_CPM_* goal.
-      required:
-      - target_cpm
-    messagesUpdateAdGroupErrorAPIErrorInfo:
+          description: Target cost per install in AdAccount-wide currency. Required when the mode is TARGET_CPI_CENTRIC.
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend. Required when the mode is BUDGET_CENTRIC.
+
+            The rate should be in (0, 2].'
+        margin:
+          type: number
+          format: double
+          description: 'The ratio of the margin for the autopilot to spend. Required when the mode is MARGIN_CENTRIC.
+
+            The rate should be in [-1.0, 1.0].'
+    messagesListAdGroupsErrorAPIErrorInfo:
       type: object
       properties:
         reason:
-          $ref: '#/components/schemas/messagesUpdateAdGroupErrorAPIErrorInfoErrorReason'
+          $ref: '#/components/schemas/messagesListAdGroupsErrorAPIErrorInfoErrorReason'
         error_log_id:
           type: string
         context:
           type: object
           additionalProperties:
             type: string
-    dspCampaignGoalType:
+    AudienceTargetingConditionWeeklyScheduleFilter:
+      type: object
+      properties:
+        timezone_policy:
+          $ref: '#/components/schemas/adcloudcommonTimezonePolicy'
+          description: Timezone Policy to apply.
+        hour_range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+          description: 'Hour range for each day specified below. It''s required and both start and end values
+
+            must be in the range of [0, 23].'
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/adcloudcommonDayOfWeek'
+          description: Days of week to filter on. At least one is required.
+      description: WeeklyScheduleFilter specifies a time range on certain days of a week.
+      required:
+      - days
+    messagesListAdGroupsErrorAPIErrorInfoErrorReason:
       type: string
       enum:
-      - UNKNOWN_TYPE
-      - OPTIMIZE_NONE
-      - FIXED_CPM_FOR_APP_UA
-      - FIXED_CPM_FOR_APP_RE
-      - OPTIMIZE_CPI_FOR_APP_UA
-      - OPTIMIZE_CPA_FOR_APP_UA
-      - OPTIMIZE_CPC_FOR_APP_UA
-      - OPTIMIZE_ROAS_FOR_APP_UA
-      - OPTIMIZE_ROAS_FOR_APP_RE
-      - OPTIMIZE_CPC_FOR_APP_RE
-      - OPTIMIZE_CPC_FOR_WEB_VISIT
-      - OPTIMIZE_APP_INSTALLS
-      - OPTIMIZE_APP_ROAS
-      - OPTIMIZE_CLICKS_TO_WEB
-      - OPTIMIZE_CLICKS_TO_APP
-      - OPTIMIZE_CPA_FOR_APP_RE
-      - OPTIMIZE_RETENTION_FOR_APP_UA
-      - OPTIMIZE_REATTRIBUTION_FOR_APP
-      - OPTIMIZE_CPA_REPEATED_FOR_APP_UA
-      - FIXED_CPM_GENERIC
-      - FIXED_CPM_FOR_CTV
-      - FIXED_CPM_FOR_WEB_VISIT
-      - OPTIMIZE_LANDING_FOR_WEB_UA
-      - OPTIMIZE_CPA_FOR_WEB_UA
-      default: UNKNOWN_TYPE
-      description: "Type enumerates available Campaign goal types.\nCorresponding details to the type must be specified.\n\n - OPTIMIZE_NONE: Goal type for the Campaigns which do not use any of pricing engines.\n - FIXED_CPM_FOR_APP_UA: Goal type for the UA Campaigns which do not use any of pricing engines.\n - FIXED_CPM_FOR_APP_RE: Goal type for the RE Campaigns which do not use any of pricing engines.\n - OPTIMIZE_CPI_FOR_APP_UA: Aim to drive app installs while satisfying the long-term cost per install.\n - OPTIMIZE_CPA_FOR_APP_UA: Aim to drive app installs while satisfying long-term cost per (certain) action.\n - OPTIMIZE_CPC_FOR_APP_UA: Aim to drive app installs while satisfying long-term cost per click.\n - OPTIMIZE_ROAS_FOR_APP_UA: Aim to drive app installs while satisfying long-term return on advertising spend (ROAS).\n - OPTIMIZE_ROAS_FOR_APP_RE: Aim to drive the user re-engagements while satisfying long-term return on advertising spend (ROAS).\n - OPTIMIZE_CPC_FOR_APP_RE: Aim to drive the user re-engagements while satisfying long-term cost per click.\n - OPTIMIZE_CPC_FOR_WEB_VISIT: Aim to drive the web-site visit while satisfying long-term cost per click.\n - OPTIMIZE_APP_INSTALLS: Deprecated. Aim to drive app installs while satisfying long-term cost per install.\n - OPTIMIZE_APP_ROAS: Deprecated. Aim to drive certain in-app actions while satisfying long-term return on advertising spend (ROAS).\n - OPTIMIZE_CLICKS_TO_WEB: Deprecated. Aim to drive clicks for web-site Product while satisfying long-term cost per click.\n - OPTIMIZE_CLICKS_TO_APP: Deprecated. Aim to drive clicks for web-site Product while satisfying long-term cost per click.\n - OPTIMIZE_CPA_FOR_APP_RE: Aim to drive the user re-engagements while satisfying long-term cost per (certain) action.\n - OPTIMIZE_RETENTION_FOR_APP_UA: Aim to drive the user retention.\n - OPTIMIZE_REATTRIBUTION_FOR_APP: Aim to drive user's app reattribution.\n - OPTIMIZE_CPA_REPEATED_FOR_APP_UA: Aim to drive app installs while satisfying long-term cost per (certain) action - repeated count.\n - FIXED_CPM_GENERIC: Default goal type for generic fixed-cpm. Fixed cpm with budget-pacing option is given.\n - FIXED_CPM_FOR_CTV: Default goal type for CTV. Fixed cpm with budget-pacing option is given.\n - FIXED_CPM_FOR_WEB_VISIT: Goal type for the WEB_VISIT Campaigns which do not use any of pricing engines.\n - OPTIMIZE_LANDING_FOR_WEB_UA: Goal type for optimizing landing event for web user acquisition campaign.\n - OPTIMIZE_CPA_FOR_WEB_UA: Goal type for optimizing cost per action for web user acquisition campaign."
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    CampaignGoalOptimizeAppReattribution:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeAppReattributionMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend.
+
+            The rate should be in (0, 2].'
+      description: Detailed configuration of OPTIMIZE_REATTRIBUTION_FOR_APP goal.
+    adclouddspAdCapper:
+      type: object
+      properties:
+        imp_interval:
+          $ref: '#/components/schemas/commonTimeDuration'
+          description: 'Cooling time interval between impressions to a user.
+
+            If not specified, the API set the default value of 1 hour.'
+      description: AdCapper represents capping settings for an AdGroup.
+    adcloudcommonInterval:
+      type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+        end:
+          type: integer
+          format: int32
+      description: Interval represents a contiguous integer range [start, end).
+    commonPostbackEventCount:
+      type: object
+      properties:
+        app_bundle:
+          type: string
+        range:
+          $ref: '#/components/schemas/adcloudcommonInterval'
+        events:
+          type: array
+          items:
+            type: string
+      description: Postback Event Count. It specifies an interval for a list of events from an app bundle.
+    AudienceTargetingConditionLocationSet:
+      type: object
+      properties:
+        osm_ids:
+          type: array
+          items:
+            type: string
+            format: int64
+          description: OpenStreetMap IDs to represent areas to target.
+        zipcodes:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/LocationSetZipCodeSet'
+      description: 'LocationSet represents target areas to allow or block. If multiple fields are set, a union of them is
+
+        used.'
+    CampaignGoalOptimizeClicksToApp:
+      type: object
+      properties:
+        target_cpc:
+          $ref: '#/components/schemas/adcloudcommonMoney'
+          description: 'Target cost per click in AdAccount-wide currency.
+
+            Required when the mode is TARGET_CPC_CENTRIC.'
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeClicksToAppMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'Budget-centric uses one ratio of daily budget for the autopilot to spend. It''s only for DCPM.
+
+            Required when the mode is BUDGET_CENTRIC.
+
+            Its rate should be in (0, 2].'
+      description: Detailed configuration of OPTIMIZE_CPC_FOR_APP_UA goal.
+    commonTimeInterval:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+          description: Start time in RFC3339 format, e.g. "2017-04-01T12:34:56+00:00".
+        end:
+          type: string
+          format: date-time
+          description: End time in RFC3339 format, e.g. "2017-05-01-T21:09:08+00:00".
+      description: Interval with start and end timestamps in RFC3339 format.
+    CampaignGoalOptimizeAppRetentionMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      - MARGIN_CENTRIC
+      default: UNKNOWN_MODE
+    CampaignGoalOptimizeAppRoasMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      - MARGIN_CENTRIC
+      - TARGET_PRIMARY_KPI_CENTRIC
+      default: UNKNOWN_MODE
+    adcloudcommonFloatingPointRange:
+      type: object
+      properties:
+        start:
+          type: number
+          format: double
+        end:
+          type: number
+          format: double
+    CustomAudienceSetAppEvent:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: The ID of the Product of which PostbackIntegration info is used.
+        event:
+          type: string
+          description: A case-sensitive string name of an event. (e.g. install, purchase).
+        sliding_window_duration:
+          $ref: '#/components/schemas/commonTimeDuration'
+          description: The duration of time for which this condition is effective before now.
+    adcloudcommonEventType:
+      type: string
+      enum:
+      - UNKNOWN_EVENT_TYPE
+      - BID_MADE
+      - BID_WON
+      - IMPRESSION
+      - IMPRESSION_EXTRA
+      - CLICK
+      - INSTALL
+      - CUSTOM
+      default: UNKNOWN_EVENT_TYPE
+      description: "Enumeration of event types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - BID_MADE: A bid has been made for a bid request.\n - BID_WON: The bid has won the auction.\n - IMPRESSION: The ad impression has been served to the user.\n - IMPRESSION_EXTRA: Extra ad impression tracking info, e.g. 50% of a video ad has been shown.\n - CLICK: The ad has been clicked by the user.\n - INSTALL: The ad impression or click has been attributed with an app install.\n - CUSTOM: Custom actions that happen after install."
     CampaignGoalOptimizeAppRoas:
       type: object
       properties:
@@ -499,1111 +1069,58 @@ components:
             The rate should be in [-1.0, 1.0].'
       required:
       - revenue_actions
-    messagesCreateAdGroupErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - AD_GROUP_PRICING_MODEL_NOT_SUPPORTED_FOR_CAMPAIGN_TYPE
-      - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM
-      - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN
-      default: ERROR_REASON_UNKNOWN
-      description: " - AD_GROUP_PRICING_MODEL_NOT_SUPPORTED_FOR_CAMPAIGN_TYPE: unsupported pricing model id for direct sold ad or house ad.\n - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM: AdGroup has duplicated targeting ad platform.\n - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN: AdGroup's targeting ad platforms should be subset of campaign's."
-    messagesListAdGroupsErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesListAdGroupsErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    adcloudcommonFloatingPointRange:
-      type: object
-      properties:
-        start:
-          type: number
-          format: double
-        end:
-          type: number
-          format: double
-    CampaignGoalOptimizeAppReattributionMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      default: UNKNOWN_MODE
-    commonTimeDuration:
-      type: object
-      properties:
-        amount:
-          type: string
-          format: int64
-        unit:
-          $ref: '#/components/schemas/commonTimeUnit'
-      description: Represents a time duration with an amount and a unit.
-    CustomAudienceSetAppEvent:
-      type: object
-      properties:
-        product_id:
-          type: string
-          description: The ID of the Product of which PostbackIntegration info is used.
-        event:
-          type: string
-          description: A case-sensitive string name of an event. (e.g. install, purchase).
-        sliding_window_duration:
-          $ref: '#/components/schemas/commonTimeDuration'
-          description: The duration of time for which this condition is effective before now.
-    commonDeviceType:
-      type: string
-      enum:
-      - UNKNOWN_DEVICE_TYPE
-      - MOBILE
-      - PERSONAL_COMPUTER
-      - CONNECTED_TV
-      - HIGHEND_PHONE
-      - TABLET
-      - CONNECTED_DEVICE
-      - SET_TOP_BOX
-      default: UNKNOWN_DEVICE_TYPE
-      description: 'Enumeration of device types supported by Moloco Ads.
-
-
-        This value is not part of the specification.'
-    adclouddspAudience:
-      type: object
-      properties:
-        shared_audience_target_ids:
-          type: array
-          items:
-            type: string
-          description: A list of IDs for the named AudienceTargets referenced by this audience specification.
-        targeting_condition:
-          $ref: '#/components/schemas/dspAudienceTargetingCondition'
-          description: Ad-hoc AudienceTargeting condition constructed for this audience specification only.
-      description: 'Audience is a final form of AudienceTargeting specification.
-
-        It is represented by a list of IDs of SharedAudienceTargets and an ad-hoc target condition.
-
-        All conditions in the audience specification must be met to accept a bid-request.
-
-
-        IDs of the SharedAudienceTargets can be either at global or AdAccount level.'
-    commonDeviceOs:
-      type: string
-      enum:
-      - UNKNOWN_DEVICE_OS
-      - ANDROID
-      - IOS
-      - VERSATILE
-      - MOBILE_WEB
-      - MACOS
-      - WINDOWS
-      - NEXT_VERSATILE
-      default: UNKNOWN_DEVICE_OS
-      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
-    messagesListAdGroupsErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    commonAdExchange:
-      type: string
-      enum:
-      - UNKNOWN_AD_EXCHANGE
-      - MOPUB
-      - ADX
-      - ADMIXER
-      - SMAATO
-      - RUBICON
-      - EXELBID
-      - BRIGHTROLL
-      - CAULYRTB
-      - ADLIB
-      - ORION
-      - MOLOCO
-      - ADOP
-      - APPLOVIN
-      - FYBER
-      - SAMSUNG
-      - ADCOLONY
-      - POLYMORPH
-      - CHARTBOOST
-      - MANPLUS
-      - KAKAO
-      - UNITY
-      - FYBERCORE
-      - ADGENERATION
-      - SAMSUNGPAY
-      - NHN
-      - ADPOPCORN
-      - OPENX
-      - VUNGLE
-      - ADALPHA
-      - BYTEDANCE
-      - NAVER
-      - INMOBI
-      - SIGNALPLAY
-      - ACUITY
-      - IRONSOURCE
-      - PUBMATIC
-      - BAIDU
-      - FLUCT
-      - FIVE
-      - APPODEAL
-      - ADPIE
-      - MOBILITYWARE
-      - TPMN
-      - PUBNATIVE
-      - TAPJOY
-      - MOMENTO
-      - BIDENCE
-      - APS
-      - INDEX
-      - IQZONE
-      - STARTIO
-      - FLOWER
-      - ONESTORE
-      - NIMBUS
-      - AEQUUS
-      - MCTV
-      - MINTEGRAL
-      - MOLOCO_SDK_APPLOVIN
-      - MOLOCO_SDK_IRONSOURCE
-      - PANGLE
-      - MAGNITE
-      - MOLOCO_SDK_X3MADS
-      - FREE_WHEEL
-      - MOLOCO_SDK_ADMOB
-      - ADX_RTB
-      - XIAOMI
-      - MOLOCO_SDK_CREATIVE_TEST
-      - MOLOCO_SDK_MAX
-      - MOLOCO_SDK_LEVELPLAY
-      - NEXXEN
-      - MOLOCO_SDK_ADMOB_MEDIATION
-      - MOLOCO_SDK
-      - MOLOCO_SDK_IN_HOUSE_MEDIATION
-      - TABOOLA
-      - CRITEO
-      - MOLOCO_SDK_DIRECT_AD
-      - APX1
-      - DIRECT_AD
-      - BIGO
-      - CAS
-      - TUBI
-      default: UNKNOWN_AD_EXCHANGE
-      description: "Enumeration of ad exchanges supported by Moloco Ads.\n\n - SIGNALPLAY: MANPLUS == SIGNALPLAY. just added for distinguishing video and banner report\n - MOLOCO_SDK: Used for a consolidated MOLOCO SDK exchange.\n - APX1: APX1 is LINE's anonymized exchange name (renamed from LINE - no production traffic, direct replacement)"
-    messagesListAdGroupsResponse:
-      type: object
-      properties:
-        ad_groups:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspAdGroup'
-          description: 'The list of AdGroups.
-
-            This field is valid if the inquiry_option of the request is UNKNOWN_INQUIRY_OPTION or INQUIRY_ENTITY or INQUIRY_ALL.
-
-            If campaign_id is specified in request, it returns the list of AdGroups under that Campaign.
-
-            If product_id is specified in request, it returns the list of AdGroups under that Product.'
-        ad_group_overviews:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspAdGroupOverview'
-          description: 'The list of the AdGroup overview information
-
-            This field is valid if the inquiry_option of the request is INQUIRY_OVERVIEW or INQUIRY_ALL.'
-    CampaignGoalOptimizeClicksToAppMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      - TARGET_CPC_CENTRIC
-      default: UNKNOWN_MODE
-    adcloudcommonCurrency:
-      type: string
-      enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      default: UNKNOWN_CURRENCY
-      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
-    commonTimeUnit:
-      type: string
-      enum:
-      - UNKNOWN_TIME_UNIT
-      - MINUTE
-      - HOUR
-      - DAY
-      - WEEK
-      default: UNKNOWN_TIME_UNIT
-      description: 'A unit of time, e.g. second, minute, etc.
-
-
-        This value is not part of the specification.'
-    CampaignGoalOptimizeCpcForAppReMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      - TARGET_CPC_CENTRIC
-      default: UNKNOWN_MODE
-    AudienceTargetingConditionPlacementReason:
-      type: string
-      enum:
-      - UNKNOWN_PLACEMENT_REASON
-      - REASON_BRAND_SAFETY
-      - REASON_PERFORMANCE_IMPROVEMENT
-      - REASON_AGE_RESTRICTION
-      - REASON_FRAUD
-      - REASON_OWN_APP_CROSS_PROMOTION_BLOCKING
-      - REASON_NOT_OPERATING_IN_A_SPECIFIC_LOCATION
-      - REASON_INCREMENTALITY_TESTING
-      - REASON_OTHER
-      default: UNKNOWN_PLACEMENT_REASON
-      description: The reason of the placement. It is used to track the reason why customers set the allowed or blocked app's.
-    CampaignGoalOptimizeAppInstallsMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - TARGET_CPI_CENTRIC
-      - BUDGET_CENTRIC
-      - MARGIN_CENTRIC
-      - FIXED
-      default: UNKNOWN_MODE
-      description: ' - FIXED: Read-only for AdCloud.'
-    messagesCreateAdGroupError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesCreateAdGroupErrorAPIErrorInfo'
-    CampaignGoalOptimizeClicksToWebMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      - TARGET_CPC_CENTRIC
-      default: UNKNOWN_MODE
-    dspAdGroupOverview:
-      type: object
-      properties:
-        ad_group:
-          $ref: '#/components/schemas/dspAdGroup'
-          description: The retrieved AdGroup.
-        campaign_id:
-          type: string
-          description: ID of the Campaign.
-        campaign_title:
-          type: string
-          description: Title of the Campaign.
-        campaign_description:
-          type: string
-          description: Description of the Campaign.
-        campaign_state:
-          $ref: '#/components/schemas/dspCampaignState'
-          description: State of the Campaign.
-        campaign_type:
-          $ref: '#/components/schemas/dspCampaignType'
-          description: Type of the Campaign.
-        campaign_goal:
-          $ref: '#/components/schemas/dspCampaignGoal'
-          description: Goal of the Campaign.
-        campaign_countries:
-          type: array
-          items:
-            type: string
-          description: The countries of the Campaign.
-        campaign_schedule:
-          $ref: '#/components/schemas/commonTimeInterval'
-          description: Schedule of the Campaign.
-        campaign_auto_delete_at:
-          type: string
-          format: date-time
-          description: Auto delete timestamp of the Campaign.
-          readOnly: true
-        product_id:
-          type: string
-          description: ID of the Product.
-        product_title:
-          type: string
-          description: Title of the Product.
-      description: AdGroupOverview is an overview information of AdGroup entity.
-    CampaignGoalOptimizeAppRetentionMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      - MARGIN_CENTRIC
-      default: UNKNOWN_MODE
-    commonAudienceData:
-      type: object
-      properties:
-        provider:
-          type: string
-          title: Data provider's unique name
-        condition:
-          type: string
-          title: 'SQL like condition statement for filtering powered by qlbridge library.
-
-            Ref. https://github.com/araddon/qlbridge'
-      description: Audience Data. It is a filter based on AudienceData stored in UPT.
-    CampaignGoalOptimizeAppReattribution:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeAppReattributionMode'
-          description: Optimization mode.
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend.
-
-            The rate should be in (0, 2].'
-      description: Detailed configuration of OPTIMIZE_REATTRIBUTION_FOR_APP goal.
-    CampaignGoalOptimizeAppRoasMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      - MARGIN_CENTRIC
-      - TARGET_PRIMARY_KPI_CENTRIC
-      default: UNKNOWN_MODE
-    dspAdGroupAudienceExtension:
-      type: object
-      properties:
-        paired_ad_group_id:
-          type: string
-          description: Audience extension paired ad group id.
-        is_secondary:
-          type: boolean
-          description: True for the secondary ad_group, otherwise false.
-      description: AdGroupAudienceExtension holds the ad_group settings for PAS audience extension.
-      readOnly: true
-    AudienceTargetingConditionMediaChannelType:
-      type: string
-      enum:
-      - UNKNOWN_MEDIA_CHANNEL_TYPE
-      - APP
-      - WEB
-      default: UNKNOWN_MEDIA_CHANNEL_TYPE
-      description: ' - UNKNOWN_MEDIA_CHANNEL_TYPE: This value is not part of the specification.'
-    messagesUpdateAdGroupResponse:
-      type: object
-      properties:
-        ad_group:
-          $ref: '#/components/schemas/dspAdGroup'
-          description: The updated AdGroup data.
-    commonLatLng:
-      type: object
-      properties:
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      description: Point defines a geo location by latitude, longitude.
-    commonDisplayManagerVersion:
-      type: object
-      properties:
-        min:
-          type: string
-        max:
-          type: string
-      description: Display Manager Version.
-    CampaignGoalOptimizeCpaForAppRe:
-      type: object
-      properties:
-        action:
-          type: string
-          description: 'In-app action events the AdAccount wants to optimize.
-
-
-            Remarkable notes:
-
-            - Case-sensitive as specified in the post-back from MMP.'
-        reengagement_action:
-          type: string
-          description: 'Re-engagement action to measure re-engaging a user. This action is
-
-            also used as a cohort base action.'
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeCpaForAppReMode'
-          description: Optimization mode.
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend.
-
-            Required when the mode is BUDGET_CENTRIC.
-
-            The rate should be in (0, 2].'
-      description: Detailed configuration of OPTIMIZE_CPA_FOR_APP_RE goal.
-      required:
-      - action
-    dspCampaignState:
-      type: string
-      enum:
-      - UNKNOWN_CAMPAIGN_STATE
-      - SUBMITTED
-      - READY
-      - UPCOMING
-      - ACTIVE
-      - PAUSED
-      - SUSPENDED
-      - COMPLETED
-      default: UNKNOWN_CAMPAIGN_STATE
-      description: "CampaignState represents various states of a Campaign.\n\nThis value is not part of the specification.\n\n - SUBMITTED: All the required data are entered and passed all the validation. It's eligible\nto be reviewed by Moloco for activation.\n - READY: Campaign is before schedule and internally ready but disabled.\nWill transit to PAUSED when it becomes on schdule.\n - UPCOMING: Campaign is before schedule and internally ready and disabled.\nWill transit to ACTIVE when it becomes on schdule.\n - ACTIVE: Campaign is on schedule and spending the budget.\n - PAUSED: Campaign is paused and not spending the budget.\n - SUSPENDED: Campaign activation is suspended by the system for the following reasons:\n- App has been found to be in violation of Moloco's creative policy.\n - COMPLETED: Campaign is completed but may still get attributions for some time."
-    AudienceTargetingConditionCustomAudienceSet:
-      type: object
-      properties:
-        include_having_all:
-          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
-          description: 'This will include a customer only if all of the listed conditions are satisfied.
-
-            Note that it is not allowed to set include_having_all and include_having_any at the same time.'
-        include_having_any:
-          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
-          description: This will include a customer if at least one condition from the listed conditions is satisfied.
-        exclude_having_all:
-          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
-          description: 'This will exclude a customer only if all of the listed conditions are satisfied.
-
-            Note that it is not allowed to set exclude_having_all and exclude_having_any at the same time.'
-        exclude_having_any:
-          $ref: '#/components/schemas/CustomAudienceSetCustomAudienceCondition'
-          description: This will exclude a customer if at least one condition from the listed conditions is satisfied.
-      description: 'CustomAudienceSet represents a group of target users to whom we''re going to show an ad.
-
-        CustomAudienceSet is consist of a dynamic (not pre-determined)
-
-        set of target users based on App-events described in the postback messages
-
-        and pre-defined CustomerSets.'
-    commonPostbackEventsCondition:
-      type: object
-      properties:
-        audiences:
-          type: array
-          items:
-            type: string
-          description: Audience name. i.e. app bundle.
-        events:
-          type: array
-          items:
-            type: string
-          description: List of events such as install and purchase.
-        past_time_range:
-          $ref: '#/components/schemas/adcloudcommonInterval'
-          description: Past time range for a postback event.
-        past_time_range_unit:
-          $ref: '#/components/schemas/commonTimeUnit'
-          description: 'The unit for past_time_range.
-
-            In PostbackEventsCondition, only DAY and MINUTE are used.'
-        range:
-          $ref: '#/components/schemas/commonTimeInterval'
-          description: Range for a postback event.
-        short_term_user_profile:
-          type: boolean
-          description: If set, short-term user profile information is used to evaluate this condition.
-        count_range:
-          $ref: '#/components/schemas/adcloudcommonInterval'
-          description: Accepted range of event count.
-      description: Postback Events Condition.
-    CampaignGoalOptimizeClicksToApp:
-      type: object
-      properties:
-        target_cpc:
-          $ref: '#/components/schemas/adcloudcommonMoney'
-          description: 'Target cost per click in AdAccount-wide currency.
-
-            Required when the mode is TARGET_CPC_CENTRIC.'
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeClicksToAppMode'
-          description: Optimization mode.
-        rate:
-          type: number
-          format: double
-          description: 'Budget-centric uses one ratio of daily budget for the autopilot to spend. It''s only for DCPM.
-
-            Required when the mode is BUDGET_CENTRIC.
-
-            Its rate should be in (0, 2].'
-      description: Detailed configuration of OPTIMIZE_CPC_FOR_APP_UA goal.
-    adcloudcommonEventType:
-      type: string
-      enum:
-      - UNKNOWN_EVENT_TYPE
-      - BID_MADE
-      - BID_WON
-      - IMPRESSION
-      - IMPRESSION_EXTRA
-      - CLICK
-      - INSTALL
-      - CUSTOM
-      default: UNKNOWN_EVENT_TYPE
-      description: "Enumeration of event types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - BID_MADE: A bid has been made for a bid request.\n - BID_WON: The bid has won the auction.\n - IMPRESSION: The ad impression has been served to the user.\n - IMPRESSION_EXTRA: Extra ad impression tracking info, e.g. 50% of a video ad has been shown.\n - CLICK: The ad has been clicked by the user.\n - INSTALL: The ad impression or click has been attributed with an app install.\n - CUSTOM: Custom actions that happen after install."
-    CampaignGoalOptimizeClicksToWeb:
-      type: object
-      properties:
-        target_cpc:
-          $ref: '#/components/schemas/adcloudcommonMoney'
-          description: 'Target cost per click in AdAccount-wide currency.
-
-            Required when the mode is TARGET_CPC_CENTRIC.'
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeClicksToWebMode'
-          description: Optimization mode.
-        rate:
-          type: number
-          format: double
-          description: 'Budget-centric uses one ratio of daily budget for the autopilot to spend. It''s only for DCPM.
-
-            Required when the mode is BUDGET_CENTRIC.
-
-            Its rate should be in (0, 2].'
-      description: Detailed configuration of OPTIMIZE_CPC_FOR_WEB_VISIT goal.
-    dspCampaignType:
-      type: string
-      enum:
-      - UNKNOWN_CAMPAIGN_TYPE
-      - GENERIC
-      - APP_USER_ACQUISITION
-      - APP_REENGAGEMENT
-      - WEBSITE_VISIT
-      - CTV_GENERIC
-      - CTV_APP_USER_ACQUISITION
-      - WEB_USER_ACQUISITION
-      - CTV_WEBSITE_VISIT
-      - WEB_RETARGETING
-      default: UNKNOWN_CAMPAIGN_TYPE
-      description: "CampaignType represents the type of a Campaign.\nIt captures the goal of the Campaign at a high level.\n\nThis value is not part of the specification.\n\n - GENERIC: Campaign is for generic purpose (only for legacy Campaigns).\n - APP_USER_ACQUISITION: The goal of the Campaign is to drive app user acquisitions.\n - APP_REENGAGEMENT: The goal of the Campaign is to drive app reengagement.\n - WEBSITE_VISIT: The goal of the Campaign is to drive website visits.\n - CTV_GENERIC: Campaign is for the general CTV ad.\n - CTV_APP_USER_ACQUISITION: Campaign is for the mobile app install CTV ad.\n - WEB_USER_ACQUISITION: The goal of the Campaign is to drive web user acquisitions.\nOriginally, this was used for APP to WEB user acquisition. However,\nit is now also used for WEB to WEB user acquisition.\n - CTV_WEBSITE_VISIT: Campaign is for the website visit CTV ad.\n - WEB_RETARGETING: The goal of the Campaign is to drive web retargeting.\nCurrently, this is used for WEB to WEB retargeting."
-    commonEnablingState:
-      type: string
-      enum:
-      - UNSPECIFIED
-      - ENABLED
-      - DISABLED
-      default: UNSPECIFIED
-      description: Enumeration of the enabling states with a default UNSPECIFIED state.
-    adclouddspAdCapper:
-      type: object
-      properties:
-        imp_interval:
-          $ref: '#/components/schemas/commonTimeDuration'
-          description: 'Cooling time interval between impressions to a user.
-
-            If not specified, the API set the default value of 1 hour.'
-      description: AdCapper represents capping settings for an AdGroup.
-    messagesDeleteAdGroupResponse:
-      type: object
-    CampaignGoalOptimizeLandingForWebUa:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeLandingForWebUaMode'
-          description: Optimization mode.
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend.
-
-            The rate should be in (0, 2].'
-    messagesReadAdGroupErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesReadAdGroupErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    commonPostbackEventCount:
-      type: object
-      properties:
-        app_bundle:
-          type: string
-        range:
-          $ref: '#/components/schemas/adcloudcommonInterval'
-        events:
-          type: array
-          items:
-            type: string
-      description: Postback Event Count. It specifies an interval for a list of events from an app bundle.
-    CampaignGoalOptimizeCpaForAppUaMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      - MARGIN_CENTRIC
-      - TARGET_PRIMARY_KPI_CENTRIC
-      default: UNKNOWN_MODE
-    CampaignGoalOptimizeCpaForWebUaMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      default: UNKNOWN_MODE
-    CampaignGoalOptimizeLandingForWebUaMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      default: UNKNOWN_MODE
-    messagesCreateAdGroupErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesCreateAdGroupErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesReadAdGroupErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    AudienceTargetingConditionDeviceOsFilter:
-      type: object
-      properties:
-        os:
-          $ref: '#/components/schemas/commonDeviceOs'
-          description: Device OS.
-        min_version:
-          type: string
-        max_version:
-          type: string
-      description: Device OS and version filter condition.
-      required:
-      - os
-    CampaignGoalOptimizeAppInstalls:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeAppInstallsMode'
-          description: Optimization mode.
-        target_cpi:
-          $ref: '#/components/schemas/adcloudcommonMoney'
-          description: Target cost per install in AdAccount-wide currency. Required when the mode is TARGET_CPI_CENTRIC.
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend. Required when the mode is BUDGET_CENTRIC.
-
-            The rate should be in (0, 2].'
-        margin:
-          type: number
-          format: double
-          description: 'The ratio of the margin for the autopilot to spend. Required when the mode is MARGIN_CENTRIC.
-
-            The rate should be in [-1.0, 1.0].'
-    messagesDeleteAdGroupErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesDeleteAdGroupErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    commonBannerApi:
-      type: string
-      enum:
-      - UNKNOWN_BANNER_API
-      - MRAID_2
-      default: UNKNOWN_BANNER_API
-      title: Banner API
-    adcloudcommonTimezonePolicy:
-      type: string
-      enum:
-      - UNKNOWN_TIME
-      - DEVICE_TIME
-      - UTC_TIME
-      - AD_ACCOUNT_TIME
-      - ADVERTISER_TIME
-      default: UNKNOWN_TIME
-      description: "TimezonePolicy defines the time configuration.\n\n - DEVICE_TIME: Time object is given in the device's time (depends on user device timezone).\n - UTC_TIME: Time object is given in the fixed UTC time (depends on nothing).\n - AD_ACCOUNT_TIME: Given time is given in fixed ad account time (depends on ad account timezone)."
-    CampaignGoalOptimizeCpcForAppRe:
-      type: object
-      properties:
-        target_cpc:
-          $ref: '#/components/schemas/adcloudcommonMoney'
-          description: 'Target cost per click in AdAccount-wide currency.
-
-            Required when the mode is TARGET_CPC_CENTRIC.'
-        reengagement_action:
-          type: string
-          description: 'Re-engagement action to measure re-engaging a user. This action is
-
-            also used as a cohort base action.'
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeCpcForAppReMode'
-          description: Optimization mode.
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend.
-
-            The rate should be in (0, 2].
-
-            Required when the mode is BUDGET_CENTRIC.'
-      description: Detailed configuration of OPTIMIZE_CPC_FOR_APP_RE goal.
-    AudienceTargetingConditionSkanTraffic:
-      type: string
-      enum:
-      - UNKNOWN_SKAN
-      - TARGET_SKAN_ONLY
-      - TARGET_NON_SKAN
-      default: UNKNOWN_SKAN
-      description: "Indicates whether to bid according to bid requests that support SKAN(SKAdNetwork) or not.\n\n - UNKNOWN_SKAN: Doesn't filter BidRequest according to support skan or not in this filter.\n - TARGET_SKAN_ONLY: Bids only for skan support traffic.\n - TARGET_NON_SKAN: Bids only for non-skan traffic."
-    messagesListAdGroupsError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesListAdGroupsErrorAPIErrorInfo'
-    commonTagsThrottleCondition:
-      type: object
-      properties:
-        tags:
-          type: array
-          items:
-            type: string
-        throttle_rate:
-          type: number
-          format: float
-      description: 'Tags Thrrottle Condition. It specifies a throttle rate for a list of tags.
-
-        All the tags in a list will have same throttle rate.'
-    CampaignGoalOptimizeFixedCpmPacingPacingMode:
-      type: string
-      enum:
-      - NONE
-      - BY_FREQUENCY
-      default: NONE
-      description: Force pacing option.
-    CustomAudienceSetApp:
-      type: object
-      properties:
-        product_id:
-          type: string
-          description: The ID of the Product.
-        sliding_window_duration:
-          $ref: '#/components/schemas/commonTimeDuration'
-          description: The duration of time for which this condition is effective before now.
-      description: 'App matches a user based on app engagement within a time window.
-
-        Use AppEvent when targeting a specific event by name.'
-    AudienceTargetingConditionRecentCampaignActivityFilter:
-      type: object
-      properties:
-        event:
-          $ref: '#/components/schemas/adcloudcommonEventType'
-          description: Event type for the Campaign activities to filter on.
-        campaign_id:
-          type: string
-          description: ID of the Campaign to filter on.
-        last_n_days:
-          type: integer
-          format: int32
-          description: Target only new users with earliest known activities falling into the window of last N days.
-      description: Recent Campaign activities for the targeted user.
-      required:
-      - event
-      - campaign_id
-      - last_n_days
-    commonAdvertiserIdType:
-      type: string
-      enum:
-      - UNKNOWN_ADVERTISER_ID_TYPE
-      - ANDROID_IDFA
-      - IOS_IDFA
-      - GENERIC_USER_ID
-      - GENERIC_DEVICE_ID
-      - ANDROID_LAT_IDFA
-      - IOS_LAT_IDFA
-      default: UNKNOWN_ADVERTISER_ID_TYPE
-      description: "Enumeration of supported ID types for advertises.\n\nThis value is not part of the specification.\n\n - ANDROID_IDFA: IDFA used in Android.\n - IOS_IDFA: IDFA used in iOS.\n - GENERIC_USER_ID: This is used when IDFA is unavailable and an alternative user id is available.\nFor example, Google's adid is used for mobile web inventories.\n - GENERIC_DEVICE_ID: This is used when IDFA is unavailable and an alternative device id is available.\nFor example, Mopub sends out device id in some apps.\n - ANDROID_LAT_IDFA: infra-generating IDFA used for Android LAT devices\n - IOS_LAT_IDFA: infra-generating IDFA used for iOS LAT devices"
-    dspAudienceTargetingConditionVideoType:
-      type: string
-      enum:
-      - UNKNOWN_VIDEO_TYPE
-      - REWARD_VIDEO
-      - NON_REWARD_VIDEO
-      - NON_VIDEO
-      default: UNKNOWN_VIDEO_TYPE
-      description: This value is not part of the specification.
-    messagesUpdateAdGroupError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesUpdateAdGroupErrorAPIErrorInfo'
-    messagesCreateAdGroupResponse:
-      type: object
-      properties:
-        ad_group:
-          $ref: '#/components/schemas/dspAdGroup'
-          description: Created AdGroup data.
-    CampaignGoalOptimizeAppRetention:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeAppRetentionMode'
-          description: Optimization mode.
-        target_cpi:
-          $ref: '#/components/schemas/adcloudcommonMoney'
-          description: 'Target cost per install in AdAccount-wide currency.
-
-            Required when the mode is BUDGET_CENTRIC and rate is unset.'
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend.
-
-            Required when the mode is BUDGET_CENTRIC and target_cpi is unset.
-
-            The rate should be in (0, 2].'
-        margin:
-          type: number
-          format: double
-          description: 'The ratio of the margin for the autopilot to spend.
-
-            Required when the mode is MARGIN_CENTRIC.
-
-            The rate should be in [-1.0, 1.0].'
-      description: Detailed configuration of OPTIMIZE_RETENTION_FOR_APP_UA goal.
-    messagesUpdateAdGroupErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM
-      - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN
-      default: ERROR_REASON_UNKNOWN
-      description: " - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM: AdGroup has duplicated targeting ad platform.\n - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN: AdGroup's targeting ad platforms should be subset of campaign's."
-    AudienceTargetingConditionCoppaAcceptance:
-      type: string
-      enum:
-      - UNKNOWN_COPPA
-      - ACCEPT_COPPA_ONLY
-      - DENY_COPPA
-      default: UNKNOWN_COPPA
-      description: "Indicates whether to bid according to the COPPA(Children's Online Privacy Protection Act)\nvalue of BidRequest.\n\n - UNKNOWN_COPPA: Doesn't filter BidRequest according to the coppa value.\n - ACCEPT_COPPA_ONLY: Bids to BidRequest with coppa=1.\n - DENY_COPPA: Bids to BidRequest with coppa=0 or empty coppa field."
-    adcloudcommonInterval:
-      type: object
-      properties:
-        start:
-          type: integer
-          format: int32
-        end:
-          type: integer
-          format: int32
-      description: Interval represents a contiguous integer range [start, end).
-    CampaignGoalOptimizeCpaForWebUa:
-      type: object
-      properties:
-        action:
-          type: string
-          description: 'Web action events having revenue value the AdAccount wants to achieve.
-
-
-            Remarkable notes:
-
-            - Case-sensitive as specified in the post-back from MMP.
-
-            Note(jiyeon): Currently, we optimize `install` events regardless of this action.'
-        mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeCpaForWebUaMode'
-          description: Optimization mode.
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend.
-
-            The rate should be in (0, 2].'
-      required:
-      - action
-    messagesDeleteAdGroupError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesDeleteAdGroupErrorAPIErrorInfo'
-    AudienceTargetingConditionLocationSet:
-      type: object
-      properties:
-        osm_ids:
-          type: array
-          items:
-            type: string
-            format: int64
-          description: OpenStreetMap IDs to represent areas to target.
-        zipcodes:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/LocationSetZipCodeSet'
-      description: 'LocationSet represents target areas to allow or block. If multiple fields are set, a union of them is
-
-        used.'
     CampaignGoalOptimizeCpaForAppReMode:
       type: string
       enum:
       - UNKNOWN_MODE
       - BUDGET_CENTRIC
       default: UNKNOWN_MODE
-    CampaignGoalOptimizeFixedCpmPacing:
+    messagesUpdateAdGroupErrorAPIErrorInfo:
       type: object
       properties:
-        target_cpm:
-          $ref: '#/components/schemas/adcloudcommonMoney'
-          description: Target cpm in USD currency (Not in AdAccount currency).
-        pacing_mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeFixedCpmPacingPacingMode'
-        rate:
-          type: number
-          format: double
-          description: 'Budget consume rate.
-
-            The rate should be in (0, 2].'
-      description: 'General fixed-cpm goal with pacing option.
-
-        Currently for FIXED_CPM_FOR_CTV and FIXED_CPM_GENERIC.'
-      required:
-      - target_cpm
-    AudienceTargetingConditionWeeklyScheduleFilter:
-      type: object
-      properties:
-        timezone_policy:
-          $ref: '#/components/schemas/adcloudcommonTimezonePolicy'
-          description: Timezone Policy to apply.
-        hour_range:
-          $ref: '#/components/schemas/adcloudcommonInterval'
-          description: 'Hour range for each day specified below. It''s required and both start and end values
-
-            must be in the range of [0, 23].'
-        days:
-          type: array
-          items:
-            $ref: '#/components/schemas/adcloudcommonDayOfWeek'
-          description: Days of week to filter on. At least one is required.
-      description: WeeklyScheduleFilter specifies a time range on certain days of a week.
-      required:
-      - days
-    CustomAudienceSetCustomAudienceCondition:
-      type: object
-      properties:
-        app_events:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/CustomAudienceSetAppEvent'
-        user_lists:
-          type: array
-          items:
-            type: string
-          description: 'IDs of pre-defined CustomerSets.
-
-            IP CustomerSet is not included.'
-        apps:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/CustomAudienceSetApp'
-          description: Matches users by app engagement regardless of event type.
-    CampaignGoalOptimizeRoasForAppRe:
-      type: object
-      properties:
-        target_roas:
-          type: number
-          format: double
-          description: 'Target return on advertising spend (ROAS) in percent.
-
-            For example, a value 312.5 denotes 312.5% ROAS.'
-        reengagement_action:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateAdGroupErrorAPIErrorInfoErrorReason'
+        error_log_id:
           type: string
-          description: 'Re-engagement action to measure re-engaging a user. This action is
-
-            also used as a cohort base action.'
-        revenue_actions:
-          type: array
-          items:
+        context:
+          type: object
+          additionalProperties:
             type: string
-          description: 'In-app action events having revenue value the AdAccount wants to achieve.
+    adcloudcommonMoney:
+      type: object
+      properties:
+        currency:
+          $ref: '#/components/schemas/adcloudcommonCurrency'
+        amount_micros:
+          type: string
+          format: int64
+      description: 'Represents a monetary amount in micros for a specified currency. It''s the amount in
+
+        the specified currency''s base denomination unit multiplied with 1 million.
 
 
-            Remarkable notes:
-
-            - Case-sensitive as specified in the post-back from MMP.
-
-            - ROAS computation will rely on the accompanied revenue value to each action.'
-        rate:
-          type: number
-          format: double
-          description: 'The ratio of the daily budget for the autopilot to spend.
-
-            The rate should be in (0, 2].'
-      description: Detailed configuration of OPTIMIZE_ROAS_FOR_APP_RE goal.
-      required:
-      - revenue_actions
-    adcloudcommonDayOfWeek:
+        Both currency and amount are required.'
+    adcloudcommonCreativeType:
       type: string
       enum:
-      - UNKNOWN_DAY_OF_WEEK
-      - MON
-      - TUE
-      - WED
-      - THU
-      - FRI
-      - SAT
-      - SUN
-      default: UNKNOWN_DAY_OF_WEEK
-      description: 'Enumeration for week days.
+      - UNKNOWN_CREATIVE_TYPE
+      - IMAGE_BANNER
+      - IMAGE_INTERSTITIAL
+      - VIDEO_BANNER
+      - VIDEO_INTERSTITIAL
+      - NATIVE_LOGO
+      - NATIVE_VIDEO
+      - NATIVE_IMAGE
+      - CUSTOM_HTML_BANNER
+      - CUSTOM_HTML_INTERSTITIAL
+      - TEMPLATE_HTML_BANNER
+      - TEMPLATE_HTML_INTERSTITIAL
+      - RICH_CUSTOM_HTML_BANNER
+      - RICH_CUSTOM_HTML_INTERSTITIAL
+      - DYNAMIC_HTML_BANNER
+      - DYNAMIC_HTML_INTERSTITIAL
+      default: UNKNOWN_CREATIVE_TYPE
+      description: 'Enumeration of creative types supported by Moloco Ads.
 
 
         This value is not part of the specification.'
@@ -2159,6 +1676,327 @@ components:
         String literals are case insensitive unless specified otherwise; i.e. "USA" and "usa"
 
         equally represents the United States of America.'
+    CampaignGoalOptimizeCpaRepeatedForAppUaMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      default: UNKNOWN_MODE
+    messagesDeleteAdGroupErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteAdGroupErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    AudienceTargetingConditionSkanTraffic:
+      type: string
+      enum:
+      - UNKNOWN_SKAN
+      - TARGET_SKAN_ONLY
+      - TARGET_NON_SKAN
+      default: UNKNOWN_SKAN
+      description: "Indicates whether to bid according to bid requests that support SKAN(SKAdNetwork) or not.\n\n - UNKNOWN_SKAN: Doesn't filter BidRequest according to support skan or not in this filter.\n - TARGET_SKAN_ONLY: Bids only for skan support traffic.\n - TARGET_NON_SKAN: Bids only for non-skan traffic."
+    CampaignGoalOptimizeFixedCpmPacingPacingMode:
+      type: string
+      enum:
+      - NONE
+      - BY_FREQUENCY
+      default: NONE
+      description: Force pacing option.
+    dspAdGroupOverview:
+      type: object
+      properties:
+        ad_group:
+          $ref: '#/components/schemas/dspAdGroup'
+          description: The retrieved AdGroup.
+        campaign_id:
+          type: string
+          description: ID of the Campaign.
+        campaign_title:
+          type: string
+          description: Title of the Campaign.
+        campaign_description:
+          type: string
+          description: Description of the Campaign.
+        campaign_state:
+          $ref: '#/components/schemas/dspCampaignState'
+          description: State of the Campaign.
+        campaign_type:
+          $ref: '#/components/schemas/dspCampaignType'
+          description: Type of the Campaign.
+        campaign_goal:
+          $ref: '#/components/schemas/dspCampaignGoal'
+          description: Goal of the Campaign.
+        campaign_countries:
+          type: array
+          items:
+            type: string
+          description: The countries of the Campaign.
+        campaign_schedule:
+          $ref: '#/components/schemas/commonTimeInterval'
+          description: Schedule of the Campaign.
+        campaign_auto_delete_at:
+          type: string
+          format: date-time
+          description: Auto delete timestamp of the Campaign.
+          readOnly: true
+        product_id:
+          type: string
+          description: ID of the Product.
+        product_title:
+          type: string
+          description: Title of the Product.
+      description: AdGroupOverview is an overview information of AdGroup entity.
+    dspAdGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the AdGroup. Automatically set by server on creation.
+        title:
+          type: string
+          description: A descriptive name of the AdGroup.
+        campaign_id:
+          type: string
+          description: ID of the Campaign the AdGroup belongs to.
+          readOnly: true
+        product_id:
+          type: string
+          description: ID of the Product the AdGroup belongs to.
+          readOnly: true
+        ad_account_id:
+          type: string
+          description: ID of the AdAccount the AdGroup belongs to.
+          readOnly: true
+        experiment_id:
+          type: string
+          description: ID of the Experiment the AdGroup is involved in.
+          readOnly: true
+        enabling_state:
+          $ref: '#/components/schemas/commonEnablingState'
+          description: 'Whether this AdGroup is enabled. If the value of this field is unset or set to UNSPECIFIED
+
+            in the AdGroup creation request, it will be set to ENABLED by default by the server.
+
+
+            An active AdGroup can be paused any time by setting this field to DISABLED.'
+        audience:
+          $ref: '#/components/schemas/adclouddspAudience'
+          description: If specified, audience describes AdGroup-level targeting conditions.
+        capper:
+          $ref: '#/components/schemas/adclouddspAdCapper'
+          description: AdGroup wide capper.
+        pricing_model_id:
+          type: string
+          description: PricingModel id.
+          readOnly: true
+        creative_group_ids:
+          type: array
+          items:
+            type: string
+          description: 'CreativeGroup IDs.
+
+            These CreativeGroups'' Product IDs must match the Product ID of the current Campaign.
+
+            A Campaign eligible for serving must have at least one enabled CreativeGroup
+
+            with enabled Creatives.'
+        user_buckets:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/adcloudcommonInterval'
+          description: User buckets for traffic control.
+        audience_extension:
+          $ref: '#/components/schemas/dspAdGroupAudienceExtension'
+          description: AudienceExtension settings for AdGroup.
+        created_at:
+          type: string
+          format: date-time
+          description: Created time.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Last updated time. Should not modify on the client side.
+        aud_size:
+          type: string
+          format: int64
+          description: Original audience size information.
+          readOnly: true
+        matchable_aud_size:
+          type: string
+          format: int64
+          description: Matchable audience size information.
+          readOnly: true
+        last_aud_size_computed_at:
+          type: string
+          format: date-time
+          description: Last updated time of the audience size information.
+          readOnly: true
+      description: AdGroup represents the seed information for a full AdGroup used by bidders.
+      required:
+      - title
+    commonAdExchange:
+      type: string
+      enum:
+      - UNKNOWN_AD_EXCHANGE
+      - MOPUB
+      - ADX
+      - ADMIXER
+      - SMAATO
+      - RUBICON
+      - EXELBID
+      - BRIGHTROLL
+      - CAULYRTB
+      - ADLIB
+      - ORION
+      - MOLOCO
+      - ADOP
+      - APPLOVIN
+      - FYBER
+      - SAMSUNG
+      - ADCOLONY
+      - POLYMORPH
+      - CHARTBOOST
+      - MANPLUS
+      - KAKAO
+      - UNITY
+      - FYBERCORE
+      - ADGENERATION
+      - SAMSUNGPAY
+      - NHN
+      - ADPOPCORN
+      - OPENX
+      - VUNGLE
+      - ADALPHA
+      - BYTEDANCE
+      - NAVER
+      - INMOBI
+      - SIGNALPLAY
+      - ACUITY
+      - IRONSOURCE
+      - PUBMATIC
+      - BAIDU
+      - FLUCT
+      - FIVE
+      - APPODEAL
+      - ADPIE
+      - MOBILITYWARE
+      - TPMN
+      - PUBNATIVE
+      - TAPJOY
+      - MOMENTO
+      - BIDENCE
+      - APS
+      - INDEX
+      - IQZONE
+      - STARTIO
+      - FLOWER
+      - ONESTORE
+      - NIMBUS
+      - AEQUUS
+      - MCTV
+      - MINTEGRAL
+      - MOLOCO_SDK_APPLOVIN
+      - MOLOCO_SDK_IRONSOURCE
+      - PANGLE
+      - MAGNITE
+      - MOLOCO_SDK_X3MADS
+      - FREE_WHEEL
+      - MOLOCO_SDK_ADMOB
+      - ADX_RTB
+      - XIAOMI
+      - MOLOCO_SDK_CREATIVE_TEST
+      - MOLOCO_SDK_MAX
+      - MOLOCO_SDK_LEVELPLAY
+      - NEXXEN
+      - MOLOCO_SDK_ADMOB_MEDIATION
+      - MOLOCO_SDK
+      - MOLOCO_SDK_IN_HOUSE_MEDIATION
+      - TABOOLA
+      - CRITEO
+      - MOLOCO_SDK_DIRECT_AD
+      - APX1
+      - DIRECT_AD
+      - BIGO
+      - CAS
+      - TUBI
+      default: UNKNOWN_AD_EXCHANGE
+      description: "Enumeration of ad exchanges supported by Moloco Ads.\n\n - SIGNALPLAY: MANPLUS == SIGNALPLAY. just added for distinguishing video and banner report\n - MOLOCO_SDK: Used for a consolidated MOLOCO SDK exchange.\n - APX1: APX1 is LINE's anonymized exchange name (renamed from LINE - no production traffic, direct replacement)"
+    CustomAudienceSetApp:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: The ID of the Product.
+        sliding_window_duration:
+          $ref: '#/components/schemas/commonTimeDuration'
+          description: The duration of time for which this condition is effective before now.
+      description: 'App matches a user based on app engagement within a time window.
+
+        Use AppEvent when targeting a specific event by name.'
+    AudienceTargetingConditionRecentCampaignActivityFilter:
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/adcloudcommonEventType'
+          description: Event type for the Campaign activities to filter on.
+        campaign_id:
+          type: string
+          description: ID of the Campaign to filter on.
+        last_n_days:
+          type: integer
+          format: int32
+          description: Target only new users with earliest known activities falling into the window of last N days.
+      description: Recent Campaign activities for the targeted user.
+      required:
+      - event
+      - campaign_id
+      - last_n_days
+    messagesListAdGroupsResponse:
+      type: object
+      properties:
+        ad_groups:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAdGroup'
+          description: 'The list of AdGroups.
+
+            This field is valid if the inquiry_option of the request is UNKNOWN_INQUIRY_OPTION or INQUIRY_ENTITY or INQUIRY_ALL.
+
+            If campaign_id is specified in request, it returns the list of AdGroups under that Campaign.
+
+            If product_id is specified in request, it returns the list of AdGroups under that Product.'
+        ad_group_overviews:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspAdGroupOverview'
+          description: 'The list of the AdGroup overview information
+
+            This field is valid if the inquiry_option of the request is INQUIRY_OVERVIEW or INQUIRY_ALL.'
+    messagesDeleteAdGroupResponse:
+      type: object
+    CampaignGoalOptimizeCpaForWebUaMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      default: UNKNOWN_MODE
+    CampaignGoalOptimizeClicksToAppMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      - TARGET_CPC_CENTRIC
+      default: UNKNOWN_MODE
     messagesReadAdGroupError:
       type: object
       properties:
@@ -2172,18 +2010,239 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesReadAdGroupErrorAPIErrorInfo'
-    CampaignGoalOptimizeCpaRepeatedForAppUa:
+    messagesCreateAdGroupResponse:
+      type: object
+      properties:
+        ad_group:
+          $ref: '#/components/schemas/dspAdGroup'
+          description: Created AdGroup data.
+    dspAudienceTargetingConditionVideoType:
+      type: string
+      enum:
+      - UNKNOWN_VIDEO_TYPE
+      - REWARD_VIDEO
+      - NON_REWARD_VIDEO
+      - NON_VIDEO
+      default: UNKNOWN_VIDEO_TYPE
+      description: This value is not part of the specification.
+    CampaignGoalOptimizeFixedCpm:
+      type: object
+      properties:
+        target_cpm:
+          $ref: '#/components/schemas/adcloudcommonMoney'
+          description: Target cost per click in AdAccount-wide currency.
+      description: Detailed configuration of FIXED_CPM_* goal.
+      required:
+      - target_cpm
+    messagesCreateAdGroupErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - AD_GROUP_PRICING_MODEL_NOT_SUPPORTED_FOR_CAMPAIGN_TYPE
+      - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM
+      - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN
+      default: ERROR_REASON_UNKNOWN
+      description: " - AD_GROUP_PRICING_MODEL_NOT_SUPPORTED_FOR_CAMPAIGN_TYPE: unsupported pricing model id for direct sold ad or house ad.\n - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM: AdGroup has duplicated targeting ad platform.\n - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN: AdGroup's targeting ad platforms should be subset of campaign's."
+    messagesReadAdGroupResponse:
+      type: object
+      properties:
+        ad_group:
+          $ref: '#/components/schemas/dspAdGroup'
+          description: The retrieved AdGroup data.
+    CampaignGoalOptimizeCpaForWebUa:
+      type: object
+      properties:
+        action:
+          type: string
+          description: 'Web action events having revenue value the AdAccount wants to achieve.
+
+
+            Remarkable notes:
+
+            - Case-sensitive as specified in the post-back from MMP.
+
+            Note(jiyeon): Currently, we optimize `install` events regardless of this action.'
+        mode:
+          $ref: '#/components/schemas/CampaignGoalOptimizeCpaForWebUaMode'
+          description: Optimization mode.
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend.
+
+            The rate should be in (0, 2].'
+      required:
+      - action
+    messagesUpdateAdGroupResponse:
+      type: object
+      properties:
+        ad_group:
+          $ref: '#/components/schemas/dspAdGroup'
+          description: The updated AdGroup data.
+    commonEnablingState:
+      type: string
+      enum:
+      - UNSPECIFIED
+      - ENABLED
+      - DISABLED
+      default: UNSPECIFIED
+      description: Enumeration of the enabling states with a default UNSPECIFIED state.
+    commonTagsThrottleCondition:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            type: string
+        throttle_rate:
+          type: number
+          format: float
+      description: 'Tags Thrrottle Condition. It specifies a throttle rate for a list of tags.
+
+        All the tags in a list will have same throttle rate.'
+    messagesCreateAdGroupErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesCreateAdGroupErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    CampaignGoalOptimizeRoasForAppRe:
+      type: object
+      properties:
+        target_roas:
+          type: number
+          format: double
+          description: 'Target return on advertising spend (ROAS) in percent.
+
+            For example, a value 312.5 denotes 312.5% ROAS.'
+        reengagement_action:
+          type: string
+          description: 'Re-engagement action to measure re-engaging a user. This action is
+
+            also used as a cohort base action.'
+        revenue_actions:
+          type: array
+          items:
+            type: string
+          description: 'In-app action events having revenue value the AdAccount wants to achieve.
+
+
+            Remarkable notes:
+
+            - Case-sensitive as specified in the post-back from MMP.
+
+            - ROAS computation will rely on the accompanied revenue value to each action.'
+        rate:
+          type: number
+          format: double
+          description: 'The ratio of the daily budget for the autopilot to spend.
+
+            The rate should be in (0, 2].'
+      description: Detailed configuration of OPTIMIZE_ROAS_FOR_APP_RE goal.
+      required:
+      - revenue_actions
+    messagesCreateAdGroupError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateAdGroupErrorAPIErrorInfo'
+    messagesUpdateAdGroupErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM
+      - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN
+      default: ERROR_REASON_UNKNOWN
+      description: " - AD_GROUP_TARGET_DUPLICATED_AD_PLATFORM: AdGroup has duplicated targeting ad platform.\n - AD_GROUP_AD_PLATFORMS_SHOULD_BE_SUBSET_OF_CAMPAIGN: AdGroup's targeting ad platforms should be subset of campaign's."
+    adcloudcommonDayOfWeek:
+      type: string
+      enum:
+      - UNKNOWN_DAY_OF_WEEK
+      - MON
+      - TUE
+      - WED
+      - THU
+      - FRI
+      - SAT
+      - SUN
+      default: UNKNOWN_DAY_OF_WEEK
+      description: 'Enumeration for week days.
+
+
+        This value is not part of the specification.'
+    commonDeviceType:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_TYPE
+      - MOBILE
+      - PERSONAL_COMPUTER
+      - CONNECTED_TV
+      - HIGHEND_PHONE
+      - TABLET
+      - CONNECTED_DEVICE
+      - SET_TOP_BOX
+      default: UNKNOWN_DEVICE_TYPE
+      description: 'Enumeration of device types supported by Moloco Ads.
+
+
+        This value is not part of the specification.'
+    CampaignGoalOptimizeCpaForAppUaMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      - MARGIN_CENTRIC
+      - TARGET_PRIMARY_KPI_CENTRIC
+      default: UNKNOWN_MODE
+    adcloudcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      default: UNKNOWN_CURRENCY
+      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
+    CampaignGoalOptimizeClicksToWebMode:
+      type: string
+      enum:
+      - UNKNOWN_MODE
+      - BUDGET_CENTRIC
+      - TARGET_CPC_CENTRIC
+      default: UNKNOWN_MODE
+    CampaignGoalOptimizeCpaForAppRe:
       type: object
       properties:
         action:
           type: string
           description: 'In-app action events the AdAccount wants to optimize.
 
+
             Remarkable notes:
 
             - Case-sensitive as specified in the post-back from MMP.'
+        reengagement_action:
+          type: string
+          description: 'Re-engagement action to measure re-engaging a user. This action is
+
+            also used as a cohort base action.'
         mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeCpaRepeatedForAppUaMode'
+          $ref: '#/components/schemas/CampaignGoalOptimizeCpaForAppReMode'
           description: Optimization mode.
         rate:
           type: number
@@ -2193,76 +2252,26 @@ components:
             Required when the mode is BUDGET_CENTRIC.
 
             The rate should be in (0, 2].'
-      description: Detailed configuration of OPTIMIZE_CPA_REPEATED_FOR_APP_UA goal.
+      description: Detailed configuration of OPTIMIZE_CPA_FOR_APP_RE goal.
       required:
       - action
-    adcloudcommonMoney:
+    CampaignGoalOptimizeAppRetention:
       type: object
       properties:
-        currency:
-          $ref: '#/components/schemas/adcloudcommonCurrency'
-        amount_micros:
-          type: string
-          format: int64
-      description: 'Represents a monetary amount in micros for a specified currency. It''s the amount in
-
-        the specified currency''s base denomination unit multiplied with 1 million.
-
-
-        Both currency and amount are required.'
-    AudienceTargetingConditionNewUserFilter:
-      type: object
-      properties:
-        last_n_days:
-          type: integer
-          format: int32
-          description: Target only new users with earliest known activities falling into the window of last N days.
-      description: Filter to target new users only.
-      required:
-      - last_n_days
-    commonGender:
-      type: string
-      enum:
-      - UNKNOWN_GENDER
-      - FEMALE
-      - MALE
-      default: UNKNOWN_GENDER
-      description: 'Enumeration of gender types.
-
-
-        This value is not part of the specification.'
-    messagesReadAdGroupResponse:
-      type: object
-      properties:
-        ad_group:
-          $ref: '#/components/schemas/dspAdGroup'
-          description: The retrieved AdGroup data.
-    CampaignGoalOptimizeCpaRepeatedForAppUaMode:
-      type: string
-      enum:
-      - UNKNOWN_MODE
-      - BUDGET_CENTRIC
-      default: UNKNOWN_MODE
-    CampaignGoalOptimizeCpaForAppUa:
-      type: object
-      properties:
-        action:
-          type: string
-          description: 'In-app action events having revenue value the AdAccount wants to achieve.
-
-
-            Remarkable notes:
-
-            - Case-sensitive as specified in the post-back from MMP.'
         mode:
-          $ref: '#/components/schemas/CampaignGoalOptimizeCpaForAppUaMode'
+          $ref: '#/components/schemas/CampaignGoalOptimizeAppRetentionMode'
           description: Optimization mode.
+        target_cpi:
+          $ref: '#/components/schemas/adcloudcommonMoney'
+          description: 'Target cost per install in AdAccount-wide currency.
+
+            Required when the mode is BUDGET_CENTRIC and rate is unset.'
         rate:
           type: number
           format: double
           description: 'The ratio of the daily budget for the autopilot to spend.
 
-            Required when the mode is BUDGET_CENTRIC.
+            Required when the mode is BUDGET_CENTRIC and target_cpi is unset.
 
             The rate should be in (0, 2].'
         margin:
@@ -2273,15 +2282,18 @@ components:
             Required when the mode is MARGIN_CENTRIC.
 
             The rate should be in [-1.0, 1.0].'
-        target_kpi:
-          $ref: '#/components/schemas/adcloudcommonMoney'
-          description: 'Read-only. Operational target KPI value set by System.
-
-            Populated when the mode is TARGET_PRIMARY_KPI_CENTRIC.'
-          readOnly: true
-      description: Detailed configuration of OPTIMIZE_CPA_FOR_APP_UA goal.
-      required:
-      - action
+      description: Detailed configuration of OPTIMIZE_RETENTION_FOR_APP_UA goal.
+    dspAdGroupAudienceExtension:
+      type: object
+      properties:
+        paired_ad_group_id:
+          type: string
+          description: Audience extension paired ad group id.
+        is_secondary:
+          type: boolean
+          description: True for the secondary ad_group, otherwise false.
+      description: AdGroupAudienceExtension holds the ad_group settings for PAS audience extension.
+      readOnly: true
     commonCircle:
       type: object
       properties:
@@ -2291,18 +2303,6 @@ components:
           type: number
           format: double
       description: Circle defines a circle with a center geo location and radius in km.
-    commonTimeInterval:
-      type: object
-      properties:
-        start:
-          type: string
-          format: date-time
-          description: Start time in RFC3339 format, e.g. "2017-04-01T12:34:56+00:00".
-        end:
-          type: string
-          format: date-time
-          description: End time in RFC3339 format, e.g. "2017-05-01-T21:09:08+00:00".
-      description: Interval with start and end timestamps in RFC3339 format.
   securitySchemes:
     Bearer:
       type: apiKey

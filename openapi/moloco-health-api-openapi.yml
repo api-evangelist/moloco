@@ -30,6 +30,15 @@ paths:
                 $ref: '#/components/schemas/error'
 components:
   schemas:
+    healthCheckResponse:
+      description: A response to a health check request.
+      type: object
+      required:
+      - healthy
+      properties:
+        healthy:
+          description: Indicates whether the server is healthy or not.
+          type: boolean
     error:
       description: Error response with detailed reason.
       type: object
@@ -43,15 +52,6 @@ components:
         status:
           description: The error status code.
           type: integer
-    healthCheckResponse:
-      description: A response to a health check request.
-      type: object
-      required:
-      - healthy
-      properties:
-        healthy:
-          description: Indicates whether the server is healthy or not.
-          type: boolean
   securitySchemes:
     Bearer:
       type: apiKey

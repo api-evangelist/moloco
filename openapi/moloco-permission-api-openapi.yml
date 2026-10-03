@@ -76,6 +76,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/permission'
+    permission:
+      description: Permission.
+      type: object
+      required:
+      - id
+      - platform_id
+      - service
+      - resource_id
+      - verb
+      properties:
+        id:
+          description: The ID of the permission.
+          type: string
+        name:
+          description: The name of the permission.
+          type: string
+        platform_id:
+          description: The platform ID in which the permission is defined.
+          type: string
+        resource_id:
+          description: The resource on which the permission is defined.
+          type: string
+        service:
+          description: The name of the service such as DSP, AUTH.
+          type: string
+        verb:
+          description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
+          type: string
     error:
       description: Error response with detailed reason.
       type: object
@@ -111,34 +139,6 @@ components:
           type: string
         userspace_id:
           description: The ID of the userspace to which the platform belongs to.
-          type: string
-    permission:
-      description: Permission.
-      type: object
-      required:
-      - id
-      - platform_id
-      - service
-      - resource_id
-      - verb
-      properties:
-        id:
-          description: The ID of the permission.
-          type: string
-        name:
-          description: The name of the permission.
-          type: string
-        platform_id:
-          description: The platform ID in which the permission is defined.
-          type: string
-        resource_id:
-          description: The resource on which the permission is defined.
-          type: string
-        service:
-          description: The name of the service such as DSP, AUTH.
-          type: string
-        verb:
-          description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
           type: string
   securitySchemes:
     Bearer:

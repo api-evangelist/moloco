@@ -87,21 +87,6 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
-    ListReportFiltersResponseReportFilterOption:
-      type: object
-      properties:
-        display_name:
-          type: string
-        value:
-          type: string
-      description: A pair of the value and display_name for each dimension.
-    messagesListReportActionEventsResponse:
-      type: object
-      properties:
-        action_events:
-          type: array
-          items:
-            type: string
     ListReportFiltersResponseReportFilter:
       type: object
       properties:
@@ -147,6 +132,21 @@ components:
       - Campaign_IsCrossPromo
       default: UNKNOWN_REPORT_FILTER_DIMENSION
       description: ReportFilterDimension enumerates available breakdown dimensions.
+    ListReportFiltersResponseReportFilterOption:
+      type: object
+      properties:
+        display_name:
+          type: string
+        value:
+          type: string
+      description: A pair of the value and display_name for each dimension.
+    messagesListReportActionEventsResponse:
+      type: object
+      properties:
+        action_events:
+          type: array
+          items:
+            type: string
     messagesListReportFiltersResponse:
       type: object
       properties:

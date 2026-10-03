@@ -256,55 +256,6 @@ paths:
       - AdManagerAccount
 components:
   schemas:
-    publicUpdateAdManagerAccountResponse:
-      type: object
-      properties:
-        ad_manager_account:
-          $ref: '#/components/schemas/v1AdManagerAccount'
-      description: UpdateAdManagerAccount response.
-      required:
-      - ad_manager_account
-      additionalProperties: true
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
-      required:
-      - type
-      - category
-      additionalProperties: true
-    CreateAdManagerAccountRequestAdManagerAccountInfoManagingType:
-      type: string
-      enum:
-      - UNKNOWN_MANAGING_TYPE
-      - OWNER
-      default: UNKNOWN_MANAGING_TYPE
-    publicCreateAdManagerAccountRequestAdManagerAccountInfo:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Title of the AdManagerAccount.
-        managing_type:
-          $ref: '#/components/schemas/CreateAdManagerAccountRequestAdManagerAccountInfoManagingType'
-        managing_ad_account_ids:
-          type: array
-          items:
-            type: string
-          description: List of ad account ids that the AdManagerAccount manages.
-      description: AdManagerAccount info.
-      required:
-      - title
-      - managing_type
-      additionalProperties: true
     publicUpdateAdManagerAccountRequestAdManagerAccountInfo:
       type: object
       properties:
@@ -359,35 +310,32 @@ components:
       - created_at
       - updated_at
       additionalProperties: true
-    publicCreateAdManagerAccountResponse:
+    CreateAdManagerAccountRequestAdManagerAccountInfoManagingType:
+      type: string
+      enum:
+      - UNKNOWN_MANAGING_TYPE
+      - OWNER
+      default: UNKNOWN_MANAGING_TYPE
+    publicReadAdManagerAccountResponse:
       type: object
       properties:
         ad_manager_account:
           $ref: '#/components/schemas/v1AdManagerAccount'
-      description: CreateAdManagerAccount response.
+      description: ReadAdManagerAccount response.
       required:
       - ad_manager_account
       additionalProperties: true
-    publicRepresentedError:
+    publicListAdManagerAccountsResponse:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
-          type: string
-          description: The detailed message of responded error.
-        details:
+        ad_manager_accounts:
           type: array
           items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+            $ref: '#/components/schemas/v1AdManagerAccount'
+          description: List of AdManagerAccount info.
+      description: ListAdManagerAccounts response.
       required:
-      - code
-      - message
-      - details
+      - ad_manager_accounts
       additionalProperties: true
     commonErrorCategory:
       type: string
@@ -430,24 +378,76 @@ components:
       - UNKNOWN_MANAGING_TYPE
       - OWNER
       default: UNKNOWN_MANAGING_TYPE
-    publicListAdManagerAccountsResponse:
-      type: object
-      properties:
-        ad_manager_accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1AdManagerAccount'
-          description: List of AdManagerAccount info.
-      description: ListAdManagerAccounts response.
-      required:
-      - ad_manager_accounts
-      additionalProperties: true
-    publicReadAdManagerAccountResponse:
+    publicUpdateAdManagerAccountResponse:
       type: object
       properties:
         ad_manager_account:
           $ref: '#/components/schemas/v1AdManagerAccount'
-      description: ReadAdManagerAccount response.
+      description: UpdateAdManagerAccount response.
+      required:
+      - ad_manager_account
+      additionalProperties: true
+    publicCreateAdManagerAccountRequestAdManagerAccountInfo:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the AdManagerAccount.
+        managing_type:
+          $ref: '#/components/schemas/CreateAdManagerAccountRequestAdManagerAccountInfoManagingType'
+        managing_ad_account_ids:
+          type: array
+          items:
+            type: string
+          description: List of ad account ids that the AdManagerAccount manages.
+      description: AdManagerAccount info.
+      required:
+      - title
+      - managing_type
+      additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    publicCreateAdManagerAccountResponse:
+      type: object
+      properties:
+        ad_manager_account:
+          $ref: '#/components/schemas/v1AdManagerAccount'
+      description: CreateAdManagerAccount response.
       required:
       - ad_manager_account
       additionalProperties: true
