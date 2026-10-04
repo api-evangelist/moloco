@@ -457,12 +457,6 @@ paths:
     - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
     messagesReadWorkplaceResponse:
       type: object
       properties:
@@ -500,6 +494,23 @@ components:
             type: string
           description: The workplace's configuration.
       description: The workplace.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    listPlatformsResponse:
+      description: Response to the list platforms request.
+      type: object
+      required:
+      - platforms
+      properties:
+        platforms:
+          description: List of platforms
+          type: array
+          items:
+            $ref: '#/components/schemas/platform'
     platform:
       description: A platform.
       type: object
@@ -526,25 +537,6 @@ components:
         userspace_id:
           description: The ID of the userspace to which the platform belongs.
           type: string
-    listPlatformsResponse:
-      description: Response to the list platforms request.
-      type: object
-      required:
-      - platforms
-      properties:
-        platforms:
-          description: List of platforms
-          type: array
-          items:
-            $ref: '#/components/schemas/platform'
-    createPlatformRequest:
-      description: Request to create a platform.
-      type: object
-      required:
-      - platform
-      properties:
-        platform:
-          $ref: '#/components/schemas/platform'
     userRegistrationRequest:
       description: The request body for the user registration request.
       type: object
@@ -552,14 +544,6 @@ components:
         forward_url:
           description: the URL that will be included in the platform registration (sign-up) email.
           type: string
-    createPlatformResponse:
-      description: Response to a request to create a platform.
-      type: object
-      required:
-      - platform
-      properties:
-        platform:
-          $ref: '#/components/schemas/platform'
     listPlatformsCredential:
       description: Credential to list platforms without a Morse token.
       type: object
@@ -573,8 +557,21 @@ components:
         password:
           description: Password of the user.
           type: string
-    updatePlatformResponse:
-      description: Response to a request to update a platform.
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    updatePlatformRequest:
+      description: A request to update a platform.
       type: object
       required:
       - platform
@@ -589,27 +586,30 @@ components:
       properties:
         platform:
           $ref: '#/components/schemas/platform'
-    updatePlatformRequest:
-      description: A request to update a platform.
+    createPlatformRequest:
+      description: Request to create a platform.
       type: object
       required:
       - platform
       properties:
         platform:
           $ref: '#/components/schemas/platform'
-    error:
-      description: Error response with detailed reason.
+    updatePlatformResponse:
+      description: Response to a request to update a platform.
       type: object
       required:
-      - reason
-      - status
+      - platform
       properties:
-        reason:
-          description: More detailed reason about why the error was returned.
-          type: string
-        status:
-          description: The error status code.
-          type: integer
+        platform:
+          $ref: '#/components/schemas/platform'
+    createPlatformResponse:
+      description: Response to a request to create a platform.
+      type: object
+      required:
+      - platform
+      properties:
+        platform:
+          $ref: '#/components/schemas/platform'
   securitySchemes:
     Bearer:
       type: apiKey

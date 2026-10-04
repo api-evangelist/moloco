@@ -48,19 +48,12 @@ paths:
       - WorkplaceSummary
 components:
   schemas:
-    messagesReadWorkplaceSummaryError:
+    protobufAny:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        '@type':
           type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesReadWorkplaceSummaryErrorAPIErrorInfo'
+      additionalProperties: {}
     messagesReadWorkplaceSummaryErrorAPIErrorInfo:
       type: object
       properties:
@@ -90,12 +83,19 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
-    protobufAny:
+    messagesReadWorkplaceSummaryError:
       type: object
       properties:
-        '@type':
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
-      additionalProperties: {}
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesReadWorkplaceSummaryErrorAPIErrorInfo'
   securitySchemes:
     Bearer:
       type: apiKey

@@ -1225,8 +1225,6 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
-  - ReportExport
-  tags_raw:
   - Report Export
   properties:
   - type: OpenAPI
@@ -1287,8 +1285,6 @@ apis:
   humanURL: https://developer.moloco.cloud/docs/campaign-management-api
   baseURL: https://api.moloco.cloud
   tags:
-  - Userspace
-  tags_raw:
   - User Space
   properties:
   - type: OpenAPI

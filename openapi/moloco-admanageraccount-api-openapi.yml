@@ -256,61 +256,7 @@ paths:
       - AdManagerAccount
 components:
   schemas:
-    publicUpdateAdManagerAccountRequestAdManagerAccountInfo:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Title of the AdManagerAccount.
-        managing_ad_account_ids:
-          type: array
-          items:
-            type: string
-          description: List of ad account ids that the AdManagerAccount manages.
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp of the AdManagerAccount.
-      description: AdManagerAccount info.
-      required:
-      - title
-      additionalProperties: true
-    v1AdManagerAccount:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the ad manager account.
-          readOnly: true
-        title:
-          type: string
-          description: The title of the ad manager account.
-        managing_type:
-          $ref: '#/components/schemas/v1AdManagerAccountManagingType'
-        managing_ad_account_ids:
-          type: array
-          items:
-            type: string
-          description: The list of managing ad account id of the ad manager account.
-        created_at:
-          type: string
-          format: date-time
-          description: The created time of the ad manager account.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: The updated time of the ad manager account.
-          readOnly: true
-      description: Definition of an ad manager account.
-      required:
-      - id
-      - title
-      - managing_type
-      - created_at
-      - updated_at
-      additionalProperties: true
-    CreateAdManagerAccountRequestAdManagerAccountInfoManagingType:
+    v1AdManagerAccountManagingType:
       type: string
       enum:
       - UNKNOWN_MANAGING_TYPE
@@ -325,17 +271,26 @@ components:
       required:
       - ad_manager_account
       additionalProperties: true
-    publicListAdManagerAccountsResponse:
+    publicRepresentedError:
       type: object
       properties:
-        ad_manager_accounts:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
           type: array
           items:
-            $ref: '#/components/schemas/v1AdManagerAccount'
-          description: List of AdManagerAccount info.
-      description: ListAdManagerAccounts response.
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
       required:
-      - ad_manager_accounts
+      - code
+      - message
+      - details
       additionalProperties: true
     commonErrorCategory:
       type: string
@@ -372,20 +327,67 @@ components:
       - INVALID_CUSTOM_TARGETING
       default: DEFAULT_ERROR_CATEGORY
       title: "- INPUT_VALIDATION: INPUT_VALIDATION: reserved for 1 ~ 99\n - TIMESTAMP_MISMATCH: TIMESTAMP_MISSMATCH: reserved for 100 ~ 199\n - FEATURE_NOT_ALLOWED: General policy: 1000 ~ 1999\n - REINVITE_NOT_ALLOWED: User policy: 2000 ~ 2999\n - INSUFFICIENT_SPENDING_LIMIT: Account policy: 3000 ~ 3999\nThis policy includes ad manager account, ad account, and wallet related policies\n - MAX_CAMPAIGN_COUNT_REACHED: Campaign policy: 4000 ~ 4999\n - INVALID_RESERVED_TIME_LINE_ITEM_SCHEDULE: Returned when a RESERVED_TIME line item's schedule overlaps an existing enabled RD booking on the same inventory.\n - EXCEED_MAX_IMAGE_SIZE: Asset policy: 5000 ~ 5999\n - MAX_LABEL_COUNT_REACHED: Labeling policy: 6000 ~ 6999\n - PLATFORM_INSIGHT_UNAVAILABLE: Insight metric policy: 7000 ~ 7999\n - MAX_CUSTOM_TARGETING_KEY_COUNT_REACHED: Custom Targeting policy: 8000 ~ 8999"
-    v1AdManagerAccountManagingType:
+    publicUpdateAdManagerAccountRequestAdManagerAccountInfo:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the AdManagerAccount.
+        managing_ad_account_ids:
+          type: array
+          items:
+            type: string
+          description: List of ad account ids that the AdManagerAccount manages.
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp of the AdManagerAccount.
+      description: AdManagerAccount info.
+      required:
+      - title
+      additionalProperties: true
+    CreateAdManagerAccountRequestAdManagerAccountInfoManagingType:
       type: string
       enum:
       - UNKNOWN_MANAGING_TYPE
       - OWNER
       default: UNKNOWN_MANAGING_TYPE
-    publicUpdateAdManagerAccountResponse:
+    publicCreateAdManagerAccountResponse:
       type: object
       properties:
         ad_manager_account:
           $ref: '#/components/schemas/v1AdManagerAccount'
-      description: UpdateAdManagerAccount response.
+      description: CreateAdManagerAccount response.
       required:
       - ad_manager_account
+      additionalProperties: true
+    publicListAdManagerAccountsResponse:
+      type: object
+      properties:
+        ad_manager_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1AdManagerAccount'
+          description: List of AdManagerAccount info.
+      description: ListAdManagerAccounts response.
+      required:
+      - ad_manager_accounts
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
       additionalProperties: true
     publicCreateAdManagerAccountRequestAdManagerAccountInfo:
       type: object
@@ -405,49 +407,47 @@ components:
       - title
       - managing_type
       additionalProperties: true
-    publicRepresentedError:
+    v1AdManagerAccount:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
+        id:
           type: string
-          description: The detailed message of responded error.
-        details:
+          description: The id of the ad manager account.
+          readOnly: true
+        title:
+          type: string
+          description: The title of the ad manager account.
+        managing_type:
+          $ref: '#/components/schemas/v1AdManagerAccountManagingType'
+        managing_ad_account_ids:
           type: array
           items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
-      required:
-      - code
-      - message
-      - details
-      additionalProperties: true
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
+            type: string
+          description: The list of managing ad account id of the ad manager account.
+        created_at:
           type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
+          format: date-time
+          description: The created time of the ad manager account.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: The updated time of the ad manager account.
+          readOnly: true
+      description: Definition of an ad manager account.
       required:
-      - type
-      - category
+      - id
+      - title
+      - managing_type
+      - created_at
+      - updated_at
       additionalProperties: true
-    publicCreateAdManagerAccountResponse:
+    publicUpdateAdManagerAccountResponse:
       type: object
       properties:
         ad_manager_account:
           $ref: '#/components/schemas/v1AdManagerAccount'
-      description: CreateAdManagerAccount response.
+      description: UpdateAdManagerAccount response.
       required:
       - ad_manager_account
       additionalProperties: true

@@ -140,157 +140,6 @@ paths:
       - Report Export
 components:
   schemas:
-    messagesDeleteReportExportErrorAPIErrorInfo:
-      type: object
-      properties:
-        error_log_id:
-          type: string
-        reason:
-          $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfoErrorReason'
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    ReportExportPartner:
-      type: string
-      enum:
-      - UNKNOWN_PARTNER
-      - SINGULAR
-      - APPSFLYER
-      - TENJIN
-      - BIDALGO
-      - APPANNIE
-      - APPSUMER
-      - ADJUST
-      - KOCHAVA
-      - AIRBRIDGE
-      - BRANCH
-      - JUSTTRACK
-      default: UNKNOWN_PARTNER
-      description: "Partner enumerates the reporting solution partners to whom we've integrated.\n\n - SINGULAR: Singular.\n - APPSFLYER: AppsFlyer.\n - TENJIN: Tenjin.\n - BIDALGO: Bidalgo.\n - APPANNIE: Appannie.\n - APPSUMER: Appsumer.\n - ADJUST: Adjust.\n - KOCHAVA: Kochava.\n - AIRBRIDGE: AirBridge.\n - BRANCH: Branch.\n - JUSTTRACK: JustTrack."
-    messagesCreateReportExportErrorAPIErrorInfo:
-      type: object
-      properties:
-        error_log_id:
-          type: string
-        reason:
-          $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfoErrorReason'
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesReadReportExportErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesCreateReportExportResponse:
-      type: object
-      example:
-        report_export:
-          id: sampleReportExportId
-          workplace_id: samplePlatformId
-          ad_account_id: sampleAdAccountId
-          product_id: sampleProductId
-          partner: SINGULAR
-          created_at: '2020-01-03T03:12:50.124101982Z'
-          updated_at: '2020-01-03T03:24:21.109821241Z'
-      properties:
-        report_export:
-          $ref: '#/components/schemas/dspReportExport'
-          description: The details of a created report export.
-    messagesDeleteReportExportErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesReadReportExportResponse:
-      type: object
-      example:
-        report_export:
-          id: sampleReportExportId
-          workplace_id: samplePlatformId
-          ad_account_id: sampleAdAccountId
-          product_id: sampleProductId
-          partner: SINGULAR
-          created_at: '2020-01-03T03:12:50.124101982Z'
-          updated_at: '2020-01-03T03:24:21.109821241Z'
-      properties:
-        report_export:
-          $ref: '#/components/schemas/dspReportExport'
-          description: The details of a report export.
-    messagesCreateReportExportErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesListReportExportsResponse:
-      type: object
-      example:
-        report_exports:
-        - id: sampleReportExportId
-          workplace_id: samplePlatformId
-          ad_account_id: sampleAdAccountId
-          product_id: sampleProductId
-          partner: SINGULAR
-          created_at: '2020-01-03T03:12:50.124101982Z'
-          updated_at: '2020-01-03T03:24:21.109821241Z'
-        - id: anotherReportExportId
-          workplace_id: samplePlatformId
-          ad_account_id: anotherAdAccountId
-          product_id: anotherProductId
-          partner: SINGULAR
-          created_at: '2020-01-03T03:12:50.124101982Z'
-          updated_at: '2020-01-03T03:24:21.109821241Z'
-      properties:
-        report_exports:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspReportExport'
-          description: List of report export in the given Workplace or AdAccount or Product.
-    messagesCreateReportExportError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfo'
-    messagesListReportExportsErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesDeleteReportExportError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfo'
-    messagesReadReportExportErrorAPIErrorInfo:
-      type: object
-      properties:
-        error_log_id:
-          type: string
-        reason:
-          $ref: '#/components/schemas/messagesReadReportExportErrorAPIErrorInfoErrorReason'
-        context:
-          type: object
-          additionalProperties:
-            type: string
     dspReportExport:
       type: object
       example:
@@ -350,9 +199,149 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesReadReportExportErrorAPIErrorInfo'
+    messagesReadReportExportErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesReadReportExportErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    ReportExportPartner:
+      type: string
+      enum:
+      - UNKNOWN_PARTNER
+      - SINGULAR
+      - APPSFLYER
+      - TENJIN
+      - BIDALGO
+      - APPANNIE
+      - APPSUMER
+      - ADJUST
+      - KOCHAVA
+      - AIRBRIDGE
+      - BRANCH
+      - JUSTTRACK
+      default: UNKNOWN_PARTNER
+      description: "Partner enumerates the reporting solution partners to whom we've integrated.\n\n - SINGULAR: Singular.\n - APPSFLYER: AppsFlyer.\n - TENJIN: Tenjin.\n - BIDALGO: Bidalgo.\n - APPANNIE: Appannie.\n - APPSUMER: Appsumer.\n - ADJUST: Adjust.\n - KOCHAVA: Kochava.\n - AIRBRIDGE: AirBridge.\n - BRANCH: Branch.\n - JUSTTRACK: JustTrack."
+    messagesReadReportExportResponse:
+      type: object
+      example:
+        report_export:
+          id: sampleReportExportId
+          workplace_id: samplePlatformId
+          ad_account_id: sampleAdAccountId
+          product_id: sampleProductId
+          partner: SINGULAR
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+      properties:
+        report_export:
+          $ref: '#/components/schemas/dspReportExport'
+          description: The details of a report export.
+    messagesCreateReportExportResponse:
+      type: object
+      example:
+        report_export:
+          id: sampleReportExportId
+          workplace_id: samplePlatformId
+          ad_account_id: sampleAdAccountId
+          product_id: sampleProductId
+          partner: SINGULAR
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+      properties:
+        report_export:
+          $ref: '#/components/schemas/dspReportExport'
+          description: The details of a created report export.
+    messagesDeleteReportExportError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfo'
+    messagesListReportExportsErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesReadReportExportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
     messagesDeleteReportExportResponse:
       type: object
       example: {}
+    messagesListReportExportsResponse:
+      type: object
+      example:
+        report_exports:
+        - id: sampleReportExportId
+          workplace_id: samplePlatformId
+          ad_account_id: sampleAdAccountId
+          product_id: sampleProductId
+          partner: SINGULAR
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+        - id: anotherReportExportId
+          workplace_id: samplePlatformId
+          ad_account_id: anotherAdAccountId
+          product_id: anotherProductId
+          partner: SINGULAR
+          created_at: '2020-01-03T03:12:50.124101982Z'
+          updated_at: '2020-01-03T03:24:21.109821241Z'
+      properties:
+        report_exports:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspReportExport'
+          description: List of report export in the given Workplace or AdAccount or Product.
+    messagesDeleteReportExportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
+    messagesCreateReportExportError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfo'
+    messagesListReportExportsErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesListReportExportsErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesCreateReportExportErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      default: ERROR_REASON_UNKNOWN
     messagesListReportExportsError:
       type: object
       properties:
@@ -366,13 +355,24 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesListReportExportsErrorAPIErrorInfo'
-    messagesListReportExportsErrorAPIErrorInfo:
+    messagesCreateReportExportErrorAPIErrorInfo:
       type: object
       properties:
         error_log_id:
           type: string
         reason:
-          $ref: '#/components/schemas/messagesListReportExportsErrorAPIErrorInfoErrorReason'
+          $ref: '#/components/schemas/messagesCreateReportExportErrorAPIErrorInfoErrorReason'
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesDeleteReportExportErrorAPIErrorInfo:
+      type: object
+      properties:
+        error_log_id:
+          type: string
+        reason:
+          $ref: '#/components/schemas/messagesDeleteReportExportErrorAPIErrorInfoErrorReason'
         context:
           type: object
           additionalProperties:

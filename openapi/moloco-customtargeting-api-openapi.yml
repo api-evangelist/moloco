@@ -567,42 +567,64 @@ paths:
       - CustomTargeting
 components:
   schemas:
-    v1LineItemDailyCustomReportRow:
+    publicRepresentedError:
       type: object
       properties:
-        custom_target_key_id:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
           type: string
-          description: The id of the custom target key.
-        custom_target_value_id:
-          type: string
-          description: The id of the custom target value.
-        custom_target_value_label:
-          type: string
-          description: The label of the custom target value.
-        imp_count:
-          type: string
-          format: int64
-          description: Impression count for the date.
-        ctr:
-          type: number
-          format: double
-          description: Click-through rate for the date.
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
       additionalProperties: true
-    v1CustomTargetValue:
+    rmpcommonAdType:
+      type: string
+      enum:
+      - UNKNOWN_AD_TYPE
+      - ITEM
+      - BRAND
+      - DISPLAY
+      - RESERVED_DISPLAY
+      default: UNKNOWN_AD_TYPE
+    commonDateRange:
+      type: object
+      properties:
+        date_start:
+          type: string
+          description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+        date_end:
+          type: string
+          description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
+      additionalProperties: true
+    v1CustomTargetKey:
       type: object
       properties:
         id:
           type: string
-          description: The id of the custom target value.
-        custom_target_key_id:
-          type: string
-          description: The id of the custom target key to which this value belongs.
+          description: The id of the custom target key.
         label:
           type: string
-          description: The label of the custom target value.
+          description: The label of the custom target key.
+        description:
+          type: string
+          description: The description of the custom target key.
+        is_multi_select:
+          type: boolean
+          description: Whether the custom target key allows multi select.
         valid:
           type: boolean
-          description: The validity of the custom target value.
+          description: The validity of the custom target key.
           readOnly: true
         created_at:
           type: string
@@ -612,13 +634,14 @@ components:
         updated_at:
           type: string
           format: date-time
-          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target value.
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target key.
           readOnly: true
-      description: Definition of a custom target value.
+      description: Definition of a custom target key.
       required:
       - id
-      - custom_target_key_id
       - label
+      - description
+      - is_multi_select
       - valid
       - created_at
       - updated_at
@@ -681,17 +704,54 @@ components:
       - custom_target_values
       - total
       additionalProperties: true
-    publicQueryCustomTargetDailySummaryResponse:
+    publicReadCustomTargetValuesBulkResponse:
       type: object
       properties:
-        rows:
+        custom_target_values:
           type: array
           items:
-            $ref: '#/components/schemas/v1LineItemDailyCustomReportRow'
-          description: List of daily report rows.
-      description: QueryCustomTargetDailySummary response containing daily report rows.
+            $ref: '#/components/schemas/v1CustomTargetValue'
+          description: Custom target values.
+      description: ReadCustomTargetValuesBulk response.
       required:
-      - rows
+      - custom_target_values
+      additionalProperties: true
+    RepresentedErrorDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of the metadata.
+        category:
+          $ref: '#/components/schemas/commonErrorCategory'
+        metadata:
+          type: object
+          description: The metadata of the responded error.
+          additionalProperties: true
+      required:
+      - type
+      - category
+      additionalProperties: true
+    v1LineItemDailyCustomReportRow:
+      type: object
+      properties:
+        custom_target_key_id:
+          type: string
+          description: The id of the custom target key.
+        custom_target_value_id:
+          type: string
+          description: The id of the custom target value.
+        custom_target_value_label:
+          type: string
+          description: The label of the custom target value.
+        imp_count:
+          type: string
+          format: int64
+          description: Impression count for the date.
+        ctr:
+          type: number
+          format: double
+          description: Click-through rate for the date.
       additionalProperties: true
     publicReadCustomTargetKeysBulkResponse:
       type: object
@@ -705,85 +765,6 @@ components:
       required:
       - custom_target_keys
       additionalProperties: true
-    v1CustomTargetKey:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the custom target key.
-        label:
-          type: string
-          description: The label of the custom target key.
-        description:
-          type: string
-          description: The description of the custom target key.
-        is_multi_select:
-          type: boolean
-          description: Whether the custom target key allows multi select.
-        valid:
-          type: boolean
-          description: The validity of the custom target key.
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          description: Created timestamp. API user should not touch this field; it is set internally.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target key.
-          readOnly: true
-      description: Definition of a custom target key.
-      required:
-      - id
-      - label
-      - description
-      - is_multi_select
-      - valid
-      - created_at
-      - updated_at
-      additionalProperties: true
-    publicRepresentedError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
-          type: string
-          description: The detailed message of responded error.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
-      required:
-      - code
-      - message
-      - details
-      additionalProperties: true
-    commonDateRange:
-      type: object
-      properties:
-        date_start:
-          type: string
-          description: Date in 'YYYY-MM-DD' when summary begins. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
-        date_end:
-          type: string
-          description: Date in 'YYYY-MM-DD' when summary ends. Inclusive. Note the allowed maximum duration for the date range is 186 days, to cover the period of any entire month.
-      additionalProperties: true
-    rmpcommonAdType:
-      type: string
-      enum:
-      - UNKNOWN_AD_TYPE
-      - ITEM
-      - BRAND
-      - DISPLAY
-      - RESERVED_DISPLAY
-      default: UNKNOWN_AD_TYPE
     publicQueryCustomTargetKeysResponse:
       type: object
       properties:
@@ -807,6 +788,53 @@ components:
       - custom_target_keys
       - total
       additionalProperties: true
+    v1CustomTargetValue:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the custom target value.
+        custom_target_key_id:
+          type: string
+          description: The id of the custom target key to which this value belongs.
+        label:
+          type: string
+          description: The label of the custom target value.
+        valid:
+          type: boolean
+          description: The validity of the custom target value.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Created timestamp. API user should not touch this field; it is set internally.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Updated timestamp. Set internally during creation, but required during update. This should match the updated timestamp updated_at of the custom target value.
+          readOnly: true
+      description: Definition of a custom target value.
+      required:
+      - id
+      - custom_target_key_id
+      - label
+      - valid
+      - created_at
+      - updated_at
+      additionalProperties: true
+    publicQueryCustomTargetDailySummaryResponse:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1LineItemDailyCustomReportRow'
+          description: List of daily report rows.
+      description: QueryCustomTargetDailySummary response containing daily report rows.
+      required:
+      - rows
+      additionalProperties: true
     publicReadCustomTargetKeysWithCustomReportBulkResponse:
       type: object
       properties:
@@ -818,34 +846,6 @@ components:
       description: ReadCustomTargetKeysWithCustomReportBulk response.
       required:
       - custom_target_keys
-      additionalProperties: true
-    RepresentedErrorDetail:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of the metadata.
-        category:
-          $ref: '#/components/schemas/commonErrorCategory'
-        metadata:
-          type: object
-          description: The metadata of the responded error.
-          additionalProperties: true
-      required:
-      - type
-      - category
-      additionalProperties: true
-    publicReadCustomTargetValuesBulkResponse:
-      type: object
-      properties:
-        custom_target_values:
-          type: array
-          items:
-            $ref: '#/components/schemas/v1CustomTargetValue'
-          description: Custom target values.
-      description: ReadCustomTargetValuesBulk response.
-      required:
-      - custom_target_values
       additionalProperties: true
   securitySchemes:
     ApiKeyAuth:

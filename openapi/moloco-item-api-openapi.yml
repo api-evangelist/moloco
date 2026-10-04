@@ -121,6 +121,40 @@ components:
       - item_id
       - message
       additionalProperties: true
+    publicRepresentedError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
+        message:
+          type: string
+          description: The detailed message of responded error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentedErrorDetail'
+          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
+      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
+      required:
+      - code
+      - message
+      - details
+      additionalProperties: true
+    v1UpdateItemSuccessInfo:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The id of the item.
+        seller_id:
+          type: string
+          description: The id of the seller.
+      description: Information of the item that succeed to update.
+      required:
+      - item_id
+      additionalProperties: true
     commonErrorCategory:
       type: string
       enum:
@@ -173,19 +207,6 @@ components:
       required:
       - success_items
       additionalProperties: true
-    v1UpdateItemSuccessInfo:
-      type: object
-      properties:
-        item_id:
-          type: string
-          description: The id of the item.
-        seller_id:
-          type: string
-          description: The id of the seller.
-      description: Information of the item that succeed to update.
-      required:
-      - item_id
-      additionalProperties: true
     RepresentedErrorDetail:
       type: object
       properties:
@@ -201,27 +222,6 @@ components:
       required:
       - type
       - category
-      additionalProperties: true
-    publicRepresentedError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-          description: The status code, which should be an enum value of google.rpc.Code.(https://developers.google.com/actions-center/reference/grpc-api/status_codes)
-        message:
-          type: string
-          description: The detailed message of responded error.
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/RepresentedErrorDetail'
-          description: The detailed information of responded error. Please refer to the error category section in guides for more detailed information.(https://rmp-docs.moloco.com/docs/management-api-error-categories)
-      title: Overridden from grpc status(https://github.com/grpc/grpc/blob/master/src/proto/grpc/status/status.proto)
-      required:
-      - code
-      - message
-      - details
       additionalProperties: true
   securitySchemes:
     ApiKeyAuth:

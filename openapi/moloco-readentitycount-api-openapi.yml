@@ -82,15 +82,12 @@ paths:
       - ReadEntityCount
 components:
   schemas:
-    messagesReadEntityCountResponse:
+    protobufAny:
       type: object
       properties:
-        entity_counts:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspEntityCount'
-          description: Entity counts of the given entity type under for each parent scope.
+        '@type':
+          type: string
+      additionalProperties: {}
     dspEntityCount:
       type: object
       properties:
@@ -127,6 +124,15 @@ components:
       - ENTITY_TYPE_CUSTOMER_ACTIVITY
       default: UNKNOWN_ENTITY_TYPE
       description: List of entity types supported in DSP API.
+    messagesReadEntityCountResponse:
+      type: object
+      properties:
+        entity_counts:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspEntityCount'
+          description: Entity counts of the given entity type under for each parent scope.
     googlerpcStatus:
       type: object
       properties:
@@ -140,12 +146,6 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/protobufAny'
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
   securitySchemes:
     Bearer:
       type: apiKey

@@ -74,19 +74,28 @@ paths:
       - CampaignSummary
 components:
   schemas:
-    googlerpcStatus:
+    ListReportFiltersResponseReportFilterOption:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        display_name:
           type: string
-        details:
+        value:
+          type: string
+      description: A pair of the value and display_name for each dimension.
+    messagesListReportFiltersResponse:
+      type: object
+      properties:
+        filters:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/protobufAny'
+            $ref: '#/components/schemas/ListReportFiltersResponseReportFilter'
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
     ListReportFiltersResponseReportFilter:
       type: object
       properties:
@@ -101,12 +110,13 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/ListReportFiltersResponseReportFilterOption'
-    protobufAny:
+    messagesListReportActionEventsResponse:
       type: object
       properties:
-        '@type':
-          type: string
-      additionalProperties: {}
+        action_events:
+          type: array
+          items:
+            type: string
     dspReportFilterDimension:
       type: string
       enum:
@@ -132,29 +142,19 @@ components:
       - Campaign_IsCrossPromo
       default: UNKNOWN_REPORT_FILTER_DIMENSION
       description: ReportFilterDimension enumerates available breakdown dimensions.
-    ListReportFiltersResponseReportFilterOption:
+    googlerpcStatus:
       type: object
       properties:
-        display_name:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
-        value:
-          type: string
-      description: A pair of the value and display_name for each dimension.
-    messagesListReportActionEventsResponse:
-      type: object
-      properties:
-        action_events:
-          type: array
-          items:
-            type: string
-    messagesListReportFiltersResponse:
-      type: object
-      properties:
-        filters:
+        details:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/ListReportFiltersResponseReportFilter'
+            $ref: '#/components/schemas/protobufAny'
   securitySchemes:
     Bearer:
       type: apiKey

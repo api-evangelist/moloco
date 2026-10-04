@@ -1220,30 +1220,6 @@ paths:
     - url: https://morse-us-prod.adsmoloco.com
 components:
   schemas:
-    messagesExpelUserErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesExpelUserErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesDeleteUserError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesDeleteUserErrorAPIErrorInfo'
     messagesResetPasswordError:
       type: object
       properties:
@@ -1257,142 +1233,89 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesResetPasswordErrorAPIErrorInfo'
-    messagesInviteUserResponse:
+    messagesResetPasswordResponse:
+      type: object
+    dspRole:
       type: object
       properties:
-        user:
-          $ref: '#/components/schemas/dspUser'
-          description: Invited user information.
-    messagesReadUserErrorAPIErrorInfoErrorReason:
+        type:
+          $ref: '#/components/schemas/dspRoleType'
+          description: The role types users can have.
+        workplace_id:
+          type: string
+          description: The workplace bound to the role.
+        ad_account_id:
+          type: string
+          description: The ad account id bound to role.
+        exchange_id:
+          type: string
+          description: The exchange id bound to role.
+      description: 'Role that user can have.
+
+        Role is bound to resource.'
+    messagesExpelUserErrorAPIErrorInfoErrorReason:
       type: string
       enum:
       - ERROR_REASON_UNKNOWN
       - USER_DOES_NOT_HAVE_REQUIRED_ROLE
-      - USER_AUTH_TOKEN_REQUIRED
+      - USER_NOT_REGISTERED_TO_WORKPLACE
       default: ERROR_REASON_UNKNOWN
-      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_AUTH_TOKEN_REQUIRED: Token should be auth token."
-    dspWorkplaceHistory:
-      type: object
-      properties:
-        workplace_creation_requests:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspWorkplaceCreationRequest'
-    messagesListAdAccountUsersResponse:
-      type: object
-      properties:
-        users_with_infos:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesUserWithInfo'
-          description: List of users contain roles.
-    messagesUpdatePasswordErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesUpdatePasswordErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    dspRoleType:
+      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_NOT_REGISTERED_TO_WORKPLACE: The user is not registered to workplace."
+    commonLocale:
       type: string
       enum:
-      - WORKPLACE_OWNER
-      - AD_ACCOUNT_OWNER
-      - AD_ACCOUNT_MEMBER
-      - AD_ACCOUNT_VIEWER
-      default: UNKNOWN_TYPE
-      description: " - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
-    messagesUserWithInfo:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/dspUser'
-          description: The user.
-        signed_up:
-          type: boolean
-          description: Signed up status of user.
-        roles:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspRole'
-          description: List of roles the user has.
-    messagesCompleteSignupErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesCompleteSignupErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesInviteUserErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesInviteUserErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    dspWorkplaceCreationRequestStatus:
+      - UNKNOWN_LOCALE
+      - EN_US
+      - KO_KR
+      - JA_JP
+      default: UNKNOWN_LOCALE
+      description: "Locale enumerates the supported user locale values.\n\n - EN_US: English (United States)\n - KO_KR: Korean (South Korea)\n - JA_JP: Japanese (Japan)"
+    adcloudcommonCurrency:
       type: string
       enum:
-      - WORKPLACE_CREATION_REQUEST_UNKNOWN
-      - WORKPLACE_CREATION_REQUEST_PENDING
-      - WORKPLACE_CREATION_REQUEST_APPROVED
-      - WORKPLACE_CREATION_REQUEST_REJECTED
-      - WORKPLACE_CREATION_REQUEST_FAILED
-      default: WORKPLACE_CREATION_REQUEST_UNKNOWN
-    messagesCompleteSignupErrorAPIErrorInfoErrorReason:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      default: UNKNOWN_CURRENCY
+      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
+    dspWorkplaceCreationRequestAdAccountInfo:
+      type: object
+      properties:
+        timezone:
+          type: string
+          description: '[IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) name.
+
+            e.g. America/Los_Angeles.'
+        currency:
+          $ref: '#/components/schemas/adcloudcommonCurrency'
+    messagesDeleteUserErrorAPIErrorInfoErrorReason:
       type: string
       enum:
       - ERROR_REASON_UNKNOWN
-      - USER_INVALID_PASSWORD
-      - USER_TERMS_AGREEMENT_REQUIRED_TO_SIGN_UP
-      - USER_ALREADY_SIGNUP
-      - USER_ALREADY_SET_PASSWORD_USING_TOKEN
       default: ERROR_REASON_UNKNOWN
-      description: " - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_TERMS_AGREEMENT_REQUIRED_TO_SIGN_UP: User must agree to terms and privacy policy to sign up.\n - USER_ALREADY_SIGNUP: The user has already signed up.\n - USER_ALREADY_SET_PASSWORD_USING_TOKEN: The user has already set their password using token."
-    messagesResetPasswordResponse:
-      type: object
-    messagesExpelUserError:
+    messagesListWorkplacesResponse:
       type: object
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
+        workplaces:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/messagesExpelUserErrorAPIErrorInfo'
-    dspWorkplaceWithInvitation:
-      type: object
-      properties:
-        workplace:
-          $ref: '#/components/schemas/dspWorkplace'
-          description: The workplace.
-        requested_invitation:
-          type: boolean
-          description: Whether user requested an invitation to this workplace.
-        requested_at:
-          type: string
-          format: date-time
-          description: Requested time.
-      description: The workplace with invitation status.
+            $ref: '#/components/schemas/dspWorkplace'
+          description: The list of workplace.
+        workplace_history:
+          $ref: '#/components/schemas/dspWorkplaceHistory'
+          description: The list of workplace creation request histories.
+    messagesInviteUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_WORKPLACE_ALREADY_REGISTERED
+      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_WORKPLACE_ALREADY_REGISTERED: The workplace is already registered.\n - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user."
     messagesUpdatePasswordRequest:
       type: object
       properties:
@@ -1407,12 +1330,7 @@ components:
       required:
       - current_password
       - new_password
-    messagesDeleteUserErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      default: ERROR_REASON_UNKNOWN
-    messagesUpdatePasswordError:
+    messagesExpelUserError:
       type: object
       properties:
         code:
@@ -1424,106 +1342,7 @@ components:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/messagesUpdatePasswordErrorAPIErrorInfo'
-    messagesUpdateUserErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - USER_UPDATE_NOT_ALLOWED
-      default: ERROR_REASON_UNKNOWN
-      description: ' - USER_UPDATE_NOT_ALLOWED: The user can''t update other user''s name or password.'
-    messagesResetPasswordErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesResetPasswordErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesInviteUserRequest:
-      type: object
-      properties:
-        email:
-          type: string
-          description: The user email.
-        name:
-          type: string
-          description: The user name.
-      required:
-      - email
-      - name
-    commonLocale:
-      type: string
-      enum:
-      - UNKNOWN_LOCALE
-      - EN_US
-      - KO_KR
-      - JA_JP
-      default: UNKNOWN_LOCALE
-      description: "Locale enumerates the supported user locale values.\n\n - EN_US: English (United States)\n - KO_KR: Korean (South Korea)\n - JA_JP: Japanese (Japan)"
-    messagesReadUserResponse:
-      type: object
-      properties:
-        user_with_info:
-          $ref: '#/components/schemas/messagesUserWithInfo'
-          description: Invited user information.
-    messagesCompleteSignupError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesCompleteSignupErrorAPIErrorInfo'
-    messagesExpelUserResponse:
-      type: object
-    messagesUpdatePasswordResponse:
-      type: object
-    messagesUpdatePasswordErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - USER_UPDATE_NOT_ALLOWED
-      - USER_INVALID_PASSWORD
-      - USER_CANNOT_USE_PREVIOUS_PASSWORD
-      default: ERROR_REASON_UNKNOWN
-      description: " - USER_UPDATE_NOT_ALLOWED: The user can't update other user's name or password.\n - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_CANNOT_USE_PREVIOUS_PASSWORD: Users cannot reuse previous password."
-    messagesExpelUserErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
-      - USER_NOT_REGISTERED_TO_WORKPLACE
-      default: ERROR_REASON_UNKNOWN
-      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_NOT_REGISTERED_TO_WORKPLACE: The user is not registered to workplace."
-    messagesResetPasswordRequest:
-      type: object
-      properties:
-        password:
-          type: string
-          description: 'The password that user want to change.
-
-            Password must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.'
-        email:
-          type: string
-          description: The user email.
-      required:
-      - password
-      - email
-    messagesUpdateUserResponse:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/dspUser'
-          description: The user.
+            $ref: '#/components/schemas/messagesExpelUserErrorAPIErrorInfo'
     dspBusinessCategory:
       type: string
       enum:
@@ -1538,6 +1357,362 @@ components:
       - BUSINESS_CATEGORY_OTHERS
       default: BUSINESS_CATEGORY_UNKNOWN
       description: Category of the business.
+    messagesUpdateUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: The user.
+    messagesCompleteSignupErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_INVALID_PASSWORD
+      - USER_TERMS_AGREEMENT_REQUIRED_TO_SIGN_UP
+      - USER_ALREADY_SIGNUP
+      - USER_ALREADY_SET_PASSWORD_USING_TOKEN
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_TERMS_AGREEMENT_REQUIRED_TO_SIGN_UP: User must agree to terms and privacy policy to sign up.\n - USER_ALREADY_SIGNUP: The user has already signed up.\n - USER_ALREADY_SET_PASSWORD_USING_TOKEN: The user has already set their password using token."
+    messagesUpdatePasswordResponse:
+      type: object
+    messagesUpdateUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdateUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesReadUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
+      - USER_AUTH_TOKEN_REQUIRED
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user.\n - USER_AUTH_TOKEN_REQUIRED: Token should be auth token."
+    messagesUpdatePasswordError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdatePasswordErrorAPIErrorInfo'
+    messagesForgotPasswordRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user email.
+      required:
+      - email
+    messagesForgotPasswordResponse:
+      type: object
+    messagesUpdateUserErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_UPDATE_NOT_ALLOWED
+      default: ERROR_REASON_UNKNOWN
+      description: ' - USER_UPDATE_NOT_ALLOWED: The user can''t update other user''s name or password.'
+    messagesCompleteSignupResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: The user.
+    protobufAny:
+      type: object
+      properties:
+        '@type':
+          type: string
+      additionalProperties: {}
+    messagesExpelUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesExpelUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email of User. Immutable.
+        id:
+          type: string
+          description: ID of User. Immutable.
+        name:
+          type: string
+          description: First name of the User.
+        last_name:
+          type: string
+          description: Last name of the User.
+        company_name:
+          type: string
+          description: Company name of the User.
+        terms_agreed:
+          type: boolean
+          description: Whether the user agreed to terms and privacy policy.
+        marketing_agreed:
+          type: boolean
+          description: Whether the user agreed to receive marketing purpose informations.
+        locale:
+          $ref: '#/components/schemas/commonLocale'
+          description: The locale preference of the user.
+        created_at:
+          type: string
+          format: date-time
+          description: The time when a user was created.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: The time when a user was updated.
+          readOnly: true
+      description: User represents a single user.
+    messagesListWorkplaceUsersResponse:
+      type: object
+      properties:
+        user_with_infos:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUserWithInfo'
+          description: List of users with additional info.
+    messagesDeleteUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesDeleteUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdatePasswordErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_UPDATE_NOT_ALLOWED
+      - USER_INVALID_PASSWORD
+      - USER_CANNOT_USE_PREVIOUS_PASSWORD
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_UPDATE_NOT_ALLOWED: The user can't update other user's name or password.\n - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_CANNOT_USE_PREVIOUS_PASSWORD: Users cannot reuse previous password."
+    messagesInviteUserError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesInviteUserErrorAPIErrorInfo'
+    googlerpcStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/protobufAny'
+    messagesCompleteSignupError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesCompleteSignupErrorAPIErrorInfo'
+    messagesExpelUserRequest:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The user ID.
+      required:
+      - user_id
+    messagesInviteUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/dspUser'
+          description: Invited user information.
+    messagesInviteUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user email.
+        name:
+          type: string
+          description: The user name.
+      required:
+      - email
+      - name
+    messagesInviteUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesInviteUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspWorkplace:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The workplace ID.
+        title:
+          type: string
+          description: The workplace title.
+        logo_url:
+          type: string
+          description: The URL of the workplace logo image file.
+        configuration:
+          type: object
+          additionalProperties:
+            type: string
+          description: The workplace's configuration.
+      description: The workplace.
+    messagesUpdatePasswordErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesUpdatePasswordErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    messagesUpdateUserError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/messagesUpdateUserErrorAPIErrorInfo'
+    dspWorkplaceCreationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for request.
+        company_info:
+          $ref: '#/components/schemas/dspCompanyInfo'
+          description: Company info for th requested workplace.
+        status:
+          $ref: '#/components/schemas/dspWorkplaceCreationRequestStatus'
+          description: Status of the request.
+        reject_reason:
+          type: string
+          description: Rejected reason in case request is rejected.
+        requested_at:
+          type: string
+          format: date-time
+          description: Requested time.
+        workplace_id:
+          type: string
+          description: 'Created workplace''s ID after finalized.
+
+            Only visible when request is approved.'
+        workplace_title:
+          type: string
+          description: Title of the workplace.
+        ad_account_info:
+          $ref: '#/components/schemas/dspWorkplaceCreationRequestAdAccountInfo'
+          description: AdAccount information used to create a default AdAccount for the Workplace.
+    messagesListWorkplacesByDomainResponse:
+      type: object
+      properties:
+        workplaces:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspWorkplaceWithInvitation'
+          description: The list of workplace with invitation status.
+    messagesDeleteUserResponse:
+      type: object
+    messagesReadUserResponse:
+      type: object
+      properties:
+        user_with_info:
+          $ref: '#/components/schemas/messagesUserWithInfo'
+          description: Invited user information.
+    messagesResetPasswordErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - USER_INVALID_PASSWORD
+      - USER_ALREADY_SET_PASSWORD_USING_TOKEN
+      - USER_CANNOT_USE_PREVIOUS_PASSWORD
+      default: ERROR_REASON_UNKNOWN
+      description: " - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_ALREADY_SET_PASSWORD_USING_TOKEN: The user has already set their password using token.\n - USER_CANNOT_USE_PREVIOUS_PASSWORD: Users cannot reuse previous password."
+    messagesResetPasswordErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesResetPasswordErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspWorkplaceWithInvitation:
+      type: object
+      properties:
+        workplace:
+          $ref: '#/components/schemas/dspWorkplace'
+          description: The workplace.
+        requested_invitation:
+          type: boolean
+          description: Whether user requested an invitation to this workplace.
+        requested_at:
+          type: string
+          format: date-time
+          description: Requested time.
+      description: The workplace with invitation status.
     dspCompanyInfo:
       type: object
       properties:
@@ -1581,214 +1756,91 @@ components:
       - city
       - country
       - zipcode
-    dspRole:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/dspRoleType'
-          description: The role types users can have.
-        workplace_id:
-          type: string
-          description: The workplace bound to the role.
-        ad_account_id:
-          type: string
-          description: The ad account id bound to role.
-        exchange_id:
-          type: string
-          description: The exchange id bound to role.
-      description: 'Role that user can have.
-
-        Role is bound to resource.'
-    messagesForgotPasswordRequest:
-      type: object
-      properties:
-        email:
-          type: string
-          description: The user email.
-      required:
-      - email
-    messagesInviteUserErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - USER_WORKPLACE_ALREADY_REGISTERED
-      - USER_DOES_NOT_HAVE_REQUIRED_ROLE
-      default: ERROR_REASON_UNKNOWN
-      description: " - USER_WORKPLACE_ALREADY_REGISTERED: The workplace is already registered.\n - USER_DOES_NOT_HAVE_REQUIRED_ROLE: The user doesn't have role to invite other user."
-    messagesDeleteUserErrorAPIErrorInfo:
+    messagesCompleteSignupErrorAPIErrorInfo:
       type: object
       properties:
         reason:
-          $ref: '#/components/schemas/messagesDeleteUserErrorAPIErrorInfoErrorReason'
+          $ref: '#/components/schemas/messagesCompleteSignupErrorAPIErrorInfoErrorReason'
         error_log_id:
           type: string
         context:
           type: object
           additionalProperties:
             type: string
-    dspWorkplaceCreationRequestAdAccountInfo:
-      type: object
-      properties:
-        timezone:
-          type: string
-          description: '[IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) name.
-
-            e.g. America/Los_Angeles.'
-        currency:
-          $ref: '#/components/schemas/adcloudcommonCurrency'
-    googlerpcStatus:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/protobufAny'
-    messagesUpdateUserError:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/messagesUpdateUserErrorAPIErrorInfo'
-    messagesDeleteUserRequest:
-      type: object
-      properties:
-        email:
-          type: string
-          description: The user email.
-        password:
-          type: string
-          description: The user password.
-      required:
-      - email
-      - password
-    protobufAny:
-      type: object
-      properties:
-        '@type':
-          type: string
-      additionalProperties: {}
-    messagesExpelUserRequest:
-      type: object
-      properties:
-        user_id:
-          type: string
-          description: The user ID.
-      required:
-      - user_id
-    adcloudcommonCurrency:
+    dspWorkplaceCreationRequestStatus:
       type: string
       enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      default: UNKNOWN_CURRENCY
-      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
-    messagesCompleteSignupRequest:
+      - WORKPLACE_CREATION_REQUEST_UNKNOWN
+      - WORKPLACE_CREATION_REQUEST_PENDING
+      - WORKPLACE_CREATION_REQUEST_APPROVED
+      - WORKPLACE_CREATION_REQUEST_REJECTED
+      - WORKPLACE_CREATION_REQUEST_FAILED
+      default: WORKPLACE_CREATION_REQUEST_UNKNOWN
+    messagesReadUserErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadUserErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    dspWorkplaceHistory:
+      type: object
+      properties:
+        workplace_creation_requests:
+          type: array
+          items:
+            type: object
+            $ref: '#/components/schemas/dspWorkplaceCreationRequest'
+    dspClientType:
+      type: string
+      enum:
+      - UNKNOWN_CLIENT_TYPE
+      - ADVERTISER
+      - AGENCY
+      default: UNKNOWN_CLIENT_TYPE
+      description: "Enumerates available client types.\n\n - ADVERTISER: The actual advertiser, who owns the advertising apps or web sites.\n - AGENCY: An agency, who usually operates ad campaigns on behalf of the advertiser."
+    messagesUserWithInfo:
       type: object
       properties:
         user:
           $ref: '#/components/schemas/dspUser'
-          description: The User data to be created.
-        password:
-          type: string
-          description: 'The password that user want to create. Required for password based login users.
-
-            Password must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.'
-      required:
-      - user
-    messagesListWorkplacesByDomainResponse:
-      type: object
-      properties:
-        workplaces:
+          description: The user.
+        signed_up:
+          type: boolean
+          description: Signed up status of user.
+        roles:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/dspWorkplaceWithInvitation'
-          description: The list of workplace with invitation status.
-    messagesListWorkplaceUsersResponse:
+            $ref: '#/components/schemas/dspRole'
+          description: List of roles the user has.
+    messagesResetPasswordRequest:
       type: object
       properties:
-        user_with_infos:
+        password:
+          type: string
+          description: 'The password that user want to change.
+
+            Password must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.'
+        email:
+          type: string
+          description: The user email.
+      required:
+      - password
+      - email
+    messagesListAdAccountUsersResponse:
+      type: object
+      properties:
+        users_with_infos:
           type: array
           items:
             type: object
             $ref: '#/components/schemas/messagesUserWithInfo'
-          description: List of users with additional info.
-    messagesResetPasswordErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - USER_INVALID_PASSWORD
-      - USER_ALREADY_SET_PASSWORD_USING_TOKEN
-      - USER_CANNOT_USE_PREVIOUS_PASSWORD
-      default: ERROR_REASON_UNKNOWN
-      description: " - USER_INVALID_PASSWORD: User password is invalid.\nPassword must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.\n - USER_ALREADY_SET_PASSWORD_USING_TOKEN: The user has already set their password using token.\n - USER_CANNOT_USE_PREVIOUS_PASSWORD: Users cannot reuse previous password."
-    dspUser:
-      type: object
-      properties:
-        email:
-          type: string
-          description: Email of User. Immutable.
-        id:
-          type: string
-          description: ID of User. Immutable.
-        name:
-          type: string
-          description: First name of the User.
-        last_name:
-          type: string
-          description: Last name of the User.
-        company_name:
-          type: string
-          description: Company name of the User.
-        terms_agreed:
-          type: boolean
-          description: Whether the user agreed to terms and privacy policy.
-        marketing_agreed:
-          type: boolean
-          description: Whether the user agreed to receive marketing purpose informations.
-        locale:
-          $ref: '#/components/schemas/commonLocale'
-          description: The locale preference of the user.
-        created_at:
-          type: string
-          format: date-time
-          description: The time when a user was created.
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          description: The time when a user was updated.
-          readOnly: true
-      description: User represents a single user.
-    messagesListWorkplacesResponse:
-      type: object
-      properties:
-        workplaces:
-          type: array
-          items:
-            type: object
-            $ref: '#/components/schemas/dspWorkplace'
-          description: The list of workplace.
-        workplace_history:
-          $ref: '#/components/schemas/dspWorkplaceHistory'
-          description: The list of workplace creation request histories.
+          description: List of users contain roles.
     messagesReadUserError:
       type: object
       properties:
@@ -1802,26 +1854,43 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesReadUserErrorAPIErrorInfo'
-    messagesReadUserErrorAPIErrorInfo:
+    dspRoleType:
+      type: string
+      enum:
+      - WORKPLACE_OWNER
+      - AD_ACCOUNT_OWNER
+      - AD_ACCOUNT_MEMBER
+      - AD_ACCOUNT_VIEWER
+      default: UNKNOWN_TYPE
+      description: " - WORKPLACE_OWNER: Workplace owner represents a user who can do anything in a given workplace.\n - AD_ACCOUNT_OWNER: Ad account owner represents a user who can do anything in a given ad account.\n - AD_ACCOUNT_MEMBER: Ad account member can view all users of the Ad Account.\nCan invite new users as Ad Account Member or Ad Account Viewer\nCan edit your own information (ex: name)\nCan create and edit ad campaigns\n - AD_ACCOUNT_VIEWER: Ad account Viewer role offers a limited set of permissions that allows users\nonly to read the basic information of the resources."
+    messagesDeleteUserRequest:
       type: object
       properties:
-        reason:
-          $ref: '#/components/schemas/messagesReadUserErrorAPIErrorInfoErrorReason'
-        error_log_id:
+        email:
           type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesDeleteUserResponse:
-      type: object
-    messagesCompleteSignupResponse:
+          description: The user email.
+        password:
+          type: string
+          description: The user password.
+      required:
+      - email
+      - password
+    messagesCompleteSignupRequest:
       type: object
       properties:
         user:
           $ref: '#/components/schemas/dspUser'
-          description: The user.
-    messagesInviteUserError:
+          description: The User data to be created.
+        password:
+          type: string
+          description: 'The password that user want to create. Required for password based login users.
+
+            Password must be at least 12 characters and contain at least one number, uppercase letter, lowercase letter and special character.'
+      required:
+      - user
+    messagesExpelUserResponse:
+      type: object
+    messagesDeleteUserError:
       type: object
       properties:
         code:
@@ -1833,114 +1902,7 @@ components:
           type: array
           items:
             type: object
-            $ref: '#/components/schemas/messagesInviteUserErrorAPIErrorInfo'
-    messagesForgotPasswordResponse:
-      type: object
-    dspWorkplace:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The workplace ID.
-        title:
-          type: string
-          description: The workplace title.
-        logo_url:
-          type: string
-          description: The URL of the workplace logo image file.
-        configuration:
-          type: object
-          additionalProperties:
-            type: string
-          description: The workplace's configuration.
-      description: The workplace.
-    messagesUpdateUserErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesUpdateUserErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    dspClientType:
-      type: string
-      enum:
-      - UNKNOWN_CLIENT_TYPE
-      - ADVERTISER
-      - AGENCY
-      default: UNKNOWN_CLIENT_TYPE
-      description: "Enumerates available client types.\n\n - ADVERTISER: The actual advertiser, who owns the advertising apps or web sites.\n - AGENCY: An agency, who usually operates ad campaigns on behalf of the advertiser."
-    dspWorkplaceCreationRequest:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for request.
-        company_info:
-          $ref: '#/components/schemas/dspCompanyInfo'
-          description: Company info for th requested workplace.
-        status:
-          $ref: '#/components/schemas/dspWorkplaceCreationRequestStatus'
-          description: Status of the request.
-        reject_reason:
-          type: string
-          description: Rejected reason in case request is rejected.
-        requested_at:
-          type: string
-          format: date-time
-          description: Requested time.
-        workplace_id:
-          type: string
-          description: 'Created workplace''s ID after finalized.
-
-            Only visible when request is approved.'
-        workplace_title:
-          type: string
-          description: Title of the workplace.
-        ad_account_info:
-          $ref: '#/components/schemas/dspWorkplaceCreationRequestAdAccountInfo'
-          description: AdAccount information used to create a default AdAccount for the Workplace.
-    resourcePathPermissions:
-      description: A resource path and the permissions given to it.
-      type: object
-      required:
-      - id
-      - instance_id
-      - permissions
-      properties:
-        id:
-          description: Resource ID.
-          type: string
-        instance_id:
-          description: Resource instance ID.
-          type: string
-        permissions:
-          description: Permissions given to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/permission'
-    updateUserRequest:
-      description: A request to update a user.
-      type: object
-      required:
-      - userspace_id
-      properties:
-        configuration:
-          description: Per-user configuration to update.
-          type: object
-          additionalProperties:
-            type: string
-        name:
-          description: Name to update.
-          type: string
-        password:
-          $ref: '#/components/schemas/updatePasswordRequest'
-        userspace_id:
-          description: A userspace ID where the user is.
-          type: string
+            $ref: '#/components/schemas/messagesDeleteUserErrorAPIErrorInfo'
     roleReference:
       description: Reference to a role defined in a platform.
       type: object
@@ -1954,110 +1916,6 @@ components:
         platform_id:
           description: The platofrm ID where the role is defined.
           type: string
-    createUserResponse:
-      description: A response to a create user request.
-      type: object
-      required:
-      - user
-      properties:
-        user:
-          $ref: '#/components/schemas/user'
-    userRegistrationRequest:
-      description: The request body for the user registration request.
-      type: object
-      properties:
-        forward_url:
-          description: the URL that will be included in the platform registration (sign-up) email.
-          type: string
-    updatePasswordRequest:
-      description: A request to update a user password.
-      type: object
-      required:
-      - current_password
-      - new_password
-      properties:
-        current_password:
-          description: The current user password.
-          type: string
-        new_password:
-          description: The new user password.
-          type: string
-    readUserResponse:
-      description: A response to a read user request.
-      type: object
-      required:
-      - user
-      properties:
-        user:
-          $ref: '#/components/schemas/user'
-    createRoleGrantsRequest:
-      description: Request to attach roles to a resource and a user.
-      type: object
-      required:
-      - platform_id
-      - resource_id
-      - resource_instance_id
-      - roles
-      properties:
-        platform_id:
-          description: The ID of the platform in which the role grant is made.
-          type: string
-        resource_id:
-          description: Resource ID to which the roles are granted.
-          type: string
-        resource_instance_id:
-          description: The actual instance ID of the resource to which the roles are granted.
-          type: string
-        roles:
-          description: The list of roles granted to the resource.
-          type: array
-          items:
-            $ref: '#/components/schemas/roleReference'
-    listUserPermissionsResponse:
-      description: The API response that lists the permissions that the user has.
-      type: object
-      required:
-      - user_id
-      - platform_id
-      - userspace_id
-      - resource_path_permissions
-      properties:
-        platform_id:
-          description: The ID of the platform to which the user belongs to.
-          type: string
-        resource_path_permissions:
-          description: The resource path and the permissions given to the path.
-          type: array
-          items:
-            $ref: '#/components/schemas/resourcePathPermissions'
-        user_id:
-          description: The ID of the user.
-          type: string
-        userspace_id:
-          description: The ID of the userspace to which the platform belongs to.
-          type: string
-    listRoleGrantsResponse:
-      description: List of roles granted to a user.
-      type: object
-      required:
-      - role_grants
-      properties:
-        role_grants:
-          description: list of role grants.
-          type: array
-          items:
-            $ref: '#/components/schemas/resourceToRoleReferences'
-    createUserRequest:
-      description: A request to create a user.
-      type: object
-      required:
-      - user
-      properties:
-        forward_url:
-          description: A URL that will be included in the Welcome email.
-          type: string
-        user:
-          $ref: '#/components/schemas/user'
     user:
       description: A user.
       type: object
@@ -2117,55 +1975,72 @@ components:
         userspace_id:
           description: The ID of the user space such as USERSPACE_C.
           type: string
-    error:
-      description: Error response with detailed reason.
+    listUserPermissionsResponse:
+      description: The API response that lists the permissions that the user has.
       type: object
       required:
-      - reason
-      - status
-      properties:
-        reason:
-          description: More detailed reason about why the error was returned.
-          type: string
-        status:
-          description: The error status code.
-          type: integer
-    permission:
-      description: Permission.
-      type: object
-      required:
-      - id
+      - user_id
       - platform_id
-      - service
-      - resource_id
-      - verb
+      - userspace_id
+      - resource_path_permissions
       properties:
-        id:
-          description: The ID of the permission.
-          type: string
-        name:
-          description: The name of the permission.
-          type: string
         platform_id:
-          description: The platform ID in which the permission is defined.
+          description: The ID of the platform to which the user belongs to.
           type: string
-        resource_id:
-          description: The resource on which the permission is defined.
+        resource_path_permissions:
+          description: The resource path and the permissions given to the path.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourcePathPermissions'
+        user_id:
+          description: The ID of the user.
           type: string
-        service:
-          description: The name of the service such as DSP, AUTH.
+        userspace_id:
+          description: The ID of the userspace to which the platform belongs to.
           type: string
-        verb:
-          description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
-          type: string
-    updateUserResponse:
-      description: A response to an update user request.
+    createUserResponse:
+      description: A response to a create user request.
       type: object
       required:
       - user
       properties:
         user:
           $ref: '#/components/schemas/user'
+    userRegistrationRequest:
+      description: The request body for the user registration request.
+      type: object
+      properties:
+        forward_url:
+          description: the URL that will be included in the platform registration (sign-up) email.
+          type: string
+    resourcePathPermissions:
+      description: A resource path and the permissions given to it.
+      type: object
+      required:
+      - id
+      - instance_id
+      - permissions
+      properties:
+        id:
+          description: Resource ID.
+          type: string
+        instance_id:
+          description: Resource instance ID.
+          type: string
+        permissions:
+          description: Permissions given to the resource.
+          type: array
+          items:
+            $ref: '#/components/schemas/permission'
+    listUsersResponse:
+      description: A response to list users with the given condition.
+      type: object
+      properties:
+        users:
+          description: Users found
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
     resourceToRoleReferences:
       description: Relationship between a resource and a list of roles.
       type: object
@@ -2194,15 +2069,140 @@ components:
         signed_up:
           description: The signed up status of the user.
           type: boolean
-    listUsersResponse:
-      description: A response to list users with the given condition.
+    updatePasswordRequest:
+      description: A request to update a user password.
       type: object
+      required:
+      - current_password
+      - new_password
       properties:
-        users:
-          description: Users found
+        current_password:
+          description: The current user password.
+          type: string
+        new_password:
+          description: The new user password.
+          type: string
+    error:
+      description: Error response with detailed reason.
+      type: object
+      required:
+      - reason
+      - status
+      properties:
+        reason:
+          description: More detailed reason about why the error was returned.
+          type: string
+        status:
+          description: The error status code.
+          type: integer
+    updateUserResponse:
+      description: A response to an update user request.
+      type: object
+      required:
+      - user
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+    createRoleGrantsRequest:
+      description: Request to attach roles to a resource and a user.
+      type: object
+      required:
+      - platform_id
+      - resource_id
+      - resource_instance_id
+      - roles
+      properties:
+        platform_id:
+          description: The ID of the platform in which the role grant is made.
+          type: string
+        resource_id:
+          description: Resource ID to which the roles are granted.
+          type: string
+        resource_instance_id:
+          description: The actual instance ID of the resource to which the roles are granted.
+          type: string
+        roles:
+          description: The list of roles granted to the resource.
           type: array
           items:
-            $ref: '#/components/schemas/user'
+            $ref: '#/components/schemas/roleReference'
+    permission:
+      description: Permission.
+      type: object
+      required:
+      - id
+      - platform_id
+      - service
+      - resource_id
+      - verb
+      properties:
+        id:
+          description: The ID of the permission.
+          type: string
+        name:
+          description: The name of the permission.
+          type: string
+        platform_id:
+          description: The platform ID in which the permission is defined.
+          type: string
+        resource_id:
+          description: The resource on which the permission is defined.
+          type: string
+        service:
+          description: The name of the service such as DSP, AUTH.
+          type: string
+        verb:
+          description: The action that the permision controls, such as CREATE, REVOKE, ADMIN.
+          type: string
+    updateUserRequest:
+      description: A request to update a user.
+      type: object
+      required:
+      - userspace_id
+      properties:
+        configuration:
+          description: Per-user configuration to update.
+          type: object
+          additionalProperties:
+            type: string
+        name:
+          description: Name to update.
+          type: string
+        password:
+          $ref: '#/components/schemas/updatePasswordRequest'
+        userspace_id:
+          description: A userspace ID where the user is.
+          type: string
+    readUserResponse:
+      description: A response to a read user request.
+      type: object
+      required:
+      - user
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+    createUserRequest:
+      description: A request to create a user.
+      type: object
+      required:
+      - user
+      properties:
+        forward_url:
+          description: A URL that will be included in the Welcome email.
+          type: string
+        user:
+          $ref: '#/components/schemas/user'
+    listRoleGrantsResponse:
+      description: List of roles granted to a user.
+      type: object
+      required:
+      - role_grants
+      properties:
+        role_grants:
+          description: list of role grants.
+          type: array
+          items:
+            $ref: '#/components/schemas/resourceToRoleReferences'
   securitySchemes:
     Bearer:
       type: apiKey

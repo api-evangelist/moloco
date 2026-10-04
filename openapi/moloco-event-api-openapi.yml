@@ -90,30 +90,51 @@ components:
           items:
             $ref: '#/components/schemas/protobufAny'
       additionalProperties: true
-    EventItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the Item.
-        price:
-          $ref: '#/components/schemas/commonMoney'
-        quantity:
-          type: integer
-          format: int32
-          description: Quantity of the item. Recommended.
-        item_group_id:
-          type: string
-          description: Unique identifier of the Item Group. id and/or item_group_id must be provided.
-        seller_id:
-          type: string
-          description: Unique identifier of the seller of the item. This field is required for MSPI integration unless the seller cannot be associated with that item for the specific event.
-        price_seller:
-          $ref: '#/components/schemas/commonMoney'
-      description: Item object
-      required:
-      - id
-      additionalProperties: true
+    EventEventType:
+      type: string
+      enum:
+      - UNKNOWN_EVENT_TYPE
+      - SEARCH
+      - ITEM_PAGE_VIEW
+      - ADD_TO_CART
+      - PURCHASE
+      - ADD_TO_WISHLIST
+      - HOME
+      - LAND
+      - PAGE_VIEW
+      default: UNKNOWN_EVENT_TYPE
+      description: Supported EventTypes.
+    commonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      - SEK
+      - INR
+      - THB
+      - IDR
+      - CNY
+      - CAD
+      - RUB
+      - BRL
+      - SGD
+      - HKD
+      - AUD
+      - PLN
+      - DKK
+      - VND
+      - MYR
+      - PHP
+      - TRY
+      - VES
+      - AED
+      - CHF
+      default: UNKNOWN_CURRENCY
+      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
     v1Event:
       type: object
       properties:
@@ -175,59 +196,45 @@ components:
       - timestamp
       - channel_type
       additionalProperties: true
-    commonCurrency:
+    commonChannelType:
       type: string
       enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      - SEK
-      - INR
-      - THB
-      - IDR
-      - CNY
-      - CAD
-      - RUB
-      - BRL
-      - SGD
-      - HKD
-      - AUD
-      - PLN
-      - DKK
-      - VND
-      - MYR
-      - PHP
-      - TRY
-      - VES
-      - AED
-      - CHF
-      default: UNKNOWN_CURRENCY
-      description: "Currency enumerates available currencies.\n\n - UNKNOWN_CURRENCY: Unknown currency.\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound.\n - SEK: Swedish Krona.\n - INR: India Rupee.\n - THB: Thailand Baht.\n - IDR: Indonesia Rupiah.\n - CNY: China Yuan.\n - CAD: Canada Dollar.\n - RUB: Russia Ruble.\n - BRL: Brazil Real.\n - SGD: Singapore Dollar.\n - HKD: Hong Kong Dollar.\n - AUD: Autrailia Dollar.\n - PLN: Poland Zloty.\n - DKK: Denmark Krone.\n - VND: Viet Nam Dong.\n - MYR: Malaysia Ringgit.\n - PHP: Philippines Peso.\n - TRY: Turkey Lira.\n - VES: Venezuela Bolívar Soberano.\n - AED: United Arab Emirates Dirham.\n - CHF: Swiss Franc."
-    EventEventType:
-      type: string
-      enum:
-      - UNKNOWN_EVENT_TYPE
-      - SEARCH
-      - ITEM_PAGE_VIEW
-      - ADD_TO_CART
-      - PURCHASE
-      - ADD_TO_WISHLIST
-      - HOME
-      - LAND
-      - PAGE_VIEW
-      default: UNKNOWN_EVENT_TYPE
-      description: Supported EventTypes.
+      - UNKNOWN_CHANNEL_TYPE
+      - APP
+      - SITE
+      - DESKTOP_SITE
+      - MOBILE_SITE
+      default: UNKNOWN_CHANNEL_TYPE
+      description: "ChannelType enumerates available channel types. Simply using APP and SITE is fine, but you can also further distinguish DESKTOP_SITE and MOBILE_SITE for web users.\n\n - APP: Mobile App (iOS or Android)\n - SITE: Site (e.g. Website)\n - DESKTOP_SITE: Desktop Site (e.g. Desktop Website)\n - MOBILE_SITE: Mobile Site (e.g. Mobile Website)"
     protobufAny:
       type: object
       properties:
         '@type':
           type: string
       additionalProperties: {}
-    v1PostUserEventResponse:
+    EventItem:
       type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the Item.
+        price:
+          $ref: '#/components/schemas/commonMoney'
+        quantity:
+          type: integer
+          format: int32
+          description: Quantity of the item. Recommended.
+        item_group_id:
+          type: string
+          description: Unique identifier of the Item Group. id and/or item_group_id must be provided.
+        seller_id:
+          type: string
+          description: Unique identifier of the seller of the item. This field is required for MSPI integration unless the seller cannot be associated with that item for the specific event.
+        price_seller:
+          $ref: '#/components/schemas/commonMoney'
+      description: Item object
+      required:
+      - id
       additionalProperties: true
     commonMoney:
       type: object
@@ -243,16 +250,6 @@ components:
       - currency
       - amount
       additionalProperties: true
-    commonChannelType:
-      type: string
-      enum:
-      - UNKNOWN_CHANNEL_TYPE
-      - APP
-      - SITE
-      - DESKTOP_SITE
-      - MOBILE_SITE
-      default: UNKNOWN_CHANNEL_TYPE
-      description: "ChannelType enumerates available channel types. Simply using APP and SITE is fine, but you can also further distinguish DESKTOP_SITE and MOBILE_SITE for web users.\n\n - APP: Mobile App (iOS or Android)\n - SITE: Site (e.g. Website)\n - DESKTOP_SITE: Desktop Site (e.g. Desktop Website)\n - MOBILE_SITE: Mobile Site (e.g. Mobile Website)"
     EventDevice:
       type: object
       properties:
@@ -292,6 +289,9 @@ components:
       - ID_LESS
       default: UNKNOWN_PERSONALIZATION_MODE
       description: "PersonalizationMode determines how user identification is handled in decision and event processing.\n\n - STANDARD: STANDARD means standard user processing with full user identification.\n - METRIC_ONLY: METRIC_ONLY means user data is used for metric collection only, not for personalization.\n - ID_LESS: ID_LESS means no user identification is used."
+    v1PostUserEventResponse:
+      type: object
+      additionalProperties: true
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -84,35 +84,6 @@ paths:
       - CohortSummary
 components:
   schemas:
-    dspCohortSummaryCampaignColumn:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique ID of a Campaign.
-        title:
-          type: string
-          description: Descriptive name of a Campaign.
-        country:
-          type: string
-          description: Country code in ISO-3166 Alpha-3.
-        is_lat:
-          type: boolean
-          description: Whether the bid was towards LAT (Limit Ad Tracking) device.
-      description: 'CampaignColumn represents a structured column containing Campaign
-
-        information.'
-    adcloudcommonCurrency:
-      type: string
-      enum:
-      - UNKNOWN_CURRENCY
-      - USD
-      - KRW
-      - JPY
-      - EUR
-      - GBP
-      default: UNKNOWN_CURRENCY
-      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
     dspCohortSummarySubPublisherColumnType:
       type: string
       enum:
@@ -121,34 +92,26 @@ components:
       - SITE
       default: UNKNOWN_TYPE
       description: ' - UNKNOWN_TYPE: This value is not part of the API specification.'
-    dspCohortSummaryKpiActionColumn:
+    dspCohortSummaryMetricRevenue:
       type: object
       properties:
-        event:
-          type: string
-          description: Name of an event.
-        event_count:
-          $ref: '#/components/schemas/dspCohortSummaryMetricCount'
-          description: Cumulative count of an event by specified days.
-        user_count:
-          $ref: '#/components/schemas/dspCohortSummaryMetricCount'
-          description: Cumulative count of unique users for an event by specified days.
-      description: 'KpiActionColumn represents a structured column containing cohort metrics by
-
-        days for a KPI event.'
-    commonDeviceOs:
-      type: string
-      enum:
-      - UNKNOWN_DEVICE_OS
-      - ANDROID
-      - IOS
-      - VERSATILE
-      - MOBILE_WEB
-      - MACOS
-      - WINDOWS
-      - NEXT_VERSATILE
-      default: UNKNOWN_DEVICE_OS
-      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
+        d1:
+          type: number
+          format: double
+          description: Cumulative revenue by day 1.
+        d3:
+          type: number
+          format: double
+          description: Cumulative revenue by day 3.
+        d7:
+          type: number
+          format: double
+          description: Cumulative revenue by day 7.
+        d30:
+          type: number
+          format: double
+          description: Cumulative revenue by day 30.
+      description: MetricRevenue represents a structured column containing revenue metrics.
     dspCohortSummaryRow:
       type: object
       properties:
@@ -198,16 +161,21 @@ components:
           $ref: '#/components/schemas/dspCohortSummarySubPublisherColumn'
           description: SubPublisher column.
       description: A row in the cohort summary table consisting of columns.
-    dspCohortSummarySiteColumn:
+    dspCohortSummaryKpiActionColumn:
       type: object
       properties:
-        id:
+        event:
           type: string
-          description: Unique ID of a Site.
-        title:
-          type: string
-          description: Descriptive name of a Site.
-      description: SiteColumn represents a structured column containing site information.
+          description: Name of an event.
+        event_count:
+          $ref: '#/components/schemas/dspCohortSummaryMetricCount'
+          description: Cumulative count of an event by specified days.
+        user_count:
+          $ref: '#/components/schemas/dspCohortSummaryMetricCount'
+          description: Cumulative count of unique users for an event by specified days.
+      description: 'KpiActionColumn represents a structured column containing cohort metrics by
+
+        days for a KPI event.'
     dspCohortSummarySubPublisherColumn:
       type: object
       properties:
@@ -215,25 +183,6 @@ components:
           $ref: '#/components/schemas/dspCohortSummarySubPublisherColumnType'
           description: Type of a sub-publisher. This will be either App or Site.
       description: SubPublisherColumn represents a structured column containing sub-publisher information.
-    messagesReadCohortSummaryErrorAPIErrorInfo:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/messagesReadCohortSummaryErrorAPIErrorInfoErrorReason'
-        error_log_id:
-          type: string
-        context:
-          type: object
-          additionalProperties:
-            type: string
-    messagesReadCohortSummaryErrorAPIErrorInfoErrorReason:
-      type: string
-      enum:
-      - ERROR_REASON_UNKNOWN
-      - COHORT_SUMMARY_INVALID_DATE_RANGE_START
-      - COHORT_SUMMARY_DATE_RANGE_TOO_LONG
-      default: ERROR_REASON_UNKNOWN
-      description: " - COHORT_SUMMARY_INVALID_DATE_RANGE_START: Date range has an invalid start date.\n - COHORT_SUMMARY_DATE_RANGE_TOO_LONG: Date range is longer than allowed maximum."
     CohortSummaryRevenueActionColumn:
       type: object
       properties:
@@ -254,6 +203,17 @@ components:
       description: 'RevenueActionColumn represents a structured column containing cohort metrics by
 
         days for a revenue event.'
+    adcloudcommonCurrency:
+      type: string
+      enum:
+      - UNKNOWN_CURRENCY
+      - USD
+      - KRW
+      - JPY
+      - EUR
+      - GBP
+      default: UNKNOWN_CURRENCY
+      description: "Enumeration of currencies supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - USD: US Dollar.\n - KRW: Korean Won.\n - JPY: Japanese Yen.\n - EUR: EU Euro.\n - GBP: British Pound."
     messagesReadCohortSummaryResponse:
       type: object
       properties:
@@ -282,6 +242,38 @@ components:
       description: 'ActionColumn represents a structured column containing cohort metrics by
 
         days for an event.'
+    messagesReadCohortSummaryErrorAPIErrorInfo:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/messagesReadCohortSummaryErrorAPIErrorInfoErrorReason'
+        error_log_id:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+    commonDeviceOs:
+      type: string
+      enum:
+      - UNKNOWN_DEVICE_OS
+      - ANDROID
+      - IOS
+      - VERSATILE
+      - MOBILE_WEB
+      - MACOS
+      - WINDOWS
+      - NEXT_VERSATILE
+      default: UNKNOWN_DEVICE_OS
+      description: "Enumeration of device OS types supported by Moloco Ads.\n\nThis value is not part of the specification.\n\n - ANDROID: Android device OS.\n - IOS: iOS device OS.\n - VERSATILE: Product with multiple OSes.\nSpecifically for CTV.\n - MOBILE_WEB: OS for mobile web traffic.\n - MACOS: OS for MacOS traffic.\n - WINDOWS: OS for Windows traffic.\n - NEXT_VERSATILE: OS for Next web product."
+    messagesReadCohortSummaryErrorAPIErrorInfoErrorReason:
+      type: string
+      enum:
+      - ERROR_REASON_UNKNOWN
+      - COHORT_SUMMARY_INVALID_DATE_RANGE_START
+      - COHORT_SUMMARY_DATE_RANGE_TOO_LONG
+      default: ERROR_REASON_UNKNOWN
+      description: " - COHORT_SUMMARY_INVALID_DATE_RANGE_START: Date range has an invalid start date.\n - COHORT_SUMMARY_DATE_RANGE_TOO_LONG: Date range is longer than allowed maximum."
     dspCohortSummaryMetricCount:
       type: object
       properties:
@@ -302,39 +294,6 @@ components:
           format: int64
           description: Cumulative count by day 30.
       description: MetricCount represents a structured column containing count metrics.
-    dspCohortSummaryMetricRevenue:
-      type: object
-      properties:
-        d1:
-          type: number
-          format: double
-          description: Cumulative revenue by day 1.
-        d3:
-          type: number
-          format: double
-          description: Cumulative revenue by day 3.
-        d7:
-          type: number
-          format: double
-          description: Cumulative revenue by day 7.
-        d30:
-          type: number
-          format: double
-          description: Cumulative revenue by day 30.
-      description: MetricRevenue represents a structured column containing revenue metrics.
-    dspCohortSummaryAppColumn:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique ID of an App.
-        title:
-          type: string
-          description: Descriptive name of an App.
-        os:
-          $ref: '#/components/schemas/commonDeviceOs'
-          description: OS type of an App.
-      description: AppColumn represents a structured column containing app information.
     messagesReadCohortSummaryError:
       type: object
       properties:
@@ -348,6 +307,47 @@ components:
           items:
             type: object
             $ref: '#/components/schemas/messagesReadCohortSummaryErrorAPIErrorInfo'
+    dspCohortSummaryCampaignColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a Campaign.
+        title:
+          type: string
+          description: Descriptive name of a Campaign.
+        country:
+          type: string
+          description: Country code in ISO-3166 Alpha-3.
+        is_lat:
+          type: boolean
+          description: Whether the bid was towards LAT (Limit Ad Tracking) device.
+      description: 'CampaignColumn represents a structured column containing Campaign
+
+        information.'
+    dspCohortSummarySiteColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of a Site.
+        title:
+          type: string
+          description: Descriptive name of a Site.
+      description: SiteColumn represents a structured column containing site information.
+    dspCohortSummaryAppColumn:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of an App.
+        title:
+          type: string
+          description: Descriptive name of an App.
+        os:
+          $ref: '#/components/schemas/commonDeviceOs'
+          description: OS type of an App.
+      description: AppColumn represents a structured column containing app information.
   securitySchemes:
     Bearer:
       type: apiKey
