@@ -2,11 +2,16 @@ generated: '2026-10-14'
 method: searched
 checked:
 - https://api.nuget.org/v3
+- https://cdn.winget.microsoft.com/cache
 - https://cloudsecurityalliance.org/star/registry
 - https://crates.io/api/v1
 - https://eucoc.cloud/en/public-register/list-of-adherent-services
 - https://fivetran.com/docs-sitemap.xml
 - https://fivetran.com/docs/connectors/partner-built-program
+- https://formulae.brew.sh/api/cask.json
+- https://formulae.brew.sh/api/formula.json
+- https://github.com/ScoopInstaller/Extras
+- https://github.com/ScoopInstaller/Main
 - https://hightouch.com/docs/destinations/moloco
 - https://proxy.golang.org
 - https://pypi.org/pypi
@@ -257,6 +262,36 @@ edges:
     detected_by: sweep-compliance-assurance.py
     detected: '2026-10-20'
   detected_by: sweep-compliance-assurance.py
+  first_seen: '2026-10-20'
+- partner_name: PyPI
+  partner: pypi
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official CLI (PyPI)
+  evidence: https://pypi.org/project/mcm-cli/
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: PyPI (public package index)
+    spec_file: null
+    packages:
+    - name: mcm-cli
+      version: 1.9.0
+      released: '2025-12-11'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/mcm-cli/
+      cli: 'PyPI name/summary: A command-line interface for Moloco Commerde Media'
+      repo_leg: github-org:moloco-mcm
+      publisher_leg: email:moloco.com
+      matched_by: domain
+    current: true
+    signal_note: 'the provider''s own command-line tool on a package manager: distribution, not an integration;
+      lapsed = no release in 24 months or deprecated / disabled by the manager'
+    detected_by: sweep-official-clis.py
+    detected: '2026-10-20'
+  detected_by: sweep-official-clis.py
   first_seen: '2026-10-20'
 source:
 - https://hightouch.com/docs/destinations/moloco
