@@ -2,16 +2,11 @@ generated: '2026-10-14'
 method: searched
 checked:
 - https://api.nuget.org/v3
-- https://cdn.winget.microsoft.com/cache
 - https://cloudsecurityalliance.org/star/registry
 - https://crates.io/api/v1
 - https://eucoc.cloud/en/public-register/list-of-adherent-services
 - https://fivetran.com/docs-sitemap.xml
 - https://fivetran.com/docs/connectors/partner-built-program
-- https://formulae.brew.sh/api/cask.json
-- https://formulae.brew.sh/api/formula.json
-- https://github.com/ScoopInstaller/Extras
-- https://github.com/ScoopInstaller/Main
 - https://hightouch.com/docs/destinations/moloco
 - https://proxy.golang.org
 - https://pypi.org/pypi
@@ -20,6 +15,16 @@ checked:
 - https://rubygems.org/api/v1
 - https://vendor-list.consensu.org/v3/vendor-list.json
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/actions-moloco-rmp
+- https://cdn.winget.microsoft.com/cache
+- https://formulae.brew.sh/api/cask.json
+- https://formulae.brew.sh/api/formula.json
+- https://github.com/ScoopInstaller/Extras
+- https://github.com/ScoopInstaller/Main
+- https://cdn.cocoapods.org/all_pods.txt
+- https://cert.appdefensealliance.org/certifications
+- https://play.google.com/sdks
+- https://search.maven.org/solrsearch/select
+- google-play/integrations/google-play-integration-edges.yml
 marketplace_apps: []
 edges:
 - partner_name: IAB Europe TCF Global Vendor List
@@ -293,6 +298,70 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-official-clis.py
   first_seen: '2026-10-20'
+- partner_name: CocoaPods trunk
+  partner: null
+  partner_match: register
+  type: register
+  channel: package-registry
+  relationship: distribution-channel
+  direction: provider-built
+  evidence: https://cocoapods.org/pods/MolocoCustomAdapter
+  category: iOS SDK (CocoaPods)
+  contract_reference:
+    register: CocoaPods trunk (cdn.cocoapods.org Specs; github.com/CocoaPods/Specs)
+    spec_file: null
+    role: cocoapods-publisher
+    registered_name: Moloco, Inc.
+    matched_domain: moloco.com
+    matched_by: domain
+    pods:
+    - pod: MolocoCustomAdapter
+      version: 4.11.1.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoCustomAdapterAdMob
+      version: 3.6.0.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoCustomAdapterAppLovin
+      version: 3.6.0.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoCustomAdapterIronSource
+      version: 3.6.0.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoSDKiOS
+      version: 4.11.1
+      homepage: https://www.moloco.com/
+      deprecated: false
+    signal_note: latest podspec homepage (domain) + authors (name); pods, versions and counts are context
+    detected_by: sweep-mobile-sdk-index.py
+    detected: '2026-10-21'
+  detected_by: sweep-mobile-sdk-index.py
+  first_seen: '2026-10-21'
+- partner_name: Google Play Developer (Google Play SDK Index)
+  partner: google-play
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: Google Play SDK Index
+  evidence: https://play.google.com/sdks/details/com-moloco-sdk-adapters-adapter
+  mirror_of: google-play/integrations/google-play-integration-edges.yml
+  apps:
+  - Moloco Android SDK
+  - Moloco AppLovin Adapter
+  - Moloco Ironsource Adapter
+  - Moloco SDK
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: mobile SDK (ads)
+  publisher_verified:
+  - Registered in Google Play SDK Console
 source:
 - https://hightouch.com/docs/destinations/moloco
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/actions-moloco-rmp

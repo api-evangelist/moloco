@@ -221,3 +221,58 @@
     detected: '2026-10-20'
   status: not-a-workflow
   arazzo: null
+- slug: moloco-cocoapods-trunk
+  label: CocoaPods trunk
+  partner_name: CocoaPods trunk
+  category: iOS SDK (CocoaPods)
+  type: register
+  channel: package-registry
+  evidence: https://cocoapods.org/pods/MolocoCustomAdapter
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: CocoaPods trunk (cdn.cocoapods.org Specs; github.com/CocoaPods/Specs)
+    spec_file: null
+    role: cocoapods-publisher
+    registered_name: Moloco, Inc.
+    matched_domain: moloco.com
+    matched_by: domain
+    pods:
+    - pod: MolocoCustomAdapter
+      version: 4.11.1.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoCustomAdapterAdMob
+      version: 3.6.0.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoCustomAdapterAppLovin
+      version: 3.6.0.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoCustomAdapterIronSource
+      version: 3.6.0.0
+      homepage: https://www.moloco.com/
+      deprecated: false
+    - pod: MolocoSDKiOS
+      version: 4.11.1
+      homepage: https://www.moloco.com/
+      deprecated: false
+    signal_note: latest podspec homepage (domain) + authors (name); pods, versions and counts are context
+    detected_by: sweep-mobile-sdk-index.py
+    detected: '2026-10-21'
+  status: not-a-workflow
+  arazzo: null
+- slug: moloco-google-play-developer-google-play-sdk-index
+  label: Google Play Developer (Google Play SDK Index)
+  partner: google-play
+  partner_name: Google Play Developer (Google Play SDK Index)
+  category: mobile SDK (ads)
+  type: marketplace
+  marketplace: Google Play SDK Index
+  channel: partner-built
+  evidence: https://play.google.com/sdks/details/com-moloco-sdk-adapters-adapter
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
